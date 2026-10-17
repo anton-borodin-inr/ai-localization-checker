@@ -228,3 +228,8 @@ def test_request_body_is_accepted_by_the_api_schema(screenshot):
     for unsupported in ("additional", "$ref", "$defs"):
         assert unsupported not in schema.lower().replace("_", "")
     assert '"findings"' in schema and "bottom-right" in schema
+    assert config["mediaResolution"] == "MEDIA_RESOLUTION_HIGH"
+
+
+def test_media_resolution_is_recorded_in_settings():
+    assert GeminiProvider(KEY).settings["media_resolution"] == "MEDIA_RESOLUTION_HIGH"

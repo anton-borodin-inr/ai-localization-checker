@@ -55,6 +55,8 @@ class GeminiProvider:
             response_schema=response_schema(),
             temperature=0,
             max_output_tokens=8192,
+            # Explicit, so that a change of the API default cannot go unrecorded.
+            media_resolution=types.MediaResolution.MEDIA_RESOLUTION_HIGH,
         )
         # SDK retries are disabled so that the request cap counts real requests.
         http_options = types.HttpOptions(
@@ -69,6 +71,7 @@ class GeminiProvider:
             "max_output_tokens": 8192,
             "response_mime_type": "application/json",
             "response_schema": response_schema(),
+            "media_resolution": "MEDIA_RESOLUTION_HIGH",
             "timeout_s": timeout_s,
             "sdk_retry_attempts": 1,
         }
