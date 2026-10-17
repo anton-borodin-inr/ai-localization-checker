@@ -46,6 +46,7 @@ FAILURES = {
     "timeout": httpx.ReadTimeout(f"timed out for {KEY}"),
     "rate_limited": api_error(errors.ClientError, 429, "RESOURCE_EXHAUSTED"),
     "server_error": api_error(errors.ServerError, 500, "INTERNAL"),
+    "deadline": api_error(errors.ServerError, 504, "DEADLINE_EXCEEDED"),
     "forbidden": api_error(errors.ClientError, 403, "PERMISSION_DENIED"),
     "connect_error": httpx.ConnectError(f"cannot connect {KEY}"),
     "unexpected": RuntimeError(f"unexpected {KEY}"),
@@ -54,6 +55,7 @@ FAILURE_KINDS = {
     "timeout": "timeout",
     "rate_limited": "rate_limited",
     "server_error": "api_error",
+    "deadline": "timeout",
     "forbidden": "api_error",
     "connect_error": "api_error",
     "unexpected": "api_error",
@@ -138,6 +140,12 @@ def test_real_client_has_timeout_and_no_sdk_retries():
     assert http.retry_options.attempts == 1
 
 
+def test_default_timeout_is_180_s():
+    p = GeminiProvider(KEY)
+    assert p._client._api_client._http_options.timeout == 180_000
+    assert p.settings["timeout_s"] == 180
+
+
 def test_only_the_adapter_imports_the_sdk():
     importers = set()
     for path in SRC.glob("*.py"):
@@ -157,7 +165,9 @@ def test_key_never_leaks(name, screenshot, tmp_path, capsys, caplog, monkeypatch
     caplog.set_level(logging.DEBUG)
     outcome = response() if name == "success" else {**FAILURES, **RESPONSES}[name]
     monkeypatch.setenv("GEMINI_API_KEY", KEY)
-    monkeypatch.setattr(cli, "make_provider", lambda key, model: provider(outcome))
+    monkeypatch.setattr(
+        cli, "make_provider", lambda key, model, timeout: provider(outcome)
+    )
     monkeypatch.setattr(cli, "output_directory", lambda path: path)
     runs = tmp_path / "runs"
     monkeypatch.setattr(

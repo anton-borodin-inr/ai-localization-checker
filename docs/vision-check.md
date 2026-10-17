@@ -55,6 +55,10 @@ is acceptable for screenshots of an open-source game.
 uv run --env-file .env l10n-check --image data/issue-2/main-menu__en__2400x1080__original__1271.png --max-requests 2
 ```
 
+`--timeout` (default 180 s) is also sent to the server as `X-Server-Timeout`;
+a server-side `504 DEADLINE_EXCEEDED` is reported as `timeout`. At 60 s the
+first live call on the 2400×1080 main menu hit that deadline.
+
 Expected output: the run folder, then `checked: N finding(s)` (exit code 0) or
 `not_checked: <reason>` (exit code 2). Exit code 1 means nothing was sent (no
 key, bad image or runs folder outside `data/`).

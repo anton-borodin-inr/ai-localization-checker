@@ -45,14 +45,14 @@ def main() -> int:
     return 0
 
 
-def make_provider(api_key: str, model: str):
+def make_provider(api_key: str, model: str, timeout_s: int):
     from l10n_checker.gemini import GeminiProvider
 
-    return GeminiProvider(api_key, model)
+    return GeminiProvider(api_key, model, timeout_s)
 
 
 def check_main() -> int:
-    from l10n_checker.gemini import DEFAULT_MODEL
+    from l10n_checker.gemini import DEFAULT_MODEL, DEFAULT_TIMEOUT_S
 
     parser = argparse.ArgumentParser(
         description="Check one screenshot for localization defects with Gemini."
@@ -61,6 +61,7 @@ def check_main() -> int:
     parser.add_argument("--runs-dir", type=Path, default=Path("data/runs"))
     parser.add_argument("--max-requests", type=int, default=1)
     parser.add_argument("--model", default=DEFAULT_MODEL)
+    parser.add_argument("--timeout", type=int, default=DEFAULT_TIMEOUT_S)
     args = parser.parse_args()
     api_key = os.environ.get("GEMINI_API_KEY", "")
     if not api_key:
@@ -68,7 +69,7 @@ def check_main() -> int:
         return 1
     try:
         result, run_dir = run_check(
-            make_provider(api_key, args.model),
+            make_provider(api_key, args.model, args.timeout),
             args.image,
             output_directory(args.runs_dir),
             RequestBudget(args.max_requests),

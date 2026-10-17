@@ -8,6 +8,9 @@ from google.genai.version import __version__ as SDK_VERSION
 from l10n_checker.vision import ModelOutput, ProviderError, ProviderResponse, redact
 
 DEFAULT_MODEL = "gemini-3.8-flash"
+# The SDK also sends this to the server as X-Server-Timeout; at 60 s the first
+# live call on a 2400x1080 screenshot ended in 504 DEADLINE_EXCEEDED.
+DEFAULT_TIMEOUT_S = 180
 
 
 def response_schema() -> dict:
@@ -42,7 +45,7 @@ class GeminiProvider:
         self,
         api_key: str,
         model: str = DEFAULT_MODEL,
-        timeout_s: int = 60,
+        timeout_s: int = DEFAULT_TIMEOUT_S,
         client=None,
     ):
         self.model = model
@@ -83,7 +86,12 @@ class GeminiProvider:
         except (httpx.TimeoutException, TimeoutError) as exc:
             raise ProviderError("timeout", self._safe(exc)) from None
         except errors.APIError as exc:
-            kind = "rate_limited" if exc.code == 429 else "api_error"
+            if exc.code == 429:
+                kind = "rate_limited"
+            elif exc.code == 504 or exc.status == "DEADLINE_EXCEEDED":
+                kind = "timeout"
+            else:
+                kind = "api_error"
             raise ProviderError(kind, self._safe(exc)) from None
         except Exception as exc:  # noqa: BLE001 - any other failure is "not checked"
             raise ProviderError("api_error", self._safe(exc)) from None

@@ -173,3 +173,12 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 - **Why:** The 3×3 grid is the coarse region D-009 needs to separate identical labels without measuring coordinate precision. `other` lets the model report a defect without forcing it into a v1 class; `other` findings never match a label.
 - **Alternatives considered:** Normalized bounding boxes (measure coordinate precision, which D-009 avoids); only the v1 defect types.
 - **Consequences:** Matching (Stage 1) uses type + `text_seen` + grid cell.
+
+## D-019 — Default request timeout of 180 s
+
+- **Date:** 2026-10-17
+- **Status:** Proposed
+- **Decision:** The default Gemini request timeout is 180 s instead of the 60 s in D-017, and it is configurable with `--timeout`. A server-side `504 DEADLINE_EXCEEDED` is reported as `timeout`.
+- **Why:** The SDK sends the timeout to the server as `X-Server-Timeout`. With 60 s, the first live call on the 2400×1080 main menu (run `20261017T182052Z-fb1925`) was cut off by the server after 59.2 s with no response.
+- **Alternatives considered:** A lower thinking level (faster, but it changes model behaviour and is close to tuning); 120 s (risk of wasting another free-tier request).
+- **Consequences:** Every run records `timeout_s` in its settings; the real latency is visible in `run.json`.
