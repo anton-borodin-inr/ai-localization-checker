@@ -69,7 +69,7 @@ AVDMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/avdmanager"
 | System image | `android-34;google_apis;arm64-v8a` (API 34, no Play Store) |
 | Screen | 1080 × 2400 px, 420 dpi (D-014) |
 
-Unciv runs in landscape, so screenshots are 2400 × 1080. The left ~135 px of a landscape screenshot is a black bar from the Pixel 7 display cutout; the game is drawn to the right of it.
+Unciv runs in landscape, so screenshots are 2400 × 1080. The display cutout is disabled (see [Display cutout](#display-cutout)), so screenshots contain only the game.
 
 Start the emulator and get root:
 
@@ -79,6 +79,28 @@ Start the emulator and get root:
 "$ANDROID_HOME/platform-tools/adb" root
 "$ANDROID_HOME/platform-tools/adb" shell whoami   # root
 ```
+
+After **every** boot, run:
+
+```bash
+scripts/prepare_emulator.sh
+```
+
+It waits for the boot to finish, restarts adbd as root and disables the display cutout (next section).
+
+## Display cutout
+
+The Pixel 7 profile makes the emulator enable the runtime resource overlay `com.android.internal.emulation.pixel_7`. The only resource it overrides is `config_mainBuiltInDisplayCutout`, which adds a 136 px hole-punch cutout. In landscape, Unciv leaves that strip black, so screenshots would contain a ~135 px black bar on the left.
+
+Disabling the overlay removes the cutout and changes nothing else; resolution and density stay 1080 × 2400 at 420 dpi:
+
+```bash
+"$ANDROID_HOME/platform-tools/adb" shell cmd overlay disable com.android.internal.emulation.pixel_7
+```
+
+The emulator re-enables this overlay on every boot (checked with a cold restart), so the setting does not persist. `scripts/prepare_emulator.sh` re-applies it and waits until `dumpsys display` reports no cutout. The `com.android.internal.display.cutout.emulation.noCutout` overlay known from older images does not exist on this API 34 image.
+
+To check by hand: `adb shell dumpsys display | grep -m1 'Built-in Screen'` must contain no `cutout DisplayCutout{insets=...}` field, or only zero insets.
 
 ## Unciv APK
 
@@ -104,10 +126,11 @@ On first launch Unciv shows an Android "Viewing full screen" hint and a language
 
 ## Checking the environment
 
-With the emulator running:
+With the emulator running and prepared:
 
 ```bash
+scripts/prepare_emulator.sh
 scripts/check_env.sh
 ```
 
-It prints `PASS`/`FAIL` for the JDK, each SDK package, the system image, the AVD settings, the running emulator, `adb root`, the installed Unciv version code, the project-local Appium version and the uiautomator2 driver (including that it supports the installed Appium). It exits 1 if any check fails. Expected versions are at the top of the script and must match this file.
+It prints `PASS`/`FAIL` for the JDK, each SDK package, the system image, the AVD settings, the running emulator, `adb root`, the installed Unciv version code, the display cutout (FAIL if it is still active), the project-local Appium version and the uiautomator2 driver (including that it supports the installed Appium). It exits 1 if any check fails. Expected versions are at the top of the script and must match this file.
