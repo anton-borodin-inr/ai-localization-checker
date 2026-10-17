@@ -128,3 +128,21 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 - **Decision:** A timeout, an API error or an invalid model response gives the screen the status "not checked". The report lists all screens that could not be checked.
 - **Why:** Treating a failure as a clean result would hide defects and inflate precision.
 - **Consequences:** Every run also stores the model version, the prompt and the settings.
+
+## D-014 — v1 screen resolution: 1080 × 2400 at 420 dpi
+
+- **Date:** 2026-10-17
+- **Status:** Proposed
+- **Decision:** v1 captures all screens on one AVD with the Pixel 7 device profile: 1080 × 2400 px, 420 dpi. Unciv runs in landscape, so screenshots are 2400 × 1080.
+- **Why:** It is the most common class of current Android phones, and the mid-high density keeps UI text at a realistic physical size, which is where truncation and overlap defects appear.
+- **Alternatives considered:** A lower resolution (for example 720 × 1600) would survive provider downscaling better but is less representative; a tablet profile changes the layout Unciv chooses.
+- **Consequences:** The vertical slice (D-005) must check whether text stays readable after the provider downscales a 2400-px image. If it does not, this decision is revisited. Landscape screenshots have a ~135 px black cutout bar on the left.
+
+## D-015 — Project-local Appium with its own APPIUM_HOME
+
+- **Date:** 2026-10-17
+- **Status:** Proposed
+- **Decision:** Appium is pinned in the repository's `package.json` / `package-lock.json` and installed with `npm ci`; its drivers live in `./.appium` (`APPIUM_HOME`). The global Appium is not used.
+- **Why:** The global Appium and `~/.appium` drivers are shared with other projects on the machine and can change under us. A pinned local install makes the environment reproducible and checkable.
+- **Alternatives considered:** Reusing the global Appium 3.3.1 as is; rejected because its versions are not recorded in the repository and other projects may upgrade it.
+- **Consequences:** Contributors need Node; `node_modules/` and `.appium/` are gitignored; the Appium server is started with `npm run appium`.
