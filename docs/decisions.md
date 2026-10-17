@@ -150,17 +150,8 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 ## D-016 — Capture build identifier and overwrite policy
 
 - **Date:** 2026-10-17
-- **Status:** Proposed
+- **Status:** Accepted
 - **Decision:** Use the installed Unciv APK `versionCode` as the D-003 filename build field. Refuse an existing destination unless the user passes `--overwrite`.
-- **Why:** The numeric APK code identifies the installed build; explicit overwrite protects a previous capture. Anton approved these implementation choices in the issue #2 planning conversation; the log entry remains Proposed for his formal review.
+- **Why:** The numeric APK code identifies the installed build; explicit overwrite protects a previous capture.
 - **Alternatives considered:** `versionName`; automatic overwrite on every run.
 - **Consequences:** A Stage 0 filename ends in `__1271.png`. Repeating the same capture requires a different output folder or explicit overwrite.
-
-## D-017 — Informational capture timing boundary
-
-- **Date:** 2026-10-17
-- **Status:** Proposed
-- **Decision:** For issue #2, report the mean of 10 PNG retrieval-plus-file-write measurements for each transport. Use one Appium session and report its setup time separately; exclude validation from the timed intervals.
-- **Why:** Separating session startup from each capture makes the per-image costs visible. Anton approved this measurement boundary during planning; it does not select a transport.
-- **Alternatives considered:** Including a fresh Appium session in each sample; timing the entire CLI including environment checks.
-- **Consequences:** Document method order, no warmup, no fsync and local conditions. Stage 1 still owns the Appium-versus-adb decision.
