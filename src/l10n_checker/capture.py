@@ -47,9 +47,7 @@ def cutout_disabled(display: str, overlays: str) -> bool:
         (s for s in display.splitlines() if 'DisplayDeviceInfo{"Built-in Screen"' in s),
         None,
     )
-    if line is not None:
-        if "cutout" not in line:
-            return True
+    if line is not None and "cutout" in line:
         insets = re.search(
             r"cutout DisplayCutout\{insets=Rect\((\d+), (\d+) - (\d+), (\d+)\)", line
         )
@@ -112,7 +110,15 @@ class Device:
     def check_cutout(self):
         display = self.shell("dumpsys", "display")
         overlays = ""
-        if 'DisplayDeviceInfo{"Built-in Screen"' not in display:
+        line = next(
+            (
+                s
+                for s in display.splitlines()
+                if 'DisplayDeviceInfo{"Built-in Screen"' in s
+            ),
+            None,
+        )
+        if line is None or "cutout" not in line:
             overlays = self.shell("cmd", "overlay", "list", "android")
         if not cutout_disabled(display, overlays):
             raise CaptureError(

@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from l10n_checker.capture import OVERLAY, cutout_disabled
+from l10n_checker.capture import OVERLAY, CaptureError, Device, cutout_disabled
 
 ROOT = Path(__file__).resolve().parents[1]
 LINE = 'DisplayDeviceInfo{"Built-in Screen": '
@@ -13,7 +13,15 @@ LINE = 'DisplayDeviceInfo{"Built-in Screen": '
 @pytest.mark.parametrize(
     "display,overlay,expected",
     [
-        (LINE + "1080 x 2400}", "", True),
+        (LINE + "1080 x 2400}", "", False),
+        (LINE + "1080 x 2400}", "[ ] " + OVERLAY, True),
+        (LINE + "1080 x 2400}", "[x] " + OVERLAY, False),
+        (
+            LINE + "1080 x 2400}",
+            "[ ] " + OVERLAY + "_pro\n[ ] " + OVERLAY + "a\n[ ] " + OVERLAY,
+            True,
+        ),
+        (LINE + "1080 x 2400}", "--- " + OVERLAY, False),
         (LINE + "cutout DisplayCutout{insets=Rect(0, 0 - 0, 0)}", "", True),
         (
             LINE + "cutout DisplayCutout{insets=Rect(0, 136 - 0, 0)}",
@@ -87,3 +95,29 @@ esac
     assert result.returncode == 1
     assert "active or unknown" in result.stderr
     assert "ready" not in result.stdout
+
+
+@pytest.mark.parametrize(
+    "overlay,expected",
+    [("[ ] " + OVERLAY, True), ("[x] " + OVERLAY, False), ("", False)],
+)
+def test_device_queries_overlay_when_cutout_field_is_absent(
+    monkeypatch, overlay, expected
+):
+    device = Device(Path("sdk/platform-tools/adb"), "emulator-5554")
+    calls = []
+
+    def shell(*args):
+        calls.append(args)
+        if args == ("dumpsys", "display"):
+            return LINE + "1080 x 2400}"
+        assert args == ("cmd", "overlay", "list", "android")
+        return overlay
+
+    monkeypatch.setattr(device, "shell", shell)
+    if expected:
+        device.check_cutout()
+    else:
+        with pytest.raises(CaptureError, match="cutout is active or unknown"):
+            device.check_cutout()
+    assert ("cmd", "overlay", "list", "android") in calls

@@ -46,9 +46,9 @@ or unknown display cutout and never changes the AVD, app settings or orientation
 The Python client attaches with `noReset`, `autoLaunch=false` and `skipUnlock`.
 Unciv must already be in the foreground.
 
-Cutout validation is fail-closed: a built-in display device line with no cutout
-or zero insets is accepted. If that line is missing, only an explicitly disabled
-Pixel 7 overlay is accepted. Missing, enabled or indeterminate overlay state
+Cutout validation is fail-closed: a built-in display device line with a cutout
+field is accepted only when its insets are zero. If the line or its cutout field
+is missing, only an explicitly disabled Pixel 7 overlay is accepted. Missing, enabled or indeterminate overlay state
 fails. Both environment scripts use `scripts/cutout.sh`; Python follows the
 same policy, covered with shared test cases. PNG structure, CRCs and dimensions
 are checked before saving; dimensions must match the current device screen.
