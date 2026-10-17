@@ -155,3 +155,21 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 - **Why:** The numeric APK code identifies the installed build; explicit overwrite protects a previous capture.
 - **Alternatives considered:** `versionName`; automatic overwrite on every run.
 - **Consequences:** A Stage 0 filename ends in `__1271.png`. Repeating the same capture requires a different output folder or explicit overwrite.
+
+## D-017 — v1 provider settings: Gemini 3.8 Flash, structured output
+
+- **Date:** 2026-10-17
+- **Status:** Proposed
+- **Decision:** The v1 provider (D-006) is the Gemini API free tier with `gemini-3.8-flash`. Requests use structured output (`application/json` with the finding schema), temperature 0, a 60 s timeout, and the SDK's own retries disabled; one simple retry after HTTP 429 is allowed only within the per-run request cap.
+- **Why:** On 2026-10-17 it is the latest stable Flash model available on the free tier. Disabling SDK retries makes the request cap count real requests.
+- **Alternatives considered:** `gemini-3.6-flash` (older, deprecated sooner); `gemini-3.5-flash-lite` (weaker on small text, which D-014 must check).
+- **Consequences:** Every run records the requested model id and the `model_version` the API returns. Free-tier inputs may be used by Google to improve its products.
+
+## D-018 — Draft v0 finding schema
+
+- **Date:** 2026-10-17
+- **Status:** Proposed
+- **Decision:** A finding has `defect_type` (`truncated_text`, `overlap`, `untranslated`, `other`), `text_seen`, `region` on a 3×3 screen grid and `confidence` in 0..1. The schema is a draft and is finalized in Stage 1.
+- **Why:** The 3×3 grid is the coarse region D-009 needs to separate identical labels without measuring coordinate precision. `other` lets the model report a defect without forcing it into a v1 class; `other` findings never match a label.
+- **Alternatives considered:** Normalized bounding boxes (measure coordinate precision, which D-009 avoids); only the v1 defect types.
+- **Consequences:** Matching (Stage 1) uses type + `text_seen` + grid cell.
