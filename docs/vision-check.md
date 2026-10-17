@@ -15,6 +15,8 @@ tuning, tiling, metrics or matching yet.
   `center`) and `confidence` in 0..1.
 - The model response is requested as structured output (JSON with the schema)
   and validated again locally.
+- Model and request settings follow D-017: `gemini-3.6-flash`, temperature 0,
+  `media_resolution` `MEDIA_RESOLUTION_HIGH`, all recorded in `run.json`.
 
 `checked` with an empty list is the only way to say "no defects". A timeout, an
 API error (including HTTP 429), a blocked or empty response, an incomplete
