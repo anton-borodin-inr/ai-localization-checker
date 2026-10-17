@@ -7,6 +7,8 @@ license = "MIT"
 requires-python = ">=3.11"
 dependencies = [
     "appium-python-client>=6.0.7",
+    "google-genai>=2.31.0",
+    "pydantic>=2.14.1",
 ]
 
 [dependency-groups]
@@ -24,6 +26,7 @@ packages = ["src/l10n_checker"]
 
 [project.scripts]
 l10n-capture = "l10n_checker.cli:main"
+l10n-check = "l10n_checker.cli:check_main"
 
 [tool.pytest.ini_options]
 markers = ["device: requires a prepared emulator and the project-local Appium server"]
