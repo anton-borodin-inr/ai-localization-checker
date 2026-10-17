@@ -159,7 +159,7 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 ## D-017 — v1 provider settings: Gemini 3.8 Flash, structured output
 
 - **Date:** 2026-10-17
-- **Status:** Proposed
+- **Status:** Superseded by D-020
 - **Decision:** The v1 provider (D-006) is the Gemini API free tier with `gemini-3.8-flash`. Requests use structured output (`application/json` with the finding schema), temperature 0, a 60 s timeout, and the SDK's own retries disabled; one simple retry after HTTP 429 is allowed only within the per-run request cap.
 - **Why:** On 2026-10-17 it is the latest stable Flash model available on the free tier. Disabling SDK retries makes the request cap count real requests.
 - **Alternatives considered:** `gemini-3.6-flash` (older, deprecated sooner); `gemini-3.5-flash-lite` (weaker on small text, which D-014 must check).
@@ -182,3 +182,12 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 - **Why:** The SDK sends the timeout to the server as `X-Server-Timeout`. With 60 s, the first live call on the 2400×1080 main menu (run `20261017T182052Z-fb1925`) was cut off by the server after 59.2 s with no response.
 - **Alternatives considered:** A lower thinking level (faster, but it changes model behaviour and is close to tuning); 120 s (risk of wasting another free-tier request).
 - **Consequences:** Every run records `timeout_s` in its settings; the real latency is visible in `run.json`.
+
+## D-020 — v1 model: Gemini 3.6 Flash on the free tier
+
+- **Date:** 2026-10-17
+- **Status:** Proposed
+- **Decision:** The v1 model is `gemini-3.6-flash` on the Gemini API free tier. The other settings from D-017 stay: structured output, temperature 0, SDK retries disabled; the timeout follows D-019.
+- **Why:** From this project, every generation request to `gemini-3.8-flash` hung until the deadline: two image requests (60 s and 180 s) and a one-line text-only probe (30 s), all ending in `504 DEADLINE_EXCEEDED`. The same text probe on `gemini-3.6-flash` answered in 1.8 s. The key and `models.list` worked, so the problem is 3.8 generation on the free tier.
+- **Alternatives considered:** Enabling billing and keeping 3.8 on the paid tier; rejected for now because issue #3 allows the free tier only.
+- **Consequences:** `DEFAULT_MODEL` is `gemini-3.6-flash`; `--model` still selects another model. Free-tier inputs may be used by Google to improve its products. 3.8 can be re-checked later with `scripts/gemini_probe.py text`.

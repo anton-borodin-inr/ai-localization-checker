@@ -69,6 +69,10 @@ Check that the key is not in the record:
 uv run --env-file .env python -c "import os,pathlib,sys; k=os.environ['GEMINI_API_KEY']; hits=[p for p in pathlib.Path(sys.argv[1]).rglob('*') if p.is_file() and k in p.read_text()]; print('key found in', hits) if hits else print('key not found')" data/runs/<run_id>
 ```
 
+If a model does not answer at all, `scripts/gemini_probe.py list` checks the key
+and the model list without generating, and `scripts/gemini_probe.py text
+[model]` sends one text-only request (it counts toward the budget).
+
 ## Verify offline
 
 ```bash

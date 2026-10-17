@@ -7,7 +7,7 @@ from google.genai.version import __version__ as SDK_VERSION
 
 from l10n_checker.vision import ModelOutput, ProviderError, ProviderResponse, redact
 
-DEFAULT_MODEL = "gemini-3.8-flash"
+DEFAULT_MODEL = "gemini-3.6-flash"
 # The SDK also sends this to the server as X-Server-Timeout; at 60 s the first
 # live call on a 2400x1080 screenshot ended in 504 DEADLINE_EXCEEDED.
 DEFAULT_TIMEOUT_S = 180

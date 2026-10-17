@@ -29,7 +29,7 @@ def response(text='{"findings": []}', finish="STOP", block=None):
         prompt_feedback=types.GenerateContentResponsePromptFeedback(block_reason=block)
         if block
         else None,
-        model_version="gemini-3.8-flash-001",
+        model_version="gemini-3.6-flash-001",
         usage_metadata=types.GenerateContentResponseUsageMetadata(
             prompt_token_count=1300, candidates_token_count=12, total_token_count=1312
         ),
@@ -114,7 +114,7 @@ def test_request_uses_structured_output():
 def test_success_is_parsed():
     result = provider(response()).generate(b"png", "image/png", "p")
     assert result.text == '{"findings": []}'
-    assert result.model_version == "gemini-3.8-flash-001"
+    assert result.model_version == "gemini-3.6-flash-001"
     assert result.usage["total_token_count"] == 1312
     assert "sdk_http_response" not in result.raw
 
