@@ -1,0 +1,11 @@
+{
+  "name": "ai-localization-checker-tooling",
+  "private": true,
+  "description": "Project-local Appium server. Drivers live in ./.appium (APPIUM_HOME).",
+  "scripts": {
+    "appium": "APPIUM_HOME=./.appium appium"
+  },
+  "devDependencies": {
+    "appium": "3.3.1"
+  }
+}
