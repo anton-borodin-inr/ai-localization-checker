@@ -18,8 +18,6 @@ UNCIV_PACKAGE=com.unciv.app
 UNCIV_VERSION_CODE=1271
 APPIUM_VERSION=3.3.1
 UIAUTOMATOR2_VERSION=7.1.2
-# Emulator overlay that adds the Pixel 7 display cutout; disabled by prepare_emulator.sh.
-CUTOUT_OVERLAY=com.android.internal.emulation.pixel_7
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 ANDROID_HOME="${ANDROID_HOME:-$HOME/Library/Android/sdk}"
@@ -27,6 +25,7 @@ ADB="$ANDROID_HOME/platform-tools/adb"
 SDK_IMAGE_DIR="$ANDROID_HOME/$(echo "$SYSTEM_IMAGE" | tr ';' '/')"
 AVD_CONFIG="$HOME/.android/avd/$AVD_NAME.avd/config.ini"
 export APPIUM_HOME="$REPO_ROOT/.appium"
+source "$REPO_ROOT/scripts/cutout.sh"
 
 failures=0
 
@@ -115,15 +114,10 @@ else
         fail "unciv-apk" "$UNCIV_PACKAGE not installed"
     fi
 
-    # No cutout field, or zero insets, means screenshots contain only the game.
-    cutout="$("$ADB" -s "$serial" shell dumpsys display 2>/dev/null | grep -m1 'Built-in Screen' \
-        | grep -o 'cutout DisplayCutout{insets=Rect([^)]*)')"
-    if [[ -z "$cutout" || "$cutout" == *"Rect(0, 0 - 0, 0)" ]]; then
+    if cutout_disabled; then
         pass "display-cutout" "disabled"
     else
-        overlay_state="$("$ADB" -s "$serial" shell cmd overlay list android 2>/dev/null \
-            | grep "$CUTOUT_OVERLAY\$" | tr -d '\r' | xargs)"
-        fail "display-cutout" "active: ${cutout#cutout DisplayCutout\{}, overlay $overlay_state (run: scripts/prepare_emulator.sh)"
+        fail "display-cutout" "active or unknown (run: scripts/prepare_emulator.sh)"
     fi
 fi
 

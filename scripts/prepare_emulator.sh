@@ -14,6 +14,7 @@ CUTOUT_OVERLAY=com.android.internal.emulation.pixel_7
 
 ANDROID_HOME="${ANDROID_HOME:-$HOME/Library/Android/sdk}"
 ADB="$ANDROID_HOME/platform-tools/adb"
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/cutout.sh"
 
 serial="$("$ADB" devices | awk '$1 ~ /^emulator-/ && $2 == "device" {print $1; exit}')"
 if [[ -z "$serial" ]]; then
@@ -35,14 +36,12 @@ adb_device shell cmd overlay disable "$CUTOUT_OVERLAY"
 # The display picks up the change asynchronously; wait until the built-in
 # screen reports no cutout insets.
 for _ in $(seq 1 20); do
-    insets="$(adb_device shell dumpsys display | grep -m1 'Built-in Screen' \
-        | grep -o 'cutout DisplayCutout{insets=Rect([^)]*)' || true)"
-    if [[ -z "$insets" || "$insets" == *"Rect(0, 0 - 0, 0)" ]]; then
+    if cutout_disabled; then
         echo "Emulator $serial ready: adbd is root, display cutout disabled"
         exit 0
     fi
     sleep 0.5
 done
 
-echo "Display cutout is still active: $insets" >&2
+echo "Display cutout is active or unknown" >&2
 exit 1
