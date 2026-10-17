@@ -146,3 +146,12 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 - **Why:** The global Appium and `~/.appium` drivers are shared with other projects on the machine and can change under us. A pinned local install makes the environment reproducible and checkable.
 - **Alternatives considered:** Reusing the global Appium 3.3.1 as is; rejected because its versions are not recorded in the repository and other projects may upgrade it.
 - **Consequences:** Contributors need Node; `node_modules/` and `.appium/` are gitignored; the Appium server is started with `npm run appium`.
+
+## D-016 — Capture build identifier and overwrite policy
+
+- **Date:** 2026-10-17
+- **Status:** Accepted
+- **Decision:** Use the installed Unciv APK `versionCode` as the D-003 filename build field. Refuse an existing destination unless the user passes `--overwrite`.
+- **Why:** The numeric APK code identifies the installed build; explicit overwrite protects a previous capture.
+- **Alternatives considered:** `versionName`; automatic overwrite on every run.
+- **Consequences:** A Stage 0 filename ends in `__1271.png`. Repeating the same capture requires a different output folder or explicit overwrite.
