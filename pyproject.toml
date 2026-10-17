@@ -5,7 +5,9 @@ description = "Vision-LLM localization defect detector for mobile games, evaluat
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.11"
-dependencies = []
+dependencies = [
+    "appium-python-client>=6.0.7",
+]
 
 [dependency-groups]
 dev = [
@@ -19,3 +21,9 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/l10n_checker"]
+
+[project.scripts]
+l10n-capture = "l10n_checker.cli:main"
+
+[tool.pytest.ini_options]
+markers = ["device: requires a prepared emulator and the project-local Appium server"]
