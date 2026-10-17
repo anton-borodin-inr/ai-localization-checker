@@ -1,0 +1,6 @@
+{
+  "permissions": {
+    "deny": ["Read(~/l10n-holdout/**)", "Read(./.env)"],
+    "blockReadsOutsideWorkingDirectories": true
+  }
+}
