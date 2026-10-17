@@ -10,6 +10,30 @@ from l10n_checker.vision import ModelOutput, ProviderError, ProviderResponse, re
 DEFAULT_MODEL = "gemini-3.8-flash"
 
 
+def response_schema() -> dict:
+    """ModelOutput as a schema the API accepts: refs inlined, no additionalProperties.
+
+    Extra fields are still rejected locally when the response is validated.
+    """
+    schema = ModelOutput.model_json_schema()
+    defs = schema.pop("$defs", {})
+
+    def clean(node):
+        if isinstance(node, dict):
+            if "$ref" in node:
+                return clean(defs[node["$ref"].rsplit("/", 1)[-1]])
+            return {
+                k: clean(v)
+                for k, v in node.items()
+                if k not in ("additionalProperties", "title")
+            }
+        if isinstance(node, list):
+            return [clean(v) for v in node]
+        return node
+
+    return clean(schema)
+
+
 class GeminiProvider:
     name = "gemini"
     sdk_version = SDK_VERSION
@@ -25,7 +49,7 @@ class GeminiProvider:
         self._secrets = (api_key,)
         self._config = types.GenerateContentConfig(
             response_mime_type="application/json",
-            response_schema=ModelOutput,
+            response_schema=response_schema(),
             temperature=0,
             max_output_tokens=8192,
         )
@@ -41,7 +65,7 @@ class GeminiProvider:
             "temperature": 0,
             "max_output_tokens": 8192,
             "response_mime_type": "application/json",
-            "response_schema": "ModelOutput",
+            "response_schema": response_schema(),
             "timeout_s": timeout_s,
             "sdk_retry_attempts": 1,
         }

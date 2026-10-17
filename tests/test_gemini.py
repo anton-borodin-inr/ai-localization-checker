@@ -9,8 +9,8 @@ import pytest
 from google.genai import errors, types
 
 from l10n_checker import cli
-from l10n_checker.gemini import DEFAULT_MODEL, GeminiProvider
-from l10n_checker.vision import ModelOutput, ProviderError, RequestBudget, run_check
+from l10n_checker.gemini import DEFAULT_MODEL, GeminiProvider, response_schema
+from l10n_checker.vision import ProviderError, RequestBudget, run_check
 
 KEY = "test-key-DO-NOT-LEAK"
 SRC = Path(__file__).resolve().parents[1] / "src" / "l10n_checker"
@@ -100,7 +100,7 @@ def test_request_uses_structured_output():
     request = p._client.models.requests[0]
     assert request["model"] == DEFAULT_MODEL
     assert request["config"].response_mime_type == "application/json"
-    assert request["config"].response_schema is ModelOutput
+    assert request["config"].response_schema == response_schema()
     assert request["config"].temperature == 0
     image, prompt = request["contents"]
     assert (
@@ -197,3 +197,24 @@ def test_run_check_redacts_secrets_in_written_files(screenshot, tmp_path):
     assert result.status == "not_checked"
     for path in run_dir.iterdir():
         assert KEY not in path.read_text()
+
+
+def test_request_body_is_accepted_by_the_api_schema(screenshot):
+    """The real SDK serializes the request; the API rejects additionalProperties."""
+    sent = []
+
+    def handler(request):
+        sent.append(json.loads(request.content))
+        body = response().model_dump(mode="json", exclude_none=True, by_alias=True)
+        return httpx.Response(200, json=body)
+
+    p = GeminiProvider(KEY)
+    p._client._api_client._httpx_client = httpx.Client(
+        transport=httpx.MockTransport(handler)
+    )
+    p.generate(screenshot.read_bytes(), "image/png", "prompt")
+    config = sent[0]["generationConfig"]
+    schema = json.dumps(config.get("responseSchema") or config["responseJsonSchema"])
+    for unsupported in ("additional", "$ref", "$defs"):
+        assert unsupported not in schema.lower().replace("_", "")
+    assert '"findings"' in schema and "bottom-right" in schema
