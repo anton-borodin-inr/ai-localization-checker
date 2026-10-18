@@ -71,7 +71,7 @@ class GeminiProvider:
             "max_output_tokens": 8192,
             "response_mime_type": "application/json",
             "response_schema": response_schema(),
-            "media_resolution": "MEDIA_RESOLUTION_HIGH",
+            "media_resolution": self._config.media_resolution.value,
             "timeout_s": timeout_s,
             "sdk_retry_attempts": 1,
         }

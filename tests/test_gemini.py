@@ -233,3 +233,30 @@ def test_request_body_is_accepted_by_the_api_schema(screenshot):
 
 def test_media_resolution_is_recorded_in_settings():
     assert GeminiProvider(KEY).settings["media_resolution"] == "MEDIA_RESOLUTION_HIGH"
+
+
+@pytest.mark.parametrize(
+    "media_resolution",
+    [
+        types.MediaResolution.MEDIA_RESOLUTION_LOW,
+        types.MediaResolution.MEDIA_RESOLUTION_MEDIUM,
+    ],
+)
+def test_recorded_media_resolution_follows_request_config(
+    media_resolution, monkeypatch, screenshot, tmp_path
+):
+    config_type = types.GenerateContentConfig
+
+    def configured_resolution(**kwargs):
+        kwargs["media_resolution"] = media_resolution
+        return config_type(**kwargs)
+
+    monkeypatch.setattr(types, "GenerateContentConfig", configured_resolution)
+    p = provider(response())
+    result, run_dir = run_check(p, screenshot, tmp_path / "runs", RequestBudget(1))
+
+    assert result.status == "checked"
+    request = p._client.models.requests[0]
+    assert request["config"].media_resolution == media_resolution
+    recorded = json.loads((run_dir / "run.json").read_text())
+    assert recorded["settings"]["media_resolution"] == media_resolution.value
