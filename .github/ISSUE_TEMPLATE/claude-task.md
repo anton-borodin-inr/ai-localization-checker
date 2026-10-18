@@ -1,6 +1,6 @@
 ---
-name: Claude Code task
-about: An implementation task for Claude Code, with acceptance criteria and a report back
+name: Agent task
+about: An implementation task for a coding agent, with acceptance criteria and a report back
 title: "[Stage N] "
 labels: claude-task
 ---
@@ -8,7 +8,7 @@ labels: claude-task
 <!--
 How to fill this in:
 - Describe WHAT must change and HOW it will be checked, not how to write the code.
-- Claude Code plans the implementation against the real code (plan mode); Anton approves the plan.
+- The coding agent plans the implementation against the real code before writing it; Anton approves the plan.
 - Remove any section that does not apply, except Acceptance criteria and Report.
 -->
 
@@ -56,7 +56,7 @@ How to fill this in:
 
 ---
 
-## Report (filled in by Claude Code)
+## Report (filled in by the coding agent)
 
 - **What changed:** <!-- files and behaviour, in a few lines -->
 - **How it was verified:** <!-- commands run and their results -->
