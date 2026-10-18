@@ -173,3 +173,12 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 - **Why:** The 3×3 grid is the coarse region D-009 needs to separate identical labels without measuring coordinate precision. `other` lets the model report a defect without forcing it into a v1 class; `other` findings never match a label.
 - **Alternatives considered:** Normalized bounding boxes (measure coordinate precision, which D-009 avoids); only the v1 defect types.
 - **Consequences:** Matching (Stage 1) uses type + `text_seen` + grid cell. Stage 1 decides whether the schema needs a way for the model to report unreadable text, so that such a screen is `not_checked` instead of `checked` with no findings.
+
+## D-019 — Resolve source-test imports independently of editable .pth files
+
+- **Date:** 2026-10-18
+- **Status:** Proposed
+- **Decision:** Set pytest's built-in `pythonpath = ["src"]` in `pyproject.toml`. Keep uv's editable installation and the supported Python range unchanged.
+- **Why:** A clean install on Anton's Mac produced hidden `.pth` files that Python skipped, preventing test collection. A controlled hidden-file comparison failed without the source path and passed with it while the file remained hidden. The process that originally set the flag is still unknown.
+- **Alternatives considered:** Pinning Python (3.12.4, 3.13.13 and 3.14.0 all skipped a hidden `.pth`); uv `link-mode = "copy"` (both clone and copy produced importable files in the controlled cache experiment, so a causal fix was not established); non-editable installation (plain `uv run` reinstalls the project as editable); wrappers or manual flag changes (investigation only).
+- **Consequences:** `uv sync` then `uv run pytest` runs source tests without manual import setup. This does not repair an installed package's hidden hook or identify the flag setter; standalone import and CLI smoke checks remain separate from pytest. No dependency, interpreter pin or lockfile change is needed.

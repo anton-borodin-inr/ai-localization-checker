@@ -29,4 +29,5 @@ l10n-capture = "l10n_checker.cli:main"
 l10n-check = "l10n_checker.cli:check_main"
 
 [tool.pytest.ini_options]
+pythonpath = ["src"]
 markers = ["device: requires a prepared emulator and the project-local Appium server"]
