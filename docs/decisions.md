@@ -177,7 +177,7 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 ## D-019 — Resolve source-test imports independently of editable .pth files
 
 - **Date:** 2026-10-18
-- **Status:** Proposed
+- **Status:** Accepted
 - **Decision:** Set pytest's built-in `pythonpath = ["src"]` in `pyproject.toml`. Keep uv's editable installation and the supported Python range unchanged.
 - **Why:** A clean install on Anton's Mac produced hidden `.pth` files that Python skipped, preventing test collection. A controlled hidden-file comparison failed without the source path and passed with it while the file remained hidden. The process that originally set the flag is still unknown.
 - **Alternatives considered:** Pinning Python (3.12.4, 3.13.13 and 3.14.0 all skipped a hidden `.pth`); uv `link-mode = "copy"` (both clone and copy produced importable files in the controlled cache experiment, so a causal fix was not established); non-editable installation (plain `uv run` reinstalls the project as editable); wrappers or manual flag changes (investigation only).
