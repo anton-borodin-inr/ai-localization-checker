@@ -233,3 +233,43 @@ def test_request_body_is_accepted_by_the_api_schema(screenshot):
 
 def test_media_resolution_is_recorded_in_settings():
     assert GeminiProvider(KEY).settings["media_resolution"] == "MEDIA_RESOLUTION_HIGH"
+
+
+def test_default_recorded_settings_match_request_config():
+    p = GeminiProvider(KEY)
+    for name in (
+        "temperature",
+        "max_output_tokens",
+        "response_mime_type",
+        "response_schema",
+    ):
+        assert p.settings[name] == getattr(p._config, name)
+    assert p.settings["media_resolution"] == p._config.media_resolution.value
+    assert (
+        p.settings["sdk_retry_attempts"]
+        == p._http_options.retry_options.attempts
+        == p._client._api_client._http_options.retry_options.attempts
+    )
+    assert isinstance(p.settings["temperature"], float)
+
+
+@pytest.mark.parametrize(
+    "media_resolution",
+    [
+        types.MediaResolution.MEDIA_RESOLUTION_LOW,
+        types.MediaResolution.MEDIA_RESOLUTION_MEDIUM,
+    ],
+)
+def test_recorded_media_resolution_follows_request_config(
+    media_resolution, screenshot, tmp_path
+):
+    p = GeminiProvider(
+        KEY, client=FakeClient(response()), media_resolution=media_resolution
+    )
+    result, run_dir = run_check(p, screenshot, tmp_path / "runs", RequestBudget(1))
+
+    assert result.status == "checked"
+    request = p._client.models.requests[0]
+    assert request["config"].media_resolution == media_resolution
+    recorded = json.loads((run_dir / "run.json").read_text())
+    assert recorded["settings"]["media_resolution"] == media_resolution.value

@@ -47,6 +47,9 @@ class GeminiProvider:
         model: str = DEFAULT_MODEL,
         timeout_s: int = DEFAULT_TIMEOUT_S,
         client=None,
+        media_resolution: types.MediaResolution = (
+            types.MediaResolution.MEDIA_RESOLUTION_HIGH
+        ),
     ):
         self.model = model
         self._secrets = (api_key,)
@@ -56,24 +59,24 @@ class GeminiProvider:
             temperature=0,
             max_output_tokens=8192,
             # Explicit, so that a change of the API default cannot go unrecorded.
-            media_resolution=types.MediaResolution.MEDIA_RESOLUTION_HIGH,
+            media_resolution=media_resolution,
         )
         # SDK retries are disabled so that the request cap counts real requests.
-        http_options = types.HttpOptions(
+        self._http_options = types.HttpOptions(
             timeout=timeout_s * 1000,
             retry_options=types.HttpRetryOptions(attempts=1),
         )
         self._client = client or genai.Client(
-            api_key=api_key, http_options=http_options
+            api_key=api_key, http_options=self._http_options
         )
         self.settings = {
-            "temperature": 0,
-            "max_output_tokens": 8192,
-            "response_mime_type": "application/json",
-            "response_schema": response_schema(),
-            "media_resolution": "MEDIA_RESOLUTION_HIGH",
+            "temperature": self._config.temperature,
+            "max_output_tokens": self._config.max_output_tokens,
+            "response_mime_type": self._config.response_mime_type,
+            "response_schema": self._config.response_schema,
+            "media_resolution": self._config.media_resolution.value,
             "timeout_s": timeout_s,
-            "sdk_retry_attempts": 1,
+            "sdk_retry_attempts": self._http_options.retry_options.attempts,
         }
 
     def generate(self, image: bytes, mime_type: str, prompt: str) -> ProviderResponse:
