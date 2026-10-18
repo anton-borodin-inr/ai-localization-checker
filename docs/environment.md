@@ -4,6 +4,26 @@ The Stage 0 environment for capturing Unciv screenshots: an Android emulator wit
 
 Set up and verified on 2026-10-17 on a MacBook Pro (M3 Pro, arm64), macOS 27.0.1.
 
+## Python environment and offline tests
+
+From the repository root, run `uv sync`, then `uv run pytest`. Python 3.14.0
+and uv 0.11.6 were checked on macOS 27.0.1 for issue #17; `requires-python`
+remains `>=3.11`. Device tests are skipped unless `--run-device` is requested.
+
+On this Mac, an editable install's `.pth` file carried `UF_HIDDEN`, and Python
+skipped it, causing `ModuleNotFoundError: l10n_checker` during collection.
+The process that originally set the flag was not identified. The same hidden
+`.pth` behavior was reproduced on Python 3.12.4, 3.13.13 and 3.14.0; see the
+[upstream report](https://github.com/astral-sh/uv/issues/16977).
+
+Pytest now adds the repository's `src` directory through its built-in
+`pythonpath` setting (D-019), so source tests do not depend on the editable
+hook. No wrapper, environment variable or manual flag change is needed.
+This fixes pytest imports, not the source of the filesystem flag. Standalone
+imports and installed commands are checked separately with
+`uv run python -c "import l10n_checker"`, `uv run l10n-check --help` and
+`uv run l10n-capture --help`; pytest passing alone does not verify installation.
+
 ## Versions
 
 | Tool | Version used | How it was installed |
