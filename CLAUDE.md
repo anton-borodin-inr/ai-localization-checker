@@ -1,5 +1,7 @@
 # CLAUDE.md
 
+`AGENTS.md` holds the same project rules for other coding agents. Shared sections must stay in sync: a rule changed in one file is changed in the other in the same pull request.
+
 ## Project
 
 **AI Localization Checker.** The tool captures screenshots of a mobile game (Unciv, Android emulator) in several languages and detects localization defects — truncated text, overlaps, untranslated strings — with a vision LLM. Its quality is measured against an OCR + translation-table baseline on a labeled dataset, together with the time it saves a QA engineer.
