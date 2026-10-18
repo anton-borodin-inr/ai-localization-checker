@@ -73,7 +73,7 @@ Ask Anton once, showing `REPO_NAME`, `VISIBILITY` and the file list. After a cle
 
 - `gh repo create REPO_NAME --public --source=. --remote=origin --description "DESCRIPTION" --push`
 - Add the topics with `gh repo edit --add-topic ...`.
-- Create the label: `gh label create claude-task --description "Implementation task for Claude Code"`.
+- Create the label: `gh label create claude-task --description "Implementation task for a coding agent"`.
 - Fork the Unciv upstream on GitHub **without cloning**: `gh repo fork UNCIV_UPSTREAM --clone=false`. The clone and the Unciv build belong to Stage 1.
 
 ## Step 6 — Report
