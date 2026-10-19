@@ -97,20 +97,16 @@ esac
     assert "ready" not in result.stdout
 
 
-def test_prepare_ends_with_unroot(tmp_path):
+def test_prepare_never_calls_root(tmp_path):
     sdk = tmp_path / "sdk" / "platform-tools"
     sdk.mkdir(parents=True)
     log = tmp_path / "adb.log"
     adb = sdk / "adb"
     adb.write_text(f"""#!/bin/bash
 echo "$*" >> {log}
-state={tmp_path}/root
 case "$*" in
   devices) printf 'List of devices attached\\nemulator-5554\\tdevice\\n' ;;
   *sys.boot_completed*) echo 1 ;;
-  *" root") touch "$state" ;;
-  *" unroot") rm -f "$state" ;;
-  *whoami) [[ -e "$state" ]] && echo root || echo shell ;;
   *"dumpsys display"*) echo 'DisplayDeviceInfo{{"Built-in Screen": cutout DisplayCutout{{insets=Rect(0, 0 - 0, 0)}}' ;;
 esac
 """)
@@ -126,12 +122,7 @@ esac
     assert result.returncode == 0, result.stderr
     calls = log.read_text().splitlines()
     assert "-s emulator-5554 shell cmd overlay disable " + OVERLAY in calls
-    assert calls[-3:] == [
-        "-s emulator-5554 unroot",
-        "-s emulator-5554 wait-for-device",
-        "-s emulator-5554 shell whoami",
-    ]
-    assert not (tmp_path / "root").exists()
+    assert not [c for c in calls if c.split()[-1] in ("root", "unroot")]
 
 
 @pytest.mark.parametrize(
