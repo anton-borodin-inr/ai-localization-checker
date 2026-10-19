@@ -105,7 +105,9 @@ loopback LM Studio server. It is an isolated experiment, not a production
 provider switch. It reuses original/crop PNGs, the fixed experiment prompt and
 response schema, and the Anton-confirmed amended reference. Initial local cap
 12/timeout 180 s were explicitly amended to cap 13 and timeout 400 s, including
-one repeat of the first timed-out input. Every send still requires
+one repeat of the first timed-out input. Anton subsequently authorized 1800 s
+for new calls and 14 total local sends, including one further repeat of that
+input; already running calls retain their recorded timeout. Every send still requires
 `--max-requests 1`; no further retries or cloud fallback. Gemini stays at 27
 actual sends. See [local execution notes](evidence/10/local-model/protocol.md)
 and the [local Report](evidence/10/local-model/report.md) for authorization,

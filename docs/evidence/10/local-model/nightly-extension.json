@@ -1,0 +1,23 @@
+{
+  "accepted_by": "Anton",
+  "status": "approved",
+  "date": "2026-10-19",
+  "authorization": "Anton asked to raise the timeout because the intended final workload is overnight and speed is not a quality criterion. Agent proposed 1800 s; Anton explicitly approved 14 local sends including one further German clean repeat. No other input may be retried. The currently running 400 s request keeps its recorded settings.",
+  "plan": {
+    "local_cap": 14,
+    "combined_actual_cap": 41,
+    "gemini_requests_sent": 27,
+    "timeout_s": 1800,
+    "base_approval_sha256": "83f715218650a77fd49c03ab832a806ed6421c6c0eeb13f204ff268d8edceaa2",
+    "previous_extension_sha256": "0772f19fb122086776d1f6304df790315e04822efb2aeaf55f737fe8120792db",
+    "extra_attempt": {
+      "slot": 1,
+      "attempt": 3
+    },
+    "prior_timeout_results": {
+      "20261019T203555Z-2b7451": "99bf355d275c7a6ad55f35cdb0deaec93d5d57269142a3ccaf659e9b6408641d",
+      "20261019T204249Z-0c72cd": "e3e389b39516ef4a6b9773df867ca715e3e7ad4e1b7b35ef88d2bc92b208f0c3"
+    },
+    "further_retries": 0
+  }
+}

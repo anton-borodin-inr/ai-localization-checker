@@ -8,7 +8,11 @@ import pytest
 
 from l10n_checker.local_model import ENDPOINT, MODEL, LocalVisionProvider, NoRedirect
 from l10n_checker.small_text import PROMPT, file_hash
-from l10n_checker.small_text_local import execute_local, load_context
+from l10n_checker.small_text_local import (
+    execute_local,
+    load_context,
+    published_reservations_present,
+)
 
 
 class Opener:
@@ -144,6 +148,25 @@ def test_interrupted_local_reservation_cannot_be_reused(screenshot, tmp_path):
     assert len(p._opener.requests) == 1
 
 
+def test_published_pending_can_complete_but_reservation_cannot_be_reset():
+    pending = {
+        "slot": 5,
+        "run_id": "fixed",
+        "reservation": 1,
+        "requests_sent": None,
+        "status": "reserved_or_interrupted",
+    }
+    completed = {**pending, "requests_sent": 1, "status": "not_checked"}
+    assert published_reservations_present({"slots": [pending]}, {"slots": [completed]})
+    assert not published_reservations_present(
+        {"slots": [completed]}, {"slots": [pending]}
+    )
+    assert not published_reservations_present({"slots": [pending]}, {"slots": []})
+    assert not published_reservations_present(
+        {"slots": [pending]}, {"slots": [{**completed, "run_id": "replacement"}]}
+    )
+
+
 def test_context_checks_approval_images_and_endpoint(screenshot, tmp_path):
     folder = tmp_path / "docs/evidence/10/local-model"
     folder.mkdir(parents=True)
@@ -213,10 +236,11 @@ def test_context_checks_approval_images_and_endpoint(screenshot, tmp_path):
         load_context(tmp_path, 1)
 
 
-def test_extended_timeout_is_sent_and_recorded():
-    p = LocalVisionProvider({}, {}, timeout_s=400, opener=Opener())
+@pytest.mark.parametrize("timeout", [400, 1800])
+def test_extended_timeout_is_sent_and_recorded(timeout):
+    p = LocalVisionProvider({}, {}, timeout_s=timeout, opener=Opener())
     p.generate(b"image", "image/png", PROMPT)
-    assert p._opener.requests[0][1] == p.settings["timeout_s"] == 400
+    assert p._opener.requests[0][1] == p.settings["timeout_s"] == timeout
 
 
 def test_approved_thirteenth_send_only_repeats_initial_timeout(screenshot, tmp_path):
@@ -266,3 +290,74 @@ def test_approved_thirteenth_send_only_repeats_initial_timeout(screenshot, tmp_p
             extension_hash="extension",
         )
     assert len(first._opener.requests) + len(p._opener.requests) == 13
+
+
+def test_nightly_cap_allows_only_one_third_attempt_after_both_timeouts(
+    screenshot, tmp_path
+):
+    slow = provider(TimeoutError("slow"))
+    execute_local(slow, {"slot": 1}, screenshot, tmp_path, "approved")
+    execute_local(
+        slow,
+        {"slot": 1},
+        screenshot,
+        tmp_path,
+        "approved",
+        attempt=2,
+        extension_hash="400",
+    )
+    p = provider()
+    with pytest.raises(ValueError, match="third attempt"):
+        execute_local(
+            p,
+            {"slot": 1},
+            screenshot,
+            tmp_path,
+            "approved",
+            attempt=3,
+            extension_hash="400",
+        )
+    execute_local(
+        p,
+        {"slot": 1},
+        screenshot,
+        tmp_path,
+        "approved",
+        attempt=3,
+        extension_hash="400",
+        nightly_hash="nightly",
+    )
+    for slot in range(2, 13):
+        execute_local(
+            p,
+            {"slot": slot},
+            screenshot,
+            tmp_path,
+            "approved",
+            extension_hash="400",
+            nightly_hash="nightly",
+        )
+    ledger = json.loads((tmp_path / "issue-10-local-ledger.json").read_text())
+    assert sum(r["requests_sent"] for r in ledger["slots"]) == 14
+    with pytest.raises(ValueError, match="third attempt"):
+        execute_local(
+            p,
+            {"slot": 1},
+            screenshot,
+            tmp_path,
+            "approved",
+            attempt=3,
+            extension_hash="400",
+            nightly_hash="nightly",
+        )
+    with pytest.raises(ValueError, match="cap reached"):
+        execute_local(
+            p,
+            {"slot": 13},
+            screenshot,
+            tmp_path,
+            "approved",
+            extension_hash="400",
+            nightly_hash="nightly",
+        )
+    assert len(slow._opener.requests) + len(p._opener.requests) == 14

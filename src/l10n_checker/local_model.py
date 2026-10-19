@@ -22,7 +22,7 @@ class LocalVisionProvider:
     sdk_version = "stdlib-urllib/python-" + platform.python_version()
 
     def __init__(self, schema, model_metadata, *, timeout_s=180, opener=None):
-        if timeout_s not in (180, 400):
+        if timeout_s not in (180, 400, 1800):
             raise ValueError("Only approved local timeouts are allowed")
         self._timeout_s = timeout_s
         self.model = MODEL

@@ -1,3 +1,14 @@
+# Current amendment: overnight-oriented local calls
+
+Anton subsequently asked to increase the timeout because final runs are intended
+to execute overnight and speed is not a quality criterion. He explicitly
+approved **14 local sends total**, including both German clean timeouts and
+one final repeat of that input. New calls use **1800 s**; the already running
+injected original retained its recorded 400 s. See `nightly-extension.json`.
+The combined actual maximum is **41 = 27 Gemini + 14 local**. No other input is
+retried and no fourth German clean attempt is allowed. All previous plans and
+run records remain historical. The notes below describe earlier amendments.
+
 # Local comparison execution notes
 
 Anton approved `plan.md` and its separate hash-bound `approval.json` before the first local call. The initial allocation was 12 distinct inputs, timeout 180 s, no retries. After run `20261019T203555Z-2b7451` timed out, he requested 300–400 s and explicitly authorized 13 total local sends: retain that timeout, repeat the first input once, then run the remaining eleven inputs. `timeout-extension.json` records the amendment; all subsequent calls use **400 s**. Gemini remains frozen at 27 sends. The combined actual maximum is **40**. These changes were approved before the repeat; neither failed sends nor their latencies disappear from the Report.

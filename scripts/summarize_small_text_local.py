@@ -38,10 +38,14 @@ def main():
         else {}
     )
     cap = ledger.get("extended_local_cap", 12)
-    if cap == 13 and ledger.get("extension_sha256") != file_hash(
+    if cap >= 13 and ledger.get("extension_sha256") != file_hash(
         FOLDER / "timeout-extension.json"
     ):
         raise ValueError("Local timeout extension changed")
+    if cap == 14 and ledger.get("nightly_extension_sha256") != file_hash(
+        FOLDER / "nightly-extension.json"
+    ):
+        raise ValueError("Nightly authorization changed")
     summary = {
         "local_cap": cap,
         "gemini_requests_sent": 27,
