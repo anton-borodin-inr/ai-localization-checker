@@ -13,12 +13,25 @@ DEFAULT_MODEL = "gemini-3.6-flash"
 DEFAULT_TIMEOUT_S = 180
 
 
-def response_schema() -> dict:
-    """ModelOutput as a schema the API accepts: refs inlined, no additionalProperties.
+def make_reading_provider(api_key, media_resolution, output_model):
+    """Adapter boundary for the isolated issue 10 experiment."""
+    return GeminiProvider(
+        api_key,
+        media_resolution=(
+            types.PartMediaResolutionLevel(media_resolution)
+            if media_resolution == "MEDIA_RESOLUTION_ULTRA_HIGH"
+            else types.MediaResolution(media_resolution)
+        ),
+        output_model=output_model,
+    )
+
+
+def response_schema(output_model=ModelOutput) -> dict:
+    """Output model as an API schema: refs inlined, no additionalProperties.
 
     Extra fields are still rejected locally when the response is validated.
     """
-    schema = ModelOutput.model_json_schema()
+    schema = output_model.model_json_schema()
     defs = schema.pop("$defs", {})
 
     def clean(node):
@@ -47,22 +60,30 @@ class GeminiProvider:
         model: str = DEFAULT_MODEL,
         timeout_s: int = DEFAULT_TIMEOUT_S,
         client=None,
-        media_resolution: types.MediaResolution = (
+        media_resolution: types.MediaResolution | types.PartMediaResolutionLevel = (
             types.MediaResolution.MEDIA_RESOLUTION_HIGH
         ),
+        output_model=ModelOutput,
     ):
         self.model = model
         self._secrets = (api_key,)
+        # ULTRA_HIGH is documented only for the experimental per-part setting.
+        self._part_resolution = (
+            types.PartMediaResolution(level=media_resolution)
+            if media_resolution.value == "MEDIA_RESOLUTION_ULTRA_HIGH"
+            else None
+        )
         self._config = types.GenerateContentConfig(
             response_mime_type="application/json",
-            response_schema=response_schema(),
+            response_schema=response_schema(output_model),
             temperature=0,
             max_output_tokens=8192,
             # Explicit, so that a change of the API default cannot go unrecorded.
-            media_resolution=media_resolution,
+            media_resolution=None if self._part_resolution else media_resolution,
         )
         # SDK retries are disabled so that the request cap counts real requests.
         self._http_options = types.HttpOptions(
+            api_version="v1beta",
             timeout=timeout_s * 1000,
             retry_options=types.HttpRetryOptions(attempts=1),
         )
@@ -74,17 +95,28 @@ class GeminiProvider:
             "max_output_tokens": self._config.max_output_tokens,
             "response_mime_type": self._config.response_mime_type,
             "response_schema": self._config.response_schema,
-            "media_resolution": self._config.media_resolution.value,
+            "media_resolution": (
+                self._part_resolution.level.value
+                if self._part_resolution
+                else self._config.media_resolution.value
+            ),
             "timeout_s": timeout_s,
             "sdk_retry_attempts": self._http_options.retry_options.attempts,
         }
+        if self._part_resolution:
+            self.settings["media_resolution_scope"] = "part"
+            self.settings["global_media_resolution"] = None
+            self.settings["api_version"] = self._http_options.api_version
 
     def generate(self, image: bytes, mime_type: str, prompt: str) -> ProviderResponse:
         try:
+            image_part = types.Part.from_bytes(data=image, mime_type=mime_type)
+            if self._part_resolution:
+                image_part.media_resolution = self._part_resolution
             response = self._client.models.generate_content(
                 model=self.model,
                 contents=[
-                    types.Part.from_bytes(data=image, mime_type=mime_type),
+                    image_part,
                     prompt,
                 ],
                 config=self._config,

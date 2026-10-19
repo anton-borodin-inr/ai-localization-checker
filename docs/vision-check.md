@@ -1,8 +1,9 @@
 # Check one screenshot with Gemini
 
 Issue #3 adds a provider-agnostic check: one PNG goes in, and the result is
-either validated findings (`checked`) or `not_checked` with a reason. No prompt
-tuning, tiling, metrics or matching yet.
+either validated findings (`checked`) or `not_checked` with a reason. The
+production command still checks one original image. The separate issue 10
+resolution experiment is documented below; defect matching belongs to issue 13.
 
 ## Interface
 
@@ -28,8 +29,8 @@ the reason and no findings (D-013).
 
 `--max-requests` (default 1) caps the requests of one run. A single retry after
 HTTP 429 counts as a request, so it happens only with `--max-requests 2` or more.
-The SDK's own retries are disabled. The task budget (at most 10 live requests on
-the free tier) is tracked by hand: every request shows up in
+The SDK's own retries are disabled. The task budget is stated by each issue
+(issue #3 allowed 10 requests; issue #10 allows 15 total). Every request shows up in
 `data/runs/*/run.json` as `requests_sent`.
 
 ## Run record
@@ -47,7 +48,15 @@ Every run writes `data/runs/<run_id>/` (`run_id` is `YYYYMMDDTHHMMSSZ-<hex>`):
 The API key is never written: the provider does not expose it, and every written
 file and every error message passes through redaction as a second guard.
 
-## Live call (Anton)
+## Live calls under D-028
+
+The coding agent may run a live call only when its issue states a request budget,
+using a free-tier key, an explicit per-run cap, and the project's commands. The
+agent never reads, prints or copies `.env`, environment values or the API key.
+`uv run --env-file .env` loads the key for the application. Failed requests count
+toward the task budget, including across multiple commands and chat turns. The
+Report lists every run id and its `requests_sent`. Without an issue budget,
+there are no agent live calls. The hold-out set is never an agent input.
 
 The key comes from `GEMINI_API_KEY` in `.env` (gitignored; see `.env.example`).
 Free tier only: Google may use free-tier inputs to improve its products, which
@@ -65,15 +74,18 @@ Expected output: the run folder, then `checked: N finding(s)` (exit code 0) or
 `not_checked: <reason>` (exit code 2). Exit code 1 means nothing was sent (no
 key, bad image or runs folder outside `data/`).
 
-Check that the key is not in the record:
-
-```bash
-uv run --env-file .env python -c "import os,pathlib,sys; k=os.environ['GEMINI_API_KEY']; hits=[p for p in pathlib.Path(sys.argv[1]).rglob('*') if p.is_file() and k in p.read_text()]; print('key found in', hits) if hits else print('key not found')" data/runs/<run_id>
-```
+Offline tests plant a fake key in responses and errors and verify redaction.
+Do not inspect the real key or environment values to perform that check.
 
 If a model does not answer at all, `scripts/gemini_probe.py list` checks the key
 and the model list without generating, and `scripts/gemini_probe.py text
 [model]` sends one text-only request (it counts toward the budget).
+
+Issue #10's fixed fifteen-slot experiment is documented in
+[small-text-experiment.md](small-text-experiment.md). It has a persistent task
+ledger and never retries a slot; its isolated transcription schema does not
+change the production finding schema or prompt. `ULTRA_HIGH` is experimental
+and is sent per image part, with the effective setting and its scope recorded.
 
 ## Verify offline
 

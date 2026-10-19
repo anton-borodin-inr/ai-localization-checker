@@ -280,3 +280,30 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 - **Alternatives considered:** Keep live calls with Anton (previous rule; slower, a manual step in every experiment); allow paid calls (no billing in v1).
 - **Consequences:** The hard rule in CLAUDE.md and AGENTS.md changes; issue constraints for #10 and #14 change accordingly. Review checks `data/runs/*/run.json` (or a committed summary of it) against the report. Free-tier inputs may be used by Google (already accepted in D-017).
 
+## D-029 — Propose an explicit visible-text readability result
+
+- **Date:** 2026-10-19
+- **Status:** Proposed
+- **Decision:** Propose a response-level `readability` value (`readable`, `partial`, `unreadable`), with `unreadable_regions` and a short reason. `partial` or `unreadable` makes the screen `not_checked`; raw partial observations may remain diagnostic evidence but never become a clean checked result. This is a proposal, not a production schema change in issue 10.
+- **Why:** The current D-018 response describes defects only. An empty findings list cannot distinguish a clean screen from unreadable text. Issue 10 separates ordinary transcription from findings to measure reading, but a validated experimental response still does not prove all visible text was readable.
+- **Alternatives considered:** A synthetic defect class for unreadability (mixes check failure with a localization defect); treating empty readings as sufficient proof (cannot identify partial omissions); adding a confidence threshold now (not calibrated).
+- **Consequences:** A later schema task must define and test this mapping under D-013, including readable clean screens, partial text, blocked responses and deliberate viewport boundaries. Readability concerns text inside the visible viewport, not hidden scroll content or untranscribed icons. Anton accepts the final fields and criteria; D-018 remains unchanged until then.
+
+## D-030 — Keep the current capture resolution and HIGH pending stronger evidence
+
+- **Date:** 2026-10-19
+- **Status:** Proposed
+- **Decision:** Recommend retaining D-014's 2400×1080 capture and D-017's HIGH default provisionally. Do not integrate tiling into the production detector from this experiment alone. ULTRA_HIGH remains an explicit experimental alternative, not a new default.
+- **Why:** The paired successful German clean runs both recover 16/16 primary reference units; HIGH uses 1078 image tokens and ULTRA_HIGH 2170. English ULTRA_HIGH recovers 20/20, but the corresponding HIGH request fails with 503. Further 503 failures prevent a complete comparison across languages and the injected control. Full evidence and remaining limitations are recorded in the issue 10 Report.
+- **Alternatives considered:** Switch to ULTRA_HIGH based on its larger token budget (no measured gain on the paired clean input); adopt three crops now (three requests, less shared context, ambiguous region mapping, incomplete comparison); reduce capture resolution (changes the representative UI without supporting evidence).
+- **Consequences:** No Accepted decision is superseded and production defaults do not change. This is a preliminary recommendation on one source screen, not proof that HIGH suffices for all v1 screens or that tiling cannot help. Final conclusions remain Anton's. Additional live experiments require a separately authorized budget; issue 10's cap never resets.
+
+## D-031 — Keep small-text coverage separate from defect recall
+
+- **Date:** 2026-10-19
+- **Status:** Proposed
+- **Decision:** Measure issue 10's ordinary text transcription against a build-pinned reference confirmed by Anton before calls, separately from findings and the D-026 defect metrics. Exact comparison preserves case and accents after NFC/whitespace normalization; fuzzy uses a 0.90 SequenceMatcher threshold and comparable-length spans, with exact-only matching for short units. The full protocol and Anton-confirmed examples are in `docs/small-text-experiment.md` and `tests/golden/small_text_cases.json`.
+- **Why:** D-018's `text_seen` describes suspected defects, not every visible string. Absence from findings cannot measure whether ordinary text was read. The reference includes deliberately clipped diagnostics separately, so invisible or incomplete viewport content does not inflate primary misses. Source/APK byte checks bind translations to each screenshot's build.
+- **Alternatives considered:** Derive the reference from model output (circular); require every normal label to be a defect (changes finding semantics); call text coverage defect recall (misleading); penalize unique text for a wrong region (contradicts the separation in D-026).
+- **Consequences:** The experiment uses its own response model and records readings as well as unchanged finding objects. Reference units are counted once across tile overlap; research-button text cannot stand in for a separate tree label. Failed variants have unavailable coverage, with partial evidence separate. This does not implement issue 13, change its thresholds, or alter existing human labels or goldens.
+

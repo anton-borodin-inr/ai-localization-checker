@@ -149,13 +149,14 @@ def _call(
     budget: RequestBudget,
     attempts: list[dict],
     retry_delay_s: float,
+    prompt: str = PROMPT,
 ) -> ProviderResponse:
     """Send the request, with one simple retry on rate limiting."""
     while True:
         budget.take()
         started = time.monotonic()
         try:
-            response = provider.generate(image, "image/png", PROMPT)
+            response = provider.generate(image, "image/png", prompt)
         except ProviderError as exc:
             attempts.append(_attempt(started, exc.kind))
             if exc.kind != "rate_limited" or len(attempts) > 1:
@@ -179,11 +180,18 @@ def run_check(
     budget: RequestBudget,
     secrets: tuple[str, ...] = (),
     retry_delay_s: float = 5.0,
+    *,
+    prompt: str = PROMPT,
+    output_model: type[ModelOutput] = ModelOutput,
+    schema_version: str = SCHEMA_VERSION,
+    run_id: str | None = None,
 ) -> tuple[CheckResult, Path]:
     """Check one screenshot and record the run under runs_dir/<run_id>/."""
     image = image_path.read_bytes()
     width, height = png_size(image)
-    run_id = new_run_id()
+    run_id = run_id or new_run_id()
+    if Path(run_id).name != run_id or run_id in (".", ".."):
+        raise ValueError("Invalid run id")
     run_dir = runs_dir / run_id
     run_dir.mkdir(parents=True)
 
@@ -192,12 +200,14 @@ def run_check(
     raw: dict | None = None
     findings: list[Finding] = []
     reason: str | None = None
+    parsed: ModelOutput | None = None
     try:
-        response = _call(provider, image, budget, attempts, retry_delay_s)
+        response = _call(provider, image, budget, attempts, retry_delay_s, prompt)
         raw = response.raw
         if not response.text.strip():
             raise ProviderError("empty_response", "the response has no text", raw)
-        findings = ModelOutput.model_validate_json(response.text).findings
+        parsed = output_model.model_validate_json(response.text)
+        findings = parsed.findings
     except BudgetExceeded as exc:
         reason = f"request_cap_reached: {exc}"
     except ProviderError as exc:
@@ -216,7 +226,7 @@ def run_check(
         "model": provider.model,
         "model_version": response.model_version if response else None,
         "sdk_version": provider.sdk_version,
-        "schema_version": SCHEMA_VERSION,
+        "schema_version": schema_version,
         "settings": provider.settings,
         "image": {
             "path": str(image_path),
@@ -244,9 +254,11 @@ def run_check(
     def write(name: str, text: str) -> None:
         (run_dir / name).write_text(redact(text, secrets), encoding="utf-8")
 
-    write("prompt.txt", PROMPT)
+    write("prompt.txt", prompt)
     write("run.json", json.dumps(metadata, indent=2, ensure_ascii=False))
     if raw is not None:
         write("response_raw.json", json.dumps(raw, indent=2, ensure_ascii=False))
     write("result.json", result.model_dump_json(indent=2))
+    if parsed is not None and output_model is not ModelOutput:
+        write("output.json", parsed.model_dump_json(indent=2))
     return result, run_dir

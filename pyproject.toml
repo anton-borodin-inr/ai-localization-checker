@@ -7,6 +7,7 @@ license = "MIT"
 requires-python = ">=3.11"
 dependencies = [
     "google-genai>=2.31.0",
+    "pillow>=13.0.0",
     "pydantic>=2.14.1",
 ]
 
@@ -26,6 +27,7 @@ packages = ["src/l10n_checker"]
 [project.scripts]
 l10n-capture = "l10n_checker.cli:main"
 l10n-check = "l10n_checker.cli:check_main"
+l10n-small-text = "l10n_checker.small_text:main"
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]
