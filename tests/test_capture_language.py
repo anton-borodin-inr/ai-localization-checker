@@ -46,7 +46,9 @@ class FakeDevice(cap.Device):
                 if self.faults.get("app_resets_language") and self.running:
                     self.file = ORIGINAL
                 self.running = False
-            case ("shell", "stat", *_):
+            case ("shell", command) if command.startswith("stat "):
+                # One string: adb would split an unquoted format at spaces.
+                assert command == f"stat -c '%u %g %a %s' {cap.SETTINGS_PATH}"
                 assert self.is_root, "settings accessed without root"
                 return f"{STAT} {len(self.file)}\n".encode()
             case ("exec-out", "cat", cap.SETTINGS_PATH):
@@ -254,3 +256,12 @@ def test_capture_failure_saves_nothing(full_capture):
     assert not folder.exists()
     assert device.file == ORIGINAL
     assert not device.is_root
+
+
+def test_existing_screenshot_rejected_before_root(full_capture):
+    device, _, folder = full_capture
+    folder.mkdir(parents=True)
+    (folder / "main-menu__de__2400x1080__original__1271.png").write_bytes(b"old")
+    with pytest.raises(cap.CaptureError, match="already exists"):
+        cap.capture(device, folder, "main-menu", "de", "original")
+    assert device.log == []

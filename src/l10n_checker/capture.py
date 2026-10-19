@@ -193,7 +193,8 @@ class Device:
 
     def stat(self, path: str) -> str | None:
         """`uid gid mode size` of a file, or None when it does not exist."""
-        result = self.shell("stat", "-c", "%u %g %a %s", path, allow_fail=True)
+        # adb joins shell arguments with spaces, so the format must be quoted.
+        result = self.shell(f"stat -c '%u %g %a %s' {path}", allow_fail=True)
         result = result.strip()
         return result if re.fullmatch(r"\d+ \d+ \d+ \d+", result) else None
 
@@ -382,6 +383,15 @@ def png_size(png: bytes) -> tuple[int, int]:
     raise CaptureError("The screenshot PNG is incomplete or invalid.")
 
 
+def protected_target(target: Path, overwrite: bool):
+    if target.is_symlink():
+        raise CaptureError("Refusing to write a screenshot through a symbolic link.")
+    if target.exists() and not overwrite:
+        raise CaptureError(
+            f"Screenshot already exists: {target}. Use --overwrite to replace it."
+        )
+
+
 def capture(
     device: Device,
     folder: Path,
@@ -400,21 +410,20 @@ def capture(
     folder = output_directory(folder)
     device.connect()
     device.check_cutout()
-    size = device.size()
-    target = folder / filename(
-        screen, lang, f"{size[0]}x{size[1]}", variant, device.build()
-    )
-    if target.is_symlink():
-        raise CaptureError("Refusing to write a screenshot through a symbolic link.")
-    if target.exists() and not overwrite:
-        raise CaptureError(
-            f"Screenshot already exists: {target}. Use --overwrite to replace it."
-        )
+    build = device.build()
+    # The resolution is known only after launch (Unciv runs in landscape), so
+    # any resolution is checked here, before the device is changed.
+    filename(screen, lang, "pending", variant, build)
+    for existing in folder.glob(f"{screen}__{lang}__*__{variant}__{build}.png"):
+        protected_target(existing, overwrite)
     stamp = datetime.now(UTC).strftime("%Y%m%dT%H%M%S%fZ")
     backup_dir = REPO_ROOT / "data" / "capture-backups" / f"{stamp}-{lang}"
     with unciv_language(device, lang, backup_dir):
         # LibGDX draws on one canvas with no UI tree to wait on.
         time.sleep(settle_s)
+        size = device.size()
+        target = folder / filename(screen, lang, f"{size[0]}x{size[1]}", variant, build)
+        protected_target(target, overwrite)
         with appium_session(device, server) as driver:
             if driver.current_package != PACKAGE:
                 raise CaptureError(
