@@ -141,7 +141,7 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 ## D-015 — Project-local Appium with its own APPIUM_HOME
 
 - **Date:** 2026-10-17
-- **Status:** Accepted
+- **Status:** Superseded by D-022
 - **Decision:** Appium is pinned in the repository's `package.json` / `package-lock.json` and installed with `npm ci`; its drivers live in `./.appium` (`APPIUM_HOME`). The global Appium is not used.
 - **Why:** The global Appium and `~/.appium` drivers are shared with other projects on the machine and can change under us. A pinned local install makes the environment reproducible and checkable.
 - **Alternatives considered:** Reusing the global Appium 3.3.1 as is; rejected because its versions are not recorded in the repository and other projects may upgrade it.
