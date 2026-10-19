@@ -1,0 +1,18 @@
+{
+  "slot": 2,
+  "image": "docs/evidence/8/final/tech-picker__en__2400x1080__clean__1271001.png",
+  "image_sha256": "88ff1c55aef33cc9ff0fd89cd5912384b7a1017d8d9ca2d88965ec39389b9f47",
+  "option": "high",
+  "tile": "full",
+  "box": [
+    0,
+    0,
+    2400,
+    1080
+  ],
+  "media_resolution": "MEDIA_RESOLUTION_HIGH",
+  "max_requests": 1,
+  "continuation_attempt": 2,
+  "parent_run_id": "20261019T155114Z-4069a3",
+  "authorization_sha256": "69f84ca4d1ffb32f150a3659c24905d4904111bd63546b879063997022189be2"
+}

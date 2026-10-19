@@ -1,0 +1,140 @@
+{
+  "authorization_sha256": "69f84ca4d1ffb32f150a3659c24905d4904111bd63546b879063997022189be2",
+  "baseline_requests_sent": 15,
+  "task_request_cap": 33,
+  "additional_request_cap": 18,
+  "attempts": [
+    {
+      "slot": 2,
+      "attempt": 1,
+      "run_id": "20261019T175423Z-8354cf",
+      "parent_run_id": "20261019T155114Z-4069a3",
+      "previous_run_id": "20261019T155114Z-4069a3",
+      "reservation": 1,
+      "requests_sent": 1,
+      "status": "not_checked",
+      "reason": "api_error: ServerError: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}"
+    },
+    {
+      "slot": 2,
+      "attempt": 2,
+      "run_id": "20261019T175516Z-23e620",
+      "parent_run_id": "20261019T155114Z-4069a3",
+      "previous_run_id": "20261019T175423Z-8354cf",
+      "reservation": 1,
+      "requests_sent": 1,
+      "status": "not_checked",
+      "reason": "api_error: ServerError: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}"
+    },
+    {
+      "slot": 3,
+      "attempt": 1,
+      "run_id": "20261019T175542Z-9c1ca8",
+      "parent_run_id": "20261019T173042Z-7a7529",
+      "previous_run_id": "20261019T173042Z-7a7529",
+      "reservation": 1,
+      "requests_sent": 1,
+      "status": "not_checked",
+      "reason": "api_error: ServerError: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}"
+    },
+    {
+      "slot": 3,
+      "attempt": 2,
+      "run_id": "20261019T175638Z-acebf2",
+      "parent_run_id": "20261019T173042Z-7a7529",
+      "previous_run_id": "20261019T175542Z-9c1ca8",
+      "reservation": 1,
+      "requests_sent": 1,
+      "status": "not_checked",
+      "reason": "api_error: ServerError: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}"
+    },
+    {
+      "slot": 6,
+      "attempt": 1,
+      "run_id": "20261019T175710Z-34269b",
+      "parent_run_id": "20261019T173243Z-5f30b8",
+      "previous_run_id": "20261019T173243Z-5f30b8",
+      "reservation": 1,
+      "requests_sent": 1,
+      "status": "not_checked",
+      "reason": "api_error: ServerError: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}"
+    },
+    {
+      "slot": 6,
+      "attempt": 2,
+      "run_id": "20261019T175806Z-ac6b2d",
+      "parent_run_id": "20261019T173243Z-5f30b8",
+      "previous_run_id": "20261019T175710Z-34269b",
+      "reservation": 1,
+      "requests_sent": 1,
+      "status": "checked",
+      "reason": null
+    },
+    {
+      "slot": 8,
+      "attempt": 1,
+      "run_id": "20261019T175838Z-10e4a9",
+      "parent_run_id": "20261019T173348Z-43d1be",
+      "previous_run_id": "20261019T173348Z-43d1be",
+      "reservation": 1,
+      "requests_sent": 1,
+      "status": "not_checked",
+      "reason": "rate_limited: ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.6-flash\\nPlease retry in 13h1m20.81808233s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'model': 'gemini-3.6-flash', 'location': 'global'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '46880s'}]}}"
+    },
+    {
+      "slot": 9,
+      "attempt": 1,
+      "run_id": "20261019T175859Z-e40551",
+      "parent_run_id": "20261019T173414Z-276a84",
+      "previous_run_id": "20261019T173414Z-276a84",
+      "reservation": 1,
+      "requests_sent": 1,
+      "status": "checked",
+      "reason": null
+    },
+    {
+      "slot": 11,
+      "attempt": 1,
+      "run_id": "20261019T175929Z-096c1b",
+      "parent_run_id": "20261019T173506Z-08aaf7",
+      "previous_run_id": "20261019T173506Z-08aaf7",
+      "reservation": 1,
+      "requests_sent": 1,
+      "status": "not_checked",
+      "reason": "rate_limited: ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.6-flash\\nPlease retry in 13h29.582714057s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.6-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '46829s'}]}}"
+    },
+    {
+      "slot": 12,
+      "attempt": 1,
+      "run_id": "20261019T175950Z-e86b5b",
+      "parent_run_id": "20261019T173530Z-fd16bc",
+      "previous_run_id": "20261019T173530Z-fd16bc",
+      "reservation": 1,
+      "requests_sent": 1,
+      "status": "not_checked",
+      "reason": "rate_limited: ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.6-flash\\nPlease retry in 13h8.554411953s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.6-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '46808s'}]}}"
+    },
+    {
+      "slot": 14,
+      "attempt": 1,
+      "run_id": "20261019T180011Z-5b21de",
+      "parent_run_id": "20261019T173627Z-803dbd",
+      "previous_run_id": "20261019T173627Z-803dbd",
+      "reservation": 1,
+      "requests_sent": 1,
+      "status": "not_checked",
+      "reason": "rate_limited: ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.6-flash\\nPlease retry in 12h59m47.424106475s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.6-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '46787s'}]}}"
+    },
+    {
+      "slot": 15,
+      "attempt": 1,
+      "run_id": "20261019T180032Z-345c24",
+      "parent_run_id": "20261019T173651Z-398056",
+      "previous_run_id": "20261019T173651Z-398056",
+      "reservation": 1,
+      "requests_sent": 1,
+      "status": "not_checked",
+      "reason": "rate_limited: ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.6-flash\\nPlease retry in 12h59m26.568021096s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'model': 'gemini-3.6-flash', 'location': 'global'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '46766s'}]}}"
+    }
+  ]
+}

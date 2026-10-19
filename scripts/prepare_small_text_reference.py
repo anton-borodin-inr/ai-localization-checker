@@ -50,7 +50,7 @@ def properties(data):
     return entries
 
 
-def prepare(source, apk_dir):
+def prepare(source, apk_dir, *, legacy_initial_reference=False):
     manifest = json.loads((ROOT / "docs/evidence/8/pair-manifest.json").read_text())
     builds = {}
     tables = {}
@@ -151,7 +151,7 @@ def prepare(source, apk_dir):
                 text, visibility = "Bergbau und Erzgew...", "visible_prefix"
             row(key, key, "tree", region, text, visibility)
 
-        if kind == "clean":
+        if kind == "clean" or not legacy_initial_reference:
             row("close", "Close", "controls", "bottom-left")
             research = tr("Research [technology]").replace(
                 "[technology]", tr("Archery")
@@ -240,7 +240,11 @@ def prepare(source, apk_dir):
                 "language": lang,
                 "rows": rows,
                 "numeric_diagnostics": ["6", "10", "19", "5", "7", "+1", "+10%", "+15%"]
-                + (["(0/24)"] if kind == "clean" else []),
+                + (
+                    ["(0/24)"]
+                    if kind == "clean" or not legacy_initial_reference
+                    else []
+                ),
                 "notes": [
                     "Icons and bullet glyphs are not translated text; numeric diagnostics are outside the primary denominator.",
                     "Vertical clipping is diagnostic only, not an unreadable-text omission or a defect label.",
@@ -250,7 +254,7 @@ def prepare(source, apk_dir):
                     [
                         "Close/research buttons are absent from this injected screenshot, unlike the clean screenshots."
                     ]
-                    if kind == "defective"
+                    if kind == "defective" and legacy_initial_reference
                     else []
                 ),
             }
@@ -269,8 +273,17 @@ def main():
     parser.add_argument("--unciv-source", type=Path, required=True)
     parser.add_argument("--apk-dir", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument(
+        "--legacy-initial-reference",
+        action="store_true",
+        help="Reproduce the historical reference including its omitted injected controls",
+    )
     args = parser.parse_args()
-    reference = prepare(args.unciv_source, args.apk_dir)
+    reference = prepare(
+        args.unciv_source,
+        args.apk_dir,
+        legacy_initial_reference=args.legacy_initial_reference,
+    )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(
         json.dumps(reference, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"

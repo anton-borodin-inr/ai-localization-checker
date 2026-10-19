@@ -1,0 +1,105 @@
+{
+  "derived_from_approval_sha256": "69f84ca4d1ffb32f150a3659c24905d4904111bd63546b879063997022189be2",
+  "original_plan_sha256": "bdf521d2f8c3478bdc2e5aa4caaa0232b54448b1a50ca527ba4b094a21916abc",
+  "allocation": {
+    "high": {
+      "initial": 3,
+      "additional_max": 4,
+      "total_max": 7
+    },
+    "ultra": {
+      "initial": 3,
+      "additional_max": 2,
+      "total_max": 5
+    },
+    "tiles": {
+      "initial": 9,
+      "additional_max": 12,
+      "total_max": 21
+    }
+  },
+  "total_max": 33,
+  "requests": [
+    {
+      "original_slot": 2,
+      "option": "high",
+      "image": "docs/evidence/8/final/tech-picker__en__2400x1080__clean__1271001.png",
+      "tile": "full",
+      "new_attempts_max": 2,
+      "second_only_after_http_503": true,
+      "max_requests_each_run": 1
+    },
+    {
+      "original_slot": 3,
+      "option": "high",
+      "image": "docs/evidence/8/final/tech-picker__de__2400x1080__injected__1271002.png",
+      "tile": "full",
+      "new_attempts_max": 2,
+      "second_only_after_http_503": true,
+      "max_requests_each_run": 1
+    },
+    {
+      "original_slot": 6,
+      "option": "ultra",
+      "image": "docs/evidence/8/final/tech-picker__de__2400x1080__injected__1271002.png",
+      "tile": "full",
+      "new_attempts_max": 2,
+      "second_only_after_http_503": true,
+      "max_requests_each_run": 1
+    },
+    {
+      "original_slot": 8,
+      "option": "tiles",
+      "image": "docs/evidence/8/final/tech-picker__de__2400x1080__clean__1271001.png",
+      "tile": "tree-right",
+      "new_attempts_max": 2,
+      "second_only_after_http_503": true,
+      "max_requests_each_run": 1
+    },
+    {
+      "original_slot": 9,
+      "option": "tiles",
+      "image": "docs/evidence/8/final/tech-picker__de__2400x1080__clean__1271001.png",
+      "tile": "description",
+      "new_attempts_max": 2,
+      "second_only_after_http_503": true,
+      "max_requests_each_run": 1
+    },
+    {
+      "original_slot": 11,
+      "option": "tiles",
+      "image": "docs/evidence/8/final/tech-picker__en__2400x1080__clean__1271001.png",
+      "tile": "tree-right",
+      "new_attempts_max": 2,
+      "second_only_after_http_503": true,
+      "max_requests_each_run": 1
+    },
+    {
+      "original_slot": 12,
+      "option": "tiles",
+      "image": "docs/evidence/8/final/tech-picker__en__2400x1080__clean__1271001.png",
+      "tile": "description",
+      "new_attempts_max": 2,
+      "second_only_after_http_503": true,
+      "max_requests_each_run": 1
+    },
+    {
+      "original_slot": 14,
+      "option": "tiles",
+      "image": "docs/evidence/8/final/tech-picker__de__2400x1080__injected__1271002.png",
+      "tile": "tree-right",
+      "new_attempts_max": 2,
+      "second_only_after_http_503": true,
+      "max_requests_each_run": 1
+    },
+    {
+      "original_slot": 15,
+      "option": "tiles",
+      "image": "docs/evidence/8/final/tech-picker__de__2400x1080__injected__1271002.png",
+      "tile": "description",
+      "new_attempts_max": 2,
+      "second_only_after_http_503": true,
+      "max_requests_each_run": 1
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "accepted_by": "Anton",
+  "status": "approved",
+  "date": "2026-10-19",
+  "issue_url": "https://github.com/anton-borodin-inr/ai-localization-checker/issues/10",
+  "user_authorization": "Up to 33 total: 18 new sends; a second new attempt only after the first new attempt returns HTTP 503. Explicitly confirmed in chat.",
+  "baseline_requests_sent": 15,
+  "task_request_cap": 33,
+  "additional_request_cap": 18,
+  "max_new_attempts_per_slot": 2,
+  "retry_only_after_503": true,
+  "eligible_slots": [
+    2,
+    3,
+    6,
+    8,
+    9,
+    11,
+    12,
+    14,
+    15
+  ],
+  "reference_sha256": "e20d9ede40afcdc052052062273cfc4b00c8db9e9d953fbfd20415cbd568b964",
+  "plan_sha256": "bdf521d2f8c3478bdc2e5aa4caaa0232b54448b1a50ca527ba4b094a21916abc",
+  "initial_ledger_sha256": "075d2fc5a49a160031cf87819c78f1046517c13f022e6d6d2bb4fb06c4de8fd3"
+}

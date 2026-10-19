@@ -1,5 +1,77 @@
 # Small-text resolution experiment (issue 10)
 
+## Authorized continuation on 2026-10-19
+
+After the original 15 requests, Anton explicitly extended issue 10's total cap
+to **33**, including all old and new failures. The continuation allows at most
+18 new sends: at most two new attempts for each of the nine original HTTP 503
+slots (2, 3, 6, 8, 9, 11, 12, 14, 15). The second new attempt requires the first
+new attempt to return HTTP 503. Success, another API error, timeout, invalid
+response or interruption never permits that second attempt. Every send still
+has `--max-requests 1`; SDK retries remain disabled. This is an explicit budget
+increase, not a reset or a reclassification of failed requests as unsent.
+
+The issue body and `evidence/10/continuation-approval.json` record authorization.
+The original reference, plan and approval hashes stay frozen. Image bytes,
+prompt, schema, requested model, SDK and settings are checked against the
+original request. New per-option ceilings are HIGH +4, ULTRA_HIGH +2, tiles +12.
+No original successful request is repeated, and no original run file is edited.
+
+```bash
+uv run --env-file .env l10n-small-text-resume --slot 2 --attempt 1 --max-requests 1 --free-tier-key
+```
+
+The original command remains locked at its original fifteen-slot cap. The new
+command requires the separate authorization, reserves sends under the same
+task-wide lock in `data/runs/issue-10-continuation-ledger.json`, and refuses
+duplicate, out-of-order, ineligible or exhausted attempts. Published continuation
+reservations cannot be reset by using a fresh checkout. The batch waits 45 s
+before a conditional second new attempt and 20 s between original slots.
+
+`scripts/summarize_small_text_continuation.py` appends normalized new run copies,
+preserves the original summary and ledger, and writes `combined-summary.json`.
+For each original slot, the combined metric uses the first validated response;
+it never chooses the response with the best measured coverage. All unsuccessful
+attempts remain in request and latency totals. Selected-response token/latency
+figures and all-attempt figures are reported separately. `report-initial.md`
+preserves the initial result and its then-applicable budget.
+
+The continuation is complete: 12 new sends, 27 total. Two new responses were
+validated, five returned 503 and five returned 429. No eligible attempts remain:
+slots with 429 or success cannot receive a second new send, and the other slots
+used both. The unused six-request allowance is not permission for another retry.
+The 429 messages report the daily free-tier per-project/model quota with limit
+20. This observation does not establish exactly which earlier 503s consumed
+Google's quota; all failed sends still count in this task's ledger.
+
+## Confirmed reference correction after calls
+
+The original agent-selected injected reference incorrectly omitted two visible
+controls. Reinspection of the unchanged screenshot and build 1271002 packaged
+translations confirmed `Schließen` (bottom-left) and `Bogenschießen erforschen`
+(bottom-right). Anton explicitly confirmed both and denominator **18 → 20** after
+all continuation calls. `(0/24)` remains numeric diagnostics. This correction was
+prompted by a discrepancy during output review, but its strings and visibility
+come from the original image and verified translation bytes, not model output.
+No defect label, threshold, prompt or provider input changed.
+
+`reference-amendment-candidate.json` and its hash-bound
+`reference-amendment-approval.json` record the correction separately. Candidate
+status inside the former is historical; the approval is authoritative. The
+combined summary exposes both amended and original-reference comparisons. The
+initial reference, approval, plan, ledger, summary, review and all original run
+files stay unchanged. Original injected ULTRA_HIGH coverage is 18/18; the amended
+score is 20/20. This must not be described as a fully correct pre-call reference.
+
+The source assembler now includes both controls for all three screenshots.
+`--legacy-initial-reference` reproduces the old file byte for byte, including the
+historical omission. Without that flag, rows keyed by screenshot/id, source
+provenance and numeric diagnostics reproduce the approved amendment (control row
+order differs). Neither command calls a provider or consults model output.
+
+The sections below describe the initial protocol, with the historical reference
+error identified explicitly.
+
 This is an experiment on the issue 8 technology picker, not a production
 detector or an implementation of issue 13's defect metrics. It measures whether
 visible translation units are transcribed, while also collecting draft-v0
@@ -24,10 +96,11 @@ its historical candidate status; the separate approval is authoritative.
 The existing issue 8 human defect labels are untouched.
 
 Primary denominators: German clean **16**, English clean **20**, German injected
-**18**. Fully visible units and visible horizontal prefixes are primary;
+**18** in the initial reference (**20** after the separately confirmed correction). Fully visible units and visible horizontal prefixes are primary;
 vertical viewport clips are diagnostic. English Writing is outside the frame;
 German Schrift is a top-edge diagnostic. German clean's last description line
-is vertically clipped. German injected has no Close/Research buttons. Standalone
+is vertically clipped. The initial claim that injected controls were absent was
+incorrect; both controls are visible, as recorded in the amendment above. Standalone
 numeric counters and icons do not inflate text coverage. Only visible Production
 text is scored, not its hidden continuation.
 
@@ -41,7 +114,8 @@ text is scored, not its hidden continuation.
 | Total | | | 15 |
 
 The requested model remains D-017's `gemini-3.6-flash`, temperature 0, timeout
-180 seconds. No SDK retries, manual retries or probes. A failed request consumes
+180 seconds. Initially no SDK retries, manual retries or probes; the later conditional
+continuation is documented above. A failed request consumes
 its slot. All live commands require `--max-requests 1 --free-tier-key`; the latter
 acknowledges the caller's free-tier constraint, not an API verification of billing.
 The same free-tier key configured for the project is used; there is no paid or
@@ -58,8 +132,8 @@ Each call has its own recorded run id. `data/runs/issue-10-ledger.json` reserves
 a slot durably before sending. Exclusive locking prevents concurrent runs. A
 failed/interrupted reservation is never reusable, and changing the approved
 plan does not reset the ledger. A stale lock requires investigation, not removal
-by the runner. There are at most 15 reservations for the entire task, not per
-process. Successful records contain exact `requests_sent`; interrupted records
+by the runner. The original ledger has at most 15 reservations, not per process; the
+separate continuation ledger extends the authorized combined cap to 33. Successful records contain exact `requests_sent`; interrupted records
 retain an unknown actual count and a conservative reservation of one.
 The published ledger also blocks fresh checkouts from restarting the spent
 budget. This completed issue cannot be rerun by creating an empty `data/` folder.

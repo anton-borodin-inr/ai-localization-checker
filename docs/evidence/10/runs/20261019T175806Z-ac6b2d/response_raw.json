@@ -1,0 +1,197 @@
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "media_resolution": null,
+            "code_execution_result": null,
+            "executable_code": null,
+            "file_data": null,
+            "function_call": null,
+            "function_response": null,
+            "inline_data": null,
+            "text": "{\"findings\":[{\"defect_type\":\"truncated_text\",\"text_seen\":\"Bergbau und Erzgew...\",\"region\":\"center\",\"confidence\":0.95}],\"readings\":[{\"text_seen\":\"Schrift\",\"region\":\"top\"},{\"text_seen\":\"10\",\"region\":\"top\"},{\"text_seen\":\"Landwirtschaft\",\"region\":\"left\"},{\"text_seen\":\"Tierhaltung\",\"region\":\"center\"},{\"text_seen\":\"6\",\"region\":\"center\"},{\"text_seen\":\"Fallenstellen\",\"region\":\"center\"},{\"text_seen\":\"10\",\"region\":\"center\"},{\"text_seen\":\"Reiten\",\"region\":\"top-right\"},{\"text_seen\":\"19\",\"region\":\"top-right\"},{\"text_seen\":\"Bogenschießen\",\"region\":\"center\"},{\"text_seen\":\"6\",\"region\":\"center\"},{\"text_seen\":\"Das Rad\",\"region\":\"center\"},{\"text_seen\":\"10\",\"region\":\"center\"},{\"text_seen\":\"Mathematik\",\"region\":\"right\"},{\"text_seen\":\"19\",\"region\":\"right\"},{\"text_seen\":\"Bergbau und Erzgew...\",\"region\":\"center\"},{\"text_seen\":\"6\",\"region\":\"center\"},{\"text_seen\":\"Mauerarbeiten\",\"region\":\"center\"},{\"text_seen\":\"10\",\"region\":\"center\"},{\"text_seen\":\"Baukunst\",\"region\":\"bottom-right\"},{\"text_seen\":\"19\",\"region\":\"bottom-right\"},{\"text_seen\":\"Bronzebearbeitung\",\"region\":\"bottom\"},{\"text_seen\":\"10\",\"region\":\"bottom\"},{\"text_seen\":\"Schließen\",\"region\":\"bottom-left\"},{\"text_seen\":\"Freigeschaltete Einheiten:\",\"region\":\"bottom-left\"},{\"text_seen\":\"• Bogenschütze (5, 7)\",\"region\":\"bottom-left\"},{\"text_seen\":\"Freigeschaltete Wunder:\",\"region\":\"bottom-left\"},{\"text_seen\":\"• Tempel der Artemis (+1 Kultur; +10% Nahrung in allen Städten; +15% Produktion beim Bau von\",\"region\":\"bottom\"},{\"text_seen\":\"Bogenschießen erforschen (0/24)\",\"region\":\"bottom-right\"}]}",
+            "thought": null,
+            "thought_signature": "EtEoCs4oAWkUfRMntZcuD4A_mojcCTWFp_Kml3UcSWxSIOB7ltG2hVEON96Qq1mWOq-U5NltrQKOFiVebTWnfsDmBbyR85PB4UExlHmQCyPy33RKTolzv9QfWR8GKHsywKbHP0QYteS0zZD98WesTgFg5HT_ouRwAJPGUk_7-HfaSQTOYsC_gE94QirCq5oq-uIiTNLcOLM2CpwMB99A-iuaLRg7COSVvi12hrS0sHdiOuMrMZQ79bA6B-fUaNf21ZCZKkZcr5XBqJ9-epv0fkNRAdzixfLjC6vTqWQFbwXxyn0iuRwGzqnAq-TnxHAwgJLHrz9dx91LFE3ZhpkR99PgcwtSSw2O22WrtGcAvlPrJ4tM45CBu1LvnA8OsNHXTc1bUPVg-zN2qW-hB8Ucpr59S4Dd83hxCPXm7IkzxkhpQ8xZT9E6T61tQyRGClCz_hRvOBftv1-MbEjb3qr7RehU3Y0r7YS0FtKAh1Wz5pRuovYg33h6J2k4JAO-wgCUyVxeWWcOQf9otEKEhLppfoSkY9J5vAUie_iPwwnon6Makhjp5TYhwdkb0m9t7Fz0N4ks4NWE9MGeTNkBWsj5iawA0b-o-dmIh6Yb-Q2-M1u_maXNAsbhn_uUZxOabzqtztOsFpfOAE2WuDtOFqqdOnY4Nz8KxxXaSIFFqbWBF5dPipPPejpDiU-jyVH1gJGSSqNxBOipOtATFqKYoHiZq_DbpjK9tk962ep_cenR01Z8MnbOGhohqtvqe9vTqMlM_8U8N5bJAyvyml0g23J6cYIFUqNEsh8CqGsRbQUW_kqh31X0g1XWe2d6-JfJAPVUhwlnah5BTgFM7Y_GeF8gMXJvGu_-OCU3Ex-7_Ua3U3uln-JLd22tfxwa_xi70VMd0-wPX2VJugd28AjiOIluSdiR0OXDKDd8KnLbelVBqQ31i2HTmMT0XTeovHXBFs87yumXnSWIvQGe8ts_0gxOIqYyC5BuN8jgRk0adxM4LgjtkjEWeSczH0oRadggtT5Y4iJOV5o-UQdoSJn5C-V0FkstO00et_qiNSrOKaPABFLEfw9BUKrQRHEIDU_Ewt2Meq5l7VIGAAQBxhM56FjrVQzgi1qQH85ntuGWjiZdDsVDbhvnGVGQptozj8AVZy2DeLzqIZ1Ct8SvtEtPHkF3IIoSew9b26EZbskskWXQwIHE9IIA1l9UQaiNlKUEfLpHY9pVc7yvTktkk5t3W9mGbRYjEnk2y0A-Z8JfViEIc26XgKlmGNX_RX6fnwqJYWcnrT5EVtFRnb59hwc5q8xDnp3lokuuUPMsKhjrY_5VjZ7RDk3AjgsBLAud4YaNlv7dctAhwICUIwHg78pehmaFdNp23nW5wmbMbgL7qG1dD40UO9euhk5-23l590SfoCtABc0XIdYdPKxH68IES-kJPBKw2lhj_mPdaAUMMix4ie9FsPR_szh4flsZr29EzyeQbrjHv1j61A9x_E8kOM_2X8boCJR0TPcYIkvC7lZcV8QXphKDW7TKFT1tGmLCiBYGv0xqaLyav6nCjNFQ86SwwoEDbQCpimo2GbzfyZs28pvicQxBB9BIo5mwbXGTgX8OuksVz8LY5s3QuX3BvXN3vepbXhNRJPeUDjTSkSwFY0q2uPXhnVsEc1Wiv3Q8ZBv7ah7dMojTtQCAyo_qftZ9HDx4c10ViPBVr-uRCUPIX_1ddfs8PRDYEWR2NYYxBVzZ2I20ive7oEYTn27i3Z1b4NwciJMqRMnHaQ6IUFoLyYtX5WkOC6pgJT-qptPa5EVHOAe-NNdXe46Q2OwXRG0gYC5pocpJzVdyUWWM4_XrUZcypAIxUY3ap07rBnFCQVTY1W7bSkYstFNXpnA0c8rM27gjgG3a9AqhN88YedS3ztntSOv6TDIxtz7MULqxhdN5ApWh0BtmGGdLXvRRGCr536Fo_z00Gvgx1qZRUMOPMF3G7MstfTcPrpQR9Xs_w_KwD0SghmwaigYBOqGGshc9HEvNTUdNa8nPpbOM3t3k0UgaPp7EG62oL7ZWP8MdPDqciTu5WTl6lBmSbG2AvVHsOyKWaTJ5-xPJp1HcIv-8nbsAXe_MtPC2feSAEcJYZrlBBC6TfOdLycM_hPsbCqJTtsibeVpt3yuv_xpBQUzWCWqVGxM8cJhQ3v7qPctrD3U61W1MwNHnPP7zMN0arnsruZFUrHX_1Jf2QllNYcUPbdyEcL64cs9o3WmFL83fC2e88nDD-lTSKe_EGssB-40DkgvJlEyXAiAAzfYOLOzgd7-YUDTK8vrJNqi7S0zYE0nt72hG01FY9Hyarycyhv6aFszGhNbnrcslkwIMvIHEVB72-X9rolCJPFxNTKuiZczt0yc6k3stNz3mDwv3wBKhgJ7ByK50kPZDPpq1NPzstdE7g-Lay9_gX59rnQIqDdBIvhdHJ5tRiMyA2rnk2yyR4tfsmlzJg9p5cWUzkdfmyJD-2nr9CdgvaiGxKLF9qYg5TB0-4V_e-EbvAqt5-kkYSNztMVIuYttsbyrDhW0VM01arB_dOZXLXcevvxdTPeMUcwX_h3rG-tMtoJbCcGq_NPIMeNQBtAKdVCNqAEG2srQuX-B5F1gi3cADtkgRu2mf6MBSPIb4q7Ly0ft3iy1s3fjO6iSIsjaDeB_050wyBdsZvrfEmZknd0iUucf7cmKzpkB_0hIU6JqqI2gpOTwYcnIWxKfIM0g2Fb7TIOEnQlVgApxgUuaUdezfV0ElwJ-hDqON4NEIij9KeqNVe0VX58FCXMzqY1TmeL3Ug_14JvhFS67eypCQiqCf-Y5EOP-kx861LiGUVCGQUe0InUqc98SDt10PZ62hIvpYX7y7UJujnB49irY86paflMi0wBPr8h-h4kuE0qnLfQ69vRSh6xCpyDNAPlGfSvIYh8r9XiMNVyojUAzADaape_4WGsOiBsZYqUkJylmGLMIvzSHIbMVLdsfl9dwhYiNa18-q5nTrlpwqrrkPMEMTlLk07-KI9jQqcKP4TF5m5fZV_PrSfDlw9qufmIoonXvrH9u0Ary-4USLJJFwzULRk5rfmdWej8RevQB3Y1VLrpZdwKNn7PJolGSTQt6mQM3Es9843J9EHlxQ110NMls0MfrIuXL0hk_FEcMk3z6PoTHCbuK4dGqt5i1JG2_icCwBOhA40ZHjpwH4OWMoPP-uqgWPYOzc3oTh1a1Dg7bTvA8pl0pm53iEoTTALnfm0KAiKSx6Wa0aWvg5CTQkkCWxWp0NaJUhEySvgfIg8VCGqffYmqS1D28-y80OPnbbNQ8WC3y-3WTLPGSkNHnFqTc6YkU3ueAewIRxxI723kvKT-yNGBIwDmHYs7tqJrFhs5tz7HT2eL_LHv5jDL-6Pd6Npg9RdvL4kNuGPloO4rvRpbCj9bgB9fZZziyzDPXAoQ0-8w8E3jqrDyc652PPzMtDpT_bv69imHzJsZZeAmX0TSSQvUXKxGnpq3r9ZYNw0s-XrbVINZALuI5qRUpItenpHAgvZ_Bm9zUncC2FI6s2tG5n5pf4Qxjk0rtTQVdOBR9u9ksAILo21Mn6maXH9ot1EmoX_ddvxt7OWcF3n8OShf8-JJto6ke9KCwNm4cNjLXRd-MTGpHtrmGP_IG2wruSCVGqMbuISIWk8adSPRvMieaYhlV3-JVYCjVVXUZ8M2L8fUxdea7Ete-9XNbRhnmREfIrQH8ufTUm6UTIL51vYuu9iYWlBsV4px0P9cDHL7rXOyZj88K7Z750zeybICx54SCGFrJDYiVfFnOFT9t6pHDS0WjNwovzHHnOE7_FPvhNYaXbmLKleAbGzfv_B1ATyQMFVHlK_d40kFy4HG51PXgb51DA3LhahDGjPa0ZjL2v_No4e5z4jTBShezVTxKvQWFGJTr5d15_ch3WT2CH--Ldkm2R6KVVjh-ewpLQSIISVaF-0PT7sMVQF5rBana86SdWVIdAbdNsZXvpD6CSha0I6rv9bgx38IRNz0vaRcuz8ewvAXP56-vshg-gnZVaxWhR10akc5PbJWntRS-qP8rFgErY-T-PHGH0_gxxbLZeUGaiwRCqcyS5cEgbjSKUp8I5nOLWuaRYYGiVcGLxHkLeUs4qiHrQaojLob_tZYppMw9We8u25U5VSBbo1uLeEjFTbE9LqkewDz1uU0F5zjxljnBdU8kpLYkJu1yca5k4bMdJdImeLnVs_HQBLEJ19tU0M_HW1cELFcXhn7_kOLvp2kk86rLCe-5QF9aqJmqYSWhqB3OuXTEvLGuwJ_X5s7djRoP345uueBEf00pkCSWZ_spcvaTgWVBG2b1XB5tAJbMDhNHPqaR38odQIMbReQigYv43xooI6Htw0TlfwBwsfk6ULcBODrvRxi7yhygMFapMiS_saStylNvbWZbQfLKdAXMxetF1KIseYS2yYoa4Pv3ITX5Cx5ntzk2mSjzhZhDVHGHTrNVqw7OwIf-LU4R8Bi8qHk9XPKyfjhpRs_0fQKdiN7EmTWQA9rwWR29_vkQEyh7_EMZ4orZr6ngDWzSkEtvz4Vgg7KT7B7nSSefoQbo0EJn_-b3LMhLqkPhIzLm9Y1OfltXfr18R3qjwaauiiNbVd2PAaAYbw2LSke5YnrkN8il2HequXGW86q7Nq6cZ2dF-_G86y5aEq9yw23xhJ_DS1FtCr3optj18CLtnkCeIBMJDdHa90UOMnSUhJ71H-IZ7H2E0153ltXhVk3OJCZ2WZUcNZ9yxcTbIGHiW30SjjGD9oZ6iC3YpNAjq-XpnySnhHK8tOildUGr7VZSALdzUezA6fWi3iJw9FJJgxQjLGE9uH-EB4X7GBie6yOO6klPKvH7uwIjcir4hHaZ8k1xCuT5jkgqoPSMsMNmO-aRpT-3EsPgiCZzVBQegirjEqkquNxh6G8aJzD3yAZdlLbQowCt5OREwW1sQKwQhQymJTtz1P8vDMMVWObAUdANMRhY0lwkpEFC6RziH2HVRwVBxvZSnQ5W24UIovQirkoBUJ5u6-XRj2TEIgQDD5kpf78JBfGgBzin1WccE6M_vEKG0mEOY3Bh_0a6NEbhpitEffZpiph15o1okrVR-UWxNaPNiP4mFO_T_OBdwzbK2SEOXGd81YQaD79hCXulD-4JzryNh-StKM4UEbd3wNScMckHrFJQ4x5diaImB1MFsciJJXSIyzobHnSGvEgqdCNssiCCBC3GDjlxH874zQ3C5RVV8Ixvm1M7QQER54TpVKf5jQQP07j8Ty51dQphKn0qTOMuJknRzfGloVet59ZFKDqqBVofzCsL5gAWhS1PXgrvJxSTm31XXmhXYpsSw2gywpGXtJA5b9zfBDC7c3ikl-Wj7FjXQe2hdeVhTQ64NxasHqPl0Vi4qSH__ucjuoB4PFrx3wqd0bJdC1KG3oU0BQYoJPt2iw0SfzeNOIGf7mapm_4JZU-9MWyW3m1cayVvc32pRf_a39lttJJhXNJfqx2iD7IrY57aaQ7zqSTAbwPcNBxhR4s2B_NZmB6F-ARNPE9l838iJxC9EFjuNHcV78q8btF_sYIo6OlVcuO9qRPVk87txUYjyjhACUYLCcWXMVok-KwZyRF6yjlbSF6JEGqjHGsS7FTuIsDx0N5_4jACIGrvhTfkBXLFzz22zOi0nRzzHPEdn8dm0JG6Ei8RIITjuzapoKqYMd1LrDmYBT8KqchKAb9S5vwHlQWnpRSpcdug45nqvq_wshnJRm3FeNyEW8POKnIA-4uZswhGVr87m70KFN6u7t-xDkcsvZm6cVkGwNvM528KnK3SPaujCmYl0zen8lUpYjYV65dhpSt1yFHKFmIkVMjtXLIRszth0xxIgyMDiRravyl1JkYK0yY7bT2j4_Xpm07q63zpDE0IDOLEkj5U3YPCxwmbapEWjJcuszhBeQ8DWbAE6BTRZz6gNdgml21nfVO9AZMqOtTLjypzPw2O_fr7jociLetONjAZZF8eA7k2_stwVs133BNzAMDKJ1I9IsidXrQiYkRrst7HELPeFS6ZlcSTV2vJmC4wXIR1eebEvMn6jQhsxHgf0VIbasMtV7-k6SUtdZBd55rf_8rqg34rXiF3Rg4yhtJIPpvBgZnXHEuK0Lms7GhrmK04hDOn-1fB1Qxaiid5fxiTm2sV28Xw18kAxN1Rta_lnOscullfm0Nzyla6v3qQALbKOJ36IwZzWFs-kW-h_CVNzpRZbzrsyzLGowzpwCSVgTtDmUxwqEkq6hHIYJwRlSUZNH86R6N6n0sdlVXnoMBn0jphc_AMxkGqlQRbbKRAoefViFXNPEqpYggJzKLBwP-z9OTiy9X-Dwa85eQ_nPa_HZWOc4PUzuOKAmowq0rYN9QJkagdMR1SyKlWCazWuwS5FBXWHryFMGSadB8RFvEjL-6evnLsg93LNdE6PFA8TKTxVI--MeAluf9yC2OSyA2slo1kEZ5kM36wKaPBQO27D8wdfLbAqH0JQAyQnnFezT0AJNxNYqIWbBCHFHuMwt-LbDZW12bxbfW1phiSedSxgWzCw0VOz39fbWil-7zK4Ks0cw4rT7jpCgBwmdxIDeIWehaAhdJL8E8xJRrVI90-lDqNIguYkaCvGg13aHg_FUTT23lLs4hpS9Iro_sAthKESHvffA0TzLtOK8WtSKYR8BVx5_FMUL7IUGXpvjgXvgkD5MGRZeu4bVYTItOme4KEgoXxFBZQdgs6ISw3dMLPCM1a1mu-bvaIKe0_8RxjNwNDkLyRKzCzCC4XwyQADdNWUOXmma9WNGEGEJcSw6tjK8KBpSrmoiVAinVRQiKKeaMotiFOJem8R3R3OQ2UBquVdowkrC1VUoMivkO5k-OeL8Y7YlcXG31mderrkHJblTG8acc5suwRccceHUG5zD5Q1GM16lNrs_hSYEUbYlheJhzYnwMDVeLKNFUZs7VlJ9Oo=",
+            "video_metadata": null,
+            "tool_call": null,
+            "tool_response": null,
+            "part_metadata": null,
+            "audio_transcription": null,
+            "media_processing": null,
+            "speech_metadata": null
+          }
+        ],
+        "role": "model"
+      },
+      "citation_metadata": null,
+      "finish_message": null,
+      "token_count": null,
+      "finish_reason": "STOP",
+      "grounding_metadata": null,
+      "avg_logprobs": null,
+      "index": 0,
+      "logprobs_result": null,
+      "safety_ratings": null,
+      "url_context_metadata": null,
+      "continuation_token": null
+    }
+  ],
+  "create_time": null,
+  "model_version": "gemini-3.6-flash",
+  "prompt_feedback": null,
+  "response_id": "L1rWaqCdHNmd28oP9-mL4Qg",
+  "usage_metadata": {
+    "cache_tokens_details": null,
+    "cached_content_token_count": null,
+    "candidates_token_count": 439,
+    "candidates_tokens_details": null,
+    "prompt_token_count": 2372,
+    "prompt_tokens_details": [
+      {
+        "modality": "IMAGE",
+        "token_count": 2170
+      },
+      {
+        "modality": "TEXT",
+        "token_count": 202
+      }
+    ],
+    "thoughts_token_count": 1753,
+    "tool_use_prompt_token_count": null,
+    "tool_use_prompt_tokens_details": null,
+    "total_token_count": 4564,
+    "traffic_type": null
+  },
+  "model_status": null,
+  "automatic_function_calling_history": [],
+  "parsed": {
+    "findings": [
+      {
+        "defect_type": "truncated_text",
+        "text_seen": "Bergbau und Erzgew...",
+        "region": "center",
+        "confidence": 0.95
+      }
+    ],
+    "readings": [
+      {
+        "text_seen": "Schrift",
+        "region": "top"
+      },
+      {
+        "text_seen": "10",
+        "region": "top"
+      },
+      {
+        "text_seen": "Landwirtschaft",
+        "region": "left"
+      },
+      {
+        "text_seen": "Tierhaltung",
+        "region": "center"
+      },
+      {
+        "text_seen": "6",
+        "region": "center"
+      },
+      {
+        "text_seen": "Fallenstellen",
+        "region": "center"
+      },
+      {
+        "text_seen": "10",
+        "region": "center"
+      },
+      {
+        "text_seen": "Reiten",
+        "region": "top-right"
+      },
+      {
+        "text_seen": "19",
+        "region": "top-right"
+      },
+      {
+        "text_seen": "Bogenschießen",
+        "region": "center"
+      },
+      {
+        "text_seen": "6",
+        "region": "center"
+      },
+      {
+        "text_seen": "Das Rad",
+        "region": "center"
+      },
+      {
+        "text_seen": "10",
+        "region": "center"
+      },
+      {
+        "text_seen": "Mathematik",
+        "region": "right"
+      },
+      {
+        "text_seen": "19",
+        "region": "right"
+      },
+      {
+        "text_seen": "Bergbau und Erzgew...",
+        "region": "center"
+      },
+      {
+        "text_seen": "6",
+        "region": "center"
+      },
+      {
+        "text_seen": "Mauerarbeiten",
+        "region": "center"
+      },
+      {
+        "text_seen": "10",
+        "region": "center"
+      },
+      {
+        "text_seen": "Baukunst",
+        "region": "bottom-right"
+      },
+      {
+        "text_seen": "19",
+        "region": "bottom-right"
+      },
+      {
+        "text_seen": "Bronzebearbeitung",
+        "region": "bottom"
+      },
+      {
+        "text_seen": "10",
+        "region": "bottom"
+      },
+      {
+        "text_seen": "Schließen",
+        "region": "bottom-left"
+      },
+      {
+        "text_seen": "Freigeschaltete Einheiten:",
+        "region": "bottom-left"
+      },
+      {
+        "text_seen": "• Bogenschütze (5, 7)",
+        "region": "bottom-left"
+      },
+      {
+        "text_seen": "Freigeschaltete Wunder:",
+        "region": "bottom-left"
+      },
+      {
+        "text_seen": "• Tempel der Artemis (+1 Kultur; +10% Nahrung in allen Städten; +15% Produktion beim Bau von",
+        "region": "bottom"
+      },
+      {
+        "text_seen": "Bogenschießen erforschen (0/24)",
+        "region": "bottom-right"
+      }
+    ]
+  }
+}

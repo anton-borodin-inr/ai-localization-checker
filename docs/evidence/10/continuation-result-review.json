@@ -1,0 +1,36 @@
+{
+  "reviewed_by": "coding agent",
+  "date": "2026-10-19",
+  "basis": "Original screenshots and build-pinned translations, the pre-call reference and the separately Anton-confirmed post-call amendment; output diagnostics, not new defect labels.",
+  "runs": [
+    {
+      "run_id": "20261019T175806Z-ac6b2d",
+      "output_sha256": "ecec4cd2f6515e5f191ec614ae68079c476b88a4c1a03b9d59afcee91f982388",
+      "readings_reviewed": 29,
+      "invented_strings": [],
+      "reading_errors": [],
+      "hidden_completions": [],
+      "note": "Native-resolution reinspection confirms both controls exist. The original reference incorrectly omitted them; Anton confirmed the separate 20-unit amendment after all continuation calls. Original 18-unit scoring remains traceable."
+    },
+    {
+      "run_id": "20261019T175859Z-e40551",
+      "output_sha256": "22b5df04b9ac7857378e3dbdd7b943bd9297f7c376d205e276ddb5d9d2800450",
+      "readings_reviewed": 6,
+      "invented_strings": [],
+      "reading_errors": [],
+      "hidden_completions": [],
+      "note": "Reviewed against the exact original bottom-panel crop. Four vertically clipped description units are read correctly; they remain diagnostic only. All text is visible in the crop; the hidden production continuation is not supplied."
+    }
+  ],
+  "finding_region_review": [
+    {
+      "run_id": "20261019T175806Z-ac6b2d",
+      "finding_index": 0,
+      "text_seen": "Bergbau und Erzgew...",
+      "reported_region": "center",
+      "expected_original_region": "center",
+      "region_correct": true,
+      "basis": "Full-image call; matches the pre-existing human Mining label and pre-call reference. No crop mapping is required."
+    }
+  ]
+}

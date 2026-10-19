@@ -81,7 +81,7 @@ def exclusive_ledger(path: Path):
         lock.unlink()
 
 
-def validate_inputs(root: Path, plan_path: Path, approval_path: Path, slot: int):
+def approved_request(root: Path, plan_path: Path, approval_path: Path, slot: int):
     plan = json.loads(plan_path.read_text())
     approval = json.loads(approval_path.read_text())
     reference = root / "docs/evidence/10/reference-candidate.json"
@@ -109,6 +109,11 @@ def validate_inputs(root: Path, plan_path: Path, approval_path: Path, slot: int)
         raise ValueError("Only the approved issue 8 final screenshots are allowed")
     if file_hash(source) != request["image_sha256"]:
         raise ValueError("Original screenshot hash changed")
+    return request, source
+
+
+def validate_inputs(root: Path, plan_path: Path, approval_path: Path, slot: int):
+    request, source = approved_request(root, plan_path, approval_path, slot)
     # A fresh checkout must not reset this issue's already spent task budget.
     archived_ledger = root / "docs/evidence/10/ledger.json"
     if archived_ledger.exists():

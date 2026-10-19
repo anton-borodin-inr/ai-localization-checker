@@ -30,7 +30,8 @@ the reason and no findings (D-013).
 `--max-requests` (default 1) caps the requests of one run. A single retry after
 HTTP 429 counts as a request, so it happens only with `--max-requests 2` or more.
 The SDK's own retries are disabled. The task budget is stated by each issue
-(issue #3 allowed 10 requests; issue #10 allows 15 total). Every request shows up in
+(issue #3 allowed 10 requests; issue #10 was extended from 15 to 33 total
+with a separately authorized conditional continuation). Every request shows up in
 `data/runs/*/run.json` as `requests_sent`.
 
 ## Run record
@@ -81,9 +82,11 @@ If a model does not answer at all, `scripts/gemini_probe.py list` checks the key
 and the model list without generating, and `scripts/gemini_probe.py text
 [model]` sends one text-only request (it counts toward the budget).
 
-Issue #10's fixed fifteen-slot experiment is documented in
+Issue #10's initial fifteen-slot experiment and authorized continuation are documented in
 [small-text-experiment.md](small-text-experiment.md). It has a persistent task
-ledger and never retries a slot; its isolated transcription schema does not
+ledger; the separate continuation permits at most two new sends only for the
+original 503 slots, with a second send conditional on another 503. Its isolated
+transcription schema does not
 change the production finding schema or prompt. `ULTRA_HIGH` is experimental
 and is sent per image part, with the effective setting and its scope recorded.
 
