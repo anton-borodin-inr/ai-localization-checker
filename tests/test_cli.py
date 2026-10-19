@@ -88,3 +88,48 @@ def test_check_reports_not_checked(monkeypatch, capsys, screenshot, tmp_path):
     out = capsys.readouterr().out.splitlines()
     assert out[0].startswith(str(tmp_path / "runs"))
     assert out[1] == "not_checked: timeout: read timed out"
+
+
+def capture_argv(monkeypatch, *langs):
+    argv = ["l10n-capture", "--screen", "main-menu", "--variant", "original"]
+    for lang in langs:
+        argv += ["--lang", lang]
+    monkeypatch.setattr(sys, "argv", [*argv, "--output-dir", "data/capture"])
+
+
+def test_cli_captures_each_language_in_order(monkeypatch, capsys):
+    capture_argv(monkeypatch, "en", "de")
+    calls = []
+
+    def fake(device, folder, screen, lang, *args):
+        calls.append(lang)
+        return f"data/capture/{screen}__{lang}.png"
+
+    monkeypatch.setattr(cli, "capture", fake)
+    assert cli.main() == 0
+    assert calls == ["en", "de"]
+    assert capsys.readouterr().out.split() == [
+        "data/capture/main-menu__en.png",
+        "data/capture/main-menu__de.png",
+    ]
+
+
+def test_cli_stops_after_first_failure(monkeypatch, capsys):
+    capture_argv(monkeypatch, "en", "de")
+    calls = []
+
+    def fake(device, folder, screen, lang, *args):
+        calls.append(lang)
+        raise CaptureError("Unciv did not restart")
+
+    monkeypatch.setattr(cli, "capture", fake)
+    assert cli.main() == 1
+    assert calls == ["en"]
+    assert "Capture failed (en): Unciv did not restart" in capsys.readouterr().err
+
+
+def test_cli_rejects_unsupported_language(monkeypatch):
+    capture_argv(monkeypatch, "fr")
+    monkeypatch.setattr(cli, "capture", lambda *args: pytest.fail("no capture"))
+    with pytest.raises(SystemExit):
+        cli.main()

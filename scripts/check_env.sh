@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Checks the Stage 0 capture environment described in docs/environment.md.
 # Prints PASS/FAIL per item and exits non-zero if any check fails.
-# Read-only except for `adb root`, which restarts adbd on the emulator as root.
+# Read-only except for the adb-root check, which restarts adbd as root and then
+# back as shell (`adb unroot`).
 #
 # Usage (emulator must be running): scripts/check_env.sh
 
@@ -95,13 +96,17 @@ else
         fail "emulator-running" "$serial runs '$running_avd', expected $AVD_NAME"
     fi
 
+    # Root must be available, and adbd must be back to shell afterwards.
     "$ADB" -s "$serial" root >/dev/null 2>&1
     "$ADB" -s "$serial" wait-for-device
     whoami="$("$ADB" -s "$serial" shell whoami 2>/dev/null | tr -d '\r')"
-    if [[ "$whoami" == "root" ]]; then
-        pass "adb-root" "adb shell whoami = root"
+    "$ADB" -s "$serial" unroot >/dev/null 2>&1
+    "$ADB" -s "$serial" wait-for-device
+    whoami_after="$("$ADB" -s "$serial" shell whoami 2>/dev/null | tr -d '\r')"
+    if [[ "$whoami" == "root" && "$whoami_after" == "shell" ]]; then
+        pass "adb-root" "root available; adbd back to shell"
     else
-        fail "adb-root" "adb shell whoami = '$whoami'"
+        fail "adb-root" "whoami as root = '$whoami', after unroot = '$whoami_after'"
     fi
 
     version_code="$("$ADB" -s "$serial" shell dumpsys package "$UNCIV_PACKAGE" 2>/dev/null \

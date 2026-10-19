@@ -7,6 +7,8 @@ from pathlib import Path
 
 from l10n_checker.capture import (
     DEFAULT_SERVER,
+    DEFAULT_SETTLE_S,
+    LANGUAGES,
     CaptureError,
     Device,
     capture,
@@ -17,31 +19,50 @@ from l10n_checker.vision import RequestBudget, redact, run_check
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Capture the current Unciv screen through Appium."
+        description="Launch Unciv in each requested language and capture the screen."
     )
     parser.add_argument("--screen", required=True)
-    parser.add_argument("--lang", required=True)
+    parser.add_argument(
+        "--lang",
+        required=True,
+        action="append",
+        choices=sorted(LANGUAGES),
+        help="Repeat for several languages; captured in the given order.",
+    )
     parser.add_argument("--variant", required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--serial")
     parser.add_argument("--server", default=DEFAULT_SERVER)
     parser.add_argument("--overwrite", action="store_true")
+    parser.add_argument(
+        "--settle",
+        type=float,
+        default=DEFAULT_SETTLE_S,
+        help="Seconds to wait after launch before the screenshot.",
+    )
     args = parser.parse_args()
     sdk = Path(os.environ.get("ANDROID_HOME", str(Path.home() / "Library/Android/sdk")))
-    try:
-        target = capture(
-            Device(sdk / "platform-tools/adb", args.serial),
-            args.output_dir,
-            args.screen,
-            args.lang,
-            args.variant,
-            args.server,
-            args.overwrite,
-        )
-    except (CaptureError, OSError) as exc:
-        print(f"Capture failed: {exc}", file=sys.stderr)
-        return 1
-    print(target)
+    device = Device(sdk / "platform-tools/adb", args.serial)
+    saved = []
+    for lang in args.lang:
+        try:
+            target = capture(
+                device,
+                args.output_dir,
+                args.screen,
+                lang,
+                args.variant,
+                args.server,
+                args.overwrite,
+                args.settle,
+            )
+        except (CaptureError, OSError) as exc:
+            print(f"Capture failed ({lang}): {exc}", file=sys.stderr)
+            if saved:
+                print("Saved before the failure:", *saved, sep="\n  ", file=sys.stderr)
+            return 1
+        saved.append(target)
+        print(target)
     return 0
 
 

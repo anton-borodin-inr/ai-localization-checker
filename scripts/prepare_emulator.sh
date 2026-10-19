@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
-# Prepares a booted emulator for capture: restarts adbd as root and disables
-# the display cutout, so screenshots contain only the game (D-014).
+# Prepares a booted emulator for capture: disables the display cutout, so
+# screenshots contain only the game (D-014). adbd runs as root only while the
+# overlay is changed and is always returned to shell (`adb unroot`).
 #
 # The emulator re-enables the Pixel 7 emulation overlay on every boot, so this
 # must be run after each emulator start. See docs/environment.md.
@@ -28,6 +29,16 @@ until [[ "$(adb_device shell getprop sys.boot_completed | tr -d '\r')" == "1" ]]
     sleep 1
 done
 
+unroot() {
+    adb_device unroot >/dev/null || true
+    adb_device wait-for-device
+    if [[ "$(adb_device shell whoami | tr -d '\r')" != "shell" ]]; then
+        echo "adb unroot failed; adbd is still root. Run: adb unroot" >&2
+        exit 1
+    fi
+}
+trap unroot EXIT
+
 adb_device root >/dev/null
 adb_device wait-for-device
 
@@ -37,7 +48,7 @@ adb_device shell cmd overlay disable "$CUTOUT_OVERLAY"
 # screen reports no cutout insets.
 for _ in $(seq 1 20); do
     if cutout_disabled; then
-        echo "Emulator $serial ready: adbd is root, display cutout disabled"
+        echo "Emulator $serial: display cutout disabled; returning adbd to shell"
         exit 0
     fi
     sleep 0.5
