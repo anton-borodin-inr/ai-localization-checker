@@ -73,6 +73,10 @@ def setup_capture(tmp_path, monkeypatch):
         yield driver
 
     monkeypatch.setattr(cap, "appium_session", session)
+    # The language step has its own tests (test_capture_language.py).
+    language_step = Mock(side_effect=lambda *args: contextmanager(lambda: (yield))())
+    monkeypatch.setattr(cap, "unciv_language", language_step)
+    monkeypatch.setattr(cap.time, "sleep", lambda s: None)
     return device, driver, tmp_path / "data" / "capture"
 
 
