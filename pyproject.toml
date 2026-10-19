@@ -6,7 +6,6 @@ readme = "README.md"
 license = "MIT"
 requires-python = ">=3.11"
 dependencies = [
-    "appium-python-client>=6.0.7",
     "google-genai>=2.31.0",
     "pydantic>=2.14.1",
 ]
@@ -30,4 +29,4 @@ l10n-check = "l10n_checker.cli:check_main"
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]
-markers = ["device: requires a prepared emulator and the project-local Appium server"]
+markers = ["device: requires a prepared emulator"]
