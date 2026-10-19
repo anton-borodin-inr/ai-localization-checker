@@ -30,7 +30,7 @@ This is a portfolio project of Anton Borodin (Senior QA / QA Lead). The point is
 - A timeout, an API error or an invalid model response produces the status "not checked", never "no defects".
 - Changes to metric or matching code come with updated hand-computed golden tests. Never change a golden expected value to make a test pass — ask Anton.
 - Never skip, weaken or delete a failing test to make it pass; report it instead.
-- The agent never makes live provider calls, never reads or prints `.env` and never prints environment variables. Live calls are run by Anton with his key, using a command the task delivers; the request budget in the issue limits those runs. Every run records the model version, the prompt and the settings.
+- The agent never reads, prints or copies `.env`, never prints environment variables and never prints the API key. It may make live provider calls only when the issue states a request budget, and then only: through the project's own commands with the per-run request cap set; with the free-tier key (no billing-enabled project); never on the hold-out set; within the budget across all runs of the task. The key is loaded with `uv run --env-file .env`, never read by the agent. Every run is recorded under `data/runs/`, and the report lists each run id and its `requests_sent`. Without a budget in the issue, no live calls (D-028).
 - Unciv code is never changed in this repository. Changes to Unciv live in the fork, which is a separate folder with its own session.
 - No secrets in the repository. API keys come from environment variables (`.env`, gitignored).
 

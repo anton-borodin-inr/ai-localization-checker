@@ -270,3 +270,13 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 - **Alternatives considered:** A third class now (outside v1 scope); labeling broken placeholders as `untranslated` (mixes different fixes).
 - **Consequences:** `docs/labeling.md` lists the rule. The notes allow splitting the classes later without relabeling.
 
+## D-028 — The coding agent may run live free-tier calls within the issue budget
+
+- **Date:** 2026-10-19
+- **Status:** Accepted
+- **Accepted by:** Anton
+- **Decision:** The coding agent runs the live provider calls of a task itself, instead of handing a command to Anton. Conditions: the issue states a request budget; calls go only through the project's commands with the per-run request cap; only the free-tier key; never the hold-out set; the agent never reads or prints `.env` or the key (`uv run --env-file .env` loads it); every run is recorded under `data/runs/` and the report lists run ids and `requests_sent`.
+- **Why:** Anton does not want to run the live calls by hand for every experiment. The free tier has no spend, the request cap already exists in code and every request is recorded, so the agent's report can be checked against the run records rather than taken on trust.
+- **Alternatives considered:** Keep live calls with Anton (previous rule; slower, a manual step in every experiment); allow paid calls (no billing in v1).
+- **Consequences:** The hard rule in CLAUDE.md and AGENTS.md changes; issue constraints for #10 and #14 change accordingly. Review checks `data/runs/*/run.json` (or a committed summary of it) against the report. Free-tier inputs may be used by Google (already accepted in D-017).
+
