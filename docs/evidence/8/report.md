@@ -1,8 +1,10 @@
 # Issue 8 Report
 
-**Incomplete: probe APK built, installed and launched after Anton's explicit
-approval. Waiting for manual navigation; no probe screenshots yet. Anton has not chosen A/B, and intentional ellipsis is not accepted as a
-defect.** No labels or evaluation inputs have been created.
+**Probe checkpoint complete; issue 8 remains incomplete.** Both exploratory
+screens were captured after Anton's manual navigation. Mining shows intentional
+ellipsis; Worker displays its complete title without demonstrated text loss.
+Stopped for Anton's selection. No final pair, labels or evaluation inputs have
+been created, and intentional ellipsis is not yet accepted as a defect.
 
 - **What changed:** Added `docs/unciv-build.md` with the build/install/rollback
   plan, exact German probe strings, source-based width budgets and label-format
@@ -29,12 +31,17 @@ defect.** No labels or evaluation inputs have been created.
   package read confirmed 4.22.10 / 1271009 and DEBUGGABLE. `am start -W` reported
   Status: ok; the process and top resumed activity were independently confirmed.
   Boot, display size 1080 x 2400, density 420 and the existing fail-closed cutout
-  check passed. Screenshots and restoration are not
-  run. `uv run --offline pytest` exited 0: 181 passed, 1 skipped (the opt-in
+  check passed. Both probe screens were captured without restart or app-data
+  writes after Anton opened each. Read-only `run-as` settings reads confirmed
+  German, Small UI, font multiplier 1 and the default font family. PNG structure,
+  CRC and 2400 x 1080 size passed; foreground and cutout passed before/after.
+  Restoration and the final pair are not run. At the preparation checkpoint,
+  `uv run --offline pytest` exited 0: 181 passed, 1 skipped (the opt-in
   device test), 1 upstream google-genai/Python deprecation warning in 28.09s.
   Ruff check and format check exited 0 (30 files already formatted), and
   `git diff --check` passed. `--run-device` was not run: capture/device code is
-  unchanged; probe screenshots are waiting for Anton's manual navigation.
+  unchanged. These offline checks were not rerun for the later documentation
+  and image-evidence updates; their runtime/test sources remain unchanged.
 - **Deviations from the task:** Anton explicitly approved a preliminary
   two-injection probe before the one-injection pair. Probe images are exploration
   only in this Report and are excluded from labels and evaluation. Manual
@@ -56,9 +63,13 @@ defect.** No labels or evaluation inputs have been created.
   fixed the helper, with both subsequent measurements exiting 0.
 - **Decisions proposed:** D-023 records the approved exploratory/manual-capture
   workflow and the proposed label-file format. No Accepted decision is edited.
-- **Open questions for Anton:** Open the two probe screens manually, then
-  choose A/B from the observed behavior and decide the ellipsis boundary. Supply
-  final human labels and confirm the clean control. Every subsequent app
+- **Open questions for Anton:** Choose the next step from the two observed
+  outcomes and decide the intentional-ellipsis boundary. A is a candidate only
+  if Anton accepts that shortening as a defect; B has not demonstrated
+  `truncated_text` and is not evidence of a defect. If ellipsis is rejected,
+  neither current probe establishes the required text-loss case; another
+  experiment needs Anton's direction before changes. Final human labels and
+  clean-control acceptance remain Anton-owned. Every subsequent app
   replacement/deletion or explicit data overwrite still needs its own approval.
 - **API usage:** No live provider calls; no detector output or hold-out access.
   No new dependencies in this repository. Existing Android/Gradle build inputs
@@ -68,11 +79,26 @@ defect.** No labels or evaluation inputs have been created.
 
 | Screen | Actual behavior |
 |---|---|
-| Technology picker / Mining | Not captured; prediction: intentional ellipsis |
-| City construction / Worker | Not captured; panel growth, edge loss and overlap remain unobserved |
+| Technology picker / Mining | **Observed:** the title ends in `...`, omitting the end of `Erzgewinnung`, inside the fixed-width TechButton. This is the source's intentional-ellipsis path. No collision around the target title is visible. Defect acceptance remains Anton's decision. |
+| City construction / Worker | **Observed:** the complete title fits on one line in the lower-right construction panel, without ellipsis, edge loss or visible collision. In the available-constructions list it wraps onto two lines, retaining the full text. The panel accommodates the title beyond the nominal budget; this is consistent with source-driven growth, but its width change versus a clean build has not been measured. `truncated_text` is not demonstrated. |
 
-Probe screenshots will be embedded here only after Anton opens each screen and
-the capture passes the documented checks. They are never ground truth.
+The Technology capture is 393,632 bytes, 2400 x 1080; SHA-256
+`68f2f287f19b312bff501793bb563da03a81b7768d935b0e0027ea479f4bc49b`.
+No clean-control comparison has been made yet. These observations are
+exploration, not ground-truth labels.
+
+![Exploration only: Mining title with intentional ellipsis](exploration/tech-picker__de__2400x1080__probe__1271009.png)
+
+The Worker capture is 562,946 bytes, 2400 x 1080; SHA-256
+`56f2a11958c5cb3a12c5cc7d7b1b6edf726b04e94de3a655fc2b3624f5fc0e71`.
+
+![Exploration only: complete Worker title in the adaptive panel](exploration/city-construction__de__2400x1080__probe__1271009.png)
+
+**Recommendation, not a label:** A is the only current candidate showing text
+shortening, and it is the intentional-ellipsis path. Proceed with A only if
+Anton explicitly accepts that boundary. B is a successful adaptation in this
+capture and should not be presented as truncation. Do not build the final pair
+or change either injection before Anton chooses the next step.
 
 ## Command evidence
 
@@ -94,7 +120,8 @@ evidence is retained beside this Report. Private app backups are excluded.
 - Original private and external file archives are readable and retained in the
   private local backup. Their checksums and the probe APK checksum were rechecked
   immediately before replacement. F-Droid was uninstalled and probe installed
-  after Anton explicitly answered: "Yes, uninstall F-Droid and install the probe."
+  after Anton explicitly answered (translated from Russian): "Yes, uninstall
+  F-Droid and install the probe."
   No agent settings/save overwrite or restoration has been run.
 
 Authorized and executed commands (both exit 0 / Success):
@@ -104,14 +131,15 @@ adb -s emulator-5554 uninstall com.unciv.app
 adb -s emulator-5554 install outputs/issue-8/Unciv-probe-1271009.apk
 ```
 
-The probe is running and waiting for Anton to select German and open the two
-screens. Existing settings were not imported into the fresh debug installation.
+Anton selected German, founded Istanbul, opened the Technology picker and
+then selected Worker in the city screen. Both exploratory captures are complete.
+Existing settings were not imported into the fresh debug installation.
 Every later app replacement or explicit data overwrite still has its own
 confirmation gate. Read-only preflight excerpts are in
 [device-preflight.txt](device-preflight.txt); full command records and saved-output
 checksums are in [device-commands.txt](device-commands.txt).
 
-## Changed files at this preparation checkpoint
+## Changed files at this probe checkpoint
 
 - Checker: `docs/unciv-build.md`, `docs/decisions.md`, this Report, and the
   supporting text/JSON evidence listed in [README.txt](README.txt).

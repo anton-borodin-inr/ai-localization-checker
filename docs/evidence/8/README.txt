@@ -1,6 +1,6 @@
 Issue 8 preparation evidence (English; no labels)
 
-report.md                         Current Report and pending device gate
+report.md                         Current Report and pending human selection
 probe-manifest.json               Pinned source, APK hash, width budgets, exclusions
 device-commands.txt               Every executed adb command, output or saved-output hash, exit code
 device-preflight.txt              Relevant fields from independent installed-package/display/foreground reads
@@ -27,6 +27,10 @@ backups under data/issue-8/backups/fdroid-original/. They are not committed.
 No backup archive is extracted into this repository. The backed-up settings
 match both the device checksum and the settings member of the internal archive.
 
-Probe screenshots do not exist yet. Once captured, they are exploration only
-and may be embedded only in the Report. No file here is a ground-truth label
+exploration/tech-picker__de__2400x1080__probe__1271009.png
+exploration/city-construction__de__2400x1080__probe__1271009.png
+
+Both original probe screenshots are retained under exploration/ and embedded
+only in the Report. Their hashes, dimensions and capture checks are recorded
+in probe-manifest.json. They are exploration only. No file here is a ground-truth label
 or an evaluation input. Anton decides the final injection after the probe.

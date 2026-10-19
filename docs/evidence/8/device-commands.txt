@@ -257,3 +257,113 @@ $ adb -s emulator-5554 shell dumpsys activity activities > work/checker/data/iss
 $ adb -s emulator-5554 shell pidof com.unciv.app > work/checker/data/issue-8/probe-ready-pid.txt
 [stdout saved: 6 bytes; SHA-256 840bb10f6d87f0daec9bdc0c0e4d3c8e48d40b0c0d7aee038f9067e6bd985dd5]
 [exit 0]
+
+2026-10-19T13:25:39.844695+00:00
+$ adb -s emulator-5554 shell dumpsys package com.unciv.app > work/checker/data/issue-8/tech-picker-probe-package.txt
+[stdout saved: 11450 bytes; SHA-256 872a03310f23847002517ab0d651b1049a8bdf7191888457cdef2e596862659c]
+[exit 0]
+
+2026-10-19T13:25:39.916503+00:00
+$ adb -s emulator-5554 exec-out run-as com.unciv.app cat /data/user/0/com.unciv.app/files/GameSettings.json > work/checker/data/issue-8/tech-picker-probe-settings-private.txt
+[stdout saved: 625 bytes; SHA-256 5ac9d068fbda986a89caebe2c56862d0dff04ac4c463312b4972c2e7ecc90e3e]
+[exit 0]
+
+2026-10-19T13:25:39.980360+00:00
+$ adb -s emulator-5554 shell wm size > work/checker/data/issue-8/tech-picker-probe-wm-size.txt
+[stdout saved: 25 bytes; SHA-256 07377115fb06f1cbbbfdc0f30fb6862024571638f1173d6dc4311c06f720df45]
+[exit 0]
+
+2026-10-19T13:25:40.044259+00:00
+$ adb -s emulator-5554 shell wm density > work/checker/data/issue-8/tech-picker-probe-wm-density.txt
+[stdout saved: 22 bytes; SHA-256 c4d910beb2bd2a0e1934a659e6f50c1ce400c0186723be9ba5dacf57bc99b11e]
+[exit 0]
+
+2026-10-19T13:25:40.105351+00:00
+$ adb -s emulator-5554 shell dumpsys display > work/checker/data/issue-8/tech-picker-probe-before-display.txt
+[stdout saved: 19848 bytes; SHA-256 261e2af6d07e439c887a3fa0244bfaf56ad21e52d325fbcebab2971193649536]
+[exit 0]
+
+2026-10-19T13:25:40.166275+00:00
+$ adb -s emulator-5554 shell cmd overlay list android > work/checker/data/issue-8/tech-picker-probe-before-overlays.txt
+[stdout saved: 1993 bytes; SHA-256 41405c9726c9820418cdd03d120edbdda06d0aa5f83126d15fa1b19d88cd3ab4]
+[exit 0]
+
+2026-10-19T13:25:40.228179+00:00
+$ adb -s emulator-5554 shell dumpsys activity activities > work/checker/data/issue-8/tech-picker-probe-before-activity.txt
+[stdout saved: 30697 bytes; SHA-256 4580777a3a0846c859f8a2bc8cdf625cbc4023c47616b4f474f3723bf49060a9]
+[exit 0]
+
+2026-10-19T13:25:40.543255+00:00
+$ adb -s emulator-5554 exec-out screencap -p > work/checker/data/issue-8/exploration/tech-picker__de__2400x1080__probe__1271009.png
+[stdout saved: 393632 bytes; SHA-256 68f2f287f19b312bff501793bb563da03a81b7768d935b0e0027ea479f4bc49b]
+[exit 0]
+
+2026-10-19T13:25:40.607241+00:00
+$ adb -s emulator-5554 shell dumpsys display > work/checker/data/issue-8/tech-picker-probe-after-display.txt
+[stdout saved: 19848 bytes; SHA-256 79ea4eba8e60ecb0551cacd524b790fc0ffeda7dc181fec2eaa96fd0fc6abb14]
+[exit 0]
+
+2026-10-19T13:25:40.669494+00:00
+$ adb -s emulator-5554 shell cmd overlay list android > work/checker/data/issue-8/tech-picker-probe-after-overlays.txt
+[stdout saved: 1993 bytes; SHA-256 41405c9726c9820418cdd03d120edbdda06d0aa5f83126d15fa1b19d88cd3ab4]
+[exit 0]
+
+2026-10-19T13:25:40.733458+00:00
+$ adb -s emulator-5554 shell dumpsys activity activities > work/checker/data/issue-8/tech-picker-probe-after-activity.txt
+[stdout saved: 30696 bytes; SHA-256 2a7e0e651f8d550d37d86316b16e41b12044311b78177ecad972573201814eb4]
+[exit 0]
+
+2026-10-19T13:32:42.495576+00:00
+$ adb -s emulator-5554 shell dumpsys package com.unciv.app > work/checker/data/issue-8/city-construction-probe-package.txt
+[stdout saved: 11450 bytes; SHA-256 fc857b9e486d2833b8ba1465894e17352db506bf53286d0230536cfecc33b739]
+[exit 0]
+
+2026-10-19T13:32:42.564911+00:00
+$ adb -s emulator-5554 exec-out run-as com.unciv.app cat /data/user/0/com.unciv.app/files/GameSettings.json > work/checker/data/issue-8/city-construction-probe-settings-private.txt
+[stdout saved: 645 bytes; SHA-256 dc35061fcf8011635bfb2d0f94999c5de7bf8b4fafea64ace9803264f8117b10]
+[exit 0]
+
+2026-10-19T13:32:42.627124+00:00
+$ adb -s emulator-5554 shell wm size > work/checker/data/issue-8/city-construction-probe-wm-size.txt
+[stdout saved: 25 bytes; SHA-256 07377115fb06f1cbbbfdc0f30fb6862024571638f1173d6dc4311c06f720df45]
+[exit 0]
+
+2026-10-19T13:32:42.690444+00:00
+$ adb -s emulator-5554 shell wm density > work/checker/data/issue-8/city-construction-probe-wm-density.txt
+[stdout saved: 22 bytes; SHA-256 c4d910beb2bd2a0e1934a659e6f50c1ce400c0186723be9ba5dacf57bc99b11e]
+[exit 0]
+
+2026-10-19T13:32:42.751325+00:00
+$ adb -s emulator-5554 shell dumpsys display > work/checker/data/issue-8/city-construction-probe-before-display.txt
+[stdout saved: 19848 bytes; SHA-256 1cb51865819e91f6473626f64eaa4c92fd4bf0e8aed6bef77b293a1008d75259]
+[exit 0]
+
+2026-10-19T13:32:42.811916+00:00
+$ adb -s emulator-5554 shell cmd overlay list android > work/checker/data/issue-8/city-construction-probe-before-overlays.txt
+[stdout saved: 1993 bytes; SHA-256 41405c9726c9820418cdd03d120edbdda06d0aa5f83126d15fa1b19d88cd3ab4]
+[exit 0]
+
+2026-10-19T13:32:42.872660+00:00
+$ adb -s emulator-5554 shell dumpsys activity activities > work/checker/data/issue-8/city-construction-probe-before-activity.txt
+[stdout saved: 30698 bytes; SHA-256 e69ba8854e1cf2d1df26575037b4200dbf0c56db18d46b7b11e7be09d37a5362]
+[exit 0]
+
+2026-10-19T13:32:43.070685+00:00
+$ adb -s emulator-5554 exec-out screencap -p > work/checker/data/issue-8/exploration/city-construction__de__2400x1080__probe__1271009.png
+[stdout saved: 562946 bytes; SHA-256 56f2a11958c5cb3a12c5cc7d7b1b6edf726b04e94de3a655fc2b3624f5fc0e71]
+[exit 0]
+
+2026-10-19T13:32:43.134203+00:00
+$ adb -s emulator-5554 shell dumpsys display > work/checker/data/issue-8/city-construction-probe-after-display.txt
+[stdout saved: 19848 bytes; SHA-256 a3f0d22f82080ed214d8e920e6eecd9af5fe1569f10102474893d5c31dc7b1a6]
+[exit 0]
+
+2026-10-19T13:32:43.195641+00:00
+$ adb -s emulator-5554 shell cmd overlay list android > work/checker/data/issue-8/city-construction-probe-after-overlays.txt
+[stdout saved: 1993 bytes; SHA-256 41405c9726c9820418cdd03d120edbdda06d0aa5f83126d15fa1b19d88cd3ab4]
+[exit 0]
+
+2026-10-19T13:32:43.259556+00:00
+$ adb -s emulator-5554 shell dumpsys activity activities > work/checker/data/issue-8/city-construction-probe-after-activity.txt
+[stdout saved: 30697 bytes; SHA-256 9b5d76a11232395b14e8cf29ec495c9e5ce1b3d1578cc6b550137cd5125abcfd]
+[exit 0]

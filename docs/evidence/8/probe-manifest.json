@@ -41,9 +41,69 @@
       "excess_percent": 30.59
     }
   ],
-  "screen_observations": "not_captured",
+  "screen_observations": {
+    "tech-picker": {
+      "purpose": "exploration_only",
+      "excluded_from_labeled_set": true,
+      "excluded_from_evaluation": true,
+      "screen": "tech-picker",
+      "file": "tech-picker__de__2400x1080__probe__1271009.png",
+      "bytes": 393632,
+      "sha256": "68f2f287f19b312bff501793bb563da03a81b7768d935b0e0027ea479f4bc49b",
+      "png_size": [
+        2400,
+        1080
+      ],
+      "language": "German",
+      "screen_size_setting": "Small",
+      "font_size_multiplier": 1,
+      "default_font_family": true,
+      "version_code": 1271009,
+      "cutout_before_after": "passed",
+      "foreground_before_after": "passed",
+      "app_restart": false,
+      "app_data_write": false,
+      "visual_observation": {
+        "status": "observed_exploration_only",
+        "behavior": "intentional_ellipsis",
+        "details": "Mining title visibly ends in three dots inside its fixed-width TechButton; the end of Erzgewinnung is omitted. No collision around the target title is visible in this capture.",
+        "classification_as_defect": "awaiting_Anton_decision",
+        "clean_control_comparison": "not_yet_captured"
+      }
+    },
+    "city-construction": {
+      "purpose": "exploration_only",
+      "excluded_from_labeled_set": true,
+      "excluded_from_evaluation": true,
+      "screen": "city-construction",
+      "file": "city-construction__de__2400x1080__probe__1271009.png",
+      "bytes": 562946,
+      "sha256": "56f2a11958c5cb3a12c5cc7d7b1b6edf726b04e94de3a655fc2b3624f5fc0e71",
+      "png_size": [
+        2400,
+        1080
+      ],
+      "language": "German",
+      "screen_size_setting": "Small",
+      "font_size_multiplier": 1,
+      "default_font_family": true,
+      "version_code": 1271009,
+      "cutout_before_after": "passed",
+      "foreground_before_after": "passed",
+      "app_restart": false,
+      "app_data_write": false,
+      "visual_observation": {
+        "status": "observed_exploration_only",
+        "behavior": "full_title_fits_in_adaptive_panel",
+        "details": "The complete Worker title is visible on one line in the lower-right selected-construction panel, without ellipsis, edge loss or visible collision. The available-constructions entry at left wraps the complete title onto two lines.",
+        "panel_growth": "Consistent with content-driven expansion beyond the nominal title budget; change versus clean width has not been measured because the clean build has not been captured.",
+        "classification_as_truncated_text": "not_demonstrated",
+        "clean_control_comparison": "not_yet_captured"
+      }
+    }
+  },
   "device_installation": {
-    "status": "installed_and_launched_awaiting_manual_navigation",
+    "status": "probe_captures_complete_awaiting_Anton_choice",
     "user_authorized_fdroid_uninstall_and_probe_install": true,
     "uninstall_exit_code": 0,
     "install_exit_code": 0,

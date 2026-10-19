@@ -1,7 +1,9 @@
 # Unciv source builds for issue 8
 
-**Status: probe APK built, installed and launched; waiting for manual navigation.** No probe screen has been observed,
-Anton has not chosen the final injection, and no labels have been created.
+**Status: both exploratory probe screens captured; stopped for Anton's choice.**
+Mining shows intentional ellipsis. Worker displays its full title without text
+loss. Anton has not chosen the final injection or accepted ellipsis as a defect,
+and no labels have been created.
 See the [Report](evidence/8/report.md) for executed checks, failures and pending
 steps. Commands in recipes below are instructions, not execution evidence.
 
@@ -165,11 +167,16 @@ through verified restoration.
 
 ## Navigate and capture
 
-Anton manually opens both probe screens in German once. Technology picker:
-start/load a dev game, open research, keep Mining visible and select another
-technology so the long name is not duplicated in the description. City screen:
-use the same game, open a city and select Worker in available constructions.
-Verify actual font/UI settings before applying the width predictions.
+Anton manually opened both probe screens in German. The observed route was
+`Schnellstart`, select `Siedler`, then `Stadt gründen` to found Istanbul. The
+research button is hidden until a city exists; from the map,
+`Technologie auswählen!` opens the Technology picker. Scroll down until the
+Mining tile beginning `Bergbau` is visible, without selecting it, so the long
+name is not duplicated in the description. For Worker, use `Schließen`, tap
+Istanbul on the map, expand `Einheiten` if needed and tap the Worker name once
+(not its plus button). This selects the lower-right construction-info panel;
+a second tap can add production to the queue and is unnecessary for capture.
+Both captures independently confirmed default font, multiplier 1 and Small UI.
 
 For the final pair, use one frozen dev save with recorded checksum, ruleset,
 turn and manual navigation recipe. Preserve selected item and scroll position;
