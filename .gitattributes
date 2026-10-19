@@ -1,0 +1,3 @@
+# Raw Tesseract TSV uses a trailing tab for an empty text column on layout rows.
+# Preserve those field delimiters byte-for-byte; ordinary source checks stay on.
+docs/evidence/12/records/*/ocr.tsv whitespace=-blank-at-eol

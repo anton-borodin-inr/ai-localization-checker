@@ -1,0 +1,34 @@
+{
+  "rules_frozen_commit": "05032f86711bfc9b905c4a736dae4ee10ce810c2",
+  "executed_code_commit": "9abdbcb30c760b2d8b0b70ede6d6adb2e3d572e0",
+  "note": "9abdbcb changes only the new CLI output-path guard and its test after a pre-OCR invocation failure. Detector settings and source inventory are unchanged from 05032f8. Records are byte-for-byte copies of data/baseline-runs; no label files were read. Full SHAs are recorded in report.md.",
+  "runs": [
+    {
+      "run_id": "20261019T155103Z-47dbbd",
+      "screenshot": "tech-picker__de__2400x1080__clean__1271001.png",
+      "status": "checked",
+      "findings": 15,
+      "requests_sent": 0,
+      "latency_s": 0.853,
+      "code_commit": "9abdbcb30c760b2d8b0b70ede6d6adb2e3d572e0"
+    },
+    {
+      "run_id": "20261019T155117Z-7e8171",
+      "screenshot": "tech-picker__de__2400x1080__injected__1271002.png",
+      "status": "checked",
+      "findings": 12,
+      "requests_sent": 0,
+      "latency_s": 0.871,
+      "code_commit": "9abdbcb30c760b2d8b0b70ede6d6adb2e3d572e0"
+    },
+    {
+      "run_id": "20261019T155118Z-659d65",
+      "screenshot": "tech-picker__en__2400x1080__clean__1271001.png",
+      "status": "checked",
+      "findings": 14,
+      "requests_sent": 0,
+      "latency_s": 0.527,
+      "code_commit": "9abdbcb30c760b2d8b0b70ede6d6adb2e3d572e0"
+    }
+  ]
+}
