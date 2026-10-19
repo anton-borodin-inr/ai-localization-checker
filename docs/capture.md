@@ -36,7 +36,7 @@ command stops with exit 1 and lists the files saved before the failure. The
 `lang` field of the filename is the requested code. `screen` and `variant` are
 labels: after launch Unciv always shows its main menu, so `--screen` should be
 `main-menu` until navigation exists. Resolution is read from the device's
-current display info; build is the installed `com.unciv.app` APK `versionCode`
+display info after Unciv has launched; build is the installed `com.unciv.app` APK `versionCode`
 (D-016). Filename fields start with an ASCII letter or digit and allow letters,
 digits, periods, hyphens and underscores, but no `__` delimiter within a field.
 
@@ -54,8 +54,9 @@ top-level `language` key into `/data/user/0/com.unciv.app/files/GameSettings.jso
 while Unciv is stopped, then launch it. For each requested language:
 
 1. **Checks, no device changes:** filename fields, output folder, one booted
-   emulator, display cutout disabled, screen size, `versionCode`, and that the
-   target PNG does not exist yet (unless `--overwrite`).
+   emulator, display cutout disabled, `versionCode`, and that no PNG for this
+   screen, language, variant and build exists at any resolution (unless
+   `--overwrite`).
 2. **`adb root`**, confirmed with `whoami == root`. Reading and writing the
    app's private file needs root.
 3. **Backup:** force-stop Unciv, read the settings file and its
@@ -72,7 +73,9 @@ while Unciv is stopped, then launch it. For each requested language:
    activity. Otherwise: `Unciv did not restart`.
 7. **Wait** `--settle` seconds (default 8, as in #7). LibGDX draws on one canvas
    with no UI tree to wait on, so a fixed wait is used.
-8. **Screenshot** through an Appium session (D-015): Unciv in the foreground,
+8. **Screenshot** through an Appium session (D-015). The screen size, and so
+   the filename, is read only now: before launch the device may still be in the
+   launcher's portrait orientation. Then: Unciv in the foreground,
    cutout checked before and after, PNG structure and size checked. The PNG is
    kept in memory.
 9. **Language kept:** force-stop Unciv and read the file again; `language` must
