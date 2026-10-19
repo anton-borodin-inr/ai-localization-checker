@@ -1,0 +1,115 @@
+$ adb -s emulator-5554 root
+restarting adbd as root
+[exit 0]
+
+$ adb -s emulator-5554 wait-for-device
+[exit 0]
+
+$ adb -s emulator-5554 shell whoami
+root
+[exit 0]
+
+$ adb -s emulator-5554 shell 'stat -c '"'"'%u %g %a %s'"'"' /data/user/0/com.unciv.app/files/GameSettings.json'
+10192 10192 600 93
+[exit 0]
+
+$ adb -s emulator-5554 exec-out cat /data/user/0/com.unciv.app/files/GameSettings.json > work/evidence/GameSettings.original.json
+[stdout saved: 93 bytes]
+[exit 0]
+
+$ adb -s emulator-5554 shell sha256sum /data/user/0/com.unciv.app/files/GameSettings.json
+3b55ab3dd62845e1c31374bb604446d0a3b672045ba030e90810d9354fabaa6d  /data/user/0/com.unciv.app/files/GameSettings.json
+[exit 0]
+
+$ adb -s emulator-5554 unroot
+restarting adbd as non root
+[exit 0]
+
+$ adb -s emulator-5554 wait-for-device
+[exit 0]
+
+$ adb -s emulator-5554 shell whoami
+shell
+[exit 0]
+
+$ adb -s emulator-5554 root
+restarting adbd as root
+[exit 0]
+
+$ adb -s emulator-5554 wait-for-device
+[exit 0]
+
+$ adb -s emulator-5554 exec-out cat /data/user/0/com.unciv.app/files/GameSettings.json > work/evidence/GameSettings.precheck.json
+[stdout saved: 93 bytes]
+[exit 0]
+
+$ adb -s emulator-5554 shell am force-stop com.unciv.app
+[exit 0]
+
+$ adb -s emulator-5554 shell am start -W -n com.unciv.app/.AndroidLauncher
+Starting: Intent { cmp=com.unciv.app/.AndroidLauncher }
+Status: ok
+LaunchState: COLD
+Activity: com.unciv.app/.AndroidLauncher
+TotalTime: 376
+WaitTime: 382
+Complete
+[exit 0]
+
+$ adb -s emulator-5554 exec-out screencap -p > work/evidence/main-menu__en__2400x1080__language-check-before__1271.png
+[stdout saved: 543471 bytes]
+[exit 0]
+
+$ adb -s emulator-5554 shell am force-stop com.unciv.app
+[exit 0]
+
+$ adb -s emulator-5554 shell 'cat > /data/user/0/com.unciv.app/files/GameSettings.json' < work/evidence/GameSettings.russian.json
+[exit 0]
+
+$ adb -s emulator-5554 shell sha256sum /data/user/0/com.unciv.app/files/GameSettings.json
+68a7106791fb303420763fdf0281ccc1b11351ffaffa2308571a60618a5aa2c1  /data/user/0/com.unciv.app/files/GameSettings.json
+[exit 0]
+
+$ adb -s emulator-5554 shell am start -W -n com.unciv.app/.AndroidLauncher
+Starting: Intent { cmp=com.unciv.app/.AndroidLauncher }
+Status: ok
+LaunchState: COLD
+Activity: com.unciv.app/.AndroidLauncher
+TotalTime: 198
+WaitTime: 199
+Complete
+[exit 0]
+
+$ adb -s emulator-5554 exec-out screencap -p > work/evidence/main-menu__ru__2400x1080__language-check-after__1271.png
+[stdout saved: 523628 bytes]
+[exit 0]
+
+$ adb -s emulator-5554 shell am force-stop com.unciv.app
+[exit 0]
+
+$ adb -s emulator-5554 shell 'cat > /data/user/0/com.unciv.app/files/GameSettings.json' < work/evidence/GameSettings.original.json
+[exit 0]
+
+$ adb -s emulator-5554 exec-out cat /data/user/0/com.unciv.app/files/GameSettings.json > work/evidence/GameSettings.restored.json
+[stdout saved: 93 bytes]
+[exit 0]
+
+$ adb -s emulator-5554 shell sha256sum /data/user/0/com.unciv.app/files/GameSettings.json
+3b55ab3dd62845e1c31374bb604446d0a3b672045ba030e90810d9354fabaa6d  /data/user/0/com.unciv.app/files/GameSettings.json
+[exit 0]
+
+$ adb -s emulator-5554 shell 'stat -c '"'"'%u %g %a %s'"'"' /data/user/0/com.unciv.app/files/GameSettings.json'
+10192 10192 600 93
+[exit 0]
+
+$ adb -s emulator-5554 unroot
+restarting adbd as non root
+[exit 0]
+
+$ adb -s emulator-5554 wait-for-device
+[exit 0]
+
+$ adb -s emulator-5554 shell whoami
+shell
+[exit 0]
+
