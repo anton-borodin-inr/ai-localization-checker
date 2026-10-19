@@ -17,15 +17,12 @@ AVD_HEIGHT=2400
 AVD_DENSITY=420
 UNCIV_PACKAGE=com.unciv.app
 UNCIV_VERSION_CODE=1271
-APPIUM_VERSION=3.3.1
-UIAUTOMATOR2_VERSION=7.1.2
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 ANDROID_HOME="${ANDROID_HOME:-$HOME/Library/Android/sdk}"
 ADB="$ANDROID_HOME/platform-tools/adb"
 SDK_IMAGE_DIR="$ANDROID_HOME/$(echo "$SYSTEM_IMAGE" | tr ';' '/')"
 AVD_CONFIG="$HOME/.android/avd/$AVD_NAME.avd/config.ini"
-export APPIUM_HOME="$REPO_ROOT/.appium"
 source "$REPO_ROOT/scripts/cutout.sh"
 
 failures=0
@@ -124,35 +121,6 @@ else
     else
         fail "display-cutout" "active or unknown (run: scripts/prepare_emulator.sh)"
     fi
-fi
-
-# --- Project-local Appium ---
-appium_bin="$REPO_ROOT/node_modules/.bin/appium"
-appium_version="$("$appium_bin" --version 2>/dev/null | tail -1)"
-if [[ "$appium_version" == "$APPIUM_VERSION" ]]; then
-    pass "appium" "$appium_version (project-local)"
-else
-    fail "appium" "found '$appium_version', expected $APPIUM_VERSION (run: npm ci)"
-fi
-
-# The driver declares the Appium versions it supports; check ours satisfies it.
-driver_check="$(cd "$REPO_ROOT" && "$appium_bin" driver list --installed --json 2>/dev/null \
-    | node -e '
-        const semver = require(process.argv[1] + "/node_modules/semver");
-        let input = "";
-        process.stdin.on("data", (c) => (input += c));
-        process.stdin.on("end", () => {
-            const d = JSON.parse(input).uiautomator2;
-            if (!d) return console.log("MISSING");
-            const ok = semver.satisfies(process.argv[2], d.appiumVersion, { includePrerelease: true });
-            console.log(`${d.version} ${d.appiumVersion} ${ok ? "OK" : "INCOMPATIBLE"}`);
-        });
-    ' "$REPO_ROOT" "$APPIUM_VERSION" 2>/dev/null)"
-read -r driver_version driver_range driver_status <<<"$driver_check"
-if [[ "$driver_version" == "$UIAUTOMATOR2_VERSION" && "$driver_status" == "OK" ]]; then
-    pass "uiautomator2" "$driver_version (supports appium $driver_range)"
-else
-    fail "uiautomator2" "got '${driver_check:-nothing}', expected $UIAUTOMATOR2_VERSION compatible with appium $APPIUM_VERSION"
 fi
 
 echo
