@@ -1,0 +1,156 @@
+Executed host verification at the probe preparation checkpoint
+Host-specific configuration uses the documented BUILD_JDK/BUILD_SDK/BUILD_CACHE
+paths. The actual build ran with Android Studio JBR 21 and the task-local cache.
+
+$ /usr/bin/time -p env JAVA_HOME="$BUILD_JDK" ANDROID_HOME="$BUILD_SDK" GRADLE_USER_HOME="$BUILD_CACHE" ./gradlew --no-daemon --console=plain :android:assembleDebug
+[cwd: separate Unciv fork, commit 190275d1e4490dceb682cf881f8c3433c1b53162]
+BUILD SUCCESSFUL in 2m 38s
+45 actionable tasks: 45 executed
+real 159.03
+user 2.31
+sys 0.75
+[exit 0; full stdout/stderr: probe-build.txt]
+
+$ env JAVA_HOME="$BUILD_JDK" "$BUILD_SDK/build-tools/36.0.0/apksigner" verify --verbose --print-certs android/build/outputs/apk/debug/Unciv-debug.apk
+[exit 0; full output: probe-signature.txt, including META-INF warnings]
+
+$ "$BUILD_SDK/build-tools/36.0.0/aapt2" dump badging android/build/outputs/apk/debug/Unciv-debug.apk
+[exit 0; full output: probe-badging.txt]
+
+$ env JAVA_HOME="$BUILD_JDK" "$BUILD_SDK/build-tools/36.0.0/apksigner" verify --verbose --print-certs <private-backup>/installed-0.apk
+[exit 0; full output: fdroid-signature.txt, including META-INF warnings]
+
+Probe signing certificate SHA-256:
+b4752f8cee80842f55883ca2a9b62ca75c898df5a1b7cefd63959ba1b8fecb99
+F-Droid signing certificate SHA-256:
+cd16e386469f23988fc9cdeca01bfefbd0deaed13a4907bce76e91acc9662c68
+Certificates differ; an in-place F-Droid-to-probe update is not attempted.
+
+$ python (standard-library archive and checksum inspection)
+Packaged translations, AndroidLauncher DEX reference and arm64 libgdx: verified.
+Settings bytes match the internal-files archive; external archive is readable.
+Probe APK: 32475142 bytes; SHA-256 31a798f9d446eb396ba7465001778c519754e62b43f750e609de7cee2c778e1f
+[exit 0]
+
+$ git -c core.fsmonitor=false diff --name-only 899367522cea36d6063c84b02b41eedfa9a0d0e9 HEAD
+android/assets/jsons/translations/German.properties
+buildSrc/src/main/kotlin/BuildConfig.kt
+[exit 0; fork status after the build was clean]
+
+$ uv sync --offline
+[initial sandboxed attempt: exit 2, shared uv cache access denied]
+[authorized retry: exit 0, resolved 33 packages, installed 32 packages from the existing lock/cache]
+
+$ uv run --offline pytest
+181 passed, 1 skipped, 1 warning in 28.09s
+[exit 0; full output: pytest.txt]
+[the device test is skipped by default; --run-device was not run because capture/device code is unchanged and app replacement/manual navigation is pending]
+
+$ uv run --offline ruff check .
+All checks passed!
+[exit 0]
+
+$ uv run --offline ruff format --check .
+30 files already formatted
+[exit 0]
+
+$ git diff --check
+[exit 0, no output]
+
+Final pair build and clean capture checkpoint
+
+Same recorded Gradle command/toolchain, clean fork commit:
+2e4d6af664e204c4ddcc06383a0e2e700a9665c4
+BUILD SUCCESSFUL in 1m 29s
+45 actionable tasks: 42 executed, 3 up-to-date
+real 89.84
+[exit 0; full stdout/stderr: clean-build.txt]
+
+Same command/toolchain, defective fork commit:
+038329f93966a8d1d0ac7f23f551c98feb32614c
+BUILD SUCCESSFUL in 1m 26s
+45 actionable tasks: 42 executed, 3 up-to-date
+real 86.78
+[exit 0; full stdout/stderr: defective-build.txt]
+
+APK metadata and apksigner verification: exit 0 for both builds.
+Their debug certificate matches the probe certificate above.
+Source guards: clean differs from pinned base only in versionCode metadata;
+defective differs only in Mining's German value plus versionCode metadata.
+Worker bytes match the original base in both builds. Packaged German.properties
+bytes match the expected source exactly. Normalized source diffs are retained.
+Standard-library ZIP entry comparison: seven DEX files, four native libgdx
+libraries and all other asset bytes are identical. The only different entries
+are German.properties, AndroidManifest.xml and signing metadata.
+[full entry list: pair-apk-comparison.json; APK hashes: pair-manifest.json]
+
+Named save inspection before and after the authorized probe-to-clean install:
+Ottoman Istanbul exists on turn 1. Save SHA-256 unchanged:
+9d2a4cd5e1de2b2ae9102a2e6e6d15210e32ae5188c895f84e8a3a6ce19c3b4e
+Settings SHA-256 unchanged across installation:
+dc35061fcf8011635bfb2d0f94999c5de7bf8b4fafea64ace9803264f8117b10
+Adbd returned to shell; no agent settings/save overwrite.
+The English UI change was made manually by Anton. Current English settings and
+the unchanged named save were backed up before requesting the next install.
+
+$ uv run --offline pytest
+181 passed, 1 skipped, 1 warning in 21.45s
+[exit 0; full output: pytest-pair-builds.txt]
+[device test opt-in skip; no capture/device implementation changed]
+
+$ uv run --offline ruff check .
+All checks passed!
+[exit 0; full output: ruff-check-pair-builds.txt]
+
+$ uv run --offline ruff format --check .
+30 files already formatted
+[exit 0; full output: ruff-format-pair-builds.txt]
+
+Final defective installation and capture checkpoint
+
+After Anton separately authorized clean-to-defective replacement:
+adb install -r returned Performing Streamed Install / Success, exit 0.
+Independent package read: versionName 4.22.10, versionCode 1271002, DEBUGGABLE.
+Read-only post-install backup: named-save SHA-256 unchanged; English settings
+SHA-256 e0b6586f1893ac84f6249809ab349a4d6fc4a2fdea7fe79b53142bf7c1436808 unchanged.
+Adbd returned to shell. Launch exited 0. Anton switched to German through UI
+and manually loaded issue-8-pair, selected Archery and exposed the Mining tile.
+
+Each of the three final screencaps checked package version, persisted language,
+Small UI/default font/scale, foreground and disabled cutout before and after;
+settings remained byte-identical during each capture. PNG structure, CRC and
+2400 x 1080 dimensions passed. Exact adb commands/readbacks are in device-commands.txt.
+
+Visual inspection, not human ground truth: German clean shows Bergbau fully;
+English clean shows Mining fully; German injected ends in intentional ellipsis
+after Erzgew and has no full injected name elsewhere. Archery is selected in
+all three frames. Manual navigation gives approximate viewport alignment;
+a small description scroll difference remains. No pixels were edited.
+No labels, baseline/model outputs or metric results were generated.
+F-Droid restoration and independent PR review have not been run.
+
+Human-label integration checkpoint
+
+Anton supplied three final label files in source commits 83e84cd and 421bacc,
+plus docs/labeling.md and Accepted D-025. The branch was fast-forwarded to those
+commits before metadata changes. Labels themselves were not rewritten.
+
+$ python3 work/validate_human_labels.py
+[task-workspace cwd; standard library only; exit 0]
+Three JSON files pass allowed keys/types/regions, exact filename/language
+references and screenshot SHA-256 checks. Each file is byte-identical to its
+original committed human version. Label counts, source commits and hashes are
+retained in label-validation.json. No detector output or device commands.
+
+$ uv run --offline pytest
+181 passed, 1 skipped, 1 warning in 4.67s
+[exit 0; full output: pytest-human-labels.txt]
+[device test opt-in skip; no capture/device implementation changed]
+
+$ uv run --offline ruff check .
+All checks passed!
+[exit 0; full output: ruff-check-human-labels.txt]
+
+$ uv run --offline ruff format --check .
+31 files already formatted
+[exit 0; full output: ruff-format-human-labels.txt]

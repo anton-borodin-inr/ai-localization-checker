@@ -2,6 +2,10 @@
 
 Research for issue #7, 2026-10-19. Scope: installed F-Droid APK 4.22.10 / 1271; read-only source inspection and one English-to-Russian settings-file check.
 
+Follow-up observations from issue 8 are recorded in the final section below.
+They extend the original issue 7 findings without turning its source-based
+predictions into historical observations.
+
 ## Evidence and scope
 
 - **observed — [O1]/[O2]:** The settings-file language check succeeded. English and Russian main menus were captured; the original settings bytes, owner and mode were restored, and adbd was returned to `shell`. See the command transcript below.
@@ -252,3 +256,36 @@ shell
 [O1]: evidence/7/main-menu__en__2400x1080__language-check-before__1271.png
 
 [O2]: evidence/7/main-menu__ru__2400x1080__language-check-after__1271.png
+
+## Issue 8 follow-up: observed German rendering probe
+
+**Observed, 2026-10-19:** A separate fork probe based on the same upstream
+commit `899367522cea36d6063c84b02b41eedfa9a0d0e9` (tag 4.22.10), fork commit
+`190275d1e4490dceb682cf881f8c3433c1b53162`, used versionCode 1271009 and two
+German translation changes. Both captures were 2400 x 1080 at 420 dpi, with
+German persisted, Small UI, default font, multiplier 1, foreground/cutout
+checks before and after, and PNG structure/CRC verification. The original
+screenshots, exact commands and hashes are exploration in the
+[issue 8 Report](evidence/8/report.md#exploration-only-probe-1271009), never
+labels or evaluation inputs.
+
+| Probe screen and injected value | Observed behavior | Limit of the observation |
+|---|---|---|
+| Technology picker, `Mining = Bergbau und Erzgewinnung` | The TechButton title ends in `...`, omitting the end of the name. The full name is not visible elsewhere in this capture; no target-title collision is visible. This follows the source's intentional-ellipsis path. | The clean source-build screenshot is still pending. Whether shortening is a defect is a human acceptance rule, not a detector conclusion. |
+| City construction, `Worker = Arbeiter für Geländeausbau und Infrastruktur` | The construction-list title wraps onto two lines. The lower-right selected-construction panel shows the complete title on one line, without ellipsis, edge loss or visible collision. | Accommodation beyond the nominal title budget is consistent with the source's content-driven panel growth; its width change versus a clean build has not been measured. No `truncated_text` defect is demonstrated for Worker. |
+
+**Observed scope limit:** Neither of these two probes showed text loss without
+a marker. This does not establish that such loss is impossible elsewhere in
+Unciv. A long string alone is not evidence of a defect: the Worker probe is an
+example of successful adaptation.
+
+**Accepted by Anton — D-023:** An ellipsis is `truncated_text` only when the
+full text is not visible elsewhere on the same screenshot. If the full text
+is visible elsewhere on that screenshot, the shortened label is not a defect.
+Anton selected Mining for the final pair, with another technology selected to
+keep the full Mining name out of the description panel.
+
+**Expectation, not measured benefit:** The OCR + translation-table baseline is
+expected to catch this marked-shortening case easily. v1 may show no advantage
+of the model on this class. Text loss without a marker is deferred to Stage 8
+(second app), as recorded in [D-023](decisions.md#d-023--ellipsis-defect-boundary-for-unciv).

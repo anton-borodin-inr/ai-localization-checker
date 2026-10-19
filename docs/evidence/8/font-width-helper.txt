@@ -1,0 +1,25 @@
+import android.graphics.Paint;
+import android.graphics.Typeface;
+import java.util.Locale;
+
+/** Standalone measurement helper; never linked into or installed as Unciv. */
+public final class FontWidthProbe {
+    public static void main(String[] args) throws Exception {
+        // app_process has not gone through the application's font-map setup.
+        Typeface.class.getMethod("loadPreinstalledSystemFontMap").invoke(null);
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setStrokeWidth(0f);
+        paint.setTypeface(Typeface.create("", Typeface.NORMAL));
+        paint.setTextSize(100f);
+        for (String text : args) {
+            int advance = 0;
+            for (int i = 0; i < text.length(); i++) {
+                int glyphWidth = (int) paint.measureText(text.substring(i, i + 1));
+                advance += glyphWidth == 0 ? 100 : glyphWidth;
+            }
+            System.out.printf(Locale.ROOT, "%s\tadvance100=%d\twidth14=%.2f\twidth18=%.2f%n",
+                text, advance, advance * 0.14f, advance * 0.18f);
+        }
+    }
+}

@@ -1,0 +1,16 @@
+Host-specific paths, line endings and trailing whitespace are normalized; commands were not re-run for this copy.
+
+
+------------------------------------------------------------
+Gradle 9.4.1
+------------------------------------------------------------
+
+Build time:    2026-03-19 08:46:28 UTC
+Revision:      2d6327017519d23b96af35865dc997fcb544fb40
+
+Kotlin:        2.3.0
+Groovy:        4.0.29
+Ant:           Apache Ant(TM) version 1.10.15 compiled on August 25 2024
+Launcher JVM:  21.0.10 (JetBrains s.r.o. 21.0.10+-117844308-b1163.108)
+Daemon JVM:    <Android Studio JBR 21> (no Daemon JVM specified, using current Java home)
+OS:            Mac OS X 27.0.1 aarch64

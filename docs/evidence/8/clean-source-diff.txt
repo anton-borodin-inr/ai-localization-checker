@@ -1,0 +1,15 @@
+Host-specific paths, line endings and trailing whitespace are normalized; commands were not re-run for this copy.
+
+diff --git a/buildSrc/src/main/kotlin/BuildConfig.kt b/buildSrc/src/main/kotlin/BuildConfig.kt
+index 7077376..feb9fa0 100644
+--- a/buildSrc/src/main/kotlin/BuildConfig.kt
++++ b/buildSrc/src/main/kotlin/BuildConfig.kt
+@@ -3,7 +3,7 @@ package com.unciv.build
+
+ object BuildConfig {
+     const val appName = "Unciv"
+-    const val appCodeNumber = 1271
++    const val appCodeNumber = 1271001
+     const val appVersion = "4.22.10"
+     const val identifier = "com.unciv.app"
+ }

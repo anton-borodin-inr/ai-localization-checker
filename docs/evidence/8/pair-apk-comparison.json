@@ -1,0 +1,29 @@
+{
+  "different_zip_entries": [
+    "assets/jsons/translations/German.properties",
+    "AndroidManifest.xml",
+    "META-INF/CERT.SF",
+    "META-INF/CERT.RSA",
+    "META-INF/MANIFEST.MF"
+  ],
+  "identical_dex_entries": [
+    "classes.dex",
+    "classes2.dex",
+    "classes3.dex",
+    "classes4.dex",
+    "classes5.dex",
+    "classes6.dex",
+    "classes7.dex"
+  ],
+  "all_dex_identical": true,
+  "all_native_libraries_identical": true,
+  "native_library_entries": [
+    "lib/arm64-v8a/libgdx.so",
+    "lib/armeabi-v7a/libgdx.so",
+    "lib/x86/libgdx.so",
+    "lib/x86_64/libgdx.so"
+  ],
+  "other_asset_entries_identical": true,
+  "source_diff": "one Mining value and versionCode metadata",
+  "labels_created": false
+}
