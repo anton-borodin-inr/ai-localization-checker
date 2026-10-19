@@ -29,6 +29,7 @@ l10n-capture = "l10n_checker.cli:main"
 l10n-check = "l10n_checker.cli:check_main"
 l10n-small-text = "l10n_checker.small_text:main"
 l10n-small-text-resume = "l10n_checker.small_text_resume:main"
+l10n-small-text-local = "l10n_checker.small_text_local:main"
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]

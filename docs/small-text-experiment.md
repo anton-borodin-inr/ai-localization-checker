@@ -202,3 +202,12 @@ partial tile evidence remains explicitly separate. No zero-token estimate or
 zero-defect result is substituted for failure. Classification of questionable
 readings and findings is documented against the approved reference and original
 screenshots in the Report; this does not create new defect labels.
+
+## Local follow-up
+
+Anton subsequently approved an isolated Qwen comparison on the same inputs and
+confirmed amended reference. Gemini records remain frozen. The local experiment
+has its own budget/timeout amendment, recorder and Report; Gemini-specific
+HIGH/ULTRA_HIGH are not emulated as local settings. See the
+[local protocol](evidence/10/local-model/protocol.md) and
+[local Report](evidence/10/local-model/report.md).

@@ -97,3 +97,17 @@ uv run pytest
 ```
 
 Tests use a fake provider or a fake Gemini client; they make no network calls.
+
+## Approved local comparison for issue 10
+
+The separate `l10n-small-text-local` command targets only the explicitly supplied
+loopback LM Studio server. It is an isolated experiment, not a production
+provider switch. It reuses original/crop PNGs, the fixed experiment prompt and
+response schema, and the Anton-confirmed amended reference. Initial local cap
+12/timeout 180 s were explicitly amended to cap 13 and timeout 400 s, including
+one repeat of the first timed-out input. Every send still requires
+`--max-requests 1`; no further retries or cloud fallback. Gemini stays at 27
+actual sends. See [local execution notes](evidence/10/local-model/protocol.md)
+and the [local Report](evidence/10/local-model/report.md) for authorization,
+counts, observed limitations and every local run. These used commands must not
+be rerun from a fresh checkout to reset the ledger.

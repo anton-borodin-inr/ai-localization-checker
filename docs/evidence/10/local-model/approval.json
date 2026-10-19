@@ -1,0 +1,15 @@
+{
+  "accepted_by": "Anton",
+  "status": "approved",
+  "date": "2026-10-19",
+  "local_cap": 12,
+  "baseline_gemini_requests": 27,
+  "combined_actual_cap": 39,
+  "retries": 0,
+  "authorization": "Approved the plan and 12 local requests in chat. Isolated exception to post-v1 timing of D-004/D-006 and D-028 cloud-key condition. Gemini frozen at 27, no further Gemini calls.",
+  "plan_sha256": "7a55aa463558ed59d933cb523f9a01bd02f06877719336defa82ae24b393559d",
+  "request_plan_sha256": "085d48df88a6d92d0e6e2257c67f957119951de3188a17e0479052ff8fab1b2f",
+  "reference_sha256": "bba4e51d48d81bfa836eb80632697069b4e70fd67944a09f93d71aada609dd19",
+  "reference_approval_sha256": "2b982863c26dc4e48165b2b097f3b42a73b6b2db783af280ded404bd72c13766",
+  "metadata_sha256": "5fce727d8c17bdb671f107e53f637e54092fded35a7e64f318406a5e950c22bc"
+}

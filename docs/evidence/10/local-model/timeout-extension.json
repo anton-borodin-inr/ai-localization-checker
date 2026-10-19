@@ -1,0 +1,34 @@
+{
+  "accepted_by": "Anton",
+  "status": "approved",
+  "date": "2026-10-19",
+  "authorization": "Anton requested timeout 300-400 s, then explicitly approved 13 local sends: retry the first and run all remaining inputs. Use 400 s for all new calls; count the original timeout. No further retries.",
+  "plan": {
+    "base_approval_sha256": "83f715218650a77fd49c03ab832a806ed6421c6c0eeb13f204ff268d8edceaa2",
+    "base_request_plan_sha256": "085d48df88a6d92d0e6e2257c67f957119951de3188a17e0479052ff8fab1b2f",
+    "initial_timeout_run_id": "20261019T203555Z-2b7451",
+    "initial_result_sha256": "99bf355d275c7a6ad55f35cdb0deaec93d5d57269142a3ccaf659e9b6408641d",
+    "timeout_s": 400,
+    "local_cap": 13,
+    "combined_actual_cap": 40,
+    "gemini_requests_sent": 27,
+    "extra_attempt": {
+      "slot": 1,
+      "attempt": 2
+    },
+    "remaining_slots": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "retries_after_this": 0
+  }
+}
