@@ -1,6 +1,6 @@
 # Unciv source builds for issue 8
 
-**Status: probe APK built; waiting for the app-replacement gate.** No probe screen has been observed,
+**Status: probe APK built, installed and launched; waiting for manual navigation.** No probe screen has been observed,
 Anton has not chosen the final injection, and no labels have been created.
 See the [Report](evidence/8/report.md) for executed checks, failures and pending
 steps. Commands in recipes below are instructions, not execution evidence.

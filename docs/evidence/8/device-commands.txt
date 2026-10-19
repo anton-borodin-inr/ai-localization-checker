@@ -190,3 +190,70 @@ $ adb -s emulator-5554 wait-for-device
 $ adb -s emulator-5554 shell whoami > work/checker/data/issue-8/backups/fdroid-original/unroot.txt
 [stdout saved: 6 bytes; SHA-256 5c485cdc1a890a816971ba337bbfb6d58cd8edaee7f53fd38fb41f59150aa597]
 [exit 0]
+
+2026-10-19T13:14:37.997046+00:00
+$ adb -s emulator-5554 shell dumpsys package com.unciv.app > work/checker/data/issue-8/before-uninstall-package.txt
+[stdout saved: 11441 bytes; SHA-256 93b884323cd35c2502d14a71fc09ba0fdbdb90ea0bc1e4b7473646d7125e2539]
+[exit 0]
+
+2026-10-19T13:14:40.336067+00:00
+$ adb -s emulator-5554 uninstall com.unciv.app
+Success
+[exit 0]
+
+2026-10-19T13:14:51.582604+00:00
+$ adb -s emulator-5554 install outputs/issue-8/Unciv-probe-1271009.apk
+Performing Streamed Install
+Success
+[exit 0]
+
+2026-10-19T13:15:32.241113+00:00
+$ adb -s emulator-5554 shell dumpsys package com.unciv.app > work/checker/data/issue-8/probe-installed-package.txt
+[stdout saved: 10918 bytes; SHA-256 a571ed7824ec7e72e47f3bf910af5dfe85fe846cc0bab046c131f6bee54b7f6e]
+[exit 0]
+
+2026-10-19T13:15:34.857889+00:00
+$ adb -s emulator-5554 shell am start -W -n com.unciv.app/.AndroidLauncher
+Starting: Intent { cmp=com.unciv.app/.AndroidLauncher }
+Status: ok
+LaunchState: COLD
+Activity: com.unciv.app/.AndroidLauncher
+TotalTime: 483
+WaitTime: 486
+Complete
+[exit 0]
+
+2026-10-19T13:15:56.506231+00:00
+$ adb -s emulator-5554 shell getprop sys.boot_completed > work/checker/data/issue-8/probe-ready-boot.txt
+[stdout saved: 2 bytes; SHA-256 4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865]
+[exit 0]
+
+2026-10-19T13:15:56.617582+00:00
+$ adb -s emulator-5554 shell wm size > work/checker/data/issue-8/probe-ready-size.txt
+[stdout saved: 25 bytes; SHA-256 07377115fb06f1cbbbfdc0f30fb6862024571638f1173d6dc4311c06f720df45]
+[exit 0]
+
+2026-10-19T13:15:56.728608+00:00
+$ adb -s emulator-5554 shell wm density > work/checker/data/issue-8/probe-ready-density.txt
+[stdout saved: 22 bytes; SHA-256 c4d910beb2bd2a0e1934a659e6f50c1ce400c0186723be9ba5dacf57bc99b11e]
+[exit 0]
+
+2026-10-19T13:15:56.826769+00:00
+$ adb -s emulator-5554 shell dumpsys display > work/checker/data/issue-8/probe-ready-display.txt
+[stdout saved: 19848 bytes; SHA-256 8c68c4512c4e1148ffa65e2db61ad82d0b82930576ee1164a1d3dc9e32731642]
+[exit 0]
+
+2026-10-19T13:15:56.903709+00:00
+$ adb -s emulator-5554 shell cmd overlay list android > work/checker/data/issue-8/probe-ready-overlays.txt
+[stdout saved: 1993 bytes; SHA-256 41405c9726c9820418cdd03d120edbdda06d0aa5f83126d15fa1b19d88cd3ab4]
+[exit 0]
+
+2026-10-19T13:15:56.987198+00:00
+$ adb -s emulator-5554 shell dumpsys activity activities > work/checker/data/issue-8/probe-ready-activity.txt
+[stdout saved: 30693 bytes; SHA-256 78f5f0994cc5786d1bac04efea1bc162cecc4a7f9b8c9d66724eaca06d2da479]
+[exit 0]
+
+2026-10-19T13:15:57.100988+00:00
+$ adb -s emulator-5554 shell pidof com.unciv.app > work/checker/data/issue-8/probe-ready-pid.txt
+[stdout saved: 6 bytes; SHA-256 840bb10f6d87f0daec9bdc0c0e4d3c8e48d40b0c0d7aee038f9067e6bd985dd5]
+[exit 0]

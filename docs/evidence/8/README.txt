@@ -3,6 +3,7 @@ Issue 8 preparation evidence (English; no labels)
 report.md                         Current Report and pending device gate
 probe-manifest.json               Pinned source, APK hash, width budgets, exclusions
 device-commands.txt               Every executed adb command, output or saved-output hash, exit code
+device-preflight.txt              Relevant fields from independent installed-package/display/foreground reads
 font-width-helper.txt             Standalone measurement helper; not Unciv source
 gradle-bootstrap-failure.txt      Original unchanged-wrapper download failure
 gradle-download-verification.txt  Official and downloaded Gradle SHA-256 match

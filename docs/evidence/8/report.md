@@ -1,7 +1,7 @@
 # Issue 8 Report
 
-**Incomplete: probe APK built and verified; app replacement awaits Anton's
-confirmation. No probe screenshots yet. Anton has not chosen A/B, and intentional ellipsis is not accepted as a
+**Incomplete: probe APK built, installed and launched after Anton's explicit
+approval. Waiting for manual navigation; no probe screenshots yet. Anton has not chosen A/B, and intentional ellipsis is not accepted as a
 defect.** No labels or evaluation inputs have been created.
 
 - **What changed:** Added `docs/unciv-build.md` with the build/install/rollback
@@ -24,12 +24,17 @@ defect.** No labels or evaluation inputs have been created.
   different signing certificates. The original installed APK, internal and
   external files and exact settings bytes are backed up locally. Settings
   checksum matches the device and the archived settings bytes match the
-  standalone backup; adbd ended as shell. Screenshots and restoration are not
+  standalone backup; adbd ended as shell. After Anton authorized the replacement,
+  uninstall and probe installation each reported Success (exit 0). An independent
+  package read confirmed 4.22.10 / 1271009 and DEBUGGABLE. `am start -W` reported
+  Status: ok; the process and top resumed activity were independently confirmed.
+  Boot, display size 1080 x 2400, density 420 and the existing fail-closed cutout
+  check passed. Screenshots and restoration are not
   run. `uv run --offline pytest` exited 0: 181 passed, 1 skipped (the opt-in
   device test), 1 upstream google-genai/Python deprecation warning in 28.09s.
   Ruff check and format check exited 0 (30 files already formatted), and
   `git diff --check` passed. `--run-device` was not run: capture/device code is
-  unchanged, and app replacement/manual navigation is waiting at Anton's gate.
+  unchanged; probe screenshots are waiting for Anton's manual navigation.
 - **Deviations from the task:** Anton explicitly approved a preliminary
   two-injection probe before the one-injection pair. Probe images are exploration
   only in this Report and are excluded from labels and evaluation. Manual
@@ -51,10 +56,10 @@ defect.** No labels or evaluation inputs have been created.
   fixed the helper, with both subsequent measurements exiting 0.
 - **Decisions proposed:** D-023 records the approved exploratory/manual-capture
   workflow and the proposed label-file format. No Accepted decision is edited.
-- **Open questions for Anton:** Approve each app replacement/deletion or explicit
-  data overwrite at its device gate. Open the two probe screens manually, then
+- **Open questions for Anton:** Open the two probe screens manually, then
   choose A/B from the observed behavior and decide the ellipsis boundary. Supply
-  final human labels and confirm the clean control.
+  final human labels and confirm the clean control. Every subsequent app
+  replacement/deletion or explicit data overwrite still needs its own approval.
 - **API usage:** No live provider calls; no detector output or hold-out access.
   No new dependencies in this repository. Existing Android/Gradle build inputs
   are downloaded as required by the unchanged upstream configuration.
@@ -87,18 +92,24 @@ evidence is retained beside this Report. Private app backups are excluded.
 - Original settings: 93 bytes; SHA-256
   `3b55ab3dd62845e1c31374bb604446d0a3b672045ba030e90810d9354fabaa6d`.
 - Original private and external file archives are readable and retained in the
-  private local backup. No uninstall, install, data overwrite or restoration has
-  been run. F-Droid remains installed and stopped.
+  private local backup. Their checksums and the probe APK checksum were rechecked
+  immediately before replacement. F-Droid was uninstalled and probe installed
+  after Anton explicitly answered: "Yes, uninstall F-Droid and install the probe."
+  No agent settings/save overwrite or restoration has been run.
 
-Pending gate command, **not executed**:
+Authorized and executed commands (both exit 0 / Success):
 
 ```bash
 adb -s emulator-5554 uninstall com.unciv.app
+adb -s emulator-5554 install outputs/issue-8/Unciv-probe-1271009.apk
 ```
 
-After authorization and successful uninstall, install the new probe APK and let
-Anton select German and open the two screens. Every later app replacement or
-explicit data overwrite still has its own confirmation gate.
+The probe is running and waiting for Anton to select German and open the two
+screens. Existing settings were not imported into the fresh debug installation.
+Every later app replacement or explicit data overwrite still has its own
+confirmation gate. Read-only preflight excerpts are in
+[device-preflight.txt](device-preflight.txt); full command records and saved-output
+checksums are in [device-commands.txt](device-commands.txt).
 
 ## Changed files at this preparation checkpoint
 

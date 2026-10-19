@@ -42,6 +42,17 @@
     }
   ],
   "screen_observations": "not_captured",
+  "device_installation": {
+    "status": "installed_and_launched_awaiting_manual_navigation",
+    "user_authorized_fdroid_uninstall_and_probe_install": true,
+    "uninstall_exit_code": 0,
+    "install_exit_code": 0,
+    "independent_package_version_code": 1271009,
+    "foreground_confirmed": true,
+    "density_dpi": 420,
+    "cutout_check_passed": true,
+    "agent_settings_or_save_overwrite": false
+  },
   "intentional_ellipsis_accepted_as_defect": null,
   "final_injection_choice": null
 }
