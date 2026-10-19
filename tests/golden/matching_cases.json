@@ -1,0 +1,627 @@
+{
+  "schema_version": 1,
+  "source": "Cases and expected values decided by Anton on 2026-10-19 (D-026, D-025, D-023); written down by Claude and checked line by line by Anton. Never change an expected value to make a test pass.",
+  "label_example": "Labels follow docs/labeling.md; findings follow the D-018 finding schema.",
+  "null_means": "undefined (zero denominator)",
+  "cases": [
+    {
+      "id": "01_exact_match",
+      "rule": "Exact match of type, text and region.",
+      "labels": [
+        {
+          "id": "L1",
+          "defect_type": "truncated_text",
+          "text_expected": "Bergbau und Erzgewinnung",
+          "text_seen": "Bergbau und Erzgew...",
+          "region": "center"
+        }
+      ],
+      "findings": [
+        {
+          "id": "F1",
+          "defect_type": "truncated_text",
+          "text_seen": "Bergbau und Erzgew...",
+          "region": "center",
+          "confidence": 0.9
+        }
+      ],
+      "status": "checked",
+      "screen_texts": [
+        "Bergbau und Erzgew...",
+        "Bogenschießen",
+        "Tierhaltung",
+        "Landwirtschaft"
+      ],
+      "expected": {
+        "tp": 1,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall_checked": 1.0,
+        "recall_all": 1.0,
+        "hallucinations": 0,
+        "duplicates_collapsed": 0,
+        "not_checked_screens": 0,
+        "confusion": [
+          {
+            "label_type": "truncated_text",
+            "finding_type": "truncated_text",
+            "count": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "02_right_text_wrong_type",
+      "rule": "Detection ignores the type (D-026): a finding at the right text with the wrong type is a TP; the type error appears only in the confusion table.",
+      "labels": [
+        {
+          "id": "L1",
+          "defect_type": "truncated_text",
+          "text_expected": "Bergbau und Erzgewinnung",
+          "text_seen": "Bergbau und Erzgew...",
+          "region": "center"
+        }
+      ],
+      "findings": [
+        {
+          "id": "F1",
+          "defect_type": "untranslated",
+          "text_seen": "Bergbau und Erzgew...",
+          "region": "center",
+          "confidence": 0.9
+        }
+      ],
+      "status": "checked",
+      "screen_texts": [
+        "Bergbau und Erzgew...",
+        "Bogenschießen",
+        "Tierhaltung",
+        "Landwirtschaft"
+      ],
+      "expected": {
+        "tp": 1,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall_checked": 1.0,
+        "recall_all": 1.0,
+        "hallucinations": 0,
+        "duplicates_collapsed": 0,
+        "not_checked_screens": 0,
+        "confusion": [
+          {
+            "label_type": "truncated_text",
+            "finding_type": "untranslated",
+            "count": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "03_identical_labels_region_decides",
+      "rule": "Two labels with the same text: the region decides which one a finding matches; the other label is a FN.",
+      "labels": [
+        {
+          "id": "L1",
+          "defect_type": "truncated_text",
+          "text_expected": "Bergbau und Erzgewinnung",
+          "text_seen": "Bergbau und Erzgew...",
+          "region": "center"
+        },
+        {
+          "id": "L2",
+          "defect_type": "truncated_text",
+          "text_expected": "Bergbau und Erzgewinnung",
+          "text_seen": "Bergbau und Erzgew...",
+          "region": "bottom-right"
+        }
+      ],
+      "findings": [
+        {
+          "id": "F1",
+          "defect_type": "truncated_text",
+          "text_seen": "Bergbau und Erzgew...",
+          "region": "bottom-right",
+          "confidence": 0.9
+        }
+      ],
+      "status": "checked",
+      "screen_texts": [
+        "Bergbau und Erzgew...",
+        "Bogenschießen",
+        "Tierhaltung",
+        "Landwirtschaft",
+        "Bergbau und Erzgew..."
+      ],
+      "expected": {
+        "tp": 1,
+        "fp": 0,
+        "fn": 1,
+        "precision": 1.0,
+        "recall_checked": 0.5,
+        "recall_all": 0.5,
+        "hallucinations": 0,
+        "duplicates_collapsed": 0,
+        "not_checked_screens": 0,
+        "confusion": [
+          {
+            "label_type": "truncated_text",
+            "finding_type": "truncated_text",
+            "count": 1
+          }
+        ],
+        "matches": [
+          [
+            "F1",
+            "L2"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "04_hallucinated_text",
+      "rule": "A finding whose text is not on the screen at all is a FP and is also counted as a hallucination; the real label is a FN.",
+      "labels": [
+        {
+          "id": "L1",
+          "defect_type": "truncated_text",
+          "text_expected": "Bergbau und Erzgewinnung",
+          "text_seen": "Bergbau und Erzgew...",
+          "region": "center"
+        }
+      ],
+      "findings": [
+        {
+          "id": "F1",
+          "defect_type": "untranslated",
+          "text_seen": "Forschung beenden",
+          "region": "bottom",
+          "confidence": 0.9
+        }
+      ],
+      "status": "checked",
+      "screen_texts": [
+        "Bergbau und Erzgew...",
+        "Bogenschießen",
+        "Tierhaltung",
+        "Landwirtschaft"
+      ],
+      "expected": {
+        "tp": 0,
+        "fp": 1,
+        "fn": 1,
+        "precision": 0.0,
+        "recall_checked": 0.0,
+        "recall_all": 0.0,
+        "hallucinations": 1,
+        "duplicates_collapsed": 0,
+        "not_checked_screens": 0,
+        "confusion": []
+      }
+    },
+    {
+      "id": "05_scroll_clipping_flagged",
+      "rule": "Scroll-clipped text is not a defect (D-025): a finding about it is a FP; it is real text, so not a hallucination.",
+      "labels": [],
+      "findings": [
+        {
+          "id": "F1",
+          "defect_type": "truncated_text",
+          "text_seen": "Tempel der Artemis (+1 Kultur; +10% Nahrung in allen Städten; +15% Produktion beim Bau von",
+          "region": "bottom",
+          "confidence": 0.9
+        }
+      ],
+      "status": "checked",
+      "screen_texts": [
+        "Bergbau und Erzgew...",
+        "Bogenschießen",
+        "Tierhaltung",
+        "Landwirtschaft",
+        "Tempel der Artemis (+1 Kultur; +10% Nahrung in allen Städten; +15% Produktion beim Bau von"
+      ],
+      "expected": {
+        "tp": 0,
+        "fp": 1,
+        "fn": 0,
+        "precision": 0.0,
+        "recall_checked": null,
+        "recall_all": null,
+        "hallucinations": 0,
+        "duplicates_collapsed": 0,
+        "not_checked_screens": 0,
+        "confusion": []
+      }
+    },
+    {
+      "id": "06_nothing_to_score",
+      "rule": "No labels and no findings: precision and recall are undefined (null), never 0 or 1.",
+      "labels": [],
+      "findings": [],
+      "status": "checked",
+      "screen_texts": [
+        "Bergbau und Erzgew...",
+        "Bogenschießen",
+        "Tierhaltung",
+        "Landwirtschaft"
+      ],
+      "expected": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "precision": null,
+        "recall_checked": null,
+        "recall_all": null,
+        "hallucinations": 0,
+        "duplicates_collapsed": 0,
+        "not_checked_screens": 0,
+        "confusion": []
+      }
+    },
+    {
+      "id": "07_duplicate_findings",
+      "rule": "Duplicate findings about the same label are collapsed into one and do not count as FP.",
+      "labels": [
+        {
+          "id": "L1",
+          "defect_type": "truncated_text",
+          "text_expected": "Bergbau und Erzgewinnung",
+          "text_seen": "Bergbau und Erzgew...",
+          "region": "center"
+        }
+      ],
+      "findings": [
+        {
+          "id": "F1",
+          "defect_type": "truncated_text",
+          "text_seen": "Bergbau und Erzgew...",
+          "region": "center",
+          "confidence": 0.9
+        },
+        {
+          "id": "F2",
+          "defect_type": "truncated_text",
+          "text_seen": "Bergbau und Erzgew...",
+          "region": "center",
+          "confidence": 0.9
+        }
+      ],
+      "status": "checked",
+      "screen_texts": [
+        "Bergbau und Erzgew...",
+        "Bogenschießen",
+        "Tierhaltung",
+        "Landwirtschaft"
+      ],
+      "expected": {
+        "tp": 1,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall_checked": 1.0,
+        "recall_all": 1.0,
+        "hallucinations": 0,
+        "duplicates_collapsed": 1,
+        "not_checked_screens": 0,
+        "confusion": [
+          {
+            "label_type": "truncated_text",
+            "finding_type": "truncated_text",
+            "count": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "08a_text_one_letter_off",
+      "rule": "Near-exact text (one misread letter) matches.",
+      "labels": [
+        {
+          "id": "L1",
+          "defect_type": "truncated_text",
+          "text_expected": "Bergbau und Erzgewinnung",
+          "text_seen": "Bergbau und Erzgew...",
+          "region": "center"
+        }
+      ],
+      "findings": [
+        {
+          "id": "F1",
+          "defect_type": "truncated_text",
+          "text_seen": "Bergbau und Erzgev...",
+          "region": "center",
+          "confidence": 0.9
+        }
+      ],
+      "status": "checked",
+      "screen_texts": [
+        "Bergbau und Erzgew...",
+        "Bogenschießen",
+        "Tierhaltung",
+        "Landwirtschaft"
+      ],
+      "expected": {
+        "tp": 1,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall_checked": 1.0,
+        "recall_all": 1.0,
+        "hallucinations": 0,
+        "duplicates_collapsed": 0,
+        "not_checked_screens": 0,
+        "confusion": [
+          {
+            "label_type": "truncated_text",
+            "finding_type": "truncated_text",
+            "count": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "08b_text_long_prefix",
+      "rule": "A long enough beginning of the visible text, with the ellipsis, matches.",
+      "labels": [
+        {
+          "id": "L1",
+          "defect_type": "truncated_text",
+          "text_expected": "Bergbau und Erzgewinnung",
+          "text_seen": "Bergbau und Erzgew...",
+          "region": "center"
+        }
+      ],
+      "findings": [
+        {
+          "id": "F1",
+          "defect_type": "truncated_text",
+          "text_seen": "Bergbau und...",
+          "region": "center",
+          "confidence": 0.9
+        }
+      ],
+      "status": "checked",
+      "screen_texts": [
+        "Bergbau und Erzgew...",
+        "Bogenschießen",
+        "Tierhaltung",
+        "Landwirtschaft"
+      ],
+      "expected": {
+        "tp": 1,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall_checked": 1.0,
+        "recall_all": 1.0,
+        "hallucinations": 0,
+        "duplicates_collapsed": 0,
+        "not_checked_screens": 0,
+        "confusion": [
+          {
+            "label_type": "truncated_text",
+            "finding_type": "truncated_text",
+            "count": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "08c_text_single_word",
+      "rule": "A single word without the ellipsis does not identify the label: FP plus FN. It is part of real text, so not a hallucination.",
+      "labels": [
+        {
+          "id": "L1",
+          "defect_type": "truncated_text",
+          "text_expected": "Bergbau und Erzgewinnung",
+          "text_seen": "Bergbau und Erzgew...",
+          "region": "center"
+        }
+      ],
+      "findings": [
+        {
+          "id": "F1",
+          "defect_type": "truncated_text",
+          "text_seen": "Bergbau",
+          "region": "center",
+          "confidence": 0.9
+        }
+      ],
+      "status": "checked",
+      "screen_texts": [
+        "Bergbau und Erzgew...",
+        "Bogenschießen",
+        "Tierhaltung",
+        "Landwirtschaft"
+      ],
+      "expected": {
+        "tp": 0,
+        "fp": 1,
+        "fn": 1,
+        "precision": 0.0,
+        "recall_checked": 0.0,
+        "recall_all": 0.0,
+        "hallucinations": 0,
+        "duplicates_collapsed": 0,
+        "not_checked_screens": 0,
+        "confusion": []
+      }
+    },
+    {
+      "id": "09a_unique_text_neighbour_region",
+      "rule": "When the text is unique on the screen, the region is ignored: a neighbouring cell still matches.",
+      "labels": [
+        {
+          "id": "L1",
+          "defect_type": "truncated_text",
+          "text_expected": "Bergbau und Erzgewinnung",
+          "text_seen": "Bergbau und Erzgew...",
+          "region": "center"
+        }
+      ],
+      "findings": [
+        {
+          "id": "F1",
+          "defect_type": "truncated_text",
+          "text_seen": "Bergbau und Erzgew...",
+          "region": "left",
+          "confidence": 0.9
+        }
+      ],
+      "status": "checked",
+      "screen_texts": [
+        "Bergbau und Erzgew...",
+        "Bogenschießen",
+        "Tierhaltung",
+        "Landwirtschaft"
+      ],
+      "expected": {
+        "tp": 1,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall_checked": 1.0,
+        "recall_all": 1.0,
+        "hallucinations": 0,
+        "duplicates_collapsed": 0,
+        "not_checked_screens": 0,
+        "confusion": [
+          {
+            "label_type": "truncated_text",
+            "finding_type": "truncated_text",
+            "count": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "09b_unique_text_distant_region",
+      "rule": "When the text is unique on the screen, the region is ignored: a distant cell still matches.",
+      "labels": [
+        {
+          "id": "L1",
+          "defect_type": "truncated_text",
+          "text_expected": "Bergbau und Erzgewinnung",
+          "text_seen": "Bergbau und Erzgew...",
+          "region": "center"
+        }
+      ],
+      "findings": [
+        {
+          "id": "F1",
+          "defect_type": "truncated_text",
+          "text_seen": "Bergbau und Erzgew...",
+          "region": "top-right",
+          "confidence": 0.9
+        }
+      ],
+      "status": "checked",
+      "screen_texts": [
+        "Bergbau und Erzgew...",
+        "Bogenschießen",
+        "Tierhaltung",
+        "Landwirtschaft"
+      ],
+      "expected": {
+        "tp": 1,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall_checked": 1.0,
+        "recall_all": 1.0,
+        "hallucinations": 0,
+        "duplicates_collapsed": 0,
+        "not_checked_screens": 0,
+        "confusion": [
+          {
+            "label_type": "truncated_text",
+            "finding_type": "truncated_text",
+            "count": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "10_other_type_right_place",
+      "rule": "An `other` finding at the right text is a detection TP; the confusion table shows that the type was not determined.",
+      "labels": [
+        {
+          "id": "L1",
+          "defect_type": "truncated_text",
+          "text_expected": "Bergbau und Erzgewinnung",
+          "text_seen": "Bergbau und Erzgew...",
+          "region": "center"
+        }
+      ],
+      "findings": [
+        {
+          "id": "F1",
+          "defect_type": "other",
+          "text_seen": "Bergbau und Erzgew...",
+          "region": "center",
+          "confidence": 0.9
+        }
+      ],
+      "status": "checked",
+      "screen_texts": [
+        "Bergbau und Erzgew...",
+        "Bogenschießen",
+        "Tierhaltung",
+        "Landwirtschaft"
+      ],
+      "expected": {
+        "tp": 1,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall_checked": 1.0,
+        "recall_all": 1.0,
+        "hallucinations": 0,
+        "duplicates_collapsed": 0,
+        "not_checked_screens": 0,
+        "confusion": [
+          {
+            "label_type": "truncated_text",
+            "finding_type": "other",
+            "count": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "11_not_checked_screen",
+      "rule": "A not_checked screen is never 'no defects'. Recall on checked screens leaves its labels out (undefined here); recall on all screens counts them as FN.",
+      "labels": [
+        {
+          "id": "L1",
+          "defect_type": "truncated_text",
+          "text_expected": "Bergbau und Erzgewinnung",
+          "text_seen": "Bergbau und Erzgew...",
+          "region": "center"
+        }
+      ],
+      "findings": [],
+      "status": "not_checked",
+      "screen_texts": [
+        "Bergbau und Erzgew...",
+        "Bogenschießen",
+        "Tierhaltung",
+        "Landwirtschaft"
+      ],
+      "expected": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "precision": null,
+        "recall_checked": null,
+        "recall_all": 0.0,
+        "hallucinations": 0,
+        "duplicates_collapsed": 0,
+        "not_checked_screens": 1,
+        "confusion": [],
+        "fn_on_not_checked": 1
+      }
+    }
+  ]
+}

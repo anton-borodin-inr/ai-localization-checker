@@ -91,7 +91,7 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 ## D-009 — Matching findings: type + text + coarse region
 
 - **Date:** 2026-10-17
-- **Status:** Accepted
+- **Status:** Superseded by D-026
 - **Decision:** A finding matches a label only if the defect type matches. The affected text is the primary signal; a coarse screen region separates identical labels. The exact weights are set after the vertical slice (D-005).
 - **Why:** Text-only matching breaks on identical labels in different places, duplicate findings and hallucinated text. Region-first matching would measure coordinate precision rather than detection, and would favour the OCR baseline, whose boxes are exact.
 - **Alternatives considered:** Text only (D-008); region first.
@@ -168,7 +168,7 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 ## D-018 — Draft v0 finding schema
 
 - **Date:** 2026-10-17
-- **Status:** Accepted
+- **Status:** Accepted; its rule that `other` findings never match is superseded by D-026
 - **Decision:** A finding has `defect_type` (`truncated_text`, `overlap`, `untranslated`, `other`), `text_seen`, `region` on a 3×3 screen grid and `confidence` in 0..1. The schema is a draft and is finalized in Stage 1.
 - **Why:** The 3×3 grid is the coarse region D-009 needs to separate identical labels without measuring coordinate precision. `other` lets the model report a defect without forcing it into a v1 class; `other` findings never match a label.
 - **Alternatives considered:** Normalized bounding boxes (measure coordinate precision, which D-009 avoids); only the v1 defect types.
@@ -242,3 +242,31 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 - **Why:** On the issue 8 German technology picker, the description panel cuts off the last line at the bottom edge and the technology tree cuts off a technology at the top edge; Anton checked on the device that scrolling shows the full content. The injected `Bergbau und Erzgew...` title lies across the border of the left and centre columns, so a rule is needed for matching (D-009) to be reproducible.
 - **Alternatives considered:** Label scroll clipping as `truncated_text` (rejected: no text is lost to the player); region = the cell where the text starts (rejected: depends on reading direction and on small horizontal shifts).
 - **Consequences:** The issue 8 German labels follow these rules. Detector findings on scroll-clipped text count as false positives. Future screens with fixed, non-scrollable clipping are judged separately.
+
+## D-026 — Matching and metrics: type-free detection plus a confusion table
+
+- **Date:** 2026-10-19
+- **Status:** Accepted
+- **Accepted by:** Anton
+- **Decision:** Findings are matched to labels in two levels. **Detection** ignores the defect type: a finding matches a label when its text identifies the label. **Classification** reports, for matched findings, a confusion table of label type against finding type, including `other`. Rules:
+  - Text match: near-exact text (for example one misread letter) or a long enough beginning of the visible text matches; a single word that does not identify the label does not. The threshold is a parameter, constrained by golden cases 08a–08c.
+  - Region: used only to separate identical texts on the same screen; for a unique text the region is ignored.
+  - Duplicates: several findings about the same label are collapsed into one and are not FP.
+  - `other`: an `other` finding at the right text is a detection TP and appears in the confusion table as "type not determined".
+  - Hallucination: a finding whose text is not on the screen at all is a FP and is also counted separately.
+  - Not checked: recall is reported twice, on checked screens only and on all screens (labels on `not_checked` screens count as FN), together with the number of `not_checked` screens.
+  - Zero denominators give undefined precision or recall, never 0 or 1.
+- **Why:** From the QA point of view, a finding at the right place with the wrong category still points the engineer to a real bug (Anton). A single type-strict number would hide that value, while a type-free number alone would hide whether the model understands what is broken; truncation and missing translation are fixed differently. Two levels show both. Recall on all screens shows what QA really gets; recall on checked screens shows model quality without API failures.
+- **Alternatives considered:** Type-strict matching (D-009); type-free matching without a confusion table; counting duplicates as FP; exact-region or neighbour-region matching.
+- **Consequences:** Supersedes D-009, and D-018's rule that `other` never matches. Golden cases are in `tests/golden/matching_cases.json`. Issue #13 implements these rules; per-class figures are derived from the confusion table.
+
+## D-027 — Labeling technical text in v1
+
+- **Date:** 2026-10-19
+- **Status:** Accepted
+- **Accepted by:** Anton
+- **Decision:** In v1, a raw string key or identifier shown instead of translated text is labeled `untranslated` with `note` "raw key". A broken placeholder (for example `[amount]` shown literally, or a wrong substitution) is labeled `other` with a note describing it. A separate class for technical text is considered after v1.
+- **Why:** In Unciv, keys are English source strings, so a missing translation shows English text (`untranslated`); raw identifiers are unlikely but possible in other apps. Broken placeholders are possible in Unciv templates and are planned as Stage 3 mutations. D-006 and D-020 keep v1 at two classes; with type-free detection (D-026), a detector that finds such a defect still gets a TP.
+- **Alternatives considered:** A third class now (outside v1 scope); labeling broken placeholders as `untranslated` (mixes different fixes).
+- **Consequences:** `docs/labeling.md` lists the rule. The notes allow splitting the classes later without relabeling.
+

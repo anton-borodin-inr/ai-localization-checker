@@ -1,6 +1,6 @@
 # Labeling rules
 
-Labels are written by Anton by looking at the whole screenshot and comparing what is visible with the translation source. They are never derived from detector output (D-012). Each rule below was decided by Anton; the decision is recorded in [D-025](decisions.md#d-025--labeling-rules-scroll-clipping-and-region).
+Labels are written by Anton by looking at the whole screenshot and comparing what is visible with the translation source. They are never derived from detector output (D-012). Each rule below was decided by Anton; the decisions are recorded in D-023, [D-025](decisions.md#d-025--labeling-rules-scroll-clipping-and-region) and [D-027](decisions.md#d-027--labeling-technical-text-in-v1).
 
 ## File format
 
@@ -17,6 +17,8 @@ An empty `labels` array means that Anton reviewed the whole screenshot and found
 
 - **Ellipsis:** a label ending in an ellipsis is `truncated_text` when the full text is not visible anywhere else on the same screenshot (D-023).
 - **Scroll clipping is not a defect:** text or elements cut off at the edge of a scrollable area (for example the technology description panel, or technologies at the edge of the scrollable technology tree) are not labeled when the full content becomes visible by scrolling. This was checked on the device for the issue 8 technology picker.
+
+- **Technical text (D-027):** a raw string key or identifier shown instead of translated text is `untranslated` with `note` "raw key"; a broken placeholder (for example `[amount]` shown literally, or a wrong substitution) is `other` with a note describing it.
 
 ## Region
 
