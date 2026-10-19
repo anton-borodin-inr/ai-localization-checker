@@ -1,6 +1,6 @@
 Issue 8 preparation evidence (English; no labels)
 
-report.md                         Current Report; final captures and human labels pending
+report.md                         Current Report; captures complete, human labels/review pending
 probe-manifest.json               Pinned source, APK hash, width budgets, exclusions
 pair-manifest.json                Final builds, accepted D-023 boundary, save checks and capture state
 pair-apk-comparison.json          Byte comparisons: DEX, native libraries, assets and changed ZIP entries
@@ -57,5 +57,6 @@ No full settings or saved-game content is published.
 
 final/tech-picker__de__2400x1080__clean__1271001.png
 final/tech-picker__en__2400x1080__clean__1271001.png
+final/tech-picker__de__2400x1080__injected__1271002.png
 Final screenshots have no agent-written labels. Their capture checks, hashes
 and the reference-save checksum are recorded in pair-manifest.json.

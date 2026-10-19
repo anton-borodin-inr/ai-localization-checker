@@ -1,12 +1,14 @@
 # Issue 8 Report
 
-**Issue 8 remains incomplete: both final APKs are built and verified; clean
-1271001 is installed and captured in German and English; defective capture
-and human labels are pending.** Anton chose
+**Issue 8 remains incomplete: the build/capture work is complete; Anton's
+labels and independent PR review are pending.** Clean 1271001 was captured in
+German and English; defective 1271002 is installed and captured in German.
+Anton chose
 Mining and accepted the conditional ellipsis boundary as D-023. Anton created
 `issue-8-pair` and separately authorized replacing probe with clean. The saved
-Istanbul state and exact settings bytes survived installation. Defective
-installation still requires its own approval after clean captures.
+Istanbul state and exact settings bytes survived both separately approved
+APK replacements. F-Droid restoration has not been run and requires separate
+approval for deletion and explicit data restoration.
 No labels or evaluation inputs have been created. Both earlier probe images
 remain exploration only.
 
@@ -54,8 +56,15 @@ remain exploration only.
   0. Both final clean captures passed package/language/font/foreground/
   cutout checks before and after capture, settings stability and PNG CRC/size.
   Visual inspection shows the full `Bergbau` title with Archery selected.
-  English shows the complete `Mining` title with Archery selected. Defective
-  installation and F-Droid restoration are not run.
+  English shows the complete `Mining` title with Archery selected. The separately
+  approved defective installation exited 0 / Success; independent metadata
+  confirmed 4.22.10 / 1271002 and DEBUGGABLE. Current English settings and the
+  named save matched their backups before the first defective launch, and
+  adbd returned to shell. Anton manually restored German and loaded the same
+  save. The final injected capture passed the same before/after checks; the
+  Mining button ends in intentional ellipsis while the full name is absent
+  elsewhere in the frame. Archery remains selected. F-Droid restoration and
+  independent PR review are not run.
   At the preparation checkpoint,
   `uv run --offline pytest` exited 0: 181 passed, 1 skipped (the opt-in
   device test), 1 upstream google-genai/Python deprecation warning in 28.09s.
@@ -100,11 +109,11 @@ remain exploration only.
   The former Proposed workflow/label-format entry was moved from D-023 to
   **D-024 (Proposed)**, reserving D-023 for Anton's explicit accepted decision.
   Existing Accepted entries were not rewritten.
-- **Open questions for Anton:** Separately authorize replacing clean with
-  defective. For each capture, load `issue-8-pair` and select another tech
-  (for example Archery/Bogenschießen), keeping the full Mining name out of the
-  description panel and anywhere else on the same screenshot. Final human
-  labels and clean-control acceptance remain Anton-owned. Every subsequent app
+- **Open questions for Anton:** Review the three final PNGs and write the human
+  label files using the proposed format in `docs/unciv-build.md`. Final human
+  labels and clean-control acceptance remain Anton-owned; no placeholder label
+  files or agent-written empty arrays exist. Independent PR review is required
+  before merge; the author does not approve this PR. Every subsequent app
   replacement/deletion or explicit data overwrite still needs its own approval.
 - **API usage:** No live provider calls; no detector output or hold-out access.
   No new dependencies in this repository. Existing Android/Gradle build inputs
@@ -141,7 +150,7 @@ records both observations.
 baseline is expected to catch this case easily; v1 may show no model advantage
 on this class. Text loss without a marker is deferred to Stage 8 (second app).
 
-## Final pair: built; clean installed and captured in both languages
+## Final pair: built, installed and captured
 
 | Build | Fork commit | VersionCode | Gradle / wall time |
 |---|---|---:|---|
@@ -183,7 +192,22 @@ read-only backup comparisons verified unchanged settings and `issue-8-pair`:
 Private backups are retained under `data/issue-8/backups/probe-saved-pair/`
 and `data/issue-8/backups/clean-after-install/`. Adbd was returned to shell.
 The clean launch exited 0. Anton manually loaded/navigated to the German screen;
-replacing clean with defective needs another explicit approval.
+both clean-language captures are complete.
+
+Anton then explicitly authorized (translated from Russian): "Yes, replace
+clean with defective." Executed command:
+
+```bash
+adb -s emulator-5554 install -r outputs/issue-8/Unciv-defective-1271002.apk
+```
+
+The installer reported `Performing Streamed Install` / `Success`, exit 0.
+Independent `dumpsys package` confirmed versionCode 1271002. Before the first
+defective launch, read-only backups verified the unchanged named-save checksum
+and the then-current English settings checksum recorded below. No uninstall
+or explicit settings/save overwrite was performed. Adbd returned to shell;
+`am start -W` exited 0. Anton switched back to German in the UI and loaded the
+same named save for the defective capture.
 
 ## Final screen captures (unlabeled)
 
@@ -191,7 +215,7 @@ replacing clean with defective needs another explicit approval.
 |---|---:|---|---|
 | German clean | 1271001 | Captured; Archery selected, `Bergbau` fully visible | `a6a5beb3ef17ce4a640261821ff1bfc02f2dfda0e81c1cfb3aadaa32407f954e` |
 | English clean control | 1271001 | Captured; Archery selected, `Mining` fully visible | `88ff1c55aef33cc9ff0fd89cd5912384b7a1017d8d9ca2d88965ec39389b9f47` |
-| German injected | 1271002 | Not installed or captured | Pending |
+| German injected | 1271002 | Captured; Archery selected, Mining title has intentional ellipsis | `372aa318ce3bf4d553b4b9d427a7fe6d87f566953605c21bc705dd10df816b93` |
 
 The [German clean PNG](final/tech-picker__de__2400x1080__clean__1271001.png)
 is 459,752 bytes, 2400 x 1080. Package version, persisted German, Small UI,
@@ -214,6 +238,23 @@ English settings (662 bytes; SHA-256
 The save omits `baseRuleset` and `mods`; their effective pinned-source defaults
 are Civ V - Gods & Kings and no mods, respectively. This is a source-derived
 interpretation of omitted fields, not an explicit value stored in the save.
+
+The [German injected PNG](final/tech-picker__de__2400x1080__injected__1271002.png)
+is 480,275 bytes, 2400 x 1080 and passed the same checks with persisted German
+and versionCode 1271002. The Mining title ends in intentional ellipsis after
+`Erzgew`; the full `Bergbau und Erzgewinnung` is not visible anywhere else in the
+frame. Archery/Bogenschießen is selected and its description is displayed.
+This observed condition meets Anton's D-023 boundary, while final ground truth
+remains his responsibility. The tree neighborhood is the same as clean; manual
+navigation leaves a minor vertical-scroll difference in the description area.
+No pixel-identical framing is claimed. The whole PNG is retained without
+cropping, resizing or overlays. Current German settings were stable during
+capture (682 bytes; SHA-256
+`1f3c27fd5599b9c7a1051efd24e565a3257d50558dcd0feb4696af41368e0f63`).
+
+Defective 1271002 remains installed for Anton's review. Returning to F-Droid
+requires a new deletion approval and an explicit data-restoration approval;
+original APK/settings/game-file backups remain private on the Mac.
 
 ## Command evidence
 

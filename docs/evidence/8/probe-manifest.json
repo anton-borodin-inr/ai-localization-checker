@@ -104,7 +104,7 @@
     }
   },
   "device_installation": {
-    "status": "probe_complete_Anton_selected_Mining_final_pair_in_preparation",
+    "status": "probe_complete_Mining_pair_captured_probe_excluded_from_labels_and_evaluation",
     "user_authorized_fdroid_uninstall_and_probe_install": true,
     "uninstall_exit_code": 0,
     "install_exit_code": 0,

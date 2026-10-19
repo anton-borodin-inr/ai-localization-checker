@@ -1,5 +1,5 @@
 {
-  "status": "builds_verified_device_work_in_progress",
+  "status": "all_three_captures_complete_human_labels_and_independent_review_pending",
   "base_tag": "4.22.10",
   "base_commit": "899367522cea36d6063c84b02b41eedfa9a0d0e9",
   "accepted_defect_boundary": {
@@ -9,6 +9,8 @@
     "rule": "Ellipsis counts as truncated_text only if the full text is not visible elsewhere in the same screenshot."
   },
   "chosen_injection": "Mining",
+  "currently_installed_version_code": 1271002,
+  "fdroid_restoration": "not_run_separate_approval_required",
   "buildconfig_change": "versionCode build metadata only; not translation or game logic",
   "reference_save": {
     "save_name": "issue-8-pair",
@@ -97,8 +99,19 @@
       "packaged_translation_bytes_match_expected": true,
       "android_launcher_dex_reference": true,
       "arm64_libgdx": true,
-      "installed": false,
-      "capture_status": "not_captured"
+      "installed": true,
+      "capture_status": "German_captured",
+      "installation": {
+        "authorization": "Anton explicitly approved replacing clean with defective",
+        "command": "adb -s emulator-5554 install -r outputs/issue-8/Unciv-defective-1271002.apk",
+        "exit_code": 0,
+        "stdout": "Performing Streamed Install\nSuccess",
+        "independent_version_code": 1271002,
+        "settings_sha256_unchanged": "e0b6586f1893ac84f6249809ab349a4d6fc4a2fdea7fe79b53142bf7c1436808",
+        "save_sha256_unchanged": "9d2a4cd5e1de2b2ae9102a2e6e6d15210e32ae5188c895f84e8a3a6ce19c3b4e",
+        "verified_before_first_defective_launch": true,
+        "adbd_final_user": "shell"
+      }
     }
   },
   "captures": [
@@ -165,6 +178,40 @@
         "selected_technology": "Archery",
         "mining_title": "Mining fully visible on its button",
         "description_panel": "Archery content",
+        "scope": "Target observation only; not a human ground-truth label"
+      }
+    },
+    {
+      "purpose": "candidate_vertical_slice_screenshot",
+      "label_status": "awaiting_Anton_no_agent_labels",
+      "screen": "tech-picker",
+      "file": "tech-picker__de__2400x1080__injected__1271002.png",
+      "bytes": 480275,
+      "sha256": "372aa318ce3bf4d553b4b9d427a7fe6d87f566953605c21bc705dd10df816b93",
+      "png_size": [
+        2400,
+        1080
+      ],
+      "language": "German",
+      "variant": "injected",
+      "version_code": 1271002,
+      "screen_size_setting": "Small",
+      "font_size_multiplier": 1,
+      "default_font_family": true,
+      "settings_sha256_before_after": "1f3c27fd5599b9c7a1051efd24e565a3257d50558dcd0feb4696af41368e0f63",
+      "cutout_before_after": "passed",
+      "foreground_before_after": "passed",
+      "installed_version_before_after": "passed",
+      "app_restart_during_capture": false,
+      "agent_app_data_overwrite": false,
+      "reference_save_name": "issue-8-pair",
+      "reference_save_sha256": "9d2a4cd5e1de2b2ae9102a2e6e6d15210e32ae5188c895f84e8a3a6ce19c3b4e",
+      "reference_save_loading": "manual_by_Anton_not_automatically_verified",
+      "visual_observation": {
+        "selected_technology": "Archery / Bogenschießen",
+        "mining_title": "Ends in intentional ellipsis after Erzgew; full injected name absent elsewhere in the frame",
+        "description_panel": "Archery content; minor vertical-scroll difference from clean",
+        "relation_to_decision": "Observed condition required by D-023; final human labels remain Anton-owned",
         "scope": "Target observation only; not a human ground-truth label"
       }
     }

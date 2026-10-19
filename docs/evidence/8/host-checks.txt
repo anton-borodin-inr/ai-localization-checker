@@ -105,3 +105,26 @@ All checks passed!
 $ uv run --offline ruff format --check .
 30 files already formatted
 [exit 0; full output: ruff-format-pair-builds.txt]
+
+Final defective installation and capture checkpoint
+
+After Anton separately authorized clean-to-defective replacement:
+adb install -r returned Performing Streamed Install / Success, exit 0.
+Independent package read: versionName 4.22.10, versionCode 1271002, DEBUGGABLE.
+Read-only post-install backup: named-save SHA-256 unchanged; English settings
+SHA-256 e0b6586f1893ac84f6249809ab349a4d6fc4a2fdea7fe79b53142bf7c1436808 unchanged.
+Adbd returned to shell. Launch exited 0. Anton switched to German through UI
+and manually loaded issue-8-pair, selected Archery and exposed the Mining tile.
+
+Each of the three final screencaps checked package version, persisted language,
+Small UI/default font/scale, foreground and disabled cutout before and after;
+settings remained byte-identical during each capture. PNG structure, CRC and
+2400 x 1080 dimensions passed. Exact adb commands/readbacks are in device-commands.txt.
+
+Visual inspection, not human ground truth: German clean shows Bergbau fully;
+English clean shows Mining fully; German injected ends in intentional ellipsis
+after Erzgew and has no full injected name elsewhere. Archery is selected in
+all three frames. Manual navigation gives approximate viewport alignment;
+a small description scroll difference remains. No pixels were edited.
+No labels, baseline/model outputs or metric results were generated.
+F-Droid restoration and independent PR review have not been run.

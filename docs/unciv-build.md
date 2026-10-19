@@ -1,8 +1,9 @@
 # Unciv source builds for issue 8
 
 **Status: Anton selected Mining; both final APKs are built and verified.**
-Clean 1271001 is installed and captured in German and English; defective
-capture remains pending. D-023 is Accepted by Anton:
+Clean 1271001 was captured in German and English; defective 1271002 is installed
+and captured in German. Human labels and independent PR review remain pending.
+D-023 is Accepted by Anton:
 ellipsis is `truncated_text` only when the full text is not visible anywhere
 else on the same screenshot. No labels have been created.
 See the [Report](evidence/8/report.md) for executed checks, failures and pending
@@ -19,7 +20,7 @@ this repository. The shared upstream base is tag `4.22.10`, commit
 | F-Droid reference | 4.22.10 | 1271 | None in this task |
 | Exploratory probe | 4.22.10 | 1271009 | Mining and Worker below |
 | Final clean (built and installed) | 4.22.10 | 1271001 | None |
-| Final defective (built, not installed) | 4.22.10 | 1271002 | Mining only |
+| Final defective (built and installed) | 4.22.10 | 1271002 | Mining only |
 
 `buildSrc/src/main/kotlin/BuildConfig.kt` changes build metadata
 (`appCodeNumber`, used as APK `versionCode`), not a translation or game logic.
@@ -187,6 +188,9 @@ F-Droid's signing key; a versionCode increase cannot make it an update.
    After separate approval, probe-to-clean installation succeeded. Independent
    package metadata confirmed 1271001, and exact settings/save checksums were
    unchanged before the first clean launch. See the Report for hashes and output.
+   Anton separately approved clean-to-defective installation, which also
+   succeeded with the named save and current settings retained byte for byte.
+   Both German pair images and the English clean control have been captured.
 7. To return to F-Droid, first obtain confirmation before deleting debug.
    Reinstall the backed-up F-Droid APK. With the app stopped and before any
    approved data restoration, obtain the current package UID, restore bytes
@@ -260,10 +264,16 @@ restart. Neither method automatically verifies the intended in-game screen.
 
 ## Label-file proposal only
 
-Propose a small JSON document with `schema_version`, `screenshot`, `language`
-and `labels`. Each label has `defect_type` (`truncated_text` or `untranslated`),
+Propose one `<screenshot-stem>.labels.json` file per screenshot, with integer
+`schema_version` 1, `screenshot` (exact PNG filename), `language` (`en` or `de`)
+and a `labels` array. Each label has `defect_type` (`truncated_text` or `untranslated`),
 `text_expected`, `text_seen`, `region` from the existing 3x3 grid, and an optional
 `note`. Human labels do not need model confidence.
+
+Use string values for the label's text, region and optional note. The existing
+region values, read left to right and top to bottom, are `top-left`, `top`,
+`top-right`; `left`, `center`, `right`; `bottom-left`, `bottom`, `bottom-right`.
+This describes the proposed format only; no example label instance is filled.
 
 Anton fills every value by comparing the actual screen with the translation
 source. An empty labels array means a human-reviewed clean screen; the agent
