@@ -1,0 +1,111 @@
+{
+  "task_request_cap": 15,
+  "plan_sha256": "bdf521d2f8c3478bdc2e5aa4caaa0232b54448b1a50ca527ba4b094a21916abc",
+  "slots": [
+    {
+      "slot": 1,
+      "run_id": "20261019T155009Z-c8f4d4",
+      "reservation": 1,
+      "requests_sent": 1,
+      "status": "checked"
+    },
+    {
+      "slot": 2,
+      "run_id": "20261019T155114Z-4069a3",
+      "reservation": 1,
+      "requests_sent": 1,
+      "status": "not_checked"
+    },
+    {
+      "slot": 3,
+      "run_id": "20261019T173042Z-7a7529",
+      "reservation": 1,
+      "requests_sent": 1,
+      "status": "not_checked"
+    },
+    {
+      "slot": 4,
+      "run_id": "20261019T173133Z-0a453a",
+      "reservation": 1,
+      "requests_sent": 1,
+      "status": "checked"
+    },
+    {
+      "slot": 5,
+      "run_id": "20261019T173210Z-e38a73",
+      "reservation": 1,
+      "requests_sent": 1,
+      "status": "checked"
+    },
+    {
+      "slot": 6,
+      "run_id": "20261019T173243Z-5f30b8",
+      "reservation": 1,
+      "requests_sent": 1,
+      "status": "not_checked"
+    },
+    {
+      "slot": 7,
+      "run_id": "20261019T173316Z-fa3f49",
+      "reservation": 1,
+      "requests_sent": 1,
+      "status": "checked"
+    },
+    {
+      "slot": 8,
+      "run_id": "20261019T173348Z-43d1be",
+      "reservation": 1,
+      "requests_sent": 1,
+      "status": "not_checked"
+    },
+    {
+      "slot": 9,
+      "run_id": "20261019T173414Z-276a84",
+      "reservation": 1,
+      "requests_sent": 1,
+      "status": "not_checked"
+    },
+    {
+      "slot": 10,
+      "run_id": "20261019T173437Z-64098c",
+      "reservation": 1,
+      "requests_sent": 1,
+      "status": "checked"
+    },
+    {
+      "slot": 11,
+      "run_id": "20261019T173506Z-08aaf7",
+      "reservation": 1,
+      "requests_sent": 1,
+      "status": "not_checked"
+    },
+    {
+      "slot": 12,
+      "run_id": "20261019T173530Z-fd16bc",
+      "reservation": 1,
+      "requests_sent": 1,
+      "status": "not_checked"
+    },
+    {
+      "slot": 13,
+      "run_id": "20261019T173557Z-167f1f",
+      "reservation": 1,
+      "requests_sent": 1,
+      "status": "checked"
+    },
+    {
+      "slot": 14,
+      "run_id": "20261019T173627Z-803dbd",
+      "reservation": 1,
+      "requests_sent": 1,
+      "status": "not_checked"
+    },
+    {
+      "slot": 15,
+      "run_id": "20261019T173651Z-398056",
+      "reservation": 1,
+      "requests_sent": 1,
+      "status": "not_checked"
+    }
+  ]
+}

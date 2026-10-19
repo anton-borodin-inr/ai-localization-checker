@@ -1,0 +1,73 @@
+{
+  "findings": [],
+  "readings": [
+    {
+      "text_seen": "Agriculture",
+      "region": "left"
+    },
+    {
+      "text_seen": "Animal Husbandry 6",
+      "region": "top"
+    },
+    {
+      "text_seen": "Trapping 10",
+      "region": "top"
+    },
+    {
+      "text_seen": "Horseback Riding 19",
+      "region": "top-right"
+    },
+    {
+      "text_seen": "Archery 6",
+      "region": "left"
+    },
+    {
+      "text_seen": "The Wheel 10",
+      "region": "center"
+    },
+    {
+      "text_seen": "Mathematics 19",
+      "region": "right"
+    },
+    {
+      "text_seen": "Mining 6",
+      "region": "bottom-left"
+    },
+    {
+      "text_seen": "Masonry 10",
+      "region": "bottom"
+    },
+    {
+      "text_seen": "Bronze Working 10",
+      "region": "bottom"
+    },
+    {
+      "text_seen": "Construction 19",
+      "region": "bottom-right"
+    },
+    {
+      "text_seen": "Close",
+      "region": "bottom-left"
+    },
+    {
+      "text_seen": "Units enabled:",
+      "region": "bottom-left"
+    },
+    {
+      "text_seen": "• Archer (5, 7)",
+      "region": "bottom-left"
+    },
+    {
+      "text_seen": "Wonders enabled:",
+      "region": "bottom-left"
+    },
+    {
+      "text_seen": "• Temple of Artemis (+1 Culture; +10% Food in all cities; +15% Production when constructing Archery units in this city;",
+      "region": "bottom"
+    },
+    {
+      "text_seen": "Research Archery (0/24)",
+      "region": "bottom-right"
+    }
+  ]
+}

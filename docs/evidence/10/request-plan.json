@@ -1,0 +1,235 @@
+{
+  "issue": 10,
+  "task_request_cap": 15,
+  "free_tier_only": true,
+  "retries": 0,
+  "reference_sha256": "e20d9ede40afcdc052052062273cfc4b00c8db9e9d953fbfd20415cbd568b964",
+  "approval_status": "waiting_for_Anton_reference_confirmation",
+  "requests": [
+    {
+      "slot": 1,
+      "image": "docs/evidence/8/final/tech-picker__de__2400x1080__clean__1271001.png",
+      "image_sha256": "a6a5beb3ef17ce4a640261821ff1bfc02f2dfda0e81c1cfb3aadaa32407f954e",
+      "option": "high",
+      "tile": "full",
+      "box": [
+        0,
+        0,
+        2400,
+        1080
+      ],
+      "media_resolution": "MEDIA_RESOLUTION_HIGH",
+      "max_requests": 1
+    },
+    {
+      "slot": 2,
+      "image": "docs/evidence/8/final/tech-picker__en__2400x1080__clean__1271001.png",
+      "image_sha256": "88ff1c55aef33cc9ff0fd89cd5912384b7a1017d8d9ca2d88965ec39389b9f47",
+      "option": "high",
+      "tile": "full",
+      "box": [
+        0,
+        0,
+        2400,
+        1080
+      ],
+      "media_resolution": "MEDIA_RESOLUTION_HIGH",
+      "max_requests": 1
+    },
+    {
+      "slot": 3,
+      "image": "docs/evidence/8/final/tech-picker__de__2400x1080__injected__1271002.png",
+      "image_sha256": "372aa318ce3bf4d553b4b9d427a7fe6d87f566953605c21bc705dd10df816b93",
+      "option": "high",
+      "tile": "full",
+      "box": [
+        0,
+        0,
+        2400,
+        1080
+      ],
+      "media_resolution": "MEDIA_RESOLUTION_HIGH",
+      "max_requests": 1
+    },
+    {
+      "slot": 4,
+      "image": "docs/evidence/8/final/tech-picker__de__2400x1080__clean__1271001.png",
+      "image_sha256": "a6a5beb3ef17ce4a640261821ff1bfc02f2dfda0e81c1cfb3aadaa32407f954e",
+      "option": "ultra",
+      "tile": "full",
+      "box": [
+        0,
+        0,
+        2400,
+        1080
+      ],
+      "media_resolution": "MEDIA_RESOLUTION_ULTRA_HIGH",
+      "max_requests": 1
+    },
+    {
+      "slot": 5,
+      "image": "docs/evidence/8/final/tech-picker__en__2400x1080__clean__1271001.png",
+      "image_sha256": "88ff1c55aef33cc9ff0fd89cd5912384b7a1017d8d9ca2d88965ec39389b9f47",
+      "option": "ultra",
+      "tile": "full",
+      "box": [
+        0,
+        0,
+        2400,
+        1080
+      ],
+      "media_resolution": "MEDIA_RESOLUTION_ULTRA_HIGH",
+      "max_requests": 1
+    },
+    {
+      "slot": 6,
+      "image": "docs/evidence/8/final/tech-picker__de__2400x1080__injected__1271002.png",
+      "image_sha256": "372aa318ce3bf4d553b4b9d427a7fe6d87f566953605c21bc705dd10df816b93",
+      "option": "ultra",
+      "tile": "full",
+      "box": [
+        0,
+        0,
+        2400,
+        1080
+      ],
+      "media_resolution": "MEDIA_RESOLUTION_ULTRA_HIGH",
+      "max_requests": 1
+    },
+    {
+      "slot": 7,
+      "image": "docs/evidence/8/final/tech-picker__de__2400x1080__clean__1271001.png",
+      "image_sha256": "a6a5beb3ef17ce4a640261821ff1bfc02f2dfda0e81c1cfb3aadaa32407f954e",
+      "option": "tiles",
+      "tile": "tree-left",
+      "box": [
+        0,
+        0,
+        1320,
+        920
+      ],
+      "media_resolution": "MEDIA_RESOLUTION_HIGH",
+      "max_requests": 1
+    },
+    {
+      "slot": 8,
+      "image": "docs/evidence/8/final/tech-picker__de__2400x1080__clean__1271001.png",
+      "image_sha256": "a6a5beb3ef17ce4a640261821ff1bfc02f2dfda0e81c1cfb3aadaa32407f954e",
+      "option": "tiles",
+      "tile": "tree-right",
+      "box": [
+        1080,
+        0,
+        2400,
+        920
+      ],
+      "media_resolution": "MEDIA_RESOLUTION_HIGH",
+      "max_requests": 1
+    },
+    {
+      "slot": 9,
+      "image": "docs/evidence/8/final/tech-picker__de__2400x1080__clean__1271001.png",
+      "image_sha256": "a6a5beb3ef17ce4a640261821ff1bfc02f2dfda0e81c1cfb3aadaa32407f954e",
+      "option": "tiles",
+      "tile": "description",
+      "box": [
+        0,
+        900,
+        2400,
+        1080
+      ],
+      "media_resolution": "MEDIA_RESOLUTION_HIGH",
+      "max_requests": 1
+    },
+    {
+      "slot": 10,
+      "image": "docs/evidence/8/final/tech-picker__en__2400x1080__clean__1271001.png",
+      "image_sha256": "88ff1c55aef33cc9ff0fd89cd5912384b7a1017d8d9ca2d88965ec39389b9f47",
+      "option": "tiles",
+      "tile": "tree-left",
+      "box": [
+        0,
+        0,
+        1320,
+        920
+      ],
+      "media_resolution": "MEDIA_RESOLUTION_HIGH",
+      "max_requests": 1
+    },
+    {
+      "slot": 11,
+      "image": "docs/evidence/8/final/tech-picker__en__2400x1080__clean__1271001.png",
+      "image_sha256": "88ff1c55aef33cc9ff0fd89cd5912384b7a1017d8d9ca2d88965ec39389b9f47",
+      "option": "tiles",
+      "tile": "tree-right",
+      "box": [
+        1080,
+        0,
+        2400,
+        920
+      ],
+      "media_resolution": "MEDIA_RESOLUTION_HIGH",
+      "max_requests": 1
+    },
+    {
+      "slot": 12,
+      "image": "docs/evidence/8/final/tech-picker__en__2400x1080__clean__1271001.png",
+      "image_sha256": "88ff1c55aef33cc9ff0fd89cd5912384b7a1017d8d9ca2d88965ec39389b9f47",
+      "option": "tiles",
+      "tile": "description",
+      "box": [
+        0,
+        900,
+        2400,
+        1080
+      ],
+      "media_resolution": "MEDIA_RESOLUTION_HIGH",
+      "max_requests": 1
+    },
+    {
+      "slot": 13,
+      "image": "docs/evidence/8/final/tech-picker__de__2400x1080__injected__1271002.png",
+      "image_sha256": "372aa318ce3bf4d553b4b9d427a7fe6d87f566953605c21bc705dd10df816b93",
+      "option": "tiles",
+      "tile": "tree-left",
+      "box": [
+        0,
+        0,
+        1320,
+        920
+      ],
+      "media_resolution": "MEDIA_RESOLUTION_HIGH",
+      "max_requests": 1
+    },
+    {
+      "slot": 14,
+      "image": "docs/evidence/8/final/tech-picker__de__2400x1080__injected__1271002.png",
+      "image_sha256": "372aa318ce3bf4d553b4b9d427a7fe6d87f566953605c21bc705dd10df816b93",
+      "option": "tiles",
+      "tile": "tree-right",
+      "box": [
+        1080,
+        0,
+        2400,
+        920
+      ],
+      "media_resolution": "MEDIA_RESOLUTION_HIGH",
+      "max_requests": 1
+    },
+    {
+      "slot": 15,
+      "image": "docs/evidence/8/final/tech-picker__de__2400x1080__injected__1271002.png",
+      "image_sha256": "372aa318ce3bf4d553b4b9d427a7fe6d87f566953605c21bc705dd10df816b93",
+      "option": "tiles",
+      "tile": "description",
+      "box": [
+        0,
+        900,
+        2400,
+        1080
+      ],
+      "media_resolution": "MEDIA_RESOLUTION_HIGH",
+      "max_requests": 1
+    }
+  ]
+}

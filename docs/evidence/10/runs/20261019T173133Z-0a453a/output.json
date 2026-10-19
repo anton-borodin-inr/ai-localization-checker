@@ -1,0 +1,117 @@
+{
+  "findings": [],
+  "readings": [
+    {
+      "text_seen": "Schrift",
+      "region": "top"
+    },
+    {
+      "text_seen": "10⌛",
+      "region": "top"
+    },
+    {
+      "text_seen": "Tierhaltung",
+      "region": "top"
+    },
+    {
+      "text_seen": "6⌛",
+      "region": "top"
+    },
+    {
+      "text_seen": "Fallenstellen",
+      "region": "top"
+    },
+    {
+      "text_seen": "10⌛",
+      "region": "top"
+    },
+    {
+      "text_seen": "Reiten",
+      "region": "top-right"
+    },
+    {
+      "text_seen": "19⌛",
+      "region": "top-right"
+    },
+    {
+      "text_seen": "Landwirtschaft",
+      "region": "left"
+    },
+    {
+      "text_seen": "Bogenschießen",
+      "region": "center"
+    },
+    {
+      "text_seen": "6⌛",
+      "region": "center"
+    },
+    {
+      "text_seen": "Das Rad",
+      "region": "center"
+    },
+    {
+      "text_seen": "10⌛",
+      "region": "center"
+    },
+    {
+      "text_seen": "Mathematik",
+      "region": "right"
+    },
+    {
+      "text_seen": "19⌛",
+      "region": "right"
+    },
+    {
+      "text_seen": "Bergbau",
+      "region": "center"
+    },
+    {
+      "text_seen": "6⌛",
+      "region": "center"
+    },
+    {
+      "text_seen": "Mauerarbeiten",
+      "region": "bottom"
+    },
+    {
+      "text_seen": "10⌛",
+      "region": "bottom"
+    },
+    {
+      "text_seen": "Baukunst",
+      "region": "bottom-right"
+    },
+    {
+      "text_seen": "19⌛",
+      "region": "bottom-right"
+    },
+    {
+      "text_seen": "Bronzebearbeitung",
+      "region": "bottom"
+    },
+    {
+      "text_seen": "10⌛",
+      "region": "bottom"
+    },
+    {
+      "text_seen": "Schließen",
+      "region": "bottom-left"
+    },
+    {
+      "text_seen": "Freigeschaltete Einheiten:",
+      "region": "bottom"
+    },
+    {
+      "text_seen": "• Bogenschütze (5, 7)",
+      "region": "bottom"
+    },
+    {
+      "text_seen": "Freigeschaltete Wunder:",
+      "region": "bottom"
+    },
+    {
+      "text_seen": "Bogenschießen erforschen (0/24)",
+      "region": "bottom-right"
+    }
+  ]
+}

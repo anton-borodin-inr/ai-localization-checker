@@ -1,0 +1,102 @@
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "media_resolution": null,
+            "code_execution_result": null,
+            "executable_code": null,
+            "file_data": null,
+            "function_call": null,
+            "function_response": null,
+            "inline_data": null,
+            "text": "{\n  \"findings\": [],\n  \"readings\": [\n    {\n      \"text_seen\": \"Landwirtschaft\",\n      \"region\": \"left\"\n    },\n    {\n      \"text_seen\": \"Tierhaltung\",\n      \"region\": \"top\"\n    },\n    {\n      \"text_seen\": \"6\",\n      \"region\": \"top-right\"\n    },\n    {\n      \"text_seen\": \"Bogenschießen\",\n      \"region\": \"center\"\n    },\n    {\n      \"text_seen\": \"6\",\n      \"region\": \"right\"\n    },\n    {\n      \"text_seen\": \"Bergbau\",\n      \"region\": \"bottom\"\n    },\n    {\n      \"text_seen\": \"6\",\n      \"region\": \"bottom-right\"\n    }\n  ]\n}",
+            "thought": null,
+            "thought_signature": "EtAdCs0dAWkUfRMfwdbh0yotVDKB1CEhZRA36DycStc9aiyia22FDrYaorNU1fAUq6S9RTAjjFfZyzdEj_iNb0QTqLfM_87kz04TM_rCIXRuc5-NG9sqbVI-aadqQrSA7HG3_deHJPLUY-4BM-OtWp4gfS5XQSGxDiSZTUGlbyt5TSPkkLUG1K4UdvtIQXN6la-cFXQdxuXHdJ78kZsAPHCuJUNe_ZKK45IVFGrBDLiLff3HihaKvd0hLoz15fRJZCFsp-YiSg1-Tbcim2mQ0QT_WYhUTGqZcqWFh43Cw65TXE7kTKyzPp1VCg31au8TwFmSPJDvw0au5rz3uvR2CAfT5tAMo6X7LQuVwY9FnP3k_jyZPTTpRMfGXj9JEE3thT5tLkdBLCa5H_qNUHlpkDamz5111irUvtlMu5HuDWgCfsmFoFRAOwx2gOvnD-uE6cz7Rz9E1U3DpUKpNsIMcxnwhyW4qyzm_ixPt79DJObHNwQVDkVGqvvoSCTGdOgXz_UAZVBqJjsWDEdIGV6Ddb1Uuvcgor2yIeJjV166p4Lo90hflofRRDiwzwaLcm2Hfn_hwn5giZ9yc-_cKB6V36FAt2pspYj3MMO7tFafv06k7NyGjJp9XWb5rkCNMmOPZ1UUO_5TSaiqj7o4grqJUJ9GYFZlN50DJjTsdzcfhk_gFXl94WpbRCQMUb0tN8jSSzlYHaB9m4n4TpoGlRl75b8LdGAKWztPUHPB7NcibTm__T93YSNwtcxC05O-tYehjVS6jhmHyllh9NGiuqhbbSCB-IxmPT1FXuvxnU3xQr5yAw6oFSMxepIOCBSfLfha4-QivkeifskeyT0r0q9VT6UINA6O_KcsM9hhr2idD8qhqqaCQuFndmAncALGqRCyYsspCLQO8Y0TKtUpnN6Wl2bMeyG5wg4-aLlgtIOzuGyL-2zzDZ0jU7EkYgnq4aCActbHPc6MxGQjpEHEYjBpgleEujY8-HT6Zmym-BgNvSGdcSHqcuPODesqdojKpuRysox6juSMHipOS_Nx1P4IgZdKa8kd3TZ0RXVL2I9JDl0O0h9aMCybdcaD-4tpFN8VVBWRntDG6goCeLcXMzCyl7LHar70yGFOdxQR_6pekYOqhYfY-RyDL2IMKpYa5WKrC3Gu6tDzsj2FDmWv3B8CzZeIpTKm_eEpWMP_T3MupQ5a6ynsCVraopzgvufWWXQA7gNJXI_Eeab9r7y5hpnAQUwcEDWrsiGLWgmePSau5wlyoeVOXXf78vsvi7kqrt3fJqQ6DicucOpMDFI0iekcQ4ucwhuWAZFaDLfSn5zvzWdYHT1UXrvlZBL7_Q26OzZ6dSimQcWMs9mgw34h1693hPh8PIN8_7MM3zBCZ42iHTqcXsw05Ujx7D51db6h8bT9SAIcNDqp8QyQ6_tKRUvTkDsPgbPt1YslYcTK542w9idWxWzqnQs1RQmqLdOiyrBSMeBFntXtpW0C5hb6dc1SMKPr5vLUEMbpzeWIYyi1eUjPWfzwFMtHIlh9uVUejwhgMOT0R385jdL2Y9RQ-iv0m9g-8Itv8w5BZYNnk7_Wo01YeGhvTs8ZpTqxCJ-7pQLtMLRkduvII7rEvTZ2ejuJHHqSt7Nk0buVJO1TLsWM0IPFW9u3x0LbJWvrdCphCjmOFc5f19Bb9mljBltOVL6i0yk9b5JjDml0auBE_e507qNzrfQByVMD1jIxv0tf4DW5X0U1-xT417RiMFy3C9VfmsSEZT09-AfOv_c6ICP7qgXwtLqd2d3zADQUvidqnqc8qMiEn5iKaoh1tNAXGO2A6OERqZPjyUhFfrEYvW-57BGVWQqcLPLcDiqbBX5ykaPmECVhc30wuFF-IlAlVp5Ws6h5zFJBkUcGcgduOU8CqHtIkN4dvYiBrAOy_Mk0aViruvgBEj-tFPj06ETeW01VEjF-j--8sWpR2fw0IRsXinoWPeOOcL85DpEl-SDJI9rAw1RIxHsyHInRZ-pf2gLR6-os2RaaxkL6j84nXYvWS9qVLClJZ5eHqRzi-E6zMEGFQfnezM5Pg9QEPCez4SBdGjWJ0GO73GjxSxdjWFpiEydRhlzbRnZTTVCWiWbMn6JULbzSboNahg9MEe4nlKotHTLDA5kIJ0wpArnw6Pvz92KsnwpFpu4-d92VO1aOQvmnvL1z59n1uGCYvmFuCpgBMWP-on4HBgN-yc4_-Bv95UGhTPfDHD4Re81HEKFg14_Md1-O_QTKRrLoiQoIPtiXiVrh1MzTpQ1UIVdgW1W3-ZgD03PZB2er0HIWxUuNWHLAa_WgMLG9NY5QzPIIGVVkT80VuI48kY0uRdqHg7Xo7YVYoZjKwFS5Pu2ujiyXPlr294snFgbjWLkWYXZhthM_NwUff03_FzzOM-APfKxn4y-lmYAsXt4Hz90-Idji6s9pj0azj4nAoVJXlusNBQSFXoUxcYzDYjNN1Ht6WAngD1JYpKrHAd4146eekJjJ0hO7T7ZpQQbPIEW2jbxujWJ6-V6h8e2gABRk9dcRebkFmayGZ2XkZ3kgylGt3678U4UY1wnXKXdZ1f-FyQIu4iM7Wrjatgd9kiZRDcrQvIpx6_nhxqOqENXRyiM4i0DROPZEglw-y3nHG9IsUKN5Y_YLYaKc2IHZla2bh0amh8oInVGafTqUlEDe1PuB9WAvoez6PquTE_yS_eT63MYxsxeJV8MRTJNCpIRMV5C0yv6KU0Jb9pZ0JdTJL1Y-O1cf0-m7f6tOVqoK5lGFQ2tJFmZfqb7FiOZzrra5IcfB_rSl75ENhOLbMWyDWzd4m_S_lQkQOUwF0jnJBKMku-GsZ9W0ATGzvLilj-YvpvMxrBuxYckiSsjyz1c7yG3B6UBEhvg223NB05IZNAE0smqZDPvg4FxPo5NdOBHaWBlOWmTThgFfg876h-egkK41hW6ROiJ_s2tr0ESDMFLPra-mdbGQTQVX2BqzDsGyOn8kLjFlEANjLLA5QpKlg04OPLWL9_p-uwgHKttVHw5d3EhPwjX9V4XokcC5VUxQlrm2IOPyWqlZZgqrwcTsFAX8hrFVD7N0o0p5m0yYf0YkXGuc3gi0X01yg3MKmApLGBi12CPbyXOGepZIw7T7V3wTAANrkAHEFOuVm5EymaLjKaRPN9EW3xtZSZIG9QA43Zg3p6wTbkT_k3LQn8g74Wb8JjsvZHApxAGUeW9UWDqlJG9VOGG2sgsQYA7FwJi5eCyojmcgFZJjdhplBHLH9fpezOxqS_sUJcyTwoF2r5ElUgYjpA33Hl2OmectILHGzjCRdhFaAnIZ5kLCFBsSmQaIDVMUWn3SondOYKxfpDx2W1LBEoXPIjdqnpSjUDOfqRNhuOaVOR0MRBgruYcHls2enoocyEUOXmG7n5TIDxf08lpiaTgeeXlejZ7e5m0LglsG6Mv3rKzQcyF7HjB-Yf1ocAeKbLuIe5DZujks1EnXKAHpqK1GNl2skh57XCx9ST6LFF1pGjYiO215Hyiy-dLfeK4RzNgo_bXUNbZM0nSen_cU13oMceEoSXLTz3BYi1j5m8IKQBe6e7MZ2ciCNKsdkwv-EPSJ_uzdGzZqwzF1sYhlD0ZAWQOi3_3_pO2GaxOHDYUcqz1aA7eFWoEBvAx9m7b2PHx_mg1wRrYbNNw0Tsxrt_UbcL-BvPjzsKAdR0h3Nx8gP-DumVeDd6vObAwqHhApbpnBrEHZemtEvqYKu-biJ96rPPmVeKEacO2ww9d0UuUmreg4teMVQzatdHQp_G69t0kgj6ioZxrqTzrdL9cEN3es-VFCJeHmr6xuhHIgRAq8I7APN579O32qCdg_YBqDnxR99jEnzXg18ZmEc4AC_f7zpkAGbnLYLKStfAy4OMptSMCis5Mv4Jjtw5Pbth5BgVD_CDgmH5M95vYkuwt_9WUqtkWXCuF8kvRY0HbUMB7WH8mNbaGAOEfIBxfg5svs57tmfbMo1IDmxzFW9iK_TvyRXb4BfvXUk2pmN7gfYCO5SRVkfpl8Sb1HqRzrMK1_pFP19SN-Psw8ENt-F2lhz9_tPF0HrOtlai8H7aomimHrUsLbbLOlLgo2ZrJwjB0qbhncBe1eWjOo0JOOfaNTePuPVJRmLYK-7fhDQepaF6vAt13xclZMQylBCsEFOCilhoeE4pixD5eqovX7a0ekAGKNxjNuDDHmAplSuID7boZPPxdATwljdQjofxDRhcgwPG3bQFbBTW-_388r38UyuG4gegQ6jOLnSsrVDKDSUxSxSXCi560uu-JgqEdw4nSSngwPbkO4Vm22Wyv7k02cowIaQ0k8qV7aIncwogNvG0W-lisLbHiCtgo1C6OiFY9pG-WcakTF4cTpQx7B99kYLidapjHQUJUuW5T6FUn6e8xqh1RInQFMca0hn26SmSc-UIL1gT7ioozIpwoEWQq4sXcmT9HLeuS4W1zHZa0_jzTs04LNGjV-mGWdzQdUnNHc_gd1Zlt0dRt2ADZSaASlWigz40GWJn3oxe9rNJK0jZJ_OIL1J9HcBAX6J_MPYU7AHvKfItWYVyOP_M30m3vqbIY7GuYt2r180UFGVRbbmvKG-FGwYyuRMU4fJ4a9jH6UGC3mRe4OquK4sGdfPAAFHojyNy9zJ378wzUjbkNu0MSV8m9yVKX1Kh6bO5jjk8Q3KHD5BOTuVuBCiklMboyeECZbmhjczo9Pi-CNKdFFau17jGNUnvquIphyPwkViauNS3bF4_zge9dp6LYqUN0v9w7LaLiSHMGgG-L3ej4BDUemzpwm8ZAdud96EEgQtw68nTYyFEyd9EQhc3p0zhChCSuq48s3WJK2S15aASVmEUIo45n1lqwRzpVkepBnKK7MJrzDw4Wm2uYLVZ7ahU6TBCOVZMa1okEQnjNinyTBj3CdMASNtAKyIUNUnJgdbI2S3TLuPNTDIjRLTWmU8OaNMiEePhtyMmLsw_SzhhZ0VmKSNwfLRaH6we3s3uWOURh0Q3TEQVLng3MZgWVK2xco4XHk6VJEmH3XIRbYc2cKxoIo_Se-YAQXCleMJSIS0mNoD00YMdsZ",
+            "video_metadata": null,
+            "tool_call": null,
+            "tool_response": null,
+            "part_metadata": null,
+            "audio_transcription": null,
+            "media_processing": null,
+            "speech_metadata": null
+          }
+        ],
+        "role": "model"
+      },
+      "citation_metadata": null,
+      "finish_message": null,
+      "token_count": null,
+      "finish_reason": "STOP",
+      "grounding_metadata": null,
+      "avg_logprobs": null,
+      "index": 0,
+      "logprobs_result": null,
+      "safety_ratings": null,
+      "url_context_metadata": null,
+      "continuation_token": null
+    }
+  ],
+  "create_time": null,
+  "model_version": "gemini-3.6-flash",
+  "prompt_feedback": null,
+  "response_id": "XVTWaoPdEt6JxN8P5Ybr8QY",
+  "usage_metadata": {
+    "cache_tokens_details": null,
+    "cached_content_token_count": null,
+    "candidates_token_count": 197,
+    "candidates_tokens_details": null,
+    "prompt_token_count": 1282,
+    "prompt_tokens_details": [
+      {
+        "modality": "TEXT",
+        "token_count": 202
+      },
+      {
+        "modality": "IMAGE",
+        "token_count": 1080
+      }
+    ],
+    "thoughts_token_count": 1476,
+    "tool_use_prompt_token_count": null,
+    "tool_use_prompt_tokens_details": null,
+    "total_token_count": 2955,
+    "traffic_type": null
+  },
+  "model_status": null,
+  "automatic_function_calling_history": [],
+  "parsed": {
+    "findings": [],
+    "readings": [
+      {
+        "text_seen": "Landwirtschaft",
+        "region": "left"
+      },
+      {
+        "text_seen": "Tierhaltung",
+        "region": "top"
+      },
+      {
+        "text_seen": "6",
+        "region": "top-right"
+      },
+      {
+        "text_seen": "Bogenschießen",
+        "region": "center"
+      },
+      {
+        "text_seen": "6",
+        "region": "right"
+      },
+      {
+        "text_seen": "Bergbau",
+        "region": "bottom"
+      },
+      {
+        "text_seen": "6",
+        "region": "bottom-right"
+      }
+    ]
+  }
+}

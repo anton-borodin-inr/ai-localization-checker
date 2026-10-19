@@ -166,6 +166,10 @@ __marimo__/
 data/
 runs/
 
+# Reviewed public copies for issue 10; local data/runs remains ignored.
+!docs/evidence/10/runs/
+!docs/evidence/10/runs/**
+
 # Android packages
 *.apk
 

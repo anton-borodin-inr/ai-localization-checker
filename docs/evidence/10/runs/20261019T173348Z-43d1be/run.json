@@ -1,0 +1,115 @@
+{
+  "run_id": "20261019T173348Z-43d1be",
+  "provider": "gemini",
+  "model": "gemini-3.6-flash",
+  "model_version": null,
+  "sdk_version": "2.31.0",
+  "schema_version": "issue-10-reading-v1",
+  "settings": {
+    "temperature": 0.0,
+    "max_output_tokens": 8192,
+    "response_mime_type": "application/json",
+    "response_schema": {
+      "properties": {
+        "findings": {
+          "items": {
+            "description": "Draft v0 finding; the schema is finalized in Stage 1.",
+            "properties": {
+              "defect_type": {
+                "enum": [
+                  "truncated_text",
+                  "overlap",
+                  "untranslated",
+                  "other"
+                ],
+                "type": "string"
+              },
+              "text_seen": {
+                "type": "string"
+              },
+              "region": {
+                "enum": [
+                  "top-left",
+                  "top",
+                  "top-right",
+                  "left",
+                  "center",
+                  "right",
+                  "bottom-left",
+                  "bottom",
+                  "bottom-right"
+                ],
+                "type": "string"
+              },
+              "confidence": {
+                "maximum": 1,
+                "minimum": 0,
+                "type": "number"
+              }
+            },
+            "required": [
+              "defect_type",
+              "text_seen",
+              "region",
+              "confidence"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "readings": {
+          "items": {
+            "properties": {
+              "text_seen": {
+                "type": "string"
+              },
+              "region": {
+                "enum": [
+                  "top-left",
+                  "top",
+                  "top-right",
+                  "left",
+                  "center",
+                  "right",
+                  "bottom-left",
+                  "bottom",
+                  "bottom-right"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "text_seen",
+              "region"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "findings",
+        "readings"
+      ],
+      "type": "object"
+    },
+    "media_resolution": "MEDIA_RESOLUTION_HIGH",
+    "timeout_s": 180,
+    "sdk_retry_attempts": 1
+  },
+  "image": {
+    "path": "data/issue-10/tiles/tech-picker__de__2400x1080__clean__1271001/tree-right.png",
+    "sha256": "ed8e2bec0d525c8dff551c68ce50bcdb77954a79ce77dc7c4689f7dacd66da8f",
+    "width": 1320,
+    "height": 920
+  },
+  "max_requests": 1,
+  "requests_sent": 1,
+  "attempts": [
+    {
+      "outcome": "api_error",
+      "latency_s": 5.177
+    }
+  ],
+  "usage": null
+}

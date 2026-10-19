@@ -1,0 +1,102 @@
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "media_resolution": null,
+            "code_execution_result": null,
+            "executable_code": null,
+            "file_data": null,
+            "function_call": null,
+            "function_response": null,
+            "inline_data": null,
+            "text": "{\n  \"findings\": [],\n  \"readings\": [\n    {\n      \"text_seen\": \"Agriculture\",\n      \"region\": \"left\"\n    },\n    {\n      \"text_seen\": \"Animal Husbandry\",\n      \"region\": \"top\"\n    },\n    {\n      \"text_seen\": \"6\",\n      \"region\": \"top-right\"\n    },\n    {\n      \"text_seen\": \"Archery\",\n      \"region\": \"center\"\n    },\n    {\n      \"text_seen\": \"6\",\n      \"region\": \"right\"\n    },\n    {\n      \"text_seen\": \"Mining\",\n      \"region\": \"bottom\"\n    },\n    {\n      \"text_seen\": \"6\",\n      \"region\": \"bottom-right\"\n    }\n  ]\n}",
+            "thought": null,
+            "thought_signature": "ErQSCrESAWkUfRPxFfVFxJfyNH0E7F-aHaCbWBI7slJi0zNfYSq8StDxuBKGp1mXx3JrJnldWOzcLrxEYAPSNq7GtoUZBnoKWCiiKy1VTBxm-MfzdFobBvRjqrHpiD79cp6h6Cw07BtvqqQbZgwiTg0Ze4l53uheLpOwdEZheTsno3snKP2785SAdh_G3VLl90W7rn1HJGaRwo088BBsjQC7B70M2wL3MRQC9OrCXZLO2MMVAwdp3cmczDN2ESZ1-0IXeZoM7k3PHfN2fwP6GQiPhB1plaeZ1HWkfOWoOOqQBvad8WR4oHgsn4o4dOTMeOcA1fS20rckMYsA7paj7aiLIpw04IZrwcq2MH0z1nzeC-1C88E5Qp25PQfAGZ4omamwtF1MkCFasPh7_RC0z8pbcH19Poa6x7n5VlXUcfD_Xd3EI0eJE6dpDii097ZNGV4m67gL7k_WQcJ_t4PfhJHDSjNBoiZCoOUv-9sWMJaCa6uw3anKHw0hm9vrM764IAKCbTjtlN5PZD54HOqJNKokuRwqM3qAfzSCqNRYhP0IoR5b3-ryoacbFbKtA80FjqB0BculFNhtfmgO5ihdkr0wCPZuMcRnKhahhf4VcOCZevEiFI9QFvoygVd4QClv-EoNJT0rh1t-psMjeFgglvW_8Yeyw_FtFCx63XqYEg4TFWJvPeBvVD20nQC0B9nfQ2HrEjHeyZvdWtNRMOJ3xNudp5ziJh_8ALKRO4Jpw5EvY-cFdauuqcMbFE2O-L9DeVEHWPKre9QBjRNdSwNxQeoUj8t6ZDnBhLOOvu69VYmD8r7DeRuFxBGLAuF_5VR4YkvprEL0J1ZZPPGNB2sAYZ9DQW7pXE3fO1hCd6cRgnvWbsWdICF9fHy9SrorZjy0-vlbqSwA6JjeRARBMLNe-v6GoQ3HFVygQNOzZockuHnjk4sagw2exinmxAk670RvrWHv-prQkvRcTXZPrTX7wP6OoTHDr0IKQqxhiMhoebypvCTScGZOFoBsU6pMvlvPudRq4clnX492L3yY6w4BYXSQvIqi9LfCKQLkeHMBQYJd1RYApckmDw6I9WC5ISF2YOIPPkSaowJ9TyXyD8WZNTtd1miIfLBsFFypdQG7EFrpIzEW6qZgJQlt2vJOB5TpHF_D9K-TBB7tAQV8PNxG-2QvN8jfnWYeYcuppLTd5bmDrhl1o7RUbQOZA9qV_c1lSIna57qLQ9h4lM-WF3Wuunvo2-BQSKsGtEfP5EPsxOJAWAd1XNGdr-tqkmSfN12ZqeyBQ1GPzQO93sj25qwtDsdRbg4OX-IXWCVYLuRRMm47ZjSNRnqIa5fsiKw8UBC2jvoAMY6s80aaeB1sU1phNmCwiwbHkSZbmhbA4hyl2sFN5UFHZxBkfG9UNxxsf-y7UwgG82pQGPDDe0xNhXzJFOeUf-AQFZD2DxNXmSTEJkWOWU14bQP-lpBgrpBQHR-V_1toRO74QfjJhFzxF7x4Mfml2FcrQ_HzzYX-T2u-cjeCko_1IzT4eLnb_RQv42LLEHHU4yl70zkL6ZCvtBxLLt4f_InBTDg0UJ4rHiHDiZ3yeHrcTVYFq4G--IPY7t7hlDcn9iiq3lIOzgmjwifxQEfOZ-I6Wn7cHVcnawqPFull-dHWhD2qWMv5QaExcOXyhc8uiVFJgbJgdCTW-iQEWElKluXpCWqR0CxqcEloAuEqtTL73VdSd3HhqvEz7zs7HDdge8f7H3-XBQe8BoDu6K69_2BJMWuFBIRidULHW-GkR3c9U-b5sGJiqYKKKs_ekLbvTWPuO-4vvqOMJWgZJydkJs2uyGL4V1Ws7ssB2l-1GjBugnsnelcqPcLhzHBRGE7X4TuRyh7-7jN2VA7xXlPMaMWJgr__pQx_6JpdO1hSy1Ikm9peEwwgKZPu9sBlBqhgU_4hgbUNtWTBgG9ZnkU9lZkot0bmP_-yKIqih8ObzJbSjJBY7mQYkQvTrrmEJIVfMvi1vZK3uIXQ7TOXiQbgFKetEwWeM7PT3nJPRYBFqlPllDkrzxTMh5wK_3-_GByf6tQfLKgUkOlhHedYs9LoZXXa4VE-WxqXrXO2NBt0Pe6a2PF1HBPEeps0W_hj_NoSVukpSvcT2F8WDWtaBSp1up-D9IB7jg89U2hZlFi2lQm8UlUvLkDoXQETCVLzC1wQ3_pDh5rF-k5mehASEDDsAdqm4Dp5aWDy8U8dpGjwyHyE2R4q_KCK0X8b7AH-OEOqCgvMVVLq8q5-IsrEpvEboCqet5mkE3vZU29VI0UstIyISOkUt_HkPjZyEjup9uNJvh5nWrobDk-n2H6pqd54Ak_hRWeTXY6UOazjPi3gfsirKLYRvjju6iGFcC-uskC0SwoLidC6Mhy12_aQTl0doRxW70RB7y7tlnyKVWwkmDwJEBzezS-l1Dq0ojQfuFzJ8Uo-fQJ-qWdRlAfCTV8X-oAhZata9OlPcEXUNAjE6xh3SmPwQIoilQd27DJ8LvP0paiNnJnD3iO0s4iJX_Pkd799QzCavit49b9UARQ8rWCJw9Cnfd-TqiZUI1Y7jjTwRlELu5jSPey3rcKGMzSSmUXzq4cugcUM-Af6ZaKBOYt8Sa4WIYrNgKH32HqCaEzoI4nYkEFRf532RRCZP6iyFYDRFNQQsuCMbcAvUi5DwddRpvCrTO_limsCB5A8qQJVz5FRYexcz-3nh7ciP8Xw8NRBOaF7At6c0yIMiv4fU6ViBUXLYrdjwXiSxgzbFuehkwFCepP_Zwe1ywM7J_Icek7mtDw3BxQbwx4BUiPFt2T4vez6LhvEeBWgkGaklyr-uhTWX1JMStfBkYe62uT7iXQYaiyIFA1u0EFbPZcfwrPLv1NFKGalhre4TK-xq3UhqAn0VoPmXcFHsqG948kc7J7Q06IbZgOlHcATKugEhYBcm-58Ep-04G8CzvWe3TZp-K3dxDAZ0c3r_dzw_KmRN13_PAy4JeSF139Dd53exlT7q4z9YMBXpcf1dyDiUIOA5lMurCmIFsFOXy-Ojt1L33PHGqcQoZkfrDTrr5PuKfDU6VvJ2LphylcgLENze4BzaDgafMPpWFuCvi_5Sn_4yl6HzYg0PNFC3rvpw0RCumA8J51mwjMIrrNHhHIXQc7w3BVScA==",
+            "video_metadata": null,
+            "tool_call": null,
+            "tool_response": null,
+            "part_metadata": null,
+            "audio_transcription": null,
+            "media_processing": null,
+            "speech_metadata": null
+          }
+        ],
+        "role": "model"
+      },
+      "citation_metadata": null,
+      "finish_message": null,
+      "token_count": null,
+      "finish_reason": "STOP",
+      "grounding_metadata": null,
+      "avg_logprobs": null,
+      "index": 0,
+      "logprobs_result": null,
+      "safety_ratings": null,
+      "url_context_metadata": null,
+      "continuation_token": null
+    }
+  ],
+  "create_time": null,
+  "model_version": "gemini-3.6-flash",
+  "prompt_feedback": null,
+  "response_id": "rlTWapLJA5L7xs0P1M79uAc",
+  "usage_metadata": {
+    "cache_tokens_details": null,
+    "cached_content_token_count": null,
+    "candidates_token_count": 195,
+    "candidates_tokens_details": null,
+    "prompt_token_count": 1282,
+    "prompt_tokens_details": [
+      {
+        "modality": "TEXT",
+        "token_count": 202
+      },
+      {
+        "modality": "IMAGE",
+        "token_count": 1080
+      }
+    ],
+    "thoughts_token_count": 822,
+    "tool_use_prompt_token_count": null,
+    "tool_use_prompt_tokens_details": null,
+    "total_token_count": 2299,
+    "traffic_type": null
+  },
+  "model_status": null,
+  "automatic_function_calling_history": [],
+  "parsed": {
+    "findings": [],
+    "readings": [
+      {
+        "text_seen": "Agriculture",
+        "region": "left"
+      },
+      {
+        "text_seen": "Animal Husbandry",
+        "region": "top"
+      },
+      {
+        "text_seen": "6",
+        "region": "top-right"
+      },
+      {
+        "text_seen": "Archery",
+        "region": "center"
+      },
+      {
+        "text_seen": "6",
+        "region": "right"
+      },
+      {
+        "text_seen": "Mining",
+        "region": "bottom"
+      },
+      {
+        "text_seen": "6",
+        "region": "bottom-right"
+      }
+    ]
+  }
+}

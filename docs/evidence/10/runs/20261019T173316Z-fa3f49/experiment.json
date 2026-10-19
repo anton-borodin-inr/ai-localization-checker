@@ -1,0 +1,15 @@
+{
+  "slot": 7,
+  "image": "docs/evidence/8/final/tech-picker__de__2400x1080__clean__1271001.png",
+  "image_sha256": "a6a5beb3ef17ce4a640261821ff1bfc02f2dfda0e81c1cfb3aadaa32407f954e",
+  "option": "tiles",
+  "tile": "tree-left",
+  "box": [
+    0,
+    0,
+    1320,
+    920
+  ],
+  "media_resolution": "MEDIA_RESOLUTION_HIGH",
+  "max_requests": 1
+}

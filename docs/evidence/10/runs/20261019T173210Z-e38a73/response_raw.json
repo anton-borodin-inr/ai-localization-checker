@@ -1,0 +1,142 @@
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "media_resolution": null,
+            "code_execution_result": null,
+            "executable_code": null,
+            "file_data": null,
+            "function_call": null,
+            "function_response": null,
+            "inline_data": null,
+            "text": "{\n  \"findings\": [],\n  \"readings\": [\n    {\n      \"text_seen\": \"Agriculture\",\n      \"region\": \"left\"\n    },\n    {\n      \"text_seen\": \"Animal Husbandry 6\",\n      \"region\": \"top\"\n    },\n    {\n      \"text_seen\": \"Trapping 10\",\n      \"region\": \"top\"\n    },\n    {\n      \"text_seen\": \"Horseback Riding 19\",\n      \"region\": \"top-right\"\n    },\n    {\n      \"text_seen\": \"Archery 6\",\n      \"region\": \"left\"\n    },\n    {\n      \"text_seen\": \"The Wheel 10\",\n      \"region\": \"center\"\n    },\n    {\n      \"text_seen\": \"Mathematics 19\",\n      \"region\": \"right\"\n    },\n    {\n      \"text_seen\": \"Mining 6\",\n      \"region\": \"bottom-left\"\n    },\n    {\n      \"text_seen\": \"Masonry 10\",\n      \"region\": \"bottom\"\n    },\n    {\n      \"text_seen\": \"Bronze Working 10\",\n      \"region\": \"bottom\"\n    },\n    {\n      \"text_seen\": \"Construction 19\",\n      \"region\": \"bottom-right\"\n    },\n    {\n      \"text_seen\": \"Close\",\n      \"region\": \"bottom-left\"\n    },\n    {\n      \"text_seen\": \"Units enabled:\",\n      \"region\": \"bottom-left\"\n    },\n    {\n      \"text_seen\": \"• Archer (5, 7)\",\n      \"region\": \"bottom-left\"\n    },\n    {\n      \"text_seen\": \"Wonders enabled:\",\n      \"region\": \"bottom-left\"\n    },\n    {\n      \"text_seen\": \"• Temple of Artemis (+1 Culture; +10% Food in all cities; +15% Production when constructing Archery units in this city;\",\n      \"region\": \"bottom\"\n    },\n    {\n      \"text_seen\": \"Research Archery (0/24)\",\n      \"region\": \"bottom-right\"\n    }\n  ]\n}",
+            "thought": null,
+            "thought_signature": "EoIlCv8kAWkUfRM60nkStjdcdtU82wqCWLDaxes27pRA7-I17kKh5ZIqSyx6itt97_T0V8ZFVxxIcB0gicPRTrGcsVLxKwf1dtDawHDeB3A85pu4CiF8HdUIysd-ij7LgUWCbCtnVCBwotd9YZk-Qs7RJPUiViK_gDzpubx-2_bLLAnQ6DRdhL3tsycsChFo7A--wRHdgoZ1wUmig0Cg9j82yQV4e5wCzASstPn_0aSSYtY6ATZ0yTWv4WtQdlXmbieaTUuvgp1xGtMRhOon0nl5V2id5XHAkqpmFXxli4c-fkTAcu-iI5Wb9CMbkZaBZWQpeUVh1M0lP5UFnrEOecKUq1wyg4p_WgpWUBtj8LCFWLF0zozUIlzEdYxAAJnD7RVvclOkyxs3tsEAGI3wGsnGlStOF3b2iXsQVo_oRRSZ8h59CwQmeinbgR_XzOPHCoAUDJ1UXjL9F6-bzSgeURVv1ze4QA4PkoaG9e7T2aYa656S1zHOSn0yaSirFtlr0XfJrDo573sgHtfrKOK5lBY97KGIHKVswQ1xaWX2aPI-aXpZGVGKEj0xjsBARbHLLc7bzRohVCVbmm3SfIdFcjtfrRVHueJlxCYW8RCo5WCK0W7cHAOAXq9vldeXQmPPjubH62zK06nyK94MRtw5ag-4wdYtDiAzUC_jL3RhB3tV90U8sg7pz4rVIyGFRB8GJE7lFyWB8jxMy3get52gf9YGhs98v1zC7sB0Bd7y3-ZjQOFtGR-23oiowxijpUiwQnBiDEE4qPUHgR6pswjc0RnC6XKFet1-9IsAnfbWYo0B1iS_hoJFUxyTkG43THIGyPCa1pi54mN66t4J9PSeY12BM86ljU1nXaJp0OqyQFJ_hkWYt7NGxxWI56WNt3jg8bRaM-ZXgpoHIwb1JafTmYBLefB4UYcQLDBOU32MMWqQE1xeT-RBjI4fy5354-zCh7tZHW9zZ1BCZ5keIBmrZ0vJWQTEoRH3EZpskCVl5YAEbymQuy4R2paGRIyzwCJ78YiE5mbLCvQ3BZNigvg6bQivpUnHEBBLnZ-7OpWD7y9Y9QWrtW8CzkNGcGFhDVBwBxuHgByonOS8icROc5crCCvyv2DrjtJHpUZMubXGeyopH9MCv01cKp_ArpOPNASaGYwcgugSJs5ZE4vDZsgkhCpfu37dPFDkKGC0YU79AJWcIPQwG1GRnp2UuKiarb498GTV-NeiqY6dvYCX9HotwOH6lmAsoDN8rZPdPaEue88sDq8g0pGEvCWilsVaC4Mt2JhtDLB8rwXVzqVlkrLsYXMX0A2qeHjdJiLLjlBgjccGkW5VLMMcnZAAF9aGD0AjfgOsMbndObeBkc78L4q14QAZFvJ_dfw9OUKhTuLnxVJp4NJsThJeY5XaPSEtWfH_T0XTpX3jzXikUBlXlppjriHpH_ADzfJUVsSHMdORz8ZThmQ6sbqf5iR2KpXxk27KVCefe_O3hnV1c8Hg8eK9dPgM47j6G7rMLD4nNiBaXZvbOkOXagQsge-TrPT366L4yCKCcdx3VoGnPRzTZsRGF2RLIQBSRJZBDfmJ77qVAyJBm6RQ8iqQQuKP-fgWq5GfBMOUv8p48D-7yU7TE0HUUdrWYGfB1BOiLU_8088Kkn-9nqVQCwkaXoWFX7R3C0RlSFeJNzMoSLwUPSUyh5L1mFWaCNA5IphhRatEgl68XY1iNFm1wxpIEeR_jElIxrk1S1_L56ri2gWn_x_ta-04Yb3BjFAap_WsOn8V_XQfBZo9pUaDITP1xj1aarroT4CLdC2JIoLFYlEyiq3qiUoRGwEZi7aIFbOzR5n1KEQ_Aio4TeJAnOHnnPYWQXV2s91l-zsnYxZ0uKy36fXNFr6K-STi-pA-bTcavZX2n0tiw3UC5G2R0zKu30Q5IYMszhHqExYpNJc3eUTwGqxkieg5Vq2wrU-tZiK-RgH0hTNzs9VMMptYe07JvxK1tlvTbygCYft_rjXvo5icUBDDLxQLZQQqQ-WAoT9GymPE5vuwDAzyVFFR3oslolg8ogE_3SgB3AbPTGrQ1s-LZKGTlTQi3elFiOgdbD0bwqKozO9VCOpqx884TJpEU9t0icOkoFpZL1riMQAZXYluRMt_XC4MHWUEJ9it1QdlT-8q28Ry4PCY4snI5HU8_-DJriDkrb24voYIWOje0pGTDb4bIbI-COx-Gr2I6yVJkQJslmR4k1HnfDigvjp6xqprWek7ozUAWQksJu-qNIwHrGl_t1T8jo_fvT1MVuBMT3lyr5G0zW5L31JHXr4eue5S0WygVl-qEiYcLd1j3cjyLcm7PES9Wz50QD6wWZHmuGaonGke7mPW_GDcAFKTmJi8xRvpivmApn5ITFiGr_FJb1QZ-v_9S1wF7X60683kS3eLuc_gMXRgUDPPaR_18naee0bEYvgHGSFLm8tAQhWGgBqdgVO1i1tJHUWiu8HcAgt8tUe-KoXZsidleMQ4vybMzREiUKjavolCF3r6sl2UcrjZtYtsibaB1gKrJHrAxFljbM6ILwGBG0do29LcLSRmtYHbE5Kh43JqaIStxiscF78i6EkZv5PQnqZu-TtY9s5Xoytu8S2XDEJvLyYz15PQ1G-HErqYDRdIlkX2CL1fCUuOPnsQ8LGuV4S2xBKbevNyZCphh5jQbQqoJvSRmzudcu492t0p5TFsSl3hK4S1ipPoxApKlTGwZkk4jz_VeeZV96Y4_7IkdQxzYLRJdzJNf0zVYnfxVTLDArXmCBxFphfcOswMtNUujvmL7_4q8RZtu7YITAhbl6BSKx2HSKkFd9NUTl0nEdZWyaxNM0D3_wKa9-peJ4mV1uuQ5-SaB2gQfbkYnm41hEv_J1m5cClbM61NeQ8AhgWl50_N7e7IH9wX0FHddBvakEcQZNbWHGkQwii3yEFwIag_GHTeaLM81V-xTiqmboPl750rDgNl_FkenZvMKXQbr-rxCJJQV_Josy3WWdvz_cmuzWWWo9NcAmdPzaYZ-ncmRD_XsVSdseCj5s9XV8NzCelAPk3ox4Qg_uKGa0K8ykzezBasmB73JbMCOzIkgC48p_GfNKUHQSVYLWFyEsEPp06B8mkS-DMoqWUQjBduGu71bWp95F_YW2eudqWSZLtYubT5ThrrdRdk6rESNtBGXlxs3wuT7BwsrYpiU_ZYOSel83aKEkWs_ag5dAvKpqZDzJRrzxFi8-wQABAZ2lO7KDCKW6k9D4ByuUil-L2rJG_kt7TKCJsB6yWjD1eSwcYUPWekJTT-dxZXtyFQ7fIWu6zdN93BdRj8vFeVpg8YkJOjShdA8c6CvhfZkSw4oL5t-9dI3unf-EjThxnzXU8hHi0XGamSByHZwv3GHxhzcT4dgoxpdMy6BA5RacClhgLWnOzkNN1_Jw_mrEgx8dQ2w31JkMyo7J3JiSf533KlWszru_SuUG2Wu7dWaq8CbRaR-vAk2j8_W7f024SeV6ZahS0pBfPcjTQ8jLFVNxivuijHzTKTXEtKKvCatKV3chQVmPwBpdv_UpSCQFgW74XRTj4qKUljxVSZcd9j_oTZgKvz4Ac9RxXB3_zG_EOypq7_CKc050rR4U0WnYBh1-OLh8eT15sb2vjvFL5XVzuGHcCtBEdNPatcZIyfcdISOesFrnNeNb6Fa8sDzRgcm4MdthlGjXLgKqpvXvYxcVIudmSuW1w7_15OexF3hmc0mS2ohKXvdnyuksqOIxaw6JZacmYnOKXuyugTOf3za9lk0yvI-Z64ygHfkzf7VcUtL3_ekwv32w3tR9Mq_eHEYBW4lJdpVzi5-kktW-C66gYUmQoKoERuE0YdB5I93O4IMQ6NGUmoemDxiUChYZFfq0c6lU-NhqfYy9bw07PcFaYtFWd4mmi9NCEqy758dQYbW-76a3llYGtAosKddiFDLcfWNMtJEwS56f59nL-fD72hjyIxIEviQSIUk9-fQ9pRVt0ZZtyCccCRBY_vj7Rhr6d5nFylkIZE7u5DaRk-A03ayRBL1IOFhLYB9Z0ytZToymab3zURVWm1gqPfRMPN4xUMBObWovz0SrHYcPzpG_H7TvC0sTAcbANBzuPFVQedTnIasjWJlNzlD8d0zyKBIG7bbm6czAkHc73tSGwrFvR0oy4M6PqNAyTOo3jxGc78hf-v0vLbUYLS0EoZQHy73CDMAQv5O8vywLYH5yrAPc6H-fVt2_P0QQTtE5AEQkahKhxNrJY_ANf4l6r_wV9ddzYV0RfWwboIt27_wlh16N9ROcYu3lbuJJ0NDWvRjAW2fSuNoZT14x1FEWiRkEUzVapIVA3RxzUcho-SkivWExmZFvkG9YckgfjP-nd9stc11id_-qWsi1skLTRlDX8S190OgWsjCrI_VpBFvpax2oARAHzQ5qnIuE0msy6DTeI9ZZEP4UG7ebCl4ee2jLQm_uMIOPv0yUpsXV4cMirhHAA-lFpegLIUH4ZBeP5YvLbkImTJOAXv0r8kkql6O77xBbdf5KFG1G_ap2tXlfKiEoBNUmwDu4JCVftIYDONHGJ1W05dK0XVZdASUq_eBIoKGWjPZe57qiD4rR-uxgBLdK5YDh7aM2kX4TB1NSCmx_UxMDiPbQZttz7wA-o2t5GTTaQ5IEYSyEnghDrp5fVpePeNx-hDJr--rJscSdJ46TtivvgckpWFA7hp97u77FxQWR_BBAxLgJ8pVnT2IGt4vi6qUQ02ReHu9ZxpRSMY4I2QtvneIL3NuXHTiaEEsbxBsu-aWR3YKMwgPFbMx0XYYLK1gyrIRfd4VgtnbBUoBDSzGMzWE_Gzvz9DDbxNuRMQZYXDeCOv3fYDvqDBepyMkwkt294bdQOK05bdpE5gcXQWZWepS4rSx6Ex-m-jJzqeicItVZBdDANArmc09ssjDXqR3bw3uXkwEJhytVEwUdZy1zERoyD977BUzZejXrGMsTZf-rZrJJsoUxJoZc0ga8COHHTOgCMt32A78nKO5Hxip2drWmnwpKkQt3AMSoNOoqKf-T8BVDpFDbCC0r53GFFID0DVjSsXfFoo3hBnhD4TO_1hgPKQdq3gflclkS2JMW_lITeVD0CF88mLEEVDztOnajeMCyYXifel2ri5CXa6MUZqBBgz7bbHWgiU_fO11HedeGtVtPMOBGOfWT2mMWJRFEmi6hSmxcYRIBRmg9AP735BryGWe5gir6IVJYb2iDPXlBrTVqCUR7NipvQAM9--kc4DdSGm4z9x0eAIac-9rV_crOeGo5rOA2EhyJYADtzjjIpgQmJksqHj5vNGYK6I75wRNgPvxyNGZRGYV52O3tji9tIoTWyiOUXQ9Yt3aOPJ4J-dxsDRVsFUBbBau1DVAuD14R39emXdQpc78y-wtIpkTazsZbG_hZ6Yxfb7iUmcNFngeiJq3fm-ZoY_oguaH4lEWU9L9y3edXnHWr3mJJPlZ98kwx_YYe3Sa4m2_ZCrIv7OwBzuThXL5hkWYEtVvfcOLIv_TphBFlnne1wqAWXFKpDwBJqz6y2bP4rwSbqGqjdqKACU0blxwR0tNFZq_n9RhFQ3zlfN2RKma1xuHEdwigQ__yKE1Iou9YUhA8rRojxiZ8xoGFQaVo3TqDbdA496V_YP-VluDh2KTM3EZwRhxgP2SpouhMp5h56JQVG3oa4QxLnj5KKUIc2uPH_oEanXoRGFi8iDS8aIbPw8R8nGu9wNu-Gw8oDCdsyh_rOSfPua3q5D-Uo-HzMtzej_UpWZ9gKgYqvIUBXuCuHpf3YHOBrfl6mgn56HWka9G2RzNnn7eFLRF8blyUxJeVNc0MnXejcVPm2sxOLoG1aYS0JN0aRjU7rtXSWlbtnslVAl9-4frNCFzSDobDY3aBS6OxHUa91eOXrsiuBe0ehhfWPLVg7wA7QNuvtCAbqizo7Tv-3bWZeAC-DEQ00w1BtoCrDQasby9nHQUl4aVTHGC96OZPl9pcaAjXveJVmtQAXgUYk6nM50B6V7H11ybKiGQ6D_M4Wy89vbsXUS871xBTSV3lRvC5feaY_qrPKrocVyX94bB8-Ae270UyxqZ55MNYMBl7h2YAVsudejuPSGSU1Ud1yp5Pwsp_Fh-dHC-uiPzeXys9AjLBUQN_KmCLpypuJchdqH1XS4-ahEyF8Rmkt-V0OBE8FhfOmw0GV0JrTfeAJbsccu24SoOBy5HzGTX-6pjUTFv8Gn6AzzelgkjPZVRiy4_KIvfX_YnA1j8ET-6GJBX-67pK4EfPpioUz66WtRQPDLzhJ8Bm7_1c-XAOu3LBl5wwuY9wsvxS3QSTTk73m56RRd8-wuk3cPzfNJFSqTYA==",
+            "video_metadata": null,
+            "tool_call": null,
+            "tool_response": null,
+            "part_metadata": null,
+            "audio_transcription": null,
+            "media_processing": null,
+            "speech_metadata": null
+          }
+        ],
+        "role": "model"
+      },
+      "citation_metadata": null,
+      "finish_message": null,
+      "token_count": null,
+      "finish_reason": "STOP",
+      "grounding_metadata": null,
+      "avg_logprobs": null,
+      "index": 0,
+      "logprobs_result": null,
+      "safety_ratings": null,
+      "url_context_metadata": null,
+      "continuation_token": null
+    }
+  ],
+  "create_time": null,
+  "model_version": "gemini-3.6-flash",
+  "prompt_feedback": null,
+  "response_id": "G1TWatT3J8uivdIPs46jwAM",
+  "usage_metadata": {
+    "cache_tokens_details": null,
+    "cached_content_token_count": null,
+    "candidates_token_count": 524,
+    "candidates_tokens_details": null,
+    "prompt_token_count": 2372,
+    "prompt_tokens_details": [
+      {
+        "modality": "TEXT",
+        "token_count": 202
+      },
+      {
+        "modality": "IMAGE",
+        "token_count": 2170
+      }
+    ],
+    "thoughts_token_count": 1447,
+    "tool_use_prompt_token_count": null,
+    "tool_use_prompt_tokens_details": null,
+    "total_token_count": 4343,
+    "traffic_type": null
+  },
+  "model_status": null,
+  "automatic_function_calling_history": [],
+  "parsed": {
+    "findings": [],
+    "readings": [
+      {
+        "text_seen": "Agriculture",
+        "region": "left"
+      },
+      {
+        "text_seen": "Animal Husbandry 6",
+        "region": "top"
+      },
+      {
+        "text_seen": "Trapping 10",
+        "region": "top"
+      },
+      {
+        "text_seen": "Horseback Riding 19",
+        "region": "top-right"
+      },
+      {
+        "text_seen": "Archery 6",
+        "region": "left"
+      },
+      {
+        "text_seen": "The Wheel 10",
+        "region": "center"
+      },
+      {
+        "text_seen": "Mathematics 19",
+        "region": "right"
+      },
+      {
+        "text_seen": "Mining 6",
+        "region": "bottom-left"
+      },
+      {
+        "text_seen": "Masonry 10",
+        "region": "bottom"
+      },
+      {
+        "text_seen": "Bronze Working 10",
+        "region": "bottom"
+      },
+      {
+        "text_seen": "Construction 19",
+        "region": "bottom-right"
+      },
+      {
+        "text_seen": "Close",
+        "region": "bottom-left"
+      },
+      {
+        "text_seen": "Units enabled:",
+        "region": "bottom-left"
+      },
+      {
+        "text_seen": "• Archer (5, 7)",
+        "region": "bottom-left"
+      },
+      {
+        "text_seen": "Wonders enabled:",
+        "region": "bottom-left"
+      },
+      {
+        "text_seen": "• Temple of Artemis (+1 Culture; +10% Food in all cities; +15% Production when constructing Archery units in this city;",
+        "region": "bottom"
+      },
+      {
+        "text_seen": "Research Archery (0/24)",
+        "region": "bottom-right"
+      }
+    ]
+  }
+}

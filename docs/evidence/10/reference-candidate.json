@@ -1,0 +1,1090 @@
+{
+  "status": "candidate_awaiting_Anton_confirmation",
+  "detector_output_used": false,
+  "method": "Manually selected build-specific translation entries; visible spans inspected from original screenshots. Not ground truth until Anton confirms.",
+  "builds": {
+    "clean": {
+      "version_code": 1271001,
+      "commit": "2e4d6af664e204c4ddcc06383a0e2e700a9665c4",
+      "repository": "https://github.com/anton-borodin-inr/Unciv",
+      "apk_sha256": "47b98d930c8699625e8df6dee3fce49ae0d600cab2356382279e006ce791f644",
+      "translations": {
+        "English": {
+          "path": "android/assets/jsons/translations/English.properties",
+          "sha256": "f4bae85883e7430cf01ba257bf924db6aaa6df564c4896ac2d3783ee41216b02",
+          "apk_bytes_equal": true
+        },
+        "German": {
+          "path": "android/assets/jsons/translations/German.properties",
+          "sha256": "e292857ddd35c9cb95a23659829ceac681e6d637c9fd1a1bf37be14d660215bb",
+          "apk_bytes_equal": true
+        }
+      }
+    },
+    "defective": {
+      "version_code": 1271002,
+      "commit": "038329f93966a8d1d0ac7f23f551c98feb32614c",
+      "repository": "https://github.com/anton-borodin-inr/Unciv",
+      "apk_sha256": "cac0bb72d87fa91e2de7a132827f3acd2c23716e2f0aba41d287db74e023c7b4",
+      "translations": {
+        "English": {
+          "path": "android/assets/jsons/translations/English.properties",
+          "sha256": "f4bae85883e7430cf01ba257bf924db6aaa6df564c4896ac2d3783ee41216b02",
+          "apk_bytes_equal": true
+        },
+        "German": {
+          "path": "android/assets/jsons/translations/German.properties",
+          "sha256": "947b0875cdef628c3e57e773976c3e16f3041924dc3b8880a8eebed023e2caf7",
+          "apk_bytes_equal": true
+        }
+      }
+    }
+  },
+  "screens": [
+    {
+      "image": "docs/evidence/8/final/tech-picker__de__2400x1080__clean__1271001.png",
+      "sha256": "a6a5beb3ef17ce4a640261821ff1bfc02f2dfda0e81c1cfb3aadaa32407f954e",
+      "build": "clean",
+      "language": "German",
+      "rows": [
+        {
+          "id": "Agriculture",
+          "section": "tree",
+          "region": "top-left",
+          "text_seen": "Landwirtschaft",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "Agriculture",
+              "value": "Landwirtschaft",
+              "line": 5115
+            }
+          ]
+        },
+        {
+          "id": "Animal Husbandry",
+          "section": "tree",
+          "region": "top",
+          "text_seen": "Tierhaltung",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "Animal Husbandry",
+              "value": "Tierhaltung",
+              "line": 5120
+            }
+          ]
+        },
+        {
+          "id": "Archery",
+          "section": "tree",
+          "region": "center",
+          "text_seen": "Bogenschießen",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "Archery",
+              "value": "Bogenschießen",
+              "line": 5122
+            }
+          ]
+        },
+        {
+          "id": "Mining",
+          "section": "tree",
+          "region": "center",
+          "text_seen": "Bergbau",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "Mining",
+              "value": "Bergbau",
+              "line": 5124
+            }
+          ]
+        },
+        {
+          "id": "Writing",
+          "section": "tree",
+          "region": "top",
+          "text_seen": "Schrift",
+          "visibility": "vertical_clip",
+          "primary_denominator": false,
+          "sources": [
+            {
+              "key": "Writing",
+              "value": "Schrift",
+              "line": 5131
+            }
+          ]
+        },
+        {
+          "id": "Trapping",
+          "section": "tree",
+          "region": "top",
+          "text_seen": "Fallenstellen",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "Trapping",
+              "value": "Fallenstellen",
+              "line": 5133
+            }
+          ]
+        },
+        {
+          "id": "The Wheel",
+          "section": "tree",
+          "region": "center",
+          "text_seen": "Das Rad",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "The Wheel",
+              "value": "Das Rad",
+              "line": 5135
+            }
+          ]
+        },
+        {
+          "id": "Masonry",
+          "section": "tree",
+          "region": "center",
+          "text_seen": "Mauerarbeiten",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "Masonry",
+              "value": "Mauerarbeiten",
+              "line": 5137
+            }
+          ]
+        },
+        {
+          "id": "Bronze Working",
+          "section": "tree",
+          "region": "bottom",
+          "text_seen": "Bronzebearbeitung",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "Bronze Working",
+              "value": "Bronzebearbeitung",
+              "line": 5139
+            }
+          ]
+        },
+        {
+          "id": "Horseback Riding",
+          "section": "tree",
+          "region": "top-right",
+          "text_seen": "Reiten",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "Horseback Riding",
+              "value": "Reiten",
+              "line": 5146
+            }
+          ]
+        },
+        {
+          "id": "Mathematics",
+          "section": "tree",
+          "region": "right",
+          "text_seen": "Mathematik",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "Mathematics",
+              "value": "Mathematik",
+              "line": 5148
+            }
+          ]
+        },
+        {
+          "id": "Construction",
+          "section": "tree",
+          "region": "right",
+          "text_seen": "Baukunst",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "Construction",
+              "value": "Baukunst",
+              "line": 5150
+            }
+          ]
+        },
+        {
+          "id": "close",
+          "section": "controls",
+          "region": "bottom-left",
+          "text_seen": "Schließen",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "Close",
+              "value": "Schließen",
+              "line": 1397
+            }
+          ]
+        },
+        {
+          "id": "research",
+          "section": "controls",
+          "region": "bottom-right",
+          "text_seen": "Bogenschießen erforschen",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "Research [technology]",
+              "value": "[technology] erforschen",
+              "line": 1515
+            },
+            {
+              "key": "Archery",
+              "value": "Bogenschießen",
+              "line": 5122
+            }
+          ]
+        },
+        {
+          "id": "units-heading",
+          "section": "description",
+          "region": "bottom-left",
+          "text_seen": "Freigeschaltete Einheiten:",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "Units enabled",
+              "value": "Freigeschaltete Einheiten",
+              "line": 1517
+            }
+          ]
+        },
+        {
+          "id": "archer",
+          "section": "description",
+          "region": "bottom-left",
+          "text_seen": "Bogenschütze",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "Archer",
+              "value": "Bogenschütze",
+              "line": 5731
+            }
+          ]
+        },
+        {
+          "id": "wonders-heading",
+          "section": "description",
+          "region": "bottom-left",
+          "text_seen": "Freigeschaltete Wunder:",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "Wonders enabled",
+              "value": "Freigeschaltete Wunder",
+              "line": 1522
+            }
+          ]
+        },
+        {
+          "id": "temple",
+          "section": "description",
+          "region": "bottom-left",
+          "text_seen": "Tempel der Artemis",
+          "visibility": "vertical_clip",
+          "primary_denominator": false,
+          "sources": [
+            {
+              "key": "Temple of Artemis",
+              "value": "Tempel der Artemis",
+              "line": 3230
+            }
+          ]
+        },
+        {
+          "id": "culture",
+          "section": "description",
+          "region": "bottom-left",
+          "text_seen": "+1 Kultur",
+          "visibility": "vertical_clip",
+          "primary_denominator": false,
+          "sources": [
+            {
+              "key": "Culture",
+              "value": "Kultur",
+              "line": 1368
+            }
+          ]
+        },
+        {
+          "id": "food",
+          "section": "description",
+          "region": "bottom",
+          "text_seen": "+10% Nahrung in allen Städten",
+          "visibility": "vertical_clip",
+          "primary_denominator": false,
+          "sources": [
+            {
+              "key": "[relativeAmount]% [stat] [cityFilter]",
+              "value": "[relativeAmount]% [stat] [cityFilter]",
+              "line": 2182
+            },
+            {
+              "key": "Food",
+              "value": "Nahrung",
+              "line": 1364
+            },
+            {
+              "key": "in all cities",
+              "value": "in allen Städten",
+              "line": 2790
+            }
+          ]
+        },
+        {
+          "id": "production",
+          "section": "description",
+          "region": "bottom",
+          "text_seen": "+15% Produktion beim Bau von",
+          "visibility": "vertical_clip",
+          "primary_denominator": false,
+          "sources": [
+            {
+              "key": "[relativeAmount]% Production when constructing [baseUnitFilter] units [cityFilter]",
+              "value": "[relativeAmount]% Produktion beim Bau von [baseUnitFilter] Einheiten [cityFilter]",
+              "line": 2192
+            },
+            {
+              "key": "Archery",
+              "value": "Bogenschießen",
+              "line": 5122
+            },
+            {
+              "key": "in this city",
+              "value": "in dieser Stadt",
+              "line": 2564
+            }
+          ],
+          "assembled_full_text": "+15% Produktion beim Bau von Bogenschießen Einheiten in dieser Stadt"
+        }
+      ],
+      "numeric_diagnostics": [
+        "6",
+        "10",
+        "19",
+        "5",
+        "7",
+        "+1",
+        "+10%",
+        "+15%",
+        "(0/24)"
+      ],
+      "notes": [
+        "Icons and bullet glyphs are not translated text; numeric diagnostics are outside the primary denominator.",
+        "Vertical clipping is diagnostic only, not an unreadable-text omission or a defect label.",
+        "Only the visible production prefix is scored in German; hidden continuation is not a reference string."
+      ]
+    },
+    {
+      "image": "docs/evidence/8/final/tech-picker__en__2400x1080__clean__1271001.png",
+      "sha256": "88ff1c55aef33cc9ff0fd89cd5912384b7a1017d8d9ca2d88965ec39389b9f47",
+      "build": "clean",
+      "language": "English",
+      "rows": [
+        {
+          "id": "Agriculture",
+          "section": "tree",
+          "region": "top-left",
+          "text_seen": "Agriculture",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "Agriculture",
+              "value": "",
+              "line": 8498
+            }
+          ]
+        },
+        {
+          "id": "Animal Husbandry",
+          "section": "tree",
+          "region": "top",
+          "text_seen": "Animal Husbandry",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "Animal Husbandry",
+              "value": "",
+              "line": 8507
+            }
+          ]
+        },
+        {
+          "id": "Archery",
+          "section": "tree",
+          "region": "center",
+          "text_seen": "Archery",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "Archery",
+              "value": "",
+              "line": 8511
+            }
+          ]
+        },
+        {
+          "id": "Mining",
+          "section": "tree",
+          "region": "center",
+          "text_seen": "Mining",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "Mining",
+              "value": "",
+              "line": 8515
+            }
+          ]
+        },
+        {
+          "id": "Trapping",
+          "section": "tree",
+          "region": "top",
+          "text_seen": "Trapping",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "Trapping",
+              "value": "",
+              "line": 8532
+            }
+          ]
+        },
+        {
+          "id": "The Wheel",
+          "section": "tree",
+          "region": "center",
+          "text_seen": "The Wheel",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "The Wheel",
+              "value": "",
+              "line": 8536
+            }
+          ]
+        },
+        {
+          "id": "Masonry",
+          "section": "tree",
+          "region": "center",
+          "text_seen": "Masonry",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "Masonry",
+              "value": "",
+              "line": 8540
+            }
+          ]
+        },
+        {
+          "id": "Bronze Working",
+          "section": "tree",
+          "region": "bottom",
+          "text_seen": "Bronze Working",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "Bronze Working",
+              "value": "",
+              "line": 8544
+            }
+          ]
+        },
+        {
+          "id": "Horseback Riding",
+          "section": "tree",
+          "region": "top-right",
+          "text_seen": "Horseback Riding",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "Horseback Riding",
+              "value": "",
+              "line": 8557
+            }
+          ]
+        },
+        {
+          "id": "Mathematics",
+          "section": "tree",
+          "region": "right",
+          "text_seen": "Mathematics",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "Mathematics",
+              "value": "",
+              "line": 8561
+            }
+          ]
+        },
+        {
+          "id": "Construction",
+          "section": "tree",
+          "region": "right",
+          "text_seen": "Construction",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "Construction",
+              "value": "",
+              "line": 8565
+            }
+          ]
+        },
+        {
+          "id": "close",
+          "section": "controls",
+          "region": "bottom-left",
+          "text_seen": "Close",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "Close",
+              "value": "",
+              "line": 2548
+            }
+          ]
+        },
+        {
+          "id": "research",
+          "section": "controls",
+          "region": "bottom-right",
+          "text_seen": "Research Archery",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "Research [technology]",
+              "value": "",
+              "line": 2772
+            },
+            {
+              "key": "Archery",
+              "value": "",
+              "line": 8511
+            }
+          ]
+        },
+        {
+          "id": "units-heading",
+          "section": "description",
+          "region": "bottom-left",
+          "text_seen": "Units enabled:",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "Units enabled",
+              "value": "",
+              "line": 2776
+            }
+          ]
+        },
+        {
+          "id": "archer",
+          "section": "description",
+          "region": "bottom-left",
+          "text_seen": "Archer",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "Archer",
+              "value": "",
+              "line": 9486
+            }
+          ]
+        },
+        {
+          "id": "wonders-heading",
+          "section": "description",
+          "region": "bottom-left",
+          "text_seen": "Wonders enabled:",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "Wonders enabled",
+              "value": "",
+              "line": 2786
+            }
+          ]
+        },
+        {
+          "id": "temple",
+          "section": "description",
+          "region": "bottom-left",
+          "text_seen": "Temple of Artemis",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "Temple of Artemis",
+              "value": "",
+              "line": 5991
+            }
+          ]
+        },
+        {
+          "id": "culture",
+          "section": "description",
+          "region": "bottom-left",
+          "text_seen": "+1 Culture",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "Culture",
+              "value": "",
+              "line": 2494
+            }
+          ]
+        },
+        {
+          "id": "food",
+          "section": "description",
+          "region": "bottom",
+          "text_seen": "+10% Food in all cities",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "[relativeAmount]% [stat] [cityFilter]",
+              "value": "",
+              "line": 4024
+            },
+            {
+              "key": "Food",
+              "value": "",
+              "line": 2486
+            },
+            {
+              "key": "in all cities",
+              "value": "",
+              "line": 5212
+            }
+          ]
+        },
+        {
+          "id": "production",
+          "section": "description",
+          "region": "bottom",
+          "text_seen": "+15% Production when constructing Archery units in this city",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "[relativeAmount]% Production when constructing [baseUnitFilter] units [cityFilter]",
+              "value": "",
+              "line": 4044
+            },
+            {
+              "key": "Archery",
+              "value": "",
+              "line": 8511
+            },
+            {
+              "key": "in this city",
+              "value": "",
+              "line": 4788
+            }
+          ],
+          "assembled_full_text": "+15% Production when constructing Archery units in this city"
+        }
+      ],
+      "numeric_diagnostics": [
+        "6",
+        "10",
+        "19",
+        "5",
+        "7",
+        "+1",
+        "+10%",
+        "+15%",
+        "(0/24)"
+      ],
+      "notes": [
+        "Icons and bullet glyphs are not translated text; numeric diagnostics are outside the primary denominator.",
+        "Vertical clipping is diagnostic only, not an unreadable-text omission or a defect label.",
+        "Only the visible production prefix is scored in German; hidden continuation is not a reference string."
+      ]
+    },
+    {
+      "image": "docs/evidence/8/final/tech-picker__de__2400x1080__injected__1271002.png",
+      "sha256": "372aa318ce3bf4d553b4b9d427a7fe6d87f566953605c21bc705dd10df816b93",
+      "build": "defective",
+      "language": "German",
+      "rows": [
+        {
+          "id": "Agriculture",
+          "section": "tree",
+          "region": "top-left",
+          "text_seen": "Landwirtschaft",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "Agriculture",
+              "value": "Landwirtschaft",
+              "line": 5115
+            }
+          ]
+        },
+        {
+          "id": "Animal Husbandry",
+          "section": "tree",
+          "region": "top",
+          "text_seen": "Tierhaltung",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "Animal Husbandry",
+              "value": "Tierhaltung",
+              "line": 5120
+            }
+          ]
+        },
+        {
+          "id": "Archery",
+          "section": "tree",
+          "region": "center",
+          "text_seen": "Bogenschießen",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "Archery",
+              "value": "Bogenschießen",
+              "line": 5122
+            }
+          ]
+        },
+        {
+          "id": "Mining",
+          "section": "tree",
+          "region": "center",
+          "text_seen": "Bergbau und Erzgew...",
+          "visibility": "visible_prefix",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "Mining",
+              "value": "Bergbau und Erzgewinnung",
+              "line": 5124
+            }
+          ]
+        },
+        {
+          "id": "Writing",
+          "section": "tree",
+          "region": "top",
+          "text_seen": "Schrift",
+          "visibility": "vertical_clip",
+          "primary_denominator": false,
+          "sources": [
+            {
+              "key": "Writing",
+              "value": "Schrift",
+              "line": 5131
+            }
+          ]
+        },
+        {
+          "id": "Trapping",
+          "section": "tree",
+          "region": "top",
+          "text_seen": "Fallenstellen",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "Trapping",
+              "value": "Fallenstellen",
+              "line": 5133
+            }
+          ]
+        },
+        {
+          "id": "The Wheel",
+          "section": "tree",
+          "region": "center",
+          "text_seen": "Das Rad",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "The Wheel",
+              "value": "Das Rad",
+              "line": 5135
+            }
+          ]
+        },
+        {
+          "id": "Masonry",
+          "section": "tree",
+          "region": "center",
+          "text_seen": "Mauerarbeiten",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "Masonry",
+              "value": "Mauerarbeiten",
+              "line": 5137
+            }
+          ]
+        },
+        {
+          "id": "Bronze Working",
+          "section": "tree",
+          "region": "bottom",
+          "text_seen": "Bronzebearbeitung",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "Bronze Working",
+              "value": "Bronzebearbeitung",
+              "line": 5139
+            }
+          ]
+        },
+        {
+          "id": "Horseback Riding",
+          "section": "tree",
+          "region": "top-right",
+          "text_seen": "Reiten",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "Horseback Riding",
+              "value": "Reiten",
+              "line": 5146
+            }
+          ]
+        },
+        {
+          "id": "Mathematics",
+          "section": "tree",
+          "region": "right",
+          "text_seen": "Mathematik",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "Mathematics",
+              "value": "Mathematik",
+              "line": 5148
+            }
+          ]
+        },
+        {
+          "id": "Construction",
+          "section": "tree",
+          "region": "right",
+          "text_seen": "Baukunst",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "Construction",
+              "value": "Baukunst",
+              "line": 5150
+            }
+          ]
+        },
+        {
+          "id": "units-heading",
+          "section": "description",
+          "region": "bottom-left",
+          "text_seen": "Freigeschaltete Einheiten:",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "Units enabled",
+              "value": "Freigeschaltete Einheiten",
+              "line": 1517
+            }
+          ]
+        },
+        {
+          "id": "archer",
+          "section": "description",
+          "region": "bottom-left",
+          "text_seen": "Bogenschütze",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "Archer",
+              "value": "Bogenschütze",
+              "line": 5731
+            }
+          ]
+        },
+        {
+          "id": "wonders-heading",
+          "section": "description",
+          "region": "bottom-left",
+          "text_seen": "Freigeschaltete Wunder:",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "Wonders enabled",
+              "value": "Freigeschaltete Wunder",
+              "line": 1522
+            }
+          ]
+        },
+        {
+          "id": "temple",
+          "section": "description",
+          "region": "bottom-left",
+          "text_seen": "Tempel der Artemis",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "Temple of Artemis",
+              "value": "Tempel der Artemis",
+              "line": 3230
+            }
+          ]
+        },
+        {
+          "id": "culture",
+          "section": "description",
+          "region": "bottom-left",
+          "text_seen": "+1 Kultur",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "Culture",
+              "value": "Kultur",
+              "line": 1368
+            }
+          ]
+        },
+        {
+          "id": "food",
+          "section": "description",
+          "region": "bottom",
+          "text_seen": "+10% Nahrung in allen Städten",
+          "visibility": "full",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "[relativeAmount]% [stat] [cityFilter]",
+              "value": "[relativeAmount]% [stat] [cityFilter]",
+              "line": 2182
+            },
+            {
+              "key": "Food",
+              "value": "Nahrung",
+              "line": 1364
+            },
+            {
+              "key": "in all cities",
+              "value": "in allen Städten",
+              "line": 2790
+            }
+          ]
+        },
+        {
+          "id": "production",
+          "section": "description",
+          "region": "bottom",
+          "text_seen": "+15% Produktion beim Bau von",
+          "visibility": "visible_prefix",
+          "primary_denominator": true,
+          "sources": [
+            {
+              "key": "[relativeAmount]% Production when constructing [baseUnitFilter] units [cityFilter]",
+              "value": "[relativeAmount]% Produktion beim Bau von [baseUnitFilter] Einheiten [cityFilter]",
+              "line": 2192
+            },
+            {
+              "key": "Archery",
+              "value": "Bogenschießen",
+              "line": 5122
+            },
+            {
+              "key": "in this city",
+              "value": "in dieser Stadt",
+              "line": 2564
+            }
+          ],
+          "assembled_full_text": "+15% Produktion beim Bau von Bogenschießen Einheiten in dieser Stadt"
+        }
+      ],
+      "numeric_diagnostics": [
+        "6",
+        "10",
+        "19",
+        "5",
+        "7",
+        "+1",
+        "+10%",
+        "+15%"
+      ],
+      "notes": [
+        "Icons and bullet glyphs are not translated text; numeric diagnostics are outside the primary denominator.",
+        "Vertical clipping is diagnostic only, not an unreadable-text omission or a defect label.",
+        "Only the visible production prefix is scored in German; hidden continuation is not a reference string.",
+        "Close/research buttons are absent from this injected screenshot, unlike the clean screenshots."
+      ]
+    }
+  ]
+}

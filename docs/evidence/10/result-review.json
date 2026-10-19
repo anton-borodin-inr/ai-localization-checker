@@ -1,0 +1,87 @@
+{
+  "reviewed_by": "coding agent",
+  "date": "2026-10-19",
+  "reference_confirmed_by": "Anton before live calls",
+  "scope": "95 readings in the six successful responses; failed calls have no readings to classify. These are result diagnostics, not new dataset labels.",
+  "runs": [
+    {
+      "run_id": "20261019T155009Z-c8f4d4",
+      "readings_reviewed": 29,
+      "invented_strings": [],
+      "reading_errors": [],
+      "hidden_completions": [],
+      "basis": "All returned strings compared with the original screenshot and pre-call Anton-confirmed reference; numeric counters and icon omission reviewed separately. No new ground-truth label was created.",
+      "output_sha256": "e963f533f8f9b6ecdcadd2a71f9c82e67b05d9c69fa078bf32e7b4098cb6a8b3"
+    },
+    {
+      "run_id": "20261019T173133Z-0a453a",
+      "readings_reviewed": 28,
+      "invented_strings": [],
+      "reading_errors": [],
+      "hidden_completions": [],
+      "basis": "All returned strings compared with the original screenshot and pre-call Anton-confirmed reference; numeric counters and icon omission reviewed separately. No new ground-truth label was created.",
+      "output_sha256": "5a34195d0aa31ae1a7dec0230ef03b23452d46ef681fb41b4dfc4960730e1ef4"
+    },
+    {
+      "run_id": "20261019T173210Z-e38a73",
+      "readings_reviewed": 17,
+      "invented_strings": [],
+      "reading_errors": [],
+      "hidden_completions": [],
+      "basis": "All returned strings compared with the original screenshot and pre-call Anton-confirmed reference; numeric counters and icon omission reviewed separately. No new ground-truth label was created.",
+      "output_sha256": "a5e6dc120de12c2085c124572871905068c2c6ae333e8ea92d18d50bf6067b23"
+    },
+    {
+      "run_id": "20261019T173316Z-fa3f49",
+      "readings_reviewed": 7,
+      "invented_strings": [],
+      "reading_errors": [],
+      "hidden_completions": [],
+      "basis": "All returned strings compared with the original screenshot and pre-call Anton-confirmed reference; numeric counters and icon omission reviewed separately. No new ground-truth label was created.",
+      "output_sha256": "5da9e61c82b1333f24a2100c49c0cfbaf061f50b9c7c68868dbbde58a981af64"
+    },
+    {
+      "run_id": "20261019T173437Z-64098c",
+      "readings_reviewed": 7,
+      "invented_strings": [],
+      "reading_errors": [],
+      "hidden_completions": [],
+      "basis": "All returned strings compared with the original screenshot and pre-call Anton-confirmed reference; numeric counters and icon omission reviewed separately. No new ground-truth label was created.",
+      "output_sha256": "ccfc93848d95a1aae46779c313c7cb82b2ee7f080a59809d83281f90fda0c03f"
+    },
+    {
+      "run_id": "20261019T173557Z-167f1f",
+      "readings_reviewed": 7,
+      "invented_strings": [],
+      "reading_errors": [],
+      "hidden_completions": [],
+      "basis": "All returned strings compared with the original screenshot and pre-call Anton-confirmed reference; numeric counters and icon omission reviewed separately. No new ground-truth label was created.",
+      "output_sha256": "8dfd66a025ecf04c83ca4c4cd4287aec88d2e552fca00b5d665ded221f7b2007"
+    }
+  ],
+  "finding_region_review": [
+    {
+      "run_id": "20261019T173557Z-167f1f",
+      "finding_index": 0,
+      "text_seen": "Bergbau und Erzgew...",
+      "existing_human_label_match": "Issue 8 Mining truncated_text label; original region center. Label bytes unchanged.",
+      "local_region_reported": "bottom",
+      "local_region_expected": "bottom-right",
+      "local_region_correct": false,
+      "original_region_expected": "center",
+      "original_region_candidates": [
+        "left",
+        "center",
+        "bottom-left",
+        "bottom"
+      ],
+      "original_region_from_model": "ambiguous; cannot assign a single original cell",
+      "visible_text_centre_px_approx": [
+        890,
+        701
+      ],
+      "basis": "Visual inspection at native resolution; visible title runs approximately x767..1012, so its centre is to the right of the local x=880 boundary for the 1320px crop. y≈701 is in the local bottom row. D-025 uses the visible-text centre.",
+      "scope": "One diagnostic finding from a partial tile variant, not a complete checked screen or detector-recall result."
+    }
+  ]
+}
