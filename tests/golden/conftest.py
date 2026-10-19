@@ -20,7 +20,15 @@ def golden_case(request):
 
 @pytest.fixture
 def golden_matches(golden_case):
-    case = golden_case
+    return match_case(golden_case)
+
+
+@pytest.fixture
+def golden_dataset():
+    return [(case, match_case(case)) for case in CASES]
+
+
+def match_case(case):
     return match_screen(
         labels=[
             Label(**{k: v for k, v in row.items() if k != "id"})

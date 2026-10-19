@@ -53,7 +53,45 @@ indices and hallucination indices. A `not_checked` result carries no findings
 and does not classify labels as checked misses. Unknown status or findings on a
 `not_checked` screen raise `ValueError` rather than silently becoming clean.
 
-## Verification
+## Metrics API
+
+`l10n_checker.metrics.score_screen(screen_matches)` scores one result;
+`score_screens(iterable_of_screen_matches)` scores a dataset. Counts are summed
+before dividing, rather than averaging screen ratios:
+
+- `tp`: matched labels; `fp`: unmatched findings after collapse.
+- `fn`: unmatched labels on **checked** screens only.
+- `fn_on_not_checked`: all labels on failed/unchecked screens, kept separately.
+- `precision = tp / (tp + fp)`.
+- `recall_checked = tp / (tp + fn)`.
+- `recall_all = tp / (tp + fn + fn_on_not_checked)`.
+
+Any zero denominator returns Python `None`. `Metrics.to_dict()` preserves it
+as JSON `null`; it never substitutes zero, one or NaN. `confusion` counts
+`label_type` → `finding_type` for retained matches, including wrong categories
+and `other`. Duplicates contribute only the representative. Hallucinations are
+a subset of FP, not an additional FP penalty.
+
+`not_checked_screens` counts failed/unchecked screens, including those without
+labels. They never become true negatives. Callers retain the screenshot ID
+alongside each `ScreenMatches` to list failed screens; scoring does not invent
+IDs or reinterpret an API failure as a checked empty finding list. Existing
+`vision.CheckResult` supplies the detector's checked/not_checked status.
+
+## Verification and manual comparison
 
 Run `uv run pytest tests/golden` for Anton's hand-computed examples. Every case
 runs; expected values are never copied into the test source or rounded.
+
+For example, inspect `03_identical_labels_region_decides` in the golden JSON,
+recompute its result by hand, then print the actual result offline:
+
+```sh
+PYTHONPATH=src uv run python scripts/score_golden.py 03_identical_labels_region_decides
+```
+
+`PYTHONPATH=src` also works around the standalone hidden editable-hook issue
+described in D-019. The script reads the specification but never uses `expected`
+to compute results. For the failure-status example, pass
+`11_not_checked_screen`; undefined metrics print as `null`. Neither command
+contacts a provider. Anton performs the independent hand comparison (D-012).
