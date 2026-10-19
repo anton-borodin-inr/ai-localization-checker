@@ -204,7 +204,7 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 ## D-022 — Plain adb instead of Appium in the capture path
 
 - **Date:** 2026-10-19
-- **Status:** Proposed
+- **Status:** Accepted
 - **Decision:** Replace the Appium session in `l10n-capture` with SDK `adb`: `exec-out screencap -p` for the PNG and `dumpsys activity activities` for the foreground check. Keep the project-local Appium install (D-015) until the change is made and verified; this entry does not make the change.
 - **Why:** Facts gathered in issues #2 and #9 on Unciv 4.22.10 / 1271, API 34 AVD, Appium 3.3.1, uiautomator2 7.1.2:
   - **What Appium gives on a LibGDX canvas:** a `page_source` read on the main menu returned 10 nodes (`FrameLayout`, `LinearLayout`, `View`) and no text attribute. The whole game is one view, so Appium supplies only `current_package` and a screenshot, both of which adb provides directly. The language step (#9) already uses adb for the foreground check.
