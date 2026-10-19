@@ -6,7 +6,6 @@ from pathlib import Path
 from unittest.mock import Mock
 
 import pytest
-from urllib3.exceptions import MaxRetryError
 
 from l10n_checker import capture as cap
 
@@ -58,30 +57,27 @@ def test_png_dimensions():
     assert cap.png_size(png(3, 2)) == (3, 2)
 
 
+FOREGROUND = f"topResumedActivity=ActivityRecord{{1 u0 {cap.ACTIVITY} t8}}"
+OTHER_APP = "topResumedActivity=ActivityRecord{1 u0 com.example/.Other t9}"
+
+
 @pytest.fixture
 def setup_capture(tmp_path, monkeypatch):
     monkeypatch.setattr(cap, "REPO_ROOT", tmp_path)
     device = Mock(spec=cap.Device)
     device.size.return_value = (2, 1)
     device.build.return_value = "1271"
-    driver = Mock()
-    driver.current_package = cap.PACKAGE
-    driver.get_screenshot_as_png.return_value = png()
-
-    @contextmanager
-    def session(*args):
-        yield driver
-
-    monkeypatch.setattr(cap, "appium_session", session)
+    device.screenshot.return_value = png()
+    device.foreground.return_value = FOREGROUND
     # The language step has its own tests (test_capture_language.py).
     language_step = Mock(side_effect=lambda *args: contextmanager(lambda: (yield))())
     monkeypatch.setattr(cap, "unciv_language", language_step)
     monkeypatch.setattr(cap.time, "sleep", lambda s: None)
-    return device, driver, tmp_path / "data" / "capture"
+    return device, tmp_path / "data" / "capture"
 
 
 def run_capture(setup_capture, **kwargs):
-    device, _, folder = setup_capture
+    device, folder = setup_capture
     return cap.capture(device, folder, "menu", "en", "original", **kwargs)
 
 
@@ -96,12 +92,23 @@ def test_capture_and_explicit_overwrite(setup_capture):
 
 @pytest.mark.parametrize(
     "failure",
-    ["size", "orientation", "cutout-before", "cutout-after", "foreground", "png"],
+    [
+        "size",
+        "orientation",
+        "cutout-before",
+        "cutout-after",
+        "foreground",
+        "foreground-after",
+        "png",
+        "empty-png",
+        "truncated-png",
+        "screencap-error",
+    ],
 )
 def test_failed_capture_saves_nothing(setup_capture, failure):
-    device, driver, folder = setup_capture
+    device, folder = setup_capture
     if failure == "size":
-        driver.get_screenshot_as_png.return_value = png(1, 2)
+        device.screenshot.return_value = png(1, 2)
     elif failure == "orientation":
         device.size.side_effect = [(2, 1), (1, 2)]
     elif failure == "cutout-before":
@@ -109,9 +116,17 @@ def test_failed_capture_saves_nothing(setup_capture, failure):
     elif failure == "cutout-after":
         device.check_cutout.side_effect = [None, None, cap.CaptureError("cutout")]
     elif failure == "foreground":
-        driver.current_package = "other.app"
+        device.foreground.return_value = OTHER_APP
+    elif failure == "foreground-after":
+        device.foreground.side_effect = [FOREGROUND, OTHER_APP]
+    elif failure == "png":
+        device.screenshot.return_value = b"invalid"
+    elif failure == "empty-png":
+        device.screenshot.return_value = b""
+    elif failure == "truncated-png":
+        device.screenshot.return_value = png()[:-5]
     else:
-        driver.get_screenshot_as_png.return_value = b"invalid"
+        device.screenshot.side_effect = cap.CaptureError("screencap failed")
     with pytest.raises(cap.CaptureError):
         run_capture(setup_capture)
     assert not folder.exists()
@@ -130,7 +145,7 @@ def test_output_outside_data_rejected(tmp_path, monkeypatch):
 
 
 def test_output_symlink_rejected(setup_capture, tmp_path):
-    _, _, folder = setup_capture
+    _, folder = setup_capture
     folder.mkdir(parents=True)
     target = folder / "menu__en__2x1__original__1271.png"
     target.symlink_to(tmp_path / "outside.png")
@@ -172,29 +187,30 @@ def test_installed_version_and_rotated_size(monkeypatch):
     assert device.size() == (2400, 1080)
 
 
-def test_unavailable_appium(monkeypatch):
-    def unavailable(**kwargs):
-        raise MaxRetryError(None, "http://127.0.0.1:4723")
+@pytest.mark.parametrize(
+    "error",
+    [
+        subprocess.CalledProcessError(1, "adb", stderr=b"error: closed"),
+        subprocess.TimeoutExpired("adb", 30),
+    ],
+)
+def test_screencap_failure_is_clear(monkeypatch, error):
+    def fail(*args, **kwargs):
+        raise error
 
-    monkeypatch.setattr(cap.webdriver, "Remote", unavailable)
-    with (
-        pytest.raises(cap.CaptureError, match="npm run appium"),
-        cap.appium_session(cap.Device(Path("adb"), "emulator-5554")),
-    ):
-        pytest.fail("An unavailable server must not yield a session")
+    monkeypatch.setattr(subprocess, "run", fail)
+    with pytest.raises(cap.CaptureError, match="screencap failed") as raised:
+        cap.Device(Path("adb"), "emulator-5554").screenshot()
+    assert isinstance(raised.value.__cause__, cap.CaptureError)
 
 
-def test_session_preserves_app_and_closes(monkeypatch):
-    driver = Mock()
-    remote = Mock(return_value=driver)
-    monkeypatch.setattr(cap.webdriver, "Remote", remote)
-    with (
-        pytest.raises(cap.CaptureError),
-        cap.appium_session(cap.Device(Path("adb"), "emulator-5554")),
-    ):
-        raise cap.CaptureError("validation failed")
-    caps = remote.call_args.kwargs["options"].to_capabilities()
-    assert caps["appium:noReset"] is True
-    assert caps["appium:autoLaunch"] is False
-    assert "appium:appPackage" not in caps
-    driver.quit.assert_called_once()
+def test_screenshot_reads_screen_only(monkeypatch):
+    calls = []
+
+    def run(command, **kwargs):
+        calls.append(command)
+        return subprocess.CompletedProcess(command, 0, stdout=png())
+
+    monkeypatch.setattr(subprocess, "run", run)
+    assert cap.Device(Path("adb"), "emulator-5554").screenshot() == png()
+    assert calls == [["adb", "-s", "emulator-5554", "exec-out", "screencap", "-p"]]
