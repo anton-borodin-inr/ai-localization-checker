@@ -63,11 +63,10 @@ Review checks the code, the diff and the command output, not the agent's descrip
 
 ## Stack and commands
 
-- Python 3.11+, pytest, ruff; Appium (uiautomator2) and adb for the emulator; Allure for reports.
+- Python 3.11+, pytest, ruff; SDK adb for the emulator (D-022); Allure for reports.
 - Install dependencies: `uv sync`
-- Appium is project-local (D-015): `npm ci`, then `npm run appium`.
 - Run tests (offline; device tests are skipped): `uv run pytest`
-- Run tests including device tests (needs a running prepared emulator and Appium, see `docs/environment.md`): `uv run pytest --run-device`; device tests only: `uv run pytest --run-device -m device`
+- Run tests including device tests (needs a running prepared emulator, see `docs/environment.md`): `uv run pytest --run-device`; device tests only: `uv run pytest --run-device -m device`
 - Run linter: `uv run ruff check . && uv run ruff format --check .`
 
 ## Repository layout

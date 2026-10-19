@@ -185,6 +185,3 @@ allure-report/
 # macOS
 .DS_Store
 
-# Project-local Appium (npm + APPIUM_HOME)
-node_modules/
-.appium/

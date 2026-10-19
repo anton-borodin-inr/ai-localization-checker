@@ -10,7 +10,7 @@ from l10n_checker.capture import CaptureError
     "error",
     [
         CaptureError("No running emulator"),
-        CaptureError("Appium unavailable"),
+        CaptureError("screencap failed"),
         OSError("Permission denied"),
     ],
 )
@@ -31,7 +31,7 @@ def test_cli_failure_without_traceback(monkeypatch, capsys, error):
         ],
     )
 
-    def fail(*args):
+    def fail(*args, **kwargs):
         raise error
 
     monkeypatch.setattr(cli, "capture", fail)
@@ -101,7 +101,7 @@ def test_cli_captures_each_language_in_order(monkeypatch, capsys):
     capture_argv(monkeypatch, "en", "de")
     calls = []
 
-    def fake(device, folder, screen, lang, *args):
+    def fake(device, folder, screen, lang, *args, **kwargs):
         calls.append(lang)
         return f"data/capture/{screen}__{lang}.png"
 
@@ -118,7 +118,7 @@ def test_cli_stops_after_first_failure(monkeypatch, capsys):
     capture_argv(monkeypatch, "en", "de")
     calls = []
 
-    def fake(device, folder, screen, lang, *args):
+    def fake(device, folder, screen, lang, *args, **kwargs):
         calls.append(lang)
         raise CaptureError("Unciv did not restart")
 

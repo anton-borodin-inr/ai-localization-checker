@@ -5,22 +5,14 @@ import re
 import struct
 import subprocess
 import time
-import warnings
 import zlib
 from contextlib import contextmanager
 from datetime import UTC, datetime
 from pathlib import Path
 
-from appium import webdriver
-from appium.options.android import UiAutomator2Options
-from appium.webdriver.client_config import AppiumClientConfig
-from selenium.common.exceptions import WebDriverException
-from urllib3.exceptions import HTTPError
-
 PACKAGE = "com.unciv.app"
 OVERLAY = "com.android.internal.emulation.pixel_7"
 REPO_ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_SERVER = "http://127.0.0.1:4723"
 ACTIVITY = f"{PACKAGE}/.AndroidLauncher"
 SETTINGS_PATH = f"/data/user/0/{PACKAGE}/files/GameSettings.json"
 DEFAULT_SETTLE_S = 8.0
@@ -191,6 +183,12 @@ class Device:
             "",
         )
 
+    def screenshot(self) -> bytes:
+        try:
+            return self.run("exec-out", "screencap", "-p")
+        except CaptureError as exc:
+            raise CaptureError("screencap failed or timed out; no PNG saved.") from exc
+
     def stat(self, path: str) -> str | None:
         """`uid gid mode size` of a file, or None when it does not exist."""
         # adb joins shell arguments with spaces, so the format must be quoted.
@@ -319,40 +317,6 @@ def restore_settings(device: Device, original: bytes, original_stat: str, backup
     backup.parent.rmdir()
 
 
-@contextmanager
-def appium_session(device: Device, server: str = DEFAULT_SERVER):
-    driver = None
-    try:
-        options = UiAutomator2Options().load_capabilities(
-            {
-                "platformName": "Android",
-                "appium:automationName": "UiAutomator2",
-                "appium:udid": device.serial,
-                "appium:noReset": True,
-                "appium:autoLaunch": False,
-                "appium:skipUnlock": True,
-                "appium:newCommandTimeout": 120,
-            }
-        )
-        driver = webdriver.Remote(
-            options=options, client_config=AppiumClientConfig(server, timeout=60)
-        )
-        yield driver
-    except (WebDriverException, HTTPError, OSError) as exc:
-        raise CaptureError(
-            f"Appium connection or capture failed at {server}; start the project server with npm run appium and check its log."
-        ) from exc
-    finally:
-        if driver is not None:
-            try:
-                driver.quit()
-            except (WebDriverException, HTTPError, OSError):
-                warnings.warn(
-                    "Could not close the Appium session; check the server log.",
-                    stacklevel=2,
-                )
-
-
 def png_size(png: bytes) -> tuple[int, int]:
     if not png.startswith(b"\x89PNG\r\n\x1a\n"):
         raise CaptureError("The screenshot is not a PNG.")
@@ -383,6 +347,11 @@ def png_size(png: bytes) -> tuple[int, int]:
     raise CaptureError("The screenshot PNG is incomplete or invalid.")
 
 
+def unciv_in_foreground(device: Device):
+    if PACKAGE not in device.foreground():
+        raise CaptureError("Unciv is not in the foreground; no PNG saved.")
+
+
 def protected_target(target: Path, overwrite: bool):
     if target.is_symlink():
         raise CaptureError("Refusing to write a screenshot through a symbolic link.")
@@ -398,7 +367,6 @@ def capture(
     screen: str,
     lang: str,
     variant: str,
-    server: str = DEFAULT_SERVER,
     overwrite: bool = False,
     settle_s: float = DEFAULT_SETTLE_S,
 ) -> Path:
@@ -424,18 +392,15 @@ def capture(
         size = device.size()
         target = folder / filename(screen, lang, f"{size[0]}x{size[1]}", variant, build)
         protected_target(target, overwrite)
-        with appium_session(device, server) as driver:
-            if driver.current_package != PACKAGE:
-                raise CaptureError(
-                    "Unciv is not in the foreground after launch; no PNG saved."
-                )
-            device.check_cutout()
-            png = driver.get_screenshot_as_png()
-            device.check_cutout()
-            if png_size(png) != size or device.size() != size:
-                raise CaptureError(
-                    "Screenshot size does not match the device screen, or orientation changed; no PNG saved."
-                )
+        unciv_in_foreground(device)
+        device.check_cutout()
+        png = device.screenshot()
+        device.check_cutout()
+        unciv_in_foreground(device)
+        if png_size(png) != size or device.size() != size:
+            raise CaptureError(
+                "Screenshot size does not match the device screen, or orientation changed; no PNG saved."
+            )
     folder.mkdir(parents=True, exist_ok=True)
     with target.open("wb" if overwrite else "xb") as stream:
         stream.write(png)

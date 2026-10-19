@@ -1,5 +1,7 @@
 # Bootstrap: AI Localization Checker repository
 
+> Historical record of the repository setup on 2026-10-17. Later changes, including the removal of Appium (#22, D-022), are not reflected here.
+
 You are setting up a new repository for Anton in the current, almost empty folder. It contains this file, `CLAUDE.md`, `decisions.md` and `claude-task.md`.
 
 Start in plan mode: read this file and the three others, then present a short plan and wait for Anton's approval. Work through the steps in order. Stop and ask before anything that publishes, cannot be undone, or needs credentials.

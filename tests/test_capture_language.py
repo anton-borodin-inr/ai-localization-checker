@@ -1,7 +1,6 @@
 """Language step of capture, against a fake device. No adb or emulator calls."""
 
 import json
-from contextlib import contextmanager
 from pathlib import Path
 from unittest.mock import Mock
 
@@ -24,6 +23,7 @@ class FakeDevice(cap.Device):
         self.running = True
         self.log = []
         self.faults = faults
+        self.screenshot_state = None
 
     def fail(self, name):
         if self.faults.get(name):
@@ -74,6 +74,9 @@ class FakeDevice(cap.Device):
                     return b"Error: Activity not started\n"
                 self.running = True
                 return b"Status: ok\nActivity: com.unciv.app/.AndroidLauncher\n"
+            case ("exec-out", "screencap", "-p"):
+                self.screenshot_state = (self.language(), self.is_root)
+                return make_png(2, 1)
             case ("shell", "dumpsys", "activity", "activities"):
                 top = (
                     "com.example/.Other"
@@ -220,36 +223,29 @@ def full_capture(tmp_path, monkeypatch):
         "build": "1271",
     }.items():
         monkeypatch.setattr(device, name, Mock(return_value=value))
-    driver = Mock(current_package=cap.PACKAGE)
-
-    @contextmanager
-    def session(*args):
-        driver.language = device.language()
-        yield driver
-
-    driver.get_screenshot_as_png.return_value = make_png(2, 1)
-    monkeypatch.setattr(cap, "appium_session", session)
-    return device, driver, tmp_path / "data" / "captures"
+    return device, tmp_path / "data" / "captures"
 
 
 def test_capture_names_file_by_requested_language(full_capture):
-    device, driver, folder = full_capture
+    device, folder = full_capture
     path = cap.capture(device, folder, "main-menu", "de", "original")
     assert path.name == "main-menu__de__2x1__original__1271.png"
-    assert driver.language == "German"
+    # Taken while German was applied and before restore and unroot.
+    assert device.screenshot_state == ("German", True)
+    assert path.read_bytes() == make_png(2, 1)
     assert device.file == ORIGINAL
     assert not device.is_root
 
 
 def test_capture_rejects_unknown_language(full_capture):
-    device, _, folder = full_capture
+    device, folder = full_capture
     with pytest.raises(cap.CaptureError, match="Unsupported language"):
         cap.capture(device, folder, "main-menu", "fr", "original")
     assert device.log == []
 
 
 def test_capture_failure_saves_nothing(full_capture):
-    device, _, folder = full_capture
+    device, folder = full_capture
     device.faults["no_start"] = True
     with pytest.raises(cap.CaptureError, match="did not restart"):
         cap.capture(device, folder, "main-menu", "en", "original")
@@ -259,7 +255,7 @@ def test_capture_failure_saves_nothing(full_capture):
 
 
 def test_existing_screenshot_rejected_before_root(full_capture):
-    device, _, folder = full_capture
+    device, folder = full_capture
     folder.mkdir(parents=True)
     (folder / "main-menu__de__2400x1080__original__1271.png").write_bytes(b"old")
     with pytest.raises(cap.CaptureError, match="already exists"):

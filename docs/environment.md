@@ -1,6 +1,6 @@
 # Capture environment
 
-The Stage 0 environment for capturing Unciv screenshots: an Android emulator with `adb root`, the Unciv APK from F-Droid and a project-local Appium server with the uiautomator2 driver. Related decisions: D-002, D-006, D-011, D-014, D-015.
+The Stage 0 environment for capturing Unciv screenshots: an Android emulator with `adb root`, the Unciv APK from F-Droid and the SDK `adb` that captures screenshots (D-022). Related decisions: D-002, D-006, D-011, D-014, D-022 (D-015 superseded).
 
 Set up and verified on 2026-10-17 on a MacBook Pro (M3 Pro, arm64), macOS 27.0.1.
 
@@ -34,17 +34,12 @@ imports and installed commands are checked separately with
 | Android platform-tools (adb) | 37.0.0 | `sdkmanager "platform-tools"` |
 | Android emulator | 36.5.11 | `sdkmanager "emulator"` |
 | System image | `system-images;android-34;google_apis;arm64-v8a`, revision 14 | `sdkmanager "system-images;android-34;google_apis;arm64-v8a"` |
-| Node.js / npm | 25.9.0 / 11.12.1 (Homebrew) | `brew install node` |
-| Appium | 3.3.1, project-local | `npm ci` in the repository (pinned in `package.json` / `package-lock.json`) |
-| uiautomator2 driver | 7.1.2, in `./.appium` | `APPIUM_HOME=./.appium npx appium driver install uiautomator2@7.1.2` |
 | Unciv | 4.22.10, versionCode 1271 (F-Droid) | see [Unciv APK](#unciv-apk) |
 
 Notes:
 
-- Appium 3 needs Node ≥ 20.19. Any newer Node release works.
 - `sdkmanager` / `avdmanager` from cmdline-tools 20.0 print `This version only understands SDK XML versions up to 3 but an SDK XML file of version 4 was encountered`. The warning comes from Android Studio writing newer metadata. It is harmless; installs still succeed.
 - This machine also has an `adb` from the Homebrew cask `android-platform-tools`. Always use the SDK `adb` (`$ANDROID_HOME/platform-tools/adb`). Two different adb versions talking to one daemon keep restarting it.
-- The global Appium (`npm -g`, drivers in `~/.appium`) is not used by this project. The project sets `APPIUM_HOME=./.appium`, so its drivers never touch the global ones.
 
 ## Setup on a clean machine
 
@@ -57,7 +52,7 @@ SDKMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
 AVDMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/avdmanager"
 ```
 
-1. JDK 17 and Node: `brew install openjdk@17 node`.
+1. JDK 17: `brew install openjdk@17`.
 2. Android SDK: install Android Studio and its default SDK, or the standalone cmdline-tools. Then:
 
    ```bash
@@ -70,15 +65,6 @@ AVDMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/avdmanager"
    echo no | "$AVDMANAGER" create avd -n unciv_api34 \
      -k "system-images;android-34;google_apis;arm64-v8a" -d pixel_7
    ```
-
-4. Project-local Appium, from the repository root:
-
-   ```bash
-   npm ci
-   APPIUM_HOME=./.appium npx appium driver install uiautomator2@7.1.2
-   ```
-
-   Start the server with `npm run appium` (sets `APPIUM_HOME=./.appium`).
 
 ## AVD
 
@@ -153,4 +139,4 @@ scripts/prepare_emulator.sh
 scripts/check_env.sh
 ```
 
-It prints `PASS`/`FAIL` for the JDK, each SDK package, the system image, the AVD settings, the running emulator, `adb root`, the installed Unciv version code, the display cutout (FAIL if it is still active), the project-local Appium version and the uiautomator2 driver (including that it supports the installed Appium). It exits 1 if any check fails. Expected versions are at the top of the script and must match this file.
+It prints `PASS`/`FAIL` for the JDK, each SDK package, the system image, the AVD settings, the running emulator, `adb root`, the installed Unciv version code, and the display cutout (FAIL if it is still active). It exits 1 if any check fails. Expected versions are at the top of the script and must match this file.

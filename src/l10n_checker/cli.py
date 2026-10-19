@@ -6,7 +6,6 @@ import sys
 from pathlib import Path
 
 from l10n_checker.capture import (
-    DEFAULT_SERVER,
     DEFAULT_SETTLE_S,
     LANGUAGES,
     CaptureError,
@@ -32,7 +31,6 @@ def main() -> int:
     parser.add_argument("--variant", required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--serial")
-    parser.add_argument("--server", default=DEFAULT_SERVER)
     parser.add_argument("--overwrite", action="store_true")
     parser.add_argument(
         "--settle",
@@ -52,9 +50,8 @@ def main() -> int:
                 args.screen,
                 lang,
                 args.variant,
-                args.server,
-                args.overwrite,
-                args.settle,
+                overwrite=args.overwrite,
+                settle_s=args.settle,
             )
         except (CaptureError, OSError) as exc:
             print(f"Capture failed ({lang}): {exc}", file=sys.stderr)
