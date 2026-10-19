@@ -5,7 +5,17 @@ import sys
 from pathlib import Path
 
 from l10n_checker.baseline import run_baseline
-from l10n_checker.capture import CaptureError, output_directory
+from l10n_checker.capture import CaptureError
+
+
+def output_directory(path: Path) -> Path:
+    """Anchor this CLI to the checkout cwd, including non-editable installs."""
+    directory = path.resolve()
+    if not directory.is_relative_to(Path.cwd().resolve() / "data"):
+        raise CaptureError(
+            "The output folder must be inside the current checkout's data/."
+        )
+    return directory
 
 
 def main() -> int:

@@ -1,6 +1,8 @@
 import sys
 from pathlib import Path
 
+import pytest
+
 from l10n_checker import baseline_cli
 from l10n_checker.capture import CaptureError
 from l10n_checker.vision import CheckResult
@@ -67,3 +69,14 @@ def test_cli_cannot_record_a_run(monkeypatch, capsys):
     monkeypatch.setattr(baseline_cli, "output_directory", fail)
     assert baseline_cli.main() == 1
     assert "Cannot record baseline run" in capsys.readouterr().err
+
+
+def test_output_directory_works_without_an_editable_install(tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
+    assert baseline_cli.output_directory(Path("data/runs")) == tmp_path / "data/runs"
+    with pytest.raises(CaptureError):
+        baseline_cli.output_directory(tmp_path / "outside")
+    (tmp_path / "data").mkdir()
+    (tmp_path / "data/link").symlink_to(tmp_path / "outside", target_is_directory=True)
+    with pytest.raises(CaptureError):
+        baseline_cli.output_directory(Path("data/link/runs"))
