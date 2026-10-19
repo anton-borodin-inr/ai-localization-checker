@@ -106,7 +106,7 @@ After **every** boot, run:
 scripts/prepare_emulator.sh
 ```
 
-It waits for the boot to finish, restarts adbd as root and disables the display cutout (next section).
+It waits for the boot to finish and disables the display cutout (next section). It runs as adbd `shell` and does not need root.
 
 ## Display cutout
 
