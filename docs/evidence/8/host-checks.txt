@@ -128,3 +128,29 @@ all three frames. Manual navigation gives approximate viewport alignment;
 a small description scroll difference remains. No pixels were edited.
 No labels, baseline/model outputs or metric results were generated.
 F-Droid restoration and independent PR review have not been run.
+
+Human-label integration checkpoint
+
+Anton supplied three final label files in source commits 83e84cd and 421bacc,
+plus docs/labeling.md and Accepted D-025. The branch was fast-forwarded to those
+commits before metadata changes. Labels themselves were not rewritten.
+
+$ python3 work/validate_human_labels.py
+[task-workspace cwd; standard library only; exit 0]
+Three JSON files pass allowed keys/types/regions, exact filename/language
+references and screenshot SHA-256 checks. Each file is byte-identical to its
+original committed human version. Label counts, source commits and hashes are
+retained in label-validation.json. No detector output or device commands.
+
+$ uv run --offline pytest
+181 passed, 1 skipped, 1 warning in 4.67s
+[exit 0; full output: pytest-human-labels.txt]
+[device test opt-in skip; no capture/device implementation changed]
+
+$ uv run --offline ruff check .
+All checks passed!
+[exit 0; full output: ruff-check-human-labels.txt]
+
+$ uv run --offline ruff format --check .
+31 files already formatted
+[exit 0; full output: ruff-format-human-labels.txt]

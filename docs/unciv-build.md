@@ -2,10 +2,12 @@
 
 **Status: Anton selected Mining; both final APKs are built and verified.**
 Clean 1271001 was captured in German and English; defective 1271002 is installed
-and captured in German. Human labels and independent PR review remain pending.
+and captured in German. Anton supplied labels for all three final screenshots;
+their format and PNG references passed validation. Independent PR review remains pending.
 D-023 is Accepted by Anton:
 ellipsis is `truncated_text` only when the full text is not visible anywhere
-else on the same screenshot. No labels have been created.
+else on the same screenshot. Accepted D-025 and [labeling.md](labeling.md)
+define scroll clipping and the text-centre region rule.
 See the [Report](evidence/8/report.md) for executed checks, failures and pending
 steps. Commands in recipes below are instructions, not execution evidence.
 
@@ -262,9 +264,10 @@ Those checks must be recorded separately. Unlike `l10n-capture`, this manual
 recipe does not apply/read back/restore language automatically or verify a
 restart. Neither method automatically verifies the intended in-game screen.
 
-## Label-file proposal only
+## Label format and human files
 
-Propose one `<screenshot-stem>.labels.json` file per screenshot, with integer
+The proposed format is used by Anton's three committed human label files:
+one `<screenshot-stem>.labels.json` file per screenshot, with integer
 `schema_version` 1, `screenshot` (exact PNG filename), `language` (`en` or `de`)
 and a `labels` array. Each label has `defect_type` (`truncated_text` or `untranslated`),
 `text_expected`, `text_seen`, `region` from the existing 3x3 grid, and an optional
@@ -273,11 +276,13 @@ and a `labels` array. Each label has `defect_type` (`truncated_text` or `untrans
 Use string values for the label's text, region and optional note. The existing
 region values, read left to right and top to bottom, are `top-left`, `top`,
 `top-right`; `left`, `center`, `right`; `bottom-left`, `bottom`, `bottom-right`.
-This describes the proposed format only; no example label instance is filled.
+The authoritative rules and reviewed-screen list are in [labeling.md](labeling.md)
+and Accepted D-025. Anton supplied the values; the agent only validated the
+JSON structure, allowed fields/types/regions and exact PNG references/hashes.
 
 Anton fills every value by comparing the actual screen with the translation
 source. An empty labels array means a human-reviewed clean screen; the agent
-must not supply it as a placeholder. No detector output is used. This proposal
+must not supply it as a placeholder. No detector output is used. This format
 does not alter D-018's detector schema or implement matching/evaluation.
 
 [AndroidFont raster widths]: https://github.com/yairm210/Unciv/blob/899367522cea36d6063c84b02b41eedfa9a0d0e9/android/src/com/unciv/app/AndroidFont.kt#L109-L118

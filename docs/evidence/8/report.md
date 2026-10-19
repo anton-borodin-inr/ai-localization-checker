@@ -1,7 +1,8 @@
 # Issue 8 Report
 
-**Issue 8 remains incomplete: the build/capture work is complete; Anton's
-labels and independent PR review are pending.** Clean 1271001 was captured in
+**Builds, captures and Anton's human labels are complete; independent PR review
+is pending.** The supplied JSON format and PNG references/hashes passed
+validation without changes to any label bytes. Clean 1271001 was captured in
 German and English; defective 1271002 is installed and captured in German.
 Anton chose
 Mining and accepted the conditional ellipsis boundary as D-023. Anton created
@@ -9,8 +10,9 @@ Mining and accepted the conditional ellipsis boundary as D-023. Anton created
 Istanbul state and exact settings bytes survived both separately approved
 APK replacements. F-Droid restoration has not been run and requires separate
 approval for deletion and explicit data restoration.
-No labels or evaluation inputs have been created. Both earlier probe images
-remain exploration only.
+Anton supplied all three final label files in commits `83e84cd` and `421bacc`.
+No detector output or evaluation run was used. Both earlier probe images remain
+exploration only.
 
 - **What changed:** Added `docs/unciv-build.md` with the build/install/rollback
   plan, exact German probe strings, source-based width budgets and label-format
@@ -21,7 +23,9 @@ remain exploration only.
   contains no translation change; final defective 1271002 contains only
   `Mining = Bergbau und Erzgewinnung`. Worker is restored to `Arbeiter` in both.
   Added the two observed probe outcomes to the issue 8 follow-up research notes
-  in `docs/unciv-text-rendering.md`.
+  in `docs/unciv-text-rendering.md`. Anton subsequently added the three human
+  label files, `docs/labeling.md` and Accepted D-025. The agent integrated those
+  commits and updated validation/Report metadata while preserving label bytes.
 - **How it was verified:** Source inspection and standalone Android Paint
   measurements: Mining 169.54 / 140 units (+21.10%); Worker 356.94 / 273.33
   nominal units (+30.59%). Worker can grow its panel; this is not a hard title
@@ -75,7 +79,19 @@ remain exploration only.
   1 upstream deprecation warning in 21.45s. Ruff check and format check exited
   0 (30 files already formatted). Output is retained separately from the
   original preparation checks. Later documentation changes record these results
-  and capture metadata; no checker code changed.
+  and capture metadata; no checker code changed. The subsequent human-label
+  check passed JSON structure, allowed fields/types/regions, exact filename and
+  language references, all three PNG hashes and unchanged original label bytes.
+  Source commits and label-file SHA-256 values are in
+  [label-validation.json](label-validation.json). This validates the supplied
+  artifacts; it does not replace Anton's labeling judgment.
+  Fresh offline checks after human-label integration also exited 0:
+  `uv run --offline pytest` reported 181 passed, 1 skipped (opt-in device test)
+  and 1 upstream deprecation warning in 4.67s; Ruff check passed and format
+  check reported 31 files already formatted. Outputs are retained in
+  `pytest-human-labels.txt`, `ruff-check-human-labels.txt` and
+  `ruff-format-human-labels.txt`. No device commands or provider calls were
+  needed for label validation.
 - **Deviations from the task:** Anton explicitly approved a preliminary
   two-injection probe before the one-injection pair. Probe images are exploration
   only in this Report and are excluded from labels and evaluation. Manual
@@ -108,11 +124,11 @@ remain exploration only.
   If the full text is shown elsewhere, the shortened label is not a defect.
   The former Proposed workflow/label-format entry was moved from D-023 to
   **D-024 (Proposed)**, reserving D-023 for Anton's explicit accepted decision.
-  Existing Accepted entries were not rewritten.
-- **Open questions for Anton:** Review the three final PNGs and write the human
-  label files using the proposed format in `docs/unciv-build.md`. Final human
-  labels and clean-control acceptance remain Anton-owned; no placeholder label
-  files or agent-written empty arrays exist. Independent PR review is required
+  **D-025 is Accepted by Anton:** scroll-hidden content is not labeled when it
+  becomes fully visible by scrolling; region uses the text bounding-box centre.
+  Anton recorded the device scrolling check in that decision; the agent did not
+  repeat that device check. Existing Accepted entries were not rewritten.
+- **Open questions for Anton:** Independent PR review is required
   before merge; the author does not approve this PR. Every subsequent app
   replacement/deletion or explicit data overwrite still needs its own approval.
 - **API usage:** No live provider calls; no detector output or hold-out access.
@@ -209,13 +225,26 @@ or explicit settings/save overwrite was performed. Adbd returned to shell;
 `am start -W` exited 0. Anton switched back to German in the UI and loaded the
 same named save for the defective capture.
 
-## Final screen captures (unlabeled)
+## Final screen captures and Anton's labels
 
 | Capture | Installed build | State | SHA-256 |
 |---|---:|---|---|
 | German clean | 1271001 | Captured; Archery selected, `Bergbau` fully visible | `a6a5beb3ef17ce4a640261821ff1bfc02f2dfda0e81c1cfb3aadaa32407f954e` |
 | English clean control | 1271001 | Captured; Archery selected, `Mining` fully visible | `88ff1c55aef33cc9ff0fd89cd5912384b7a1017d8d9ca2d88965ec39389b9f47` |
 | German injected | 1271002 | Captured; Archery selected, Mining title has intentional ellipsis | `372aa318ce3bf4d553b4b9d427a7fe6d87f566953605c21bc705dd10df816b93` |
+
+| Human label file | Supplied labels | Source commit |
+|---|---|---|
+| [German clean](final/tech-picker__de__2400x1080__clean__1271001.labels.json) | Empty array: Anton reviewed the whole screen | `83e84cd2985f91cecfc5341123e61a44790d4da0` |
+| [German injected](final/tech-picker__de__2400x1080__injected__1271002.labels.json) | One `truncated_text`, region `center` under D-025 | `83e84cd2985f91cecfc5341123e61a44790d4da0` |
+| [English clean](final/tech-picker__en__2400x1080__clean__1271001.labels.json) | Empty array: Anton reviewed the whole screen | `421bacc7d4875b40fc22c806c7055bed4b6e07d8` |
+
+The agent did not create, rewrite, normalize or derive these label contents.
+Format/reference validation and file hashes are recorded in
+[label-validation.json](label-validation.json). The rules are in
+[labeling.md](../../labeling.md) and Accepted D-023/D-025. No label file exists
+for either exploratory probe. No baseline, model, matching or metric run is
+part of this label check.
 
 The [German clean PNG](final/tech-picker__de__2400x1080__clean__1271001.png)
 is 459,752 bytes, 2400 x 1080. Package version, persisted German, Small UI,
@@ -244,8 +273,8 @@ is 480,275 bytes, 2400 x 1080 and passed the same checks with persisted German
 and versionCode 1271002. The Mining title ends in intentional ellipsis after
 `Erzgew`; the full `Bergbau und Erzgewinnung` is not visible anywhere else in the
 frame. Archery/Bogenschießen is selected and its description is displayed.
-This observed condition meets Anton's D-023 boundary, while final ground truth
-remains his responsibility. The tree neighborhood is the same as clean; manual
+This observed condition meets Anton's D-023 boundary and is now labeled by
+Anton. The tree neighborhood is the same as clean; manual
 navigation leaves a minor vertical-scroll difference in the description area.
 No pixel-identical framing is claimed. The whole PNG is retained without
 cropping, resizing or overlays. Current German settings were stable during
@@ -298,12 +327,14 @@ checksums are in [device-commands.txt](device-commands.txt).
 
 ## Changed files at this build/install checkpoint
 
-- Checker: `docs/unciv-build.md`, `docs/unciv-text-rendering.md`, `docs/decisions.md`, this Report, and the
+- Checker: `docs/unciv-build.md`, `docs/unciv-text-rendering.md`, `docs/decisions.md`,
+  Anton's `docs/labeling.md`, this Report, and the
   supporting text/JSON evidence listed in [README.txt](README.txt).
 - Fork: `android/assets/jsons/translations/German.properties` and
   `buildSrc/src/main/kotlin/BuildConfig.kt` only; probe commit
   `190275d1e4490dceb682cf881f8c3433c1b53162`, clean commit
   `2e4d6af664e204c4ddcc06383a0e2e700a9665c4` and defective commit
   `038329f93966a8d1d0ac7f23f551c98feb32614c`.
-- No checker runtime, test, dependency or lockfile changes. No labels, metrics
-  or matching changes. APKs, settings and saves remain outside tracked files.
+- No checker runtime, test, dependency, lockfile, detector, metric or matching
+  changes. The three labels are Anton's human contributions. APKs, settings and
+  saves remain outside tracked files.

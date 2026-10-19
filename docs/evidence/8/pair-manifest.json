@@ -1,5 +1,5 @@
 {
-  "status": "all_three_captures_complete_human_labels_and_independent_review_pending",
+  "status": "captures_and_human_labels_verified_independent_review_pending",
   "base_tag": "4.22.10",
   "base_commit": "899367522cea36d6063c84b02b41eedfa9a0d0e9",
   "accepted_defect_boundary": {
@@ -117,7 +117,7 @@
   "captures": [
     {
       "purpose": "candidate_vertical_slice_screenshot",
-      "label_status": "awaiting_Anton_no_agent_labels",
+      "label_status": "provided_by_Anton_format_and_references_validated",
       "screen": "tech-picker",
       "file": "tech-picker__de__2400x1080__clean__1271001.png",
       "bytes": 459752,
@@ -146,11 +146,13 @@
         "mining_title": "Bergbau fully visible on its button",
         "description_panel": "Archery content; no full injected Mining name",
         "scope": "Target observation only; not a human ground-truth label"
-      }
+      },
+      "human_label_file": "final/tech-picker__de__2400x1080__clean__1271001.labels.json",
+      "human_label_sha256": "34343ca94e8f0ccf652aec9869a79e85ff60d5c42588ac300c23c304f1e68a43"
     },
     {
       "purpose": "candidate_vertical_slice_screenshot",
-      "label_status": "awaiting_Anton_no_agent_labels",
+      "label_status": "provided_by_Anton_format_and_references_validated",
       "screen": "tech-picker",
       "file": "tech-picker__en__2400x1080__clean__1271001.png",
       "bytes": 460083,
@@ -179,11 +181,13 @@
         "mining_title": "Mining fully visible on its button",
         "description_panel": "Archery content",
         "scope": "Target observation only; not a human ground-truth label"
-      }
+      },
+      "human_label_file": "final/tech-picker__en__2400x1080__clean__1271001.labels.json",
+      "human_label_sha256": "33e8e1aa6de3e3d7101978a2e48fc673473a03b28839c55140ceb8feedb0311a"
     },
     {
       "purpose": "candidate_vertical_slice_screenshot",
-      "label_status": "awaiting_Anton_no_agent_labels",
+      "label_status": "provided_by_Anton_format_and_references_validated",
       "screen": "tech-picker",
       "file": "tech-picker__de__2400x1080__injected__1271002.png",
       "bytes": 480275,
@@ -213,9 +217,59 @@
         "description_panel": "Archery content; minor vertical-scroll difference from clean",
         "relation_to_decision": "Observed condition required by D-023; final human labels remain Anton-owned",
         "scope": "Target observation only; not a human ground-truth label"
-      }
+      },
+      "human_label_file": "final/tech-picker__de__2400x1080__injected__1271002.labels.json",
+      "human_label_sha256": "cc38f51351bf9ca71bc54f9d15c7cdbdda2e0e3f812be7b7f6d680f1acfed533"
     }
   ],
+  "human_label_validation": {
+    "result": "passed",
+    "scope": "JSON format, allowed fields/types/regions, filename/language references, PNG hashes and byte identity with the original committed human labels",
+    "human_label_author": "Anton",
+    "labels_changed_by_agent": false,
+    "detector_output_used": false,
+    "labeling_rules": "docs/labeling.md; Accepted D-023 and D-025",
+    "files": [
+      {
+        "file": "final/tech-picker__de__2400x1080__clean__1271001.labels.json",
+        "screenshot": "tech-picker__de__2400x1080__clean__1271001.png",
+        "language": "de",
+        "bytes": 128,
+        "sha256": "34343ca94e8f0ccf652aec9869a79e85ff60d5c42588ac300c23c304f1e68a43",
+        "screenshot_sha256": "a6a5beb3ef17ce4a640261821ff1bfc02f2dfda0e81c1cfb3aadaa32407f954e",
+        "label_count": 0,
+        "provided_by": "Anton",
+        "source_commit": "83e84cd2985f91cecfc5341123e61a44790d4da0"
+      },
+      {
+        "file": "final/tech-picker__de__2400x1080__injected__1271002.labels.json",
+        "screenshot": "tech-picker__de__2400x1080__injected__1271002.png",
+        "language": "de",
+        "bytes": 507,
+        "sha256": "cc38f51351bf9ca71bc54f9d15c7cdbdda2e0e3f812be7b7f6d680f1acfed533",
+        "screenshot_sha256": "372aa318ce3bf4d553b4b9d427a7fe6d87f566953605c21bc705dd10df816b93",
+        "label_count": 1,
+        "provided_by": "Anton",
+        "source_commit": "83e84cd2985f91cecfc5341123e61a44790d4da0"
+      },
+      {
+        "file": "final/tech-picker__en__2400x1080__clean__1271001.labels.json",
+        "screenshot": "tech-picker__en__2400x1080__clean__1271001.png",
+        "language": "en",
+        "bytes": 128,
+        "sha256": "33e8e1aa6de3e3d7101978a2e48fc673473a03b28839c55140ceb8feedb0311a",
+        "screenshot_sha256": "88ff1c55aef33cc9ff0fd89cd5912384b7a1017d8d9ca2d88965ec39389b9f47",
+        "label_count": 0,
+        "provided_by": "Anton",
+        "source_commit": "421bacc7d4875b40fc22c806c7055bed4b6e07d8"
+      }
+    ]
+  },
+  "accepted_labeling_rules": {
+    "decision": "D-025",
+    "accepted_by": "Anton",
+    "document": "docs/labeling.md"
+  },
   "labels_created_by_agent": false,
   "live_provider_calls": 0
 }
