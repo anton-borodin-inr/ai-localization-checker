@@ -94,8 +94,9 @@ unroot. Unciv is left stopped, so it cannot rewrite the restored file.
 adbd runs as root only inside steps 2–11 of one language, and every capture
 ends with `adb unroot`, also when it fails, including a half-done `adb root`. The Appium session is opened after
 `adb root` and closed before `adb unroot`, because restarting adbd drops the adb
-port forwards uiautomator2 uses. `scripts/prepare_emulator.sh` and the `adb-root`
-check in `scripts/check_env.sh` also return adbd to `shell` when they finish.
+port forwards uiautomator2 uses. The `adb-root` check in `scripts/check_env.sh`
+also returns adbd to `shell` when it finishes. `scripts/prepare_emulator.sh` does
+not use root.
 
 ### Display cutout
 
