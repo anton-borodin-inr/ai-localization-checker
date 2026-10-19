@@ -232,3 +232,13 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 - **Why:** The current capture CLI relaunches into the main menu, while Stage 2 navigation/debug hooks are out of scope. TechButton ellipsis is predictable from source, but the Worker title can enlarge its panel; actual screen behavior must precede Anton's choice. Anton requested the preliminary probe after approving the initial plan.
 - **Alternatives considered:** Choose solely from source predictions; inject artificial sentences; add a navigation/debug hook now; recreate a different game for each final screenshot.
 - **Consequences:** Probe observations are not labels. Anton's accepted ellipsis boundary is recorded separately in D-023. The final pair shares pinned upstream base 899367522cea36d6063c84b02b41eedfa9a0d0e9; BuildConfig.kt changes are metadata only. Every app deletion/replacement and explicit app-data overwrite requires a separate confirmation. No detector/matching schema changes. This workflow proposal was originally numbered D-023 before acceptance and was moved to D-024 when Anton explicitly assigned D-023 to the defect boundary.
+
+## D-025 — Labeling rules: scroll clipping and region
+
+- **Date:** 2026-10-19
+- **Status:** Accepted
+- **Accepted by:** Anton
+- **Decision:** Text or elements cut off at the edge of a scrollable area are not labeled as defects when the full content becomes visible by scrolling. A label's `region` is the 3×3 grid cell that contains the centre of the text's bounding box. The rules are kept in [labeling.md](labeling.md).
+- **Why:** On the issue 8 German technology picker, the description panel cuts off the last line at the bottom edge and the technology tree cuts off a technology at the top edge; Anton checked on the device that scrolling shows the full content. The injected `Bergbau und Erzgew...` title lies across the border of the left and centre columns, so a rule is needed for matching (D-009) to be reproducible.
+- **Alternatives considered:** Label scroll clipping as `truncated_text` (rejected: no text is lost to the player); region = the cell where the text starts (rejected: depends on reading direction and on small horizontal shifts).
+- **Consequences:** The issue 8 German labels follow these rules. Detector findings on scroll-clipped text count as false positives. Future screens with fixed, non-scrollable clipping are judged separately.

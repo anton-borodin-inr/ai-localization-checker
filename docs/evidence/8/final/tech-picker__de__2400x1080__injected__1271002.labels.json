@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "screenshot": "tech-picker__de__2400x1080__injected__1271002.png",
+  "language": "de",
+  "labels": [
+    {
+      "defect_type": "truncated_text",
+      "text_expected": "Bergbau und Erzgewinnung",
+      "text_seen": "Bergbau und Erzgew...",
+      "region": "center",
+      "note": "TechButton title ends in an ellipsis; the full name is not visible anywhere else on the screenshot (Archery is selected). Region: the cell that contains the centre of the text (D-025)."
+    }
+  ]
+}
