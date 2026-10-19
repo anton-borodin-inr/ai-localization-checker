@@ -227,7 +227,7 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 ## D-024 — Exploratory source-build probe and manual Stage 1 screen capture
 
 - **Date:** 2026-10-19
-- **Status:** Proposed
+- **Status:** Accepted
 - **Decision:** Before selecting issue 8's final injection, build one exploratory German probe with Mining and Worker changes and versionCode 1271009. Anton manually opens both screens; probe images appear only as exploration in the Report and never enter labels or evaluation. The final pair uses only Anton's chosen injection, with separate clean/defective versionCodes. Capture uses SDK adb after manual navigation, retaining D-014 cutout checks and D-003/D-016 names. Propose a small human-written JSON label file with screenshot/language and labels containing type, expected text, visible text and a 3x3 region.
 - **Why:** The current capture CLI relaunches into the main menu, while Stage 2 navigation/debug hooks are out of scope. TechButton ellipsis is predictable from source, but the Worker title can enlarge its panel; actual screen behavior must precede Anton's choice. Anton requested the preliminary probe after approving the initial plan.
 - **Alternatives considered:** Choose solely from source predictions; inject artificial sentences; add a navigation/debug hook now; recreate a different game for each final screenshot.
