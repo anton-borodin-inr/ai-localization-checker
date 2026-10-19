@@ -1,9 +1,10 @@
 # Unciv source builds for issue 8
 
-**Status: both exploratory probe screens captured; stopped for Anton's choice.**
-Mining shows intentional ellipsis. Worker displays its full title without text
-loss. Anton has not chosen the final injection or accepted ellipsis as a defect,
-and no labels have been created.
+**Status: Anton selected Mining; both final APKs are built and verified.**
+Clean 1271001 is installed and captured in German and English; defective
+capture remains pending. D-023 is Accepted by Anton:
+ellipsis is `truncated_text` only when the full text is not visible anywhere
+else on the same screenshot. No labels have been created.
 See the [Report](evidence/8/report.md) for executed checks, failures and pending
 steps. Commands in recipes below are instructions, not execution evidence.
 
@@ -17,8 +18,8 @@ this repository. The shared upstream base is tag `4.22.10`, commit
 |---|---|---:|---|
 | F-Droid reference | 4.22.10 | 1271 | None in this task |
 | Exploratory probe | 4.22.10 | 1271009 | Mining and Worker below |
-| Final clean (pending) | 4.22.10 | 1271001 | None |
-| Final defective (pending) | 4.22.10 | 1271002 | Only the injection Anton chooses |
+| Final clean (built and installed) | 4.22.10 | 1271001 | None |
+| Final defective (built, not installed) | 4.22.10 | 1271002 | Mining only |
 
 `buildSrc/src/main/kotlin/BuildConfig.kt` changes build metadata
 (`appCodeNumber`, used as APK `versionCode`), not a translation or game logic.
@@ -26,12 +27,31 @@ The final fork commit hashes differ, while the pinned upstream base is the
 same. No other tracked game code, Gradle configuration, package identifier or
 signing configuration may change. The local fork instruction file is ignored.
 
+## Accepted defect boundary and final injection
+
+[D-023](decisions.md#d-023--ellipsis-defect-boundary-for-unciv) is Accepted by
+Anton. An ellipsis counts as `truncated_text` when the full text is not visible
+anywhere else on the same screenshot. If another element shows the full text
+on that screenshot, the shortened label is not a defect.
+
+The final defective APK changes exactly `Mining = Bergbau` to
+`Mining = Bergbau und Erzgewinnung` in German.properties, plus versionCode
+metadata. Worker is restored to `Arbeiter` in both final APKs. Select another
+technology, such as `Bogenschießen` (Archery), and keep Mining visible in both
+captures. Inspect the whole screenshot to ensure the full injected Mining name
+does not appear in the description panel or elsewhere. The same condition is
+required when Anton labels the final image.
+
+The OCR + translation-table baseline is expected to catch this case easily;
+v1 may show no model advantage on this class. This is an expectation, not a
+measured result. Text loss without a marker is deferred to Stage 8 (second app).
+
 ## Probe plan and width calculation
 
 Anton approved one preliminary APK containing both injections. This APK and
 its screenshots are exploration only: no label, matching input, evaluation
-input or clean/defective pair may be derived from them. Intentional ellipsis
-has not been accepted as a defect.
+input or clean/defective pair may be derived from them. After observing both
+screens, Anton accepted the conditional ellipsis boundary in D-023 and chose A.
 
 Both changes are in `android/assets/jsons/translations/German.properties`:
 
@@ -123,9 +143,16 @@ are met, replacing `:android:assembleDebug` with `:android:installDebug` builds
 and installs in one command. Do not run this task across a signing mismatch.
 Use a selected emulator serial when multiple devices are present.
 
-The probe build succeeded: Gradle duration 2m 38s, host wall time 159.03s,
-exit 0; all 45 actionable tasks executed, with a fresh task-local Gradle cache
-apart from the predownloaded distribution. The Report records each attempt.
+All three builds succeeded with the same command and toolchain:
+
+| Build | Gradle duration | Host wall time | Task/cache state |
+|---|---|---:|---|
+| Probe 1271009 | 2m 38s | 159.03s | 45 executed; fresh task-local cache except the distribution |
+| Clean 1271001 | 1m 29s | 89.84s | 42 executed, 3 up-to-date; warm task-local cache |
+| Defective 1271002 | 1m 26s | 86.78s | 42 executed, 3 up-to-date; warm task-local cache |
+
+These are individual observed builds, not a comparative performance benchmark.
+The Report records each attempt, immutable APK hash and fork commit.
 SDK preparation and Gradle distribution downloads are separate from APK build
 time. Inspect APK metadata, packaged German values, signing certificate,
 AndroidLauncher presence in DEX and arm64 native libraries before installation.
@@ -147,13 +174,19 @@ F-Droid's signing key; a versionCode increase cannot make it an update.
 4. Install the probe only after the gate. Launch once and let Anton choose
    German and the documented font/UI settings. Any explicit settings or save
    overwrite by the agent requires a separate confirmation first.
-5. After both exploratory captures, stop. Anton chooses the final injection
-   and decides the intentional-ellipsis boundary.
-6. Build the final clean and single-injection defective versions. Their debug
+5. After both exploratory captures, stop. Anton chose Mining and accepted D-023.
+6. Build the final clean and single-injection defective versions (completed).
+   Preserve the user's newly saved `issue-8-pair` game before replacement: the
+   earlier turn-1 Autosave did not include Istanbul. The agent only reads and
+   backs up saves; Anton creates this new save through the UI. Their debug
    signatures must match. Probe 1271009 to clean 1271001 is a downgrade:
    explicitly approved `adb install -r -d` on the debuggable package can retain
    data; an uninstall/reinstall is the alternative, with its own approval and
    backup. Clean 1271001 to defective 1271002 uses approved `adb install -r`.
+   Anton created `issue-8-pair`; the backup contains Ottoman Istanbul on turn 1.
+   After separate approval, probe-to-clean installation succeeded. Independent
+   package metadata confirmed 1271001, and exact settings/save checksums were
+   unchanged before the first clean launch. See the Report for hashes and output.
 7. To return to F-Droid, first obtain confirmation before deleting debug.
    Reinstall the backed-up F-Droid APK. With the app stopped and before any
    approved data restoration, obtain the current package UID, restore bytes

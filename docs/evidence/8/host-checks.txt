@@ -56,3 +56,52 @@ $ uv run --offline ruff format --check .
 
 $ git diff --check
 [exit 0, no output]
+
+Final pair build and clean capture checkpoint
+
+Same recorded Gradle command/toolchain, clean fork commit:
+2e4d6af664e204c4ddcc06383a0e2e700a9665c4
+BUILD SUCCESSFUL in 1m 29s
+45 actionable tasks: 42 executed, 3 up-to-date
+real 89.84
+[exit 0; full stdout/stderr: clean-build.txt]
+
+Same command/toolchain, defective fork commit:
+038329f93966a8d1d0ac7f23f551c98feb32614c
+BUILD SUCCESSFUL in 1m 26s
+45 actionable tasks: 42 executed, 3 up-to-date
+real 86.78
+[exit 0; full stdout/stderr: defective-build.txt]
+
+APK metadata and apksigner verification: exit 0 for both builds.
+Their debug certificate matches the probe certificate above.
+Source guards: clean differs from pinned base only in versionCode metadata;
+defective differs only in Mining's German value plus versionCode metadata.
+Worker bytes match the original base in both builds. Packaged German.properties
+bytes match the expected source exactly. Normalized source diffs are retained.
+Standard-library ZIP entry comparison: seven DEX files, four native libgdx
+libraries and all other asset bytes are identical. The only different entries
+are German.properties, AndroidManifest.xml and signing metadata.
+[full entry list: pair-apk-comparison.json; APK hashes: pair-manifest.json]
+
+Named save inspection before and after the authorized probe-to-clean install:
+Ottoman Istanbul exists on turn 1. Save SHA-256 unchanged:
+9d2a4cd5e1de2b2ae9102a2e6e6d15210e32ae5188c895f84e8a3a6ce19c3b4e
+Settings SHA-256 unchanged across installation:
+dc35061fcf8011635bfb2d0f94999c5de7bf8b4fafea64ace9803264f8117b10
+Adbd returned to shell; no agent settings/save overwrite.
+The English UI change was made manually by Anton. Current English settings and
+the unchanged named save were backed up before requesting the next install.
+
+$ uv run --offline pytest
+181 passed, 1 skipped, 1 warning in 21.45s
+[exit 0; full output: pytest-pair-builds.txt]
+[device test opt-in skip; no capture/device implementation changed]
+
+$ uv run --offline ruff check .
+All checks passed!
+[exit 0; full output: ruff-check-pair-builds.txt]
+
+$ uv run --offline ruff format --check .
+30 files already formatted
+[exit 0; full output: ruff-format-pair-builds.txt]

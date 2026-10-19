@@ -67,8 +67,9 @@
         "status": "observed_exploration_only",
         "behavior": "intentional_ellipsis",
         "details": "Mining title visibly ends in three dots inside its fixed-width TechButton; the end of Erzgewinnung is omitted. No collision around the target title is visible in this capture.",
-        "classification_as_defect": "awaiting_Anton_decision",
-        "clean_control_comparison": "not_yet_captured"
+        "clean_control_comparison": "not_yet_captured",
+        "probe_role": "exploration only; not a label",
+        "later_human_decision": "Anton accepted conditional ellipsis boundary D-023 and chose Mining for a separate final pair."
       }
     },
     "city-construction": {
@@ -103,7 +104,7 @@
     }
   },
   "device_installation": {
-    "status": "probe_captures_complete_awaiting_Anton_choice",
+    "status": "probe_complete_Anton_selected_Mining_final_pair_in_preparation",
     "user_authorized_fdroid_uninstall_and_probe_install": true,
     "uninstall_exit_code": 0,
     "install_exit_code": 0,
@@ -113,6 +114,11 @@
     "cutout_check_passed": true,
     "agent_settings_or_save_overwrite": false
   },
-  "intentional_ellipsis_accepted_as_defect": null,
-  "final_injection_choice": null
+  "ellipsis_acceptance": {
+    "decision": "D-023",
+    "status": "Accepted",
+    "accepted_by": "Anton",
+    "rule": "Ellipsis counts as truncated_text only if the full text is not visible elsewhere in the same screenshot."
+  },
+  "final_injection_choice": "Mining"
 }

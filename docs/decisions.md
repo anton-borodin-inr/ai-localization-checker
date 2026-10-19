@@ -214,11 +214,21 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 - **Alternatives considered:** Keep Appium (D-015): adds no information on this app, costs a server and session per capture. Use Appium only where native Android UI appears (dialogs, permission prompts): not needed in v1, can be revisited for the second app (Stage 8).
 - **Consequences:** If accepted, a follow-up task replaces `appium_session` in `capture.py` and `scripts/benchmark_capture.py`, removes `appium-python-client` and the Appium checks from the capture path and `check_env.sh`, and supersedes D-015. Until then, capture keeps working through Appium as documented in `docs/capture.md`.
 
-## D-023 — Exploratory source-build probe and manual Stage 1 screen capture
+## D-023 — Ellipsis defect boundary for Unciv
+
+- **Date:** 2026-10-19
+- **Status:** Accepted
+- **Accepted by:** Anton
+- **Decision:** An ellipsis counts as `truncated_text` when the full text is not visible anywhere else on the same screenshot. If the full text is visible elsewhere on that screenshot, the shortened label is not a defect.
+- **Why:** **observed — issue 8 probe:** On Unciv 4.22.10, the long German Worker title wrapped in the construction list and remained fully visible in the selected-construction panel; the long German Mining title ended in an intentional ellipsis in TechButton. No text loss without a marker was observed in these two probes. **Anton's QA interpretation:** Losing the technology name on its button loses its meaning on that screen, which localization QA treats as a defect when the full name is unavailable elsewhere in the same screenshot.
+- **Alternatives considered:** Exclude all intentional ellipsis from defects; count every shortened label even when another element on the same screenshot shows its full text; require text loss without a marker for the first slice.
+- **Consequences:** The issue 8 pair uses only the Mining injection, with another technology selected so the full Mining name does not appear in the description panel or elsewhere in the screenshot. The OCR + translation-table baseline is expected to catch this case easily, so v1 may show no model advantage on this class; this is an expectation, not a measured result. Text loss without a marker is left for Stage 8 (second app). Probe images remain exploration only; Anton owns final labels. D-018's detector schema and D-020's two v1 classes remain unchanged.
+
+## D-024 — Exploratory source-build probe and manual Stage 1 screen capture
 
 - **Date:** 2026-10-19
 - **Status:** Proposed
 - **Decision:** Before selecting issue 8's final injection, build one exploratory German probe with Mining and Worker changes and versionCode 1271009. Anton manually opens both screens; probe images appear only as exploration in the Report and never enter labels or evaluation. The final pair uses only Anton's chosen injection, with separate clean/defective versionCodes. Capture uses SDK adb after manual navigation, retaining D-014 cutout checks and D-003/D-016 names. Propose a small human-written JSON label file with screenshot/language and labels containing type, expected text, visible text and a 3x3 region.
 - **Why:** The current capture CLI relaunches into the main menu, while Stage 2 navigation/debug hooks are out of scope. TechButton ellipsis is predictable from source, but the Worker title can enlarge its panel; actual screen behavior must precede Anton's choice. Anton requested the preliminary probe after approving the initial plan.
 - **Alternatives considered:** Choose solely from source predictions; inject artificial sentences; add a navigation/debug hook now; recreate a different game for each final screenshot.
-- **Consequences:** Probe observations are not labels. Intentional ellipsis remains unaccepted until Anton decides. The final pair shares pinned upstream base 899367522cea36d6063c84b02b41eedfa9a0d0e9; BuildConfig.kt changes are metadata only. Every app deletion/replacement and explicit app-data overwrite requires a separate confirmation. No detector/matching schema or Accepted decision changes.
+- **Consequences:** Probe observations are not labels. Anton's accepted ellipsis boundary is recorded separately in D-023. The final pair shares pinned upstream base 899367522cea36d6063c84b02b41eedfa9a0d0e9; BuildConfig.kt changes are metadata only. Every app deletion/replacement and explicit app-data overwrite requires a separate confirmation. No detector/matching schema changes. This workflow proposal was originally numbered D-023 before acceptance and was moved to D-024 when Anton explicitly assigned D-023 to the defect boundary.

@@ -1,18 +1,25 @@
 # Issue 8 Report
 
-**Probe checkpoint complete; issue 8 remains incomplete.** Both exploratory
-screens were captured after Anton's manual navigation. Mining shows intentional
-ellipsis; Worker displays its complete title without demonstrated text loss.
-Stopped for Anton's selection. No final pair, labels or evaluation inputs have
-been created, and intentional ellipsis is not yet accepted as a defect.
+**Issue 8 remains incomplete: both final APKs are built and verified; clean
+1271001 is installed and captured in German and English; defective capture
+and human labels are pending.** Anton chose
+Mining and accepted the conditional ellipsis boundary as D-023. Anton created
+`issue-8-pair` and separately authorized replacing probe with clean. The saved
+Istanbul state and exact settings bytes survived installation. Defective
+installation still requires its own approval after clean captures.
+No labels or evaluation inputs have been created. Both earlier probe images
+remain exploration only.
 
 - **What changed:** Added `docs/unciv-build.md` with the build/install/rollback
   plan, exact German probe strings, source-based width budgets and label-format
   proposal. A separate fork based on tag 4.22.10 / commit
   `899367522cea36d6063c84b02b41eedfa9a0d0e9` has a probe containing Mining and
   Worker changes plus versionCode 1271009. `BuildConfig.kt` changes build
-  metadata (versionCode), not a translation or game logic. The clean/defective
-  pair remains pending and will contain at most the one chosen injection.
+  metadata (versionCode), not a translation or game logic. Final clean 1271001
+  contains no translation change; final defective 1271002 contains only
+  `Mining = Bergbau und Erzgewinnung`. Worker is restored to `Arbeiter` in both.
+  Added the two observed probe outcomes to the issue 8 follow-up research notes
+  in `docs/unciv-text-rendering.md`.
 - **How it was verified:** Source inspection and standalone Android Paint
   measurements: Mining 169.54 / 140 units (+21.10%); Worker 356.94 / 273.33
   nominal units (+30.59%). Worker can grow its panel; this is not a hard title
@@ -22,7 +29,7 @@ been created, and intentional ellipsis is not yet accepted as a defect.
   tasks). APK metadata confirms com.unciv.app / 4.22.10 / 1271009, minSdk 21,
   targetSdk 36 and compileSdk 37. Both exact German values are packaged;
   AndroidLauncher occurs in DEX and the arm64 libgdx library is present.
-  `apksigner verify --verbose --print-certs` exited 0 for both APKs and showed
+  `apksigner verify --verbose --print-certs` exited 0 for the F-Droid and probe APKs and showed
   different signing certificates. The original installed APK, internal and
   external files and exact settings bytes are backed up locally. Settings
   checksum matches the device and the archived settings bytes match the
@@ -35,13 +42,31 @@ been created, and intentional ellipsis is not yet accepted as a defect.
   writes after Anton opened each. Read-only `run-as` settings reads confirmed
   German, Small UI, font multiplier 1 and the default font family. PNG structure,
   CRC and 2400 x 1080 size passed; foreground and cutout passed before/after.
-  Restoration and the final pair are not run. At the preparation checkpoint,
+  Both final builds also succeeded (table below). Their packaged translation
+  bytes match the expected clean/single-injection source, versionCodes and
+  debug certificates match their records, and all seven DEX files plus all four
+  native libgdx libraries are byte-identical between the two APKs. The only
+  differing ZIP entries are German.properties, AndroidManifest.xml and signing
+  metadata. Their other asset bytes are identical. Clean installation exited
+  0 / Success; independent package metadata confirmed 4.22.10 / 1271001 and
+  DEBUGGABLE. Read-only backups before and after installation contained identical
+  settings and saved-game bytes. Adbd ended as shell, then `am start -W` exited
+  0. Both final clean captures passed package/language/font/foreground/
+  cutout checks before and after capture, settings stability and PNG CRC/size.
+  Visual inspection shows the full `Bergbau` title with Archery selected.
+  English shows the complete `Mining` title with Archery selected. Defective
+  installation and F-Droid restoration are not run.
+  At the preparation checkpoint,
   `uv run --offline pytest` exited 0: 181 passed, 1 skipped (the opt-in
   device test), 1 upstream google-genai/Python deprecation warning in 28.09s.
   Ruff check and format check exited 0 (30 files already formatted), and
   `git diff --check` passed. `--run-device` was not run: capture/device code is
-  unchanged. These offline checks were not rerun for the later documentation
-  and image-evidence updates; their runtime/test sources remain unchanged.
+  unchanged. A fresh offline run after the decision/research/build/install
+  documentation updates exited 0: 181 passed, 1 skipped (opt-in device test),
+  1 upstream deprecation warning in 21.45s. Ruff check and format check exited
+  0 (30 files already formatted). Output is retained separately from the
+  original preparation checks. Later documentation changes record these results
+  and capture metadata; no checker code changed.
 - **Deviations from the task:** Anton explicitly approved a preliminary
   two-injection probe before the one-injection pair. Probe images are exploration
   only in this Report and are excluded from labels and evaluation. Manual
@@ -61,15 +86,25 @@ been created, and intentional ellipsis is not yet accepted as a defect.
   The first standalone font helper failed because app_process had not initialized
   the Android font map (exit 137, NullPointerException); initializing that map
   fixed the helper, with both subsequent measurements exiting 0.
-- **Decisions proposed:** D-023 records the approved exploratory/manual-capture
-  workflow and the proposed label-file format. No Accepted decision is edited.
-- **Open questions for Anton:** Choose the next step from the two observed
-  outcomes and decide the intentional-ellipsis boundary. A is a candidate only
-  if Anton accepts that shortening as a defect; B has not demonstrated
-  `truncated_text` and is not evidence of a defect. If ellipsis is rejected,
-  neither current probe establishes the required text-loss case; another
-  experiment needs Anton's direction before changes. Final human labels and
-  clean-control acceptance remain Anton-owned. Every subsequent app
+  Before pairing, `run-as` could list internal files but external-file discovery
+  returned Permission denied in stdout despite adb exit 0. The read was treated
+  as failed. A read-only backup with temporary adb root succeeded; settings
+  bytes were stable across it, and adbd returned to shell. The stored turn-1
+  Autosave did not contain Istanbul, so Anton was asked to create a new
+  `issue-8-pair` save before any APK replacement. Anton created it; inspection
+  confirmed Ottoman Istanbul on turn 1. No save was fabricated or written by
+  the agent.
+- **Decisions:** **D-023 is Accepted by Anton**: ellipsis is `truncated_text`
+  only if the full text is not visible anywhere else in the same screenshot.
+  If the full text is shown elsewhere, the shortened label is not a defect.
+  The former Proposed workflow/label-format entry was moved from D-023 to
+  **D-024 (Proposed)**, reserving D-023 for Anton's explicit accepted decision.
+  Existing Accepted entries were not rewritten.
+- **Open questions for Anton:** Separately authorize replacing clean with
+  defective. For each capture, load `issue-8-pair` and select another tech
+  (for example Archery/Bogenschießen), keeping the full Mining name out of the
+  description panel and anywhere else on the same screenshot. Final human
+  labels and clean-control acceptance remain Anton-owned. Every subsequent app
   replacement/deletion or explicit data overwrite still needs its own approval.
 - **API usage:** No live provider calls; no detector output or hold-out access.
   No new dependencies in this repository. Existing Android/Gradle build inputs
@@ -79,7 +114,7 @@ been created, and intentional ellipsis is not yet accepted as a defect.
 
 | Screen | Actual behavior |
 |---|---|
-| Technology picker / Mining | **Observed:** the title ends in `...`, omitting the end of `Erzgewinnung`, inside the fixed-width TechButton. This is the source's intentional-ellipsis path. No collision around the target title is visible. Defect acceptance remains Anton's decision. |
+| Technology picker / Mining | **Observed:** the title ends in `...`, omitting the end of `Erzgewinnung`, inside the fixed-width TechButton. This is the source's intentional-ellipsis path. The full injected name is not visible elsewhere in this screenshot; no target-title collision is visible. Anton subsequently accepted the conditional D-023 boundary. The probe is still not a label. |
 | City construction / Worker | **Observed:** the complete title fits on one line in the lower-right construction panel, without ellipsis, edge loss or visible collision. In the available-constructions list it wraps onto two lines, retaining the full text. The panel accommodates the title beyond the nominal budget; this is consistent with source-driven growth, but its width change versus a clean build has not been measured. `truncated_text` is not demonstrated. |
 
 The Technology capture is 393,632 bytes, 2400 x 1080; SHA-256
@@ -94,17 +129,98 @@ The Worker capture is 562,946 bytes, 2400 x 1080; SHA-256
 
 ![Exploration only: complete Worker title in the adaptive panel](exploration/city-construction__de__2400x1080__probe__1271009.png)
 
-**Recommendation, not a label:** A is the only current candidate showing text
-shortening, and it is the intentional-ellipsis path. Proceed with A only if
-Anton explicitly accepts that boundary. B is a successful adaptation in this
-capture and should not be presented as truncation. Do not build the final pair
-or change either injection before Anton chooses the next step.
+**Accepted human decision, not a probe label:** Anton chose A. Under D-023,
+ellipsis counts as `truncated_text` only when the full text is not visible
+elsewhere on the same screenshot. B showed successful adaptation and is not
+presented as truncation. No text loss without a marker was observed in these
+two probes; this is a finding about the inspected cases, not proof of absence
+throughout Unciv. The [research follow-up](../../unciv-text-rendering.md#issue-8-follow-up-observed-german-rendering-probe)
+records both observations.
+
+**Expected limitation, not a measured result:** The OCR + translation-table
+baseline is expected to catch this case easily; v1 may show no model advantage
+on this class. Text loss without a marker is deferred to Stage 8 (second app).
+
+## Final pair: built; clean installed and captured in both languages
+
+| Build | Fork commit | VersionCode | Gradle / wall time |
+|---|---|---:|---|
+| Clean, original translations | `2e4d6af664e204c4ddcc06383a0e2e700a9665c4` | 1271001 | 1m 29s / 89.84s |
+| Defective, Mining only | `038329f93966a8d1d0ac7f23f551c98feb32614c` | 1271002 | 1m 26s / 86.78s |
+
+Both share upstream base `899367522cea36d6063c84b02b41eedfa9a0d0e9`,
+versionName 4.22.10 and the probe's verified debug signing certificate. Each
+build executed 42 tasks with 3 up-to-date in the warm task-local cache. The
+builds exited 0. `BuildConfig.kt` changes versionCode build metadata only.
+
+- Clean APK: 32,475,086 bytes; SHA-256
+  `47b98d930c8699625e8df6dee3fce49ae0d600cab2356382279e006ce791f644`.
+- Defective APK: 32,475,095 bytes; SHA-256
+  `cac0bb72d87fa91e2de7a132827f3acd2c23716e2f0aba41d287db74e023c7b4`.
+
+Source guards confirm that clean differs from the pinned base in BuildConfig.kt
+only, and defective differs in that metadata file plus exactly one Mining value
+in German.properties. [pair-manifest.json](pair-manifest.json), the source
+diffs and [pair-apk-comparison.json](pair-apk-comparison.json) record the checks.
+
+Anton separately authorized the probe-to-clean downgrade (translated from
+Russian): "Yes, replace probe with clean." Executed command:
+
+```bash
+adb -s emulator-5554 install -r -d outputs/issue-8/Unciv-clean-1271001.apk
+```
+
+The installer reported `Performing Streamed Install` / `Success`, exit 0.
+Independent `dumpsys package` confirmed versionCode 1271001. No uninstall or
+explicit settings/save overwrite was performed. Before the first clean launch,
+read-only backup comparisons verified unchanged settings and `issue-8-pair`:
+
+- Saved game: 118,426 bytes, Ottoman Istanbul on turn 1; SHA-256
+  `9d2a4cd5e1de2b2ae9102a2e6e6d15210e32ae5188c895f84e8a3a6ce19c3b4e`.
+- Current settings: 645 bytes; SHA-256
+  `dc35061fcf8011635bfb2d0f94999c5de7bf8b4fafea64ace9803264f8117b10`.
+
+Private backups are retained under `data/issue-8/backups/probe-saved-pair/`
+and `data/issue-8/backups/clean-after-install/`. Adbd was returned to shell.
+The clean launch exited 0. Anton manually loaded/navigated to the German screen;
+replacing clean with defective needs another explicit approval.
+
+## Final screen captures (unlabeled)
+
+| Capture | Installed build | State | SHA-256 |
+|---|---:|---|---|
+| German clean | 1271001 | Captured; Archery selected, `Bergbau` fully visible | `a6a5beb3ef17ce4a640261821ff1bfc02f2dfda0e81c1cfb3aadaa32407f954e` |
+| English clean control | 1271001 | Captured; Archery selected, `Mining` fully visible | `88ff1c55aef33cc9ff0fd89cd5912384b7a1017d8d9ca2d88965ec39389b9f47` |
+| German injected | 1271002 | Not installed or captured | Pending |
+
+The [German clean PNG](final/tech-picker__de__2400x1080__clean__1271001.png)
+is 459,752 bytes, 2400 x 1080. Package version, persisted German, Small UI,
+default font/scale, foreground and disabled cutout were checked before/after;
+settings bytes remained stable. No restart or app-data overwrite occurred
+during capture. The whole frame was retained. Anton loaded the frozen save
+manually; loading and selected screen identity are not automatically verified
+by `screencap`. Target inspection is an observed finding, not a human label or
+an assertion that every other visible element is defect-free.
+
+The [English clean PNG](final/tech-picker__en__2400x1080__clean__1271001.png)
+is 460,083 bytes, 2400 x 1080 and passed the same checks with persisted English.
+Anton switched language in the UI; the agent did not overwrite settings.
+Manual navigation gives approximate scroll alignment, not pixel-identical
+framing. Both captures show the same technology-tree neighborhood with Archery
+selected and the complete Mining name. After both captures, another read-only
+backup confirmed the named save's unchanged SHA-256 and retained the current
+English settings (662 bytes; SHA-256
+`e0b6586f1893ac84f6249809ab349a4d6fc4a2fdea7fe79b53142bf7c1436808`).
+The save omits `baseRuleset` and `mods`; their effective pinned-source defaults
+are Civ V - Gods & Kings and no mods, respectively. This is a source-derived
+interpretation of omitted fields, not an explicit value stored in the save.
 
 ## Command evidence
 
 Every device command is retained with stdout/stderr and exit status. Binary
 stdout and private backups are saved to named local files with size and SHA-256
-rather than printed. Public transcripts normalize the SDK executable to `adb`.
+rather than printed. Public transcripts also include saved non-private text
+readbacks and normalize the SDK executable to `adb`.
 Current raw working evidence is local under `data/issue-8/`; selected command
 evidence is retained beside this Report. Private app backups are excluded.
 
@@ -139,12 +255,14 @@ confirmation gate. Read-only preflight excerpts are in
 [device-preflight.txt](device-preflight.txt); full command records and saved-output
 checksums are in [device-commands.txt](device-commands.txt).
 
-## Changed files at this probe checkpoint
+## Changed files at this build/install checkpoint
 
-- Checker: `docs/unciv-build.md`, `docs/decisions.md`, this Report, and the
+- Checker: `docs/unciv-build.md`, `docs/unciv-text-rendering.md`, `docs/decisions.md`, this Report, and the
   supporting text/JSON evidence listed in [README.txt](README.txt).
 - Fork: `android/assets/jsons/translations/German.properties` and
-  `buildSrc/src/main/kotlin/BuildConfig.kt` only; commit
-  `190275d1e4490dceb682cf881f8c3433c1b53162`.
+  `buildSrc/src/main/kotlin/BuildConfig.kt` only; probe commit
+  `190275d1e4490dceb682cf881f8c3433c1b53162`, clean commit
+  `2e4d6af664e204c4ddcc06383a0e2e700a9665c4` and defective commit
+  `038329f93966a8d1d0ac7f23f551c98feb32614c`.
 - No checker runtime, test, dependency or lockfile changes. No labels, metrics
   or matching changes. APKs, settings and saves remain outside tracked files.
