@@ -1,0 +1,192 @@
+Host-specific paths, line endings and trailing whitespace are normalized; commands were not re-run for this copy.
+
+Preflight commands run before the transcript wrapper was available (2026-10-19).
+Normalization: the absolute SDK adb executable is rendered as adb.
+
+$ adb devices -l
+[stderr; sandboxed attempt]
+* daemon not running; starting now at tcp:5037
+ADB server didn't ACK
+Full server startup log: /var/folders/ry/v2zcn07s40xg1yxvs2mqf4200000gn/T//adb.501.log
+Server had pid: 11432
+--- adb starting (pid 11432) ---
+10-19 14:29:34.654 11432 17699450 I adb     : main.cpp:66 Android Debug Bridge version 1.0.41
+10-19 14:29:34.654 11432 17699450 I adb     : main.cpp:66 Version 37.0.0-14910828
+10-19 14:29:34.654 11432 17699450 I adb     : main.cpp:66 Installed as adb
+10-19 14:29:34.654 11432 17699450 I adb     : main.cpp:66 Running on Darwin 27.0.0 (arm64)
+10-19 14:29:34.654 11432 17699450 I adb     : main.cpp:66
+10-19 14:29:35.177 11432 17699450 F adb     : main.cpp:165 could not install *smartsocket* listener: Operation not permitted
+
+* failed to start daemon
+adb: failed to check server version: cannot connect to daemon
+[exit 1]
+
+$ adb devices -l
+List of devices attached
+emulator-5554          device product:sdk_gphone64_arm64 model:sdk_gphone64_arm64 device:emu64a transport_id:50
+[exit 0; authorized access]
+
+2026-10-19T12:31:07.129054+00:00
+$ adb -s emulator-5554 push work/font-probe/dex/classes.dex /data/local/tmp/l10n-issue8-font-width-20261019.dex
+[stderr]
+work/font-probe/dex/classes.dex: 1 file pushed, 0 skipped. 1.5 MB/s (1860 bytes in 0.001s)
+[exit 0]
+
+2026-10-19T12:31:25.428175+00:00
+$ adb -s emulator-5554 shell 'CLASSPATH=/data/local/tmp/l10n-issue8-font-width-20261019.dex app_process /system/bin FontWidthProbe "Bergbau" "Bergbau und Erzgewinnung" "Bergbau und Rohstoffgewinnung" "Bergbau und Mineralgewinnung" "Arbeiter" "Arbeiter für Geländeausbau" "Arbeiter für Gelände und Infrastruktur" "Arbeiter für Gelände- und Städtebau" "Infrastruktur- und Bauarbeiter"'
+[stderr]
+Killed
+[exit 137]
+
+2026-10-19T12:31:39.490347+00:00
+$ adb -s emulator-5554 shell 'logcat -d -t 120 -s AndroidRuntime art auditd'
+--------- beginning of main
+10-19 14:31:24.456 10613 10613 D AndroidRuntime: Shutting down VM
+--------- beginning of crash
+10-19 14:31:24.458 10613 10613 E AndroidRuntime: FATAL EXCEPTION: main
+10-19 14:31:24.458 10613 10613 E AndroidRuntime: PID: 10613
+10-19 14:31:24.458 10613 10613 E AndroidRuntime: java.lang.NullPointerException: Attempt to read from field 'int android.graphics.Typeface.mStyle' on a null object reference in method 'android.graphics.Typeface android.graphics.Typeface.create(android.graphics.Typeface, int)'
+10-19 14:31:24.458 10613 10613 E AndroidRuntime: 	at android.graphics.Typeface.create(Typeface.java:928)
+10-19 14:31:24.458 10613 10613 E AndroidRuntime: 	at android.graphics.Typeface.create(Typeface.java:899)
+10-19 14:31:24.458 10613 10613 E AndroidRuntime: 	at FontWidthProbe.main(FontWidthProbe.java:11)
+10-19 14:31:24.458 10613 10613 E AndroidRuntime: 	at com.android.internal.os.RuntimeInit.nativeFinishInit(Native Method)
+10-19 14:31:24.458 10613 10613 E AndroidRuntime: 	at com.android.internal.os.RuntimeInit.main(RuntimeInit.java:359)
+10-19 14:31:24.461 10613 10613 E AndroidRuntime: Error reporting crash
+10-19 14:31:24.461 10613 10613 E AndroidRuntime: java.lang.RuntimeException: Bad file descriptor
+10-19 14:31:24.461 10613 10613 E AndroidRuntime: 	at android.os.BinderProxy.transactNative(Native Method)
+10-19 14:31:24.461 10613 10613 E AndroidRuntime: 	at android.os.BinderProxy.transact(BinderProxy.java:584)
+10-19 14:31:24.461 10613 10613 E AndroidRuntime: 	at android.os.IServiceManager$Stub$Proxy.checkService(IServiceManager.java:443)
+10-19 14:31:24.461 10613 10613 E AndroidRuntime: 	at android.os.ServiceManagerProxy.getService(ServiceManagerNative.java:63)
+10-19 14:31:24.461 10613 10613 E AndroidRuntime: 	at android.os.ServiceManager.rawGetService(ServiceManager.java:378)
+10-19 14:31:24.461 10613 10613 E AndroidRuntime: 	at android.os.ServiceManager.getService(ServiceManager.java:147)
+10-19 14:31:24.461 10613 10613 E AndroidRuntime: 	at android.app.ActivityManager$3.create(ActivityManager.java:5214)
+10-19 14:31:24.461 10613 10613 E AndroidRuntime: 	at android.app.ActivityManager$3.create(ActivityManager.java:5211)
+10-19 14:31:24.461 10613 10613 E AndroidRuntime: 	at android.util.Singleton.get(Singleton.java:43)
+10-19 14:31:24.461 10613 10613 E AndroidRuntime: 	at android.app.ActivityManager.getService(ActivityManager.java:5202)
+10-19 14:31:24.461 10613 10613 E AndroidRuntime: 	at com.android.internal.os.RuntimeInit$KillApplicationHandler.uncaughtException(RuntimeInit.java:160)
+10-19 14:31:24.461 10613 10613 E AndroidRuntime: 	at java.lang.ThreadGroup.uncaughtException(ThreadGroup.java:1071)
+10-19 14:31:24.461 10613 10613 E AndroidRuntime: 	at java.lang.ThreadGroup.uncaughtException(ThreadGroup.java:1066)
+10-19 14:31:24.461 10613 10613 E AndroidRuntime: 	at java.lang.Thread.dispatchUncaughtException(Thread.java:2306)
+[exit 0]
+
+2026-10-19T12:32:00.110639+00:00
+$ adb -s emulator-5554 shell 'ls -l /system/fonts/Roboto-Regular.ttf /system/etc/fonts.xml'
+-rw-r--r-- 1 root root   67396 2024-07-11 20:27 /system/etc/fonts.xml
+-rw-r--r-- 1 root root 2371712 2024-07-11 20:27 /system/fonts/Roboto-Regular.ttf
+[exit 0]
+
+2026-10-19T12:32:19.959573+00:00
+$ adb -s emulator-5554 push work/font-probe/dex/classes.dex /data/local/tmp/l10n-issue8-font-width-20261019-v2.dex
+[stderr]
+work/font-probe/dex/classes.dex: 1 file pushed, 0 skipped. 17.1 MB/s (2268 bytes in 0.000s)
+[exit 0]
+
+2026-10-19T12:32:33.097159+00:00
+$ adb -s emulator-5554 shell 'CLASSPATH=/data/local/tmp/l10n-issue8-font-width-20261019-v2.dex app_process /system/bin FontWidthProbe "Bergbau" "Bergbau und Erzgewinnung" "Bergbau und Rohstoffgewinnung" "Bergbau und Mineralgewinnung" "Arbeiter" "Arbeiter für Geländeausbau" "Arbeiter für Gelände und Infrastruktur" "Arbeiter für Gelände- und Städtebau" "Infrastruktur- und Bauarbeiter"'
+Bergbau	advance100=370	width14=51.80	width18=66.60
+Bergbau und Erzgewinnung	advance100=1211	width14=169.54	width18=217.98
+Bergbau und Rohstoffgewinnung	advance100=1456	width14=203.84	width18=262.08
+Bergbau und Mineralgewinnung	advance100=1401	width14=196.14	width18=252.18
+Arbeiter	advance100=352	width14=49.28	width18=63.36
+Arbeiter für Geländeausbau	advance100=1215	width14=170.10	width18=218.70
+Arbeiter für Gelände und Infrastruktur	advance100=1657	width14=231.98	width18=298.26
+Arbeiter für Gelände- und Städtebau	advance100=1586	width14=222.04	width18=285.48
+Infrastruktur- und Bauarbeiter	advance100=1308	width14=183.12	width18=235.44
+[exit 0]
+
+2026-10-19T12:33:19.709714+00:00
+$ adb -s emulator-5554 shell 'CLASSPATH=/data/local/tmp/l10n-issue8-font-width-20261019-v2.dex app_process /system/bin FontWidthProbe "Arbeiter für Geländeausbau und Infrastruktur" "Bauarbeiter für Gelände und Infrastruktur"'
+Arbeiter für Geländeausbau und Infrastruktur	advance100=1983	width14=277.62	width18=356.94
+Bauarbeiter für Gelände und Infrastruktur	advance100=1817	width14=254.38	width18=327.06
+[exit 0]
+
+2026-10-19T12:44:39.753037+00:00
+$ adb -s emulator-5554 get-state
+device
+[exit 0]
+
+2026-10-19T12:44:39.827270+00:00
+$ adb -s emulator-5554 emu avd name > work/checker/data/issue-8/backups/fdroid-original/avd.txt
+[stdout saved: 17 bytes; SHA-256 7889d5d267bb155bd6fbb3f6635d168c71960189c955525d64daedca0d9b83cf]
+[exit 0]
+
+2026-10-19T12:44:40.257706+00:00
+$ adb -s emulator-5554 shell getprop ro.build.version.sdk > work/checker/data/issue-8/backups/fdroid-original/api.txt
+[stdout saved: 3 bytes; SHA-256 ea243e5457028e97f9bc93b37a72f8e80ea61ae081911bb037765590ee6aa435]
+[exit 0]
+
+2026-10-19T12:44:46.561213+00:00
+$ adb -s emulator-5554 shell dumpsys package com.unciv.app > work/checker/data/issue-8/backups/fdroid-original/package.txt
+[stdout saved: 11442 bytes; SHA-256 9b141c582815d6b33ab730897434ff6472f757bf2215aa9f3d6e7fca701ee96f]
+[exit 0]
+
+2026-10-19T12:44:46.856241+00:00
+$ adb -s emulator-5554 shell pm path com.unciv.app > work/checker/data/issue-8/backups/fdroid-original/apk-paths.txt
+[stdout saved: 93 bytes; SHA-256 16c9c3c0ee2969c98bcbb7b885b5e014d07296eeb13c13eba77dc4751c008e43]
+[exit 0]
+
+2026-10-19T12:45:15.635741+00:00
+$ adb -s emulator-5554 exec-out cat '/data/app/~~ZMSXIkWYB5CmxFuwXVfpMw==/com.unciv.app-hsMb4H00GR4KHcMUmzVuhQ==/base.apk' > work/checker/data/issue-8/backups/fdroid-original/installed-0.apk
+[stdout saved: 27531553 bytes; SHA-256 caddedb60a6dcaf0199950251e027cefe363b7d2388cbc4c5d4587edaa1de9f2]
+[exit 0]
+
+2026-10-19T12:45:17.491385+00:00
+$ adb -s emulator-5554 root
+restarting adbd as root
+[exit 0]
+
+2026-10-19T12:45:17.564060+00:00
+$ adb -s emulator-5554 wait-for-device
+[exit 0]
+
+2026-10-19T12:45:27.138719+00:00
+$ adb -s emulator-5554 shell whoami > work/checker/data/issue-8/backups/fdroid-original/root.txt
+[stdout saved: 5 bytes; SHA-256 53175bcc0524f37b47062fafdda28e3f8eb91d519ca0a184ca71bbebe72f969a]
+[exit 0]
+
+2026-10-19T12:45:51.176866+00:00
+$ adb -s emulator-5554 shell am force-stop com.unciv.app
+[exit 0]
+
+2026-10-19T12:45:55.786467+00:00
+$ adb -s emulator-5554 shell 'stat -c '"'"'%u %g %a %s %n'"'"' /data/user/0/com.unciv.app/files /data/user/0/com.unciv.app/files/GameSettings.json' > work/checker/data/issue-8/backups/fdroid-original/settings-stat.txt
+[stdout saved: 124 bytes; SHA-256 4e73532c6861d44b68b517bae72282724e70e2d5a824a5dd8fa7a31f1a286495]
+[exit 0]
+
+2026-10-19T12:45:56.045889+00:00
+$ adb -s emulator-5554 exec-out cat /data/user/0/com.unciv.app/files/GameSettings.json > work/checker/data/issue-8/backups/fdroid-original/GameSettings.json
+[stdout saved: 93 bytes; SHA-256 3b55ab3dd62845e1c31374bb604446d0a3b672045ba030e90810d9354fabaa6d]
+[exit 0]
+
+2026-10-19T12:45:56.153375+00:00
+$ adb -s emulator-5554 shell sha256sum /data/user/0/com.unciv.app/files/GameSettings.json > work/checker/data/issue-8/backups/fdroid-original/settings-device-sha256.txt
+[stdout saved: 117 bytes; SHA-256 394468d8831e85d9bc0ddb8ed2a7052406b84ad878455ed16a12b35f5e6973c0]
+[exit 0]
+
+2026-10-19T12:45:57.397333+00:00
+$ adb -s emulator-5554 exec-out tar -C /data/user/0/com.unciv.app/files -cf - . > work/checker/data/issue-8/backups/fdroid-original/internal-files.tar
+[stdout saved: 4096 bytes; SHA-256 515899d678a5c5e52aa06c9bc8bff3522279f981dc95b512ccea8017216f21e4]
+[exit 0]
+
+2026-10-19T12:46:12.371220+00:00
+$ adb -s emulator-5554 shell 'test -d /sdcard/Android/data/com.unciv.app/files'
+[exit 0]
+
+2026-10-19T12:46:18.990120+00:00
+$ adb -s emulator-5554 exec-out tar -C /sdcard/Android/data/com.unciv.app/files -cf - . > work/checker/data/issue-8/backups/fdroid-original/external-files.tar
+[stdout saved: 2560 bytes; SHA-256 9d517d55527bcbf34d5b3b6702429ae247109226e2f974e0e2df255e395f4385]
+[exit 0]
+
+2026-10-19T12:46:27.151967+00:00
+$ adb -s emulator-5554 unroot
+restarting adbd as non root
+[exit 0]
+
+2026-10-19T12:46:27.218260+00:00
+$ adb -s emulator-5554 wait-for-device
+[exit 0]
+
+2026-10-19T12:46:28.174264+00:00
+$ adb -s emulator-5554 shell whoami > work/checker/data/issue-8/backups/fdroid-original/unroot.txt
+[stdout saved: 6 bytes; SHA-256 5c485cdc1a890a816971ba337bbfb6d58cd8edaee7f53fd38fb41f59150aa597]
+[exit 0]

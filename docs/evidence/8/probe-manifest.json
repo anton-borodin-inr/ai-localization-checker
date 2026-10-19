@@ -1,0 +1,47 @@
+{
+  "purpose": "exploration_only",
+  "excluded_from_labeled_set": true,
+  "excluded_from_evaluation": true,
+  "base_tag": "4.22.10",
+  "base_commit": "899367522cea36d6063c84b02b41eedfa9a0d0e9",
+  "fork_commit": "190275d1e4490dceb682cf881f8c3433c1b53162",
+  "package": "com.unciv.app",
+  "version_name": "4.22.10",
+  "version_code": 1271009,
+  "apk_bytes": 32475142,
+  "apk_sha256": "31a798f9d446eb396ba7465001778c519754e62b43f750e609de7cee2c778e1f",
+  "apk_build": {
+    "exit_code": 0,
+    "gradle_duration": "2m 38s",
+    "wall_seconds": 159.03,
+    "executed_tasks": 45
+  },
+  "jdk": "JetBrains JBR 21.0.10+-117844308-b1163.108 aarch64",
+  "gradle": "9.4.1",
+  "agp": "9.2.0",
+  "sdk_platform": "android-37.0 revision 2",
+  "build_tools": "36.0.0",
+  "injections": [
+    {
+      "key": "Mining",
+      "before": "Bergbau",
+      "after": "Bergbau und Erzgewinnung",
+      "width": 169.54,
+      "budget": 140,
+      "budget_kind": "fixed",
+      "excess_percent": 21.1
+    },
+    {
+      "key": "Worker",
+      "before": "Arbeiter",
+      "after": "Arbeiter für Geländeausbau und Infrastruktur",
+      "width": 356.94,
+      "budget": 273.333333,
+      "budget_kind": "nominal_adaptive_panel",
+      "excess_percent": 30.59
+    }
+  ],
+  "screen_observations": "not_captured",
+  "intentional_ellipsis_accepted_as_defect": null,
+  "final_injection_choice": null
+}
