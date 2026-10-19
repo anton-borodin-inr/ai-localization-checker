@@ -186,7 +186,7 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 ## D-020 — Candidate v1 defect types after Unciv source research
 
 - **Date:** 2026-10-19
-- **Status:** Proposed
+- **Status:** Accepted
 - **Decision:** Require both `untranslated` and `truncated_text` as the two v1 classes; defer `overlap`. Keep the D-018 schema unchanged.
 - **Why:** **source:** Unciv 4.22.10 / 1271 falls back to original text for missing translations and supports ellipsis on selected titles. **observed:** The English/Russian main-menu check confirmed language switching and wider buttons with fitting text. **assumption — evaluation rationale:** Truncation is the class where a vision model can add value over the OCR + translation-table baseline; untranslated alone risks a slice where the model cannot be shown to beat that baseline. Requiring both classes makes that comparison part of v1; it does not claim superiority before measurement. Evidence and pinned links are in [the research document](unciv-text-rendering.md).
 - **Alternatives considered:** **assumption:** An untranslated-only slice (insufficient opportunity to demonstrate vision-model value over the baseline); overlap as a third class (deferred, outside D-006's two-class selection); deciding that all ellipsis or scroll-hidden text is defective here (deferred to Anton's label definitions).
