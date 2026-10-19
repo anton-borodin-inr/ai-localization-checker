@@ -28,4 +28,4 @@ An empty `labels` array means that Anton reviewed the whole screenshot and found
 |---|---|---|
 | `tech-picker__de__2400x1080__clean__1271001.png` | none | Anton |
 | `tech-picker__de__2400x1080__injected__1271002.png` | 1 × `truncated_text` (Mining) | Anton |
-| `tech-picker__en__2400x1080__clean__1271001.png` | pending Anton's review | — |
+| `tech-picker__en__2400x1080__clean__1271001.png` | none | Anton |
