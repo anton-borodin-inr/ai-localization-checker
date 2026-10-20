@@ -7,14 +7,6 @@ from PIL import Image
 
 Box = tuple[int, int, int, int]
 
-# Two overlapping tree views and one full-width description view.
-# Coordinates are in the original 2400x1080 screenshot, right/bottom exclusive.
-TECH_PICKER_TILES: dict[str, Box] = {
-    "tree-left": (0, 0, 1320, 920),
-    "tree-right": (1080, 0, 2400, 920),
-    "description": (0, 900, 2400, 1080),
-}
-
 
 def crop_tiles(source: Path, destination: Path, boxes: dict[str, Box]) -> list[dict]:
     """Create new crops and provenance; refuse overwrite and invalid rectangles."""

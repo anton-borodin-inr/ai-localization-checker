@@ -49,6 +49,7 @@ How to fill this in:
 
 ## Definition of done
 
+- [ ] Code, tests, scripts, settings and docs that this task made unused are removed (or listed in the Report with the reason to keep them).
 - [ ] Acceptance criteria above are met and verified
 - [ ] Tests and linters pass
 - [ ] Any decision made during the task is added to `docs/decisions.md` with status `Proposed`
