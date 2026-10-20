@@ -328,7 +328,8 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 ## D-034 — v1 provider: DeepSeek `deepseek-flash`
 
 - **Date:** 2026-10-20
-- **Status:** Proposed
+- **Status:** Accepted
+- **Accepted by:** Anton
 - **Decision:** The v1 provider (D-006) is DeepSeek `deepseek-flash` on the official API (`https://api.deepseek.com/chat/completions`). Requests use non-thinking mode, temperature 0, `response_format` `json_object`, image `detail: original` with the PNG bytes sent unchanged, `max_tokens` 4096, a 120 s timeout, no streaming, no redirects and no transport retries; one retry after HTTP 429 is allowed only within the per-run request cap. The detector prompt and the finding schema (D-018) stay unchanged; JSON object mode does not enforce a schema, so a versioned format wrapper (`deepseek-json-object-v1`) appends the `ModelOutput` JSON Schema to the prompt, and the response is validated strictly and locally, never repaired. This supersedes the provider part of D-017.
 - **Why:** The Gemini paid tier cannot be paid for from Anton's account (cross-country billing errors), and the Gemini free tier was unstable in #10 (19 of 27 requests failed with HTTP 503/429). In #29, 12 DeepSeek requests all returned a response, `detail: original` read the German clean screen 16/16, and the total cost was about USD 0.004–0.009. 4096 output tokens leave room for a findings list while bounding the worst-case cost of a request.
 - **Alternatives considered:** Gemini paid tier (cannot be billed); Gemini free tier (unstable); the local Qwen adapter (#30; 2 of 14 validated responses in #10, dropped for now); `json_schema` response format (not offered by the DeepSeek API).
@@ -337,7 +338,8 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 ## D-035 — The coding agent may run live paid calls within the issue budget in requests and USD
 
 - **Date:** 2026-10-20
-- **Status:** Proposed
+- **Status:** Accepted
+- **Accepted by:** Anton
 - **Decision:** The coding agent runs the live provider calls of a task itself, instead of handing a command to Anton. Conditions: the issue states a budget in requests and USD; calls go only through the project's commands with the per-run request cap; only the provider key named in the issue, within the issue budget in requests and USD across all runs of the task, failed requests included; never the hold-out set; the agent never reads or prints `.env` or the key (`uv run --env-file .env` loads it); every run is recorded under `data/runs/` and the report lists run ids, `requests_sent`, token usage and the estimated cost. This supersedes D-028 and restates all its conditions except the free-tier one.
 - **Why:** D-034 moves v1 to a paid provider, so the "free-tier key only" condition of D-028 cannot hold. The DeepSeek account uses a small prepaid balance, which is the hard ceiling; the issue's USD budget and the per-run request cap keep each task far below it. The other D-028 reasons stay: the request cap exists in code, every request is recorded, and the report can be checked against the run records.
 - **Alternatives considered:** Keep D-028 and give Anton every paid call (a manual step in every experiment); amend D-028 in place (the decision log does not edit accepted entries).
