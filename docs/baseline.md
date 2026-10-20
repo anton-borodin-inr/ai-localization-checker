@@ -57,9 +57,16 @@ run. They are not selected by looking at the clean-screen false positives.
   fallback, expected exact match, foreign alternative, prefix, missing.
 - Observed candidates use mean OCR word confidence divided by 100, not a
   calibrated probability. A missing candidate uses heuristic confidence 0.5
-  and empty `text_seen`; its expected string is in diagnostics, never invented
-  as observed text. Region comes from the observed union-box centre, or the
-  declared expected-slot centre when nothing is read (a localization limit).
+  and carries the expected string it failed to find as `text_seen`
+  (`baseline-v0.1`, after the PR #28 review). This is not observed text: the
+  run output lists these findings by index in `missing_rule_findings`
+  (`run.json` and the `result.json` metadata), and `diagnostics.json` keeps
+  `rule: missing` per slot. With D-029 matching by `text_expected` too, such a
+  candidate is a TP when it points at the defective string and a FP otherwise.
+  Region comes from the observed union-box centre, or the declared
+  expected-slot centre when nothing is read (a localization limit).
+  `baseline-v0` records used an empty `text_seen` here, which can never
+  identify a label under D-026.
 - No scroll-edge masking, ellipsis exception, global full-text-elsewhere
   exemption, or clean-screen allowlist. D-025/D-023 govern human assessment;
   the baseline's contrary candidates stay in its output as false positives.

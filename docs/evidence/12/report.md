@@ -4,7 +4,8 @@
 clean and 14 on English clean**. It produces 12 candidates on German injected.
 The Mining expectation is flagged as missing with empty `text_seen`: Tesseract
 never recovered the visible Mining prefix. This is **not evidence of a
-text-identifiable detection TP under D-026**. No matching, precision, recall or
+text-identifiable detection TP under D-026**. D-023 expected the baseline to
+catch the Mining case easily; on this slice it did not. No matching, precision, recall or
 vision-model comparison was run. Independent PR review and Anton's acceptance
 remain pending. All candidates are retained, with no post-run tuning.
 
@@ -27,7 +28,10 @@ already published reviewed-screen table in [labeling.md](../../labeling.md).
 - Proper prefix: at least 4 letters and 50% of normalized expected length.
 - No OCR confidence cutoff, viewport exclusion, ellipsis exemption or allowlist.
 - Observed confidence = mean OCR word confidence / 100; missing confidence =
-  0.5 (heuristic). Missing `text_seen` is empty and uses the expected-slot centre.
+  0.5 (heuristic). Missing `text_seen` is empty in these v0 records and uses
+  the expected-slot centre. From `baseline-v0.1` (PR #28 review), a missing
+  candidate carries the expected string instead, listed in
+  `missing_rule_findings`; see [baseline.md](../../baseline.md).
 - Literal placeholders -> other; known untranslated fallbacks/foreign text ->
   untranslated; otherwise prefix/missing -> truncated_text. Identical explicit
   translations are accepted. These are detector rules, not D-026 matching.
@@ -106,10 +110,13 @@ uv run --offline --no-editable l10n-baseline \
 | [20261019T155117Z-7e8171](records/20261019T155117Z-7e8171/result.json) | `tech-picker__de__2400x1080__injected__1271002.png` | checked / 0 | 12 | 0.871 | 0 |
 | [20261019T155118Z-659d65](records/20261019T155118Z-659d65/result.json) | `tech-picker__en__2400x1080__clean__1271001.png` | checked / 0 | 14 | 0.527 | 0 |
 
-### Every finding, without suppression
+### Every finding, without suppression (original `baseline-v0` records)
 
-Empty `text_seen` below means that no identifying OCR span met the rule; it
-never substitutes the expected string for observed text. All rows have type
+These tables are the original `baseline-v0` records, kept for comparison.
+Empty `text_seen` below means that no identifying OCR span met the rule; v0
+never substitutes the expected string for observed text. `baseline-v0.1`
+records, where missing candidates carry the expected string, are added
+separately. All rows have type
 `truncated_text`. Confidence is rounded to six decimals here; JSON retains the
 original number. **Every row on either clean control is a false positive.**
 Injected-screen candidates are listed in full, without assigning evaluation
