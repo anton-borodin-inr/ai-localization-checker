@@ -113,3 +113,22 @@ actual sends. See [local execution notes](evidence/10/local-model/protocol.md)
 and the [local Report](evidence/10/local-model/report.md) for authorization,
 counts, observed limitations and every local run. These used commands must not
 be rerun from a fresh checkout to reset the ledger.
+
+## Approved paid comparison for issue 10
+
+The separately approved DeepSeek experiment is isolated from production checks.
+Its [plan](evidence/10/deepseek/plan.md), [approval](evidence/10/deepseek/approval.json)
+and [allocation/settings](evidence/10/deepseek/request-plan.json) cap it at
+12 new generation sends and USD 0.25 with no retries. Each invocation requires
+`--max-requests 1`. Use only the existing secret file through uv; never inspect it:
+
+```bash
+uv run --env-file .env --no-sync python -m l10n_checker.small_text_deepseek --slot 1 --max-requests 1
+```
+
+The example is a real paid slot, not a harmless probe, and must not be rerun.
+The command reserves its send and worst-case money before POST, checks model and
+USD balance through separately recorded GETs, and halts on unusable configuration
+or inconsistent accounting. Failed/unknown-cost attempts retain their reservations.
+The former Gemini and Qwen budgets never reset. JSON object mode uses the
+versioned format-only wrapper and unchanged strict local validator.

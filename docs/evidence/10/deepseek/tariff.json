@@ -1,0 +1,13 @@
+{
+  "verified_date": "2026-10-20",
+  "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+  "model": "deepseek-flash",
+  "documented_version": "DeepSeek-V4.1-Flash-1017",
+  "peak_usd_per_million": {
+    "input_cache_miss": "0.30",
+    "input_cache_hit": "0.006",
+    "output": "1.20"
+  },
+  "off_peak_multiplier": "0.5",
+  "accounting": "Reserve peak cache-miss price. Response estimates are conservative; actual off-peak billing can be lower. Balance delta is separate and can include unrelated activity."
+}

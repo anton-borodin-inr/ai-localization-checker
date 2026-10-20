@@ -1,0 +1,221 @@
+{
+  "max_requests": 12,
+  "max_usd": "0.25",
+  "combined_actual_cap": 53,
+  "model": "deepseek-flash",
+  "baseline_gemini_requests": 27,
+  "baseline_local_requests": 14,
+  "settings": {
+    "endpoint": "https://api.deepseek.com/chat/completions",
+    "temperature": 0,
+    "max_tokens": 8192,
+    "stream": false,
+    "thinking": {
+      "type": "disabled"
+    },
+    "response_format": {
+      "type": "json_object"
+    },
+    "image_detail": "original",
+    "timeout_s": 1800,
+    "transport_retries": 0,
+    "redirects": false,
+    "proxies": false,
+    "input_token_reservation": 32768,
+    "peak_usd_reservation": "0.0196608"
+  },
+  "requests": [
+    {
+      "image": "docs/evidence/8/final/tech-picker__de__2400x1080__clean__1271001.png",
+      "image_sha256": "a6a5beb3ef17ce4a640261821ff1bfc02f2dfda0e81c1cfb3aadaa32407f954e",
+      "tile": "full",
+      "box": [
+        0,
+        0,
+        2400,
+        1080
+      ],
+      "max_requests": 1,
+      "slot": 1,
+      "parent_gemini_slot": 1,
+      "option": "original",
+      "prepared_image_sha256": "a6a5beb3ef17ce4a640261821ff1bfc02f2dfda0e81c1cfb3aadaa32407f954e"
+    },
+    {
+      "image": "docs/evidence/8/final/tech-picker__en__2400x1080__clean__1271001.png",
+      "image_sha256": "88ff1c55aef33cc9ff0fd89cd5912384b7a1017d8d9ca2d88965ec39389b9f47",
+      "tile": "full",
+      "box": [
+        0,
+        0,
+        2400,
+        1080
+      ],
+      "max_requests": 1,
+      "slot": 2,
+      "parent_gemini_slot": 2,
+      "option": "original",
+      "prepared_image_sha256": "88ff1c55aef33cc9ff0fd89cd5912384b7a1017d8d9ca2d88965ec39389b9f47"
+    },
+    {
+      "image": "docs/evidence/8/final/tech-picker__de__2400x1080__injected__1271002.png",
+      "image_sha256": "372aa318ce3bf4d553b4b9d427a7fe6d87f566953605c21bc705dd10df816b93",
+      "tile": "full",
+      "box": [
+        0,
+        0,
+        2400,
+        1080
+      ],
+      "max_requests": 1,
+      "slot": 3,
+      "parent_gemini_slot": 3,
+      "option": "original",
+      "prepared_image_sha256": "372aa318ce3bf4d553b4b9d427a7fe6d87f566953605c21bc705dd10df816b93"
+    },
+    {
+      "image": "docs/evidence/8/final/tech-picker__de__2400x1080__clean__1271001.png",
+      "image_sha256": "a6a5beb3ef17ce4a640261821ff1bfc02f2dfda0e81c1cfb3aadaa32407f954e",
+      "tile": "tree-left",
+      "box": [
+        0,
+        0,
+        1320,
+        920
+      ],
+      "max_requests": 1,
+      "slot": 4,
+      "parent_gemini_slot": 7,
+      "option": "tiles",
+      "prepared_image_sha256": "c9d7ea686fa17def0b126d2346ede7bf38a8f23ccc4a0b4c131c1dfe767b3143"
+    },
+    {
+      "image": "docs/evidence/8/final/tech-picker__de__2400x1080__clean__1271001.png",
+      "image_sha256": "a6a5beb3ef17ce4a640261821ff1bfc02f2dfda0e81c1cfb3aadaa32407f954e",
+      "tile": "tree-right",
+      "box": [
+        1080,
+        0,
+        2400,
+        920
+      ],
+      "max_requests": 1,
+      "slot": 5,
+      "parent_gemini_slot": 8,
+      "option": "tiles",
+      "prepared_image_sha256": "ed8e2bec0d525c8dff551c68ce50bcdb77954a79ce77dc7c4689f7dacd66da8f"
+    },
+    {
+      "image": "docs/evidence/8/final/tech-picker__de__2400x1080__clean__1271001.png",
+      "image_sha256": "a6a5beb3ef17ce4a640261821ff1bfc02f2dfda0e81c1cfb3aadaa32407f954e",
+      "tile": "description",
+      "box": [
+        0,
+        900,
+        2400,
+        1080
+      ],
+      "max_requests": 1,
+      "slot": 6,
+      "parent_gemini_slot": 9,
+      "option": "tiles",
+      "prepared_image_sha256": "b5f0e70bcf35c1ce6cfe79a1793dd5c4b6b85f5bff53b32bd7ab5960cccba95c"
+    },
+    {
+      "image": "docs/evidence/8/final/tech-picker__en__2400x1080__clean__1271001.png",
+      "image_sha256": "88ff1c55aef33cc9ff0fd89cd5912384b7a1017d8d9ca2d88965ec39389b9f47",
+      "tile": "tree-left",
+      "box": [
+        0,
+        0,
+        1320,
+        920
+      ],
+      "max_requests": 1,
+      "slot": 7,
+      "parent_gemini_slot": 10,
+      "option": "tiles",
+      "prepared_image_sha256": "9132136828960e486ecca2cae18ceb0f0e9e774797e8b9a69212df689dca5e1d"
+    },
+    {
+      "image": "docs/evidence/8/final/tech-picker__en__2400x1080__clean__1271001.png",
+      "image_sha256": "88ff1c55aef33cc9ff0fd89cd5912384b7a1017d8d9ca2d88965ec39389b9f47",
+      "tile": "tree-right",
+      "box": [
+        1080,
+        0,
+        2400,
+        920
+      ],
+      "max_requests": 1,
+      "slot": 8,
+      "parent_gemini_slot": 11,
+      "option": "tiles",
+      "prepared_image_sha256": "6d8ffb10c721878f241cedcbaaa39b6f934440d354c4f55766209fc0d8410cba"
+    },
+    {
+      "image": "docs/evidence/8/final/tech-picker__en__2400x1080__clean__1271001.png",
+      "image_sha256": "88ff1c55aef33cc9ff0fd89cd5912384b7a1017d8d9ca2d88965ec39389b9f47",
+      "tile": "description",
+      "box": [
+        0,
+        900,
+        2400,
+        1080
+      ],
+      "max_requests": 1,
+      "slot": 9,
+      "parent_gemini_slot": 12,
+      "option": "tiles",
+      "prepared_image_sha256": "a574ebb07e38730d7ea47b82f35874447a0a0ef13bfd50f152496afc9cde22e4"
+    },
+    {
+      "image": "docs/evidence/8/final/tech-picker__de__2400x1080__injected__1271002.png",
+      "image_sha256": "372aa318ce3bf4d553b4b9d427a7fe6d87f566953605c21bc705dd10df816b93",
+      "tile": "tree-left",
+      "box": [
+        0,
+        0,
+        1320,
+        920
+      ],
+      "max_requests": 1,
+      "slot": 10,
+      "parent_gemini_slot": 13,
+      "option": "tiles",
+      "prepared_image_sha256": "4b88b42867b960ae016ba7e0042765166fbfd30999f26279653d4e4f45f66243"
+    },
+    {
+      "image": "docs/evidence/8/final/tech-picker__de__2400x1080__injected__1271002.png",
+      "image_sha256": "372aa318ce3bf4d553b4b9d427a7fe6d87f566953605c21bc705dd10df816b93",
+      "tile": "tree-right",
+      "box": [
+        1080,
+        0,
+        2400,
+        920
+      ],
+      "max_requests": 1,
+      "slot": 11,
+      "parent_gemini_slot": 14,
+      "option": "tiles",
+      "prepared_image_sha256": "ed8e2bec0d525c8dff551c68ce50bcdb77954a79ce77dc7c4689f7dacd66da8f"
+    },
+    {
+      "image": "docs/evidence/8/final/tech-picker__de__2400x1080__injected__1271002.png",
+      "image_sha256": "372aa318ce3bf4d553b4b9d427a7fe6d87f566953605c21bc705dd10df816b93",
+      "tile": "description",
+      "box": [
+        0,
+        900,
+        2400,
+        1080
+      ],
+      "max_requests": 1,
+      "slot": 12,
+      "parent_gemini_slot": 15,
+      "option": "tiles",
+      "prepared_image_sha256": "7daf629e79c3946463104160655a6f41fc3c378bd2e59bbeda183821d2b28697"
+    }
+  ]
+}

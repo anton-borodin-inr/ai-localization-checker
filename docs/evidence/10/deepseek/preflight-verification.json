@@ -1,0 +1,9 @@
+{
+  "issue_budget_independently_refetched": true,
+  "prior_evidence_files_unchanged": 253,
+  "offline_checks_passed": true,
+  "generation_calls_before_this_receipt": 0,
+  "all_12_reservations_usd": "0.2359296",
+  "approved_cap_usd": "0.25",
+  "expected_combined_actual_max": 53
+}

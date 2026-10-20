@@ -1,0 +1,106 @@
+{
+  "$defs": {
+    "Finding": {
+      "additionalProperties": false,
+      "description": "Draft v0 finding; the schema is finalized in Stage 1.",
+      "properties": {
+        "defect_type": {
+          "enum": [
+            "truncated_text",
+            "overlap",
+            "untranslated",
+            "other"
+          ],
+          "title": "Defect Type",
+          "type": "string"
+        },
+        "text_seen": {
+          "title": "Text Seen",
+          "type": "string"
+        },
+        "region": {
+          "enum": [
+            "top-left",
+            "top",
+            "top-right",
+            "left",
+            "center",
+            "right",
+            "bottom-left",
+            "bottom",
+            "bottom-right"
+          ],
+          "title": "Region",
+          "type": "string"
+        },
+        "confidence": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Confidence",
+          "type": "number"
+        }
+      },
+      "required": [
+        "defect_type",
+        "text_seen",
+        "region",
+        "confidence"
+      ],
+      "title": "Finding",
+      "type": "object"
+    },
+    "Reading": {
+      "additionalProperties": false,
+      "properties": {
+        "text_seen": {
+          "title": "Text Seen",
+          "type": "string"
+        },
+        "region": {
+          "enum": [
+            "top-left",
+            "top",
+            "top-right",
+            "left",
+            "center",
+            "right",
+            "bottom-left",
+            "bottom",
+            "bottom-right"
+          ],
+          "title": "Region",
+          "type": "string"
+        }
+      },
+      "required": [
+        "text_seen",
+        "region"
+      ],
+      "title": "Reading",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "findings": {
+      "items": {
+        "$ref": "#/$defs/Finding"
+      },
+      "title": "Findings",
+      "type": "array"
+    },
+    "readings": {
+      "items": {
+        "$ref": "#/$defs/Reading"
+      },
+      "title": "Readings",
+      "type": "array"
+    }
+  },
+  "required": [
+    "findings",
+    "readings"
+  ],
+  "title": "ReadingOutput",
+  "type": "object"
+}

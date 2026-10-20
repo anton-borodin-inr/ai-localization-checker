@@ -1,0 +1,20 @@
+{
+  "accepted_by": "Anton",
+  "status": "approved",
+  "date": "2026-10-20",
+  "max_requests": 12,
+  "max_usd": "0.25",
+  "combined_actual_cap": 53,
+  "retries": 0,
+  "authorization": "Anton approved 12 requests and up to USD 0.25 in chat, and confirmed DEEPSEEK_API_KEY in the same secret file. The approved plan explicitly permits paid DeepSeek comparison as a bounded exception; all previous generation records remain frozen.",
+  "hashes": {
+    "plan": "951eede48b1f6089d968d4ebda6676171dd8a30690fe3615ce1180e6c611769d",
+    "request_plan": "c5bb52ee524deb1812e6a640ea9252702ffa4ace9a668c1e72d5145c0cbc4791",
+    "prompt": "6143b57914cb561de9447567461245934addfe82633add3c3fe8bc52bd4a14b7",
+    "schema": "d8d6f4b9a93cb1d80b7e01c38030b5291efebd360e9780a4d75fc31b394974bd",
+    "reference": "bba4e51d48d81bfa836eb80632697069b4e70fd67944a09f93d71aada609dd19",
+    "reference_approval": "2b982863c26dc4e48165b2b097f3b42a73b6b2db783af280ded404bd72c13766",
+    "cloud_summary": "a8119b4bea75652cbfd822f1c43ca01562eca00975e03658edb9cc51d485ebf7",
+    "local_summary": "a640bd0cd89c937f0fb8f4866d03c4688279e284aa2179fcd7a21e4b182f6e55"
+  }
+}
