@@ -358,7 +358,8 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 ## D-037 — Vertical-slice reference projection and replay evidence
 
 - **Date:** 2026-10-20
-- **Status:** Proposed
+- **Status:** Accepted
+- **Accepted by:** Anton
 - **Decision:** For issue #14, project the hash-confirmed amended #10 reference into `screen_texts` using every supplied `rows[*].text_seen` (including clipped diagnostics) and each supplied numeric diagnostic, preserving order and repeated entries. Never use hidden `assembled_full_text`, OCR, model output or inferred occurrences. Keep a portable hash-indexed bundle of input snapshots and detector records for offline replay through the unchanged evaluator.
 - **Why:** Anton requires #10 as the sole source and owns any additions. Its 16/20/20 primary counts measure transcription coverage, not all visible occurrences. Excluding its known clipped diagnostics would discard available human-confirmed visible text, while reconstructing missing text or repetition would invent reference data.
 - **Alternatives considered:** Primary rows only (discards supplied diagnostics); OCR or detector-derived completion (circular); completing counts, punctuation or spans from inspection (requires Anton's confirmation); changing matching to compensate (outside #14).
