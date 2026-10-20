@@ -28,25 +28,43 @@ Provisional conventions (D-029, Proposed):
   body must be an exact prefix of the label body, contain at least
   `prefix_min_words` (default **2**), and cover at least `prefix_min_coverage`
   (default **0.50**) of the visible label body. The word minimum cannot be below 2.
-- The score is the maximum of accepted similarity and accepted prefix coverage.
-  Each finding chooses the highest-scoring eligible label, breaking ties by
-  label input order. Type and confidence do not affect detection.
+- A finding is scored against both texts of a label, `text_seen` and
+  `text_expected`, with the same similarity and prefix rules; the label's score
+  is the better of the two. Models often report the full intended string of a
+  truncated label (golden case 12). The score is the maximum of accepted
+  similarity and accepted prefix coverage.
+- Findings are assigned to labels one-to-one. The assignment maximizes the
+  number of matched labels, then the total score (exact fractions, so equal
+  scores tie exactly). Among equal assignments it keeps input order: findings
+  are decided in order, each prefers its lowest-index label, and a finding stays
+  unassigned only if that still reaches the optimum. A finding equally close to
+  a taken label and a free label therefore takes the free one (golden case 13).
+  The search is exact and adds no dependency; its state is the set of labels
+  already taken, which is small for one screen. Type and confidence do not
+  affect detection.
 - Region restricts candidates only when a label's normalized visible text occurs
   more than once in `screen_texts` or the labels. It must then equal the label's
   grid cell. Unique text ignores region, including distant cells. Region values
   retain D-025's bounding-box-centre interpretation.
-- Findings selecting the same label collapse to one detection: keep the strongest
-  text score, then the first finding in input order. Its original type is used
-  for classification; a correct type is never preferred over `other`.
-- Presence is weaker than identification. An unmatched finding is real text if
-  its nonempty body (terminal ellipsis removed) is a literal substring of a
-  visible text, or near-exact similarity meets the configured text threshold.
-  Otherwise it is a hallucination and a FP. Only findings assigned to a label
-  collapse; unmatched findings remain separate FP records.
+- An unassigned finding that identifies at least one label is a collapsed
+  duplicate: by optimality, every label it identifies is already matched
+  (golden case 07). The assigned finding is the representative; its original
+  type is used for classification, and a correct type is never preferred over
+  `other`.
+- Presence is weaker than identification. An unassigned finding that identifies
+  no label is real text if its nonempty body (terminal ellipsis removed) occurs
+  as whole words in a visible text, that is, at word boundaries (Unicode `\w`),
+  or if near-exact similarity to a visible text meets the configured threshold.
+  A finding that identifies some label's `text_expected` is also real text.
+  Otherwise it is a hallucination and a FP. A single letter inside a word is
+  not present; a word cut by a truncation ellipsis (`Erzgew` in `Erzgew...`) is.
+  Unmatched findings remain separate FP records.
 
 With the defaults, golden 08a matches by similarity `1 - 1/21`; 08b matches
-by prefix coverage `11/18`; 08c fails identification but is present as a literal
-fragment. These defaults are provisional, not a final evaluation threshold.
+by prefix coverage `11/18`; 08c fails identification but is present as a whole
+word. Golden 12 matches by `text_expected`; in golden 13, `Neue Spiel` scores
+`1 - 1/11` against both labels and takes the free one. These defaults are
+provisional, not a final evaluation threshold.
 
 `ScreenMatches` exposes matched pairs, unmatched finding/label indices, duplicate
 indices and hallucination indices. A `not_checked` result carries no findings
