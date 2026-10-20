@@ -1,10 +1,15 @@
+import ast
 import base64
 import json
+import logging
+import sys
 from decimal import Decimal
+from pathlib import Path
 
 import httpx
 import pytest
 
+from l10n_checker import cli
 from l10n_checker.deepseek import (
     MAX_TOKENS,
     MODEL,
@@ -224,3 +229,63 @@ def test_cost_is_recorded(screenshot, tmp_path):
     _, run_dir = check(FakeServer(completion('{"findings": []}')), screenshot, tmp_path)
     run = json.loads((run_dir / "run.json").read_text())
     assert Decimal(run["estimated_cost"]["peak_usd"]) == Decimal("0.000423")
+
+
+SRC = Path(__file__).resolve().parent.parent / "src" / "l10n_checker"
+
+
+def test_only_the_adapter_talks_to_the_api():
+    importers = set()
+    for path in SRC.glob("*.py"):
+        for node in ast.walk(ast.parse(path.read_text())):
+            names = []
+            if isinstance(node, ast.Import):
+                names = [a.name for a in node.names]
+            elif isinstance(node, ast.ImportFrom):
+                names = [node.module or ""]
+            if any(n.split(".")[0] in ("httpx", "urllib", "http") for n in names):
+                importers.add(path.name)
+    assert importers == {"deepseek.py"}
+
+
+OUTCOMES = {
+    "success": completion('{"findings": []}'),
+    "invalid": completion(json.dumps({"findings": [], "x": KEY})),
+    "length": completion("{", finish_reason="length"),
+    "timeout": httpx.ReadTimeout(f"timed out for {KEY}"),
+    "connect": httpx.ConnectError(f"refused for {KEY}"),
+    "unauthorized": httpx.Response(401, text=f"bad key {KEY}"),
+    "rate_limited": httpx.Response(429, text=f"slow down {KEY}"),
+    "not_json": httpx.Response(200, text=f"<html>{KEY}</html>"),
+}
+
+
+@pytest.mark.parametrize("name", list(OUTCOMES))
+def test_key_never_leaks_through_the_cli(
+    name, screenshot, tmp_path, capsys, caplog, monkeypatch
+):
+    caplog.set_level(logging.DEBUG)
+    server = FakeServer(OUTCOMES[name])
+    monkeypatch.setenv("DEEPSEEK_API_KEY", KEY)
+    monkeypatch.setattr(
+        cli,
+        "make_provider",
+        lambda key, timeout: DeepSeekProvider(
+            key, timeout, transport=httpx.MockTransport(server)
+        ),
+    )
+    monkeypatch.setattr(cli, "output_directory", lambda path: path)
+    runs = tmp_path / "runs"
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        ["l10n-check", "--image", str(screenshot), "--runs-dir", str(runs)],
+    )
+    assert cli.check_main() == (0 if name == "success" else 2)
+    files = [p for p in runs.rglob("*") if p.is_file()]
+    assert files
+    for path in files:
+        assert KEY not in path.read_text(), path.name
+    output = capsys.readouterr()
+    assert KEY not in output.out + output.err
+    assert KEY not in caplog.text
