@@ -162,3 +162,40 @@ def test_full_expected_text_identifies_a_truncated_label():
     assert [(p.finding_index, p.label_index) for p in result.matches] == [(0, 0)]
     assert not result.unmatched_finding_indices
     assert not result.hallucination_indices
+
+
+def pairs(result):
+    return [(p.finding_index, p.label_index) for p in result.matches]
+
+
+def test_finding_goes_to_free_label_instead_of_becoming_duplicate():
+    # "Neue Spiel" scores 1 - 1/11 against both labels; L0 is taken by F0.
+    result = match_screen(
+        [label("Neues Spiel", "top"), label("Neue Spiele", "center")],
+        [finding("Neues Spiel", "top"), finding("Neue Spiel", "center")],
+        ["Neues Spiel", "Neue Spiele"],
+    )
+    assert pairs(result) == [(0, 0), (1, 1)]
+    assert not result.duplicate_finding_indices
+    assert not result.unmatched_label_indices
+
+
+def test_matched_label_count_beats_total_score():
+    # F0 is exact for L0 (1) and near L1 (15/16); F1 is near L0 only (16/17).
+    result = match_screen(
+        [label("Spielstand laden"), label("Spielstand ladet")],
+        [finding("Spielstand laden"), finding("Spielstand ladenn")],
+        ["Spielstand laden", "Spielstand ladet"],
+    )
+    assert pairs(result) == [(1, 0), (0, 1)]
+    assert not result.duplicate_finding_indices
+
+
+def test_equal_assignments_follow_input_order():
+    # Both findings score 14/15 against both labels.
+    result = match_screen(
+        [label("Spielstand lade"), label("Spielstand ladx")],
+        [finding("Spielstand ladz"), finding("Spielstand ladz")],
+        ["Spielstand lade", "Spielstand ladx"],
+    )
+    assert pairs(result) == [(0, 0), (1, 1)]
