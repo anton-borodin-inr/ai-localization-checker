@@ -1,0 +1,28 @@
+{
+  "id": "50c574cc-443f-445f-ba5c-2fc0f14de8d0",
+  "object": "chat.completion",
+  "created": 1792503989,
+  "model": "deepseek-flash",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\"findings\":[{\"defect_type\":\"truncated_text\",\"text_seen\":\"Freigeschaltete Wunder:\",\"region\":\"bottom-left\",\"confidence\":0.9},{\"defect_type\":\"truncated_text\",\"text_seen\":\"Tempel der Artemis (+1 Kultur, +10%\",\"region\":\"bottom-left\",\"confidence\":0.9},{\"defect_type\":\"truncated_text\",\"text_seen\":\"Nahrung in allen Städten: +15% Produktion beim Bau von\",\"region\":\"bottom-left\",\"confidence\":0.9}]}"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1454,
+    "completion_tokens": 117,
+    "total_tokens": 1571,
+    "prompt_tokens_details": {
+      "cached_tokens": 896
+    },
+    "prompt_cache_hit_tokens": 896,
+    "prompt_cache_miss_tokens": 558
+  },
+  "system_fingerprint": "e72d3c7f663d3e1383b00b3884cb4501"
+}

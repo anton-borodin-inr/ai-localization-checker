@@ -9,15 +9,15 @@
 - Provider `deepseek`, requested model `deepseek-flash`, returned model `deepseek-flash` (alias only; no immutable revision), `system_fingerprint` `e72d3c7f663d3e1383b00b3884cb4501` in all three runs.
 - Settings (D-034): non-thinking, temperature 0, `response_format` `json_object`, image `detail: original` (PNG bytes unchanged), `max_tokens` 4096, timeout 120 s, no streaming, no redirects, no transport retries.
 - Prompt: detector `PROMPT` `v0`, byte-identical to the Gemini detector prompt, plus wrapper `deepseek-json-object-v1` (the `ModelOutput` JSON Schema). `prompt_sent.txt` in each run holds the exact text (1717 bytes).
-- Records: [runs/](runs/), byte-identical copies of `data/runs/<run_id>/` (no absolute paths or key-like strings in them, so nothing was normalized).
+- Records: [records/](records/), byte-identical copies of `data/runs/<run_id>/` (no absolute paths or key-like strings in them, so nothing was normalized).
 
 ## Results
 
 | Screenshot | Run id | Status | Findings | Prompt tokens (cache hit / miss) | Completion tokens | Latency (s) | Est. cost, peak (USD) |
 |---|---|---|---|---|---:|---:|---:|
-| English clean | [20261020T134619Z-68d6fd](runs/20261020T134619Z-68d6fd/run.json) | checked | 1 | 1454 (896 / 558) | 62 | 2.216 | 0.000247176 |
-| German clean | [20261020T134628Z-88d08c](runs/20261020T134628Z-88d08c/run.json) | checked | 3 | 1454 (896 / 558) | 117 | 1.986 | 0.000313176 |
-| German injected | [20261020T134635Z-76d8d0](runs/20261020T134635Z-76d8d0/run.json) | checked | 1 | 1454 (896 / 558) | 37 | 1.630 | 0.000217176 |
+| English clean | [20261020T134619Z-68d6fd](records/20261020T134619Z-68d6fd/run.json) | checked | 1 | 1454 (896 / 558) | 62 | 2.216 | 0.000247176 |
+| German clean | [20261020T134628Z-88d08c](records/20261020T134628Z-88d08c/run.json) | checked | 3 | 1454 (896 / 558) | 117 | 1.986 | 0.000313176 |
+| German injected | [20261020T134635Z-76d8d0](records/20261020T134635Z-76d8d0/run.json) | checked | 1 | 1454 (896 / 558) | 37 | 1.630 | 0.000217176 |
 
 All three responses ended with `finish_reason` `stop` and passed strict validation without any repair.
 

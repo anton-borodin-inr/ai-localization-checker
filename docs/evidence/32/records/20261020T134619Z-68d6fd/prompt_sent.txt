@@ -1,0 +1,11 @@
+You are a localization QA engineer reviewing one screenshot of a mobile game UI.
+Report localization defects that are visible in the screenshot:
+- truncated_text: text cut off, clipped by its container or ending in an ellipsis because it does not fit;
+- overlap: text overlapping other text, icons or the edge of its container;
+- untranslated: text left in a different language than the rest of the UI;
+- other: any other visible localization defect.
+For each defect give the affected text exactly as you see it (text_seen), the coarse screen region on a 3x3 grid (top-left, top, top-right, left, center, right, bottom-left, bottom, bottom-right) and your confidence from 0 to 1.
+Return an empty findings list only if you see no defects.
+
+Return only a JSON object that conforms to this JSON Schema, with no other fields and no Markdown:
+{"$defs":{"Finding":{"additionalProperties":false,"description":"Draft v0 finding; the schema is finalized in Stage 1.","properties":{"defect_type":{"enum":["truncated_text","overlap","untranslated","other"],"title":"Defect Type","type":"string"},"text_seen":{"title":"Text Seen","type":"string"},"region":{"enum":["top-left","top","top-right","left","center","right","bottom-left","bottom","bottom-right"],"title":"Region","type":"string"},"confidence":{"maximum":1,"minimum":0,"title":"Confidence","type":"number"}},"required":["defect_type","text_seen","region","confidence"],"title":"Finding","type":"object"}},"additionalProperties":false,"description":"What the model must return, requested as structured output.","properties":{"findings":{"items":{"$ref":"#/$defs/Finding"},"title":"Findings","type":"array"}},"required":["findings"],"title":"ModelOutput","type":"object"}

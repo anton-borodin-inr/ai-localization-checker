@@ -1,0 +1,28 @@
+{
+  "id": "eaf04260-405c-47f5-a838-2ddd06ed1587",
+  "object": "chat.completion",
+  "created": 1792503980,
+  "model": "deepseek-flash",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\"findings\":[{\"defect_type\":\"truncated_text\",\"text_seen\":\"Wonders enabled: • Temple of Artemis (+1 Culture; +10% Food in all cities; +15% Production when constructing Archer units in this city;\",\"region\":\"bottom\",\"confidence\":0.9}]}"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1454,
+    "completion_tokens": 62,
+    "total_tokens": 1516,
+    "prompt_tokens_details": {
+      "cached_tokens": 896
+    },
+    "prompt_cache_hit_tokens": 896,
+    "prompt_cache_miss_tokens": 558
+  },
+  "system_fingerprint": "e72d3c7f663d3e1383b00b3884cb4501"
+}
