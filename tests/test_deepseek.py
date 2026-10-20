@@ -18,7 +18,11 @@ from l10n_checker.deepseek import (
     peak_cost,
 )
 from l10n_checker.small_text import PROMPT, ReadingOutput
-from l10n_checker.small_text_deepseek import execute_paid, load_context
+from l10n_checker.small_text_deepseek import (
+    diagnose_metadata,
+    execute_paid,
+    load_context,
+)
 from l10n_checker.vision import ProviderError
 
 FAKE_KEY = "unit-test-secret-not-a-real-key"
@@ -270,4 +274,75 @@ def test_only_approved_inputs_and_credentials_required_without_reading_secrets()
     with pytest.raises(ProviderError, match="Unexpected response model"):
         provider({**response(), "model": "unapproved"}).generate(
             b"png", "image/png", "json"
+        )
+
+
+def test_metadata_diagnosis_is_read_only_and_preserves_errors(tmp_path):
+    class MissingModel(Opener):
+        def open(self, request, *, timeout):
+            self.requests.append((request, timeout))
+            return io.BytesIO(b'{"data": [{"id": "text-only-model"}]}')
+
+    p = DeepSeekProvider(FAKE_KEY, opener=MissingModel())
+    record = diagnose_metadata(p, tmp_path)
+    assert record["generation_requests_sent"] == 0
+    assert record["error"]["raw"]["available_models"] == ["text-only-model"]
+    assert len(p._opener.requests) == 1
+    assert p._opener.requests[0][0].get_method() == "GET"
+    with pytest.raises(ValueError, match="already reserved"):
+        diagnose_metadata(p, tmp_path)
+    assert len(p._opener.requests) == 1
+
+
+def test_tls_verification_and_preflight_recovery_do_not_reset_sends(
+    screenshot, tmp_path
+):
+    import ssl
+    from urllib.request import HTTPSHandler
+
+    from l10n_checker.local_model import NoRedirect
+
+    p = DeepSeekProvider(FAKE_KEY)
+    handler = next(h for h in p._opener.handlers if isinstance(h, HTTPSHandler))
+    assert handler._context.verify_mode == ssl.CERT_REQUIRED
+    assert handler._context.check_hostname
+    assert any(isinstance(h, NoRedirect) for h in p._opener.handlers)
+    path = tmp_path / "issue-10-deepseek-ledger.json"
+    path.write_text(
+        json.dumps(
+            {
+                "approval_sha256": "approved",
+                "max_requests": 12,
+                "max_usd": "0.25",
+                "slots": [],
+                "discovery": [],
+                "halt_reason": "Initial model discovery failed; zero generation sends",
+            }
+        )
+    )
+    p = provider()
+    result, _, halt = execute_paid(
+        p,
+        {"slot": 1},
+        screenshot,
+        tmp_path,
+        "approved",
+        format_prompt(ReadingOutput.model_json_schema()),
+        p.settings,
+        resume_preflight=True,
+    )
+    assert result.status == "checked" and halt is None
+    ledger = json.loads(path.read_text())
+    assert ledger["preflight_recovery"]["prior_halt_reason"]
+    assert len(ledger["slots"]) == 1
+    with pytest.raises(ValueError, match="original zero-send"):
+        execute_paid(
+            p,
+            {"slot": 2},
+            screenshot,
+            tmp_path,
+            "approved",
+            "json",
+            p.settings,
+            resume_preflight=True,
         )

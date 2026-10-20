@@ -3,9 +3,12 @@
 import base64
 import json
 import platform
+import ssl
 from decimal import Decimal
 from urllib.error import HTTPError, URLError
-from urllib.request import ProxyHandler, Request, build_opener
+from urllib.request import HTTPSHandler, ProxyHandler, Request, build_opener
+
+import certifi
 
 from l10n_checker.local_model import NoRedirect
 from l10n_checker.small_text import PROMPT
@@ -70,7 +73,11 @@ class DeepSeekProvider:
         if not api_key:
             raise ValueError("DEEPSEEK_API_KEY is missing; no network request sent")
         self._key = api_key
-        self._opener = opener or build_opener(ProxyHandler({}), NoRedirect())
+        self._opener = opener or build_opener(
+            ProxyHandler({}),
+            NoRedirect(),
+            HTTPSHandler(context=ssl.create_default_context(cafile=certifi.where())),
+        )
         self.settings = {
             "endpoint": ENDPOINT + "/chat/completions",
             "temperature": 0,
@@ -135,7 +142,13 @@ class DeepSeekProvider:
         if not isinstance(rows, list) or not any(
             m.get("id") == MODEL for m in rows if isinstance(m, dict)
         ):
-            raise ValueError("Approved vision model absent from model discovery")
+            raise ProviderError(
+                "api_error",
+                "Approved vision model absent from model discovery",
+                {"available_models": [m.get("id") for m in rows if isinstance(m, dict)]}
+                if isinstance(rows, list)
+                else {"invalid_models_response": True},
+            )
         return {
             "data": [
                 {k: m[k] for k in ("id", "object", "owned_by") if k in m}

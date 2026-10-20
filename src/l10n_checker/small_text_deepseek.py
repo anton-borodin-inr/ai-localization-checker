@@ -88,8 +88,45 @@ def timestamp():
     return datetime.now(UTC).isoformat()
 
 
+def error_diagnostic(exc):
+    if isinstance(exc, ProviderError):
+        return {"kind": exc.kind, "message": exc.message, "raw": exc.raw}
+    return {"exception_type": type(exc).__name__}
+
+
+def diagnose_metadata(provider, folder):
+    """One additional read-only GET; never clears a halt or generates text."""
+    path = folder / "metadata-diagnostic.json"
+    if path.exists():
+        raise ValueError("Metadata diagnostic already reserved; do not repeat")
+    record = {
+        "method": "GET",
+        "path": "/models",
+        "at_utc": timestamp(),
+        "generation_requests_sent": 0,
+        "status": "reserved_or_interrupted",
+        "reason": "Additional read-only diagnosis after initial discovery failed; no generation retry",
+    }
+    write_json(path, record)
+    try:
+        record.update(status="completed", result=provider.models())
+    except (ProviderError, ValueError, ArithmeticError, KeyError, TypeError) as exc:
+        record.update(status="failed", error=error_diagnostic(exc))
+    write_json(path, record)
+    return record
+
+
 def execute_paid(
-    provider, request, image, runs_dir, approval_hash, prompt, settings, published=None
+    provider,
+    request,
+    image,
+    runs_dir,
+    approval_hash,
+    prompt,
+    settings,
+    published=None,
+    *,
+    resume_preflight=False,
 ):
     """Reserve before POST and retain the worst-case cost even after failure."""
     path = runs_dir / "issue-10-deepseek-ledger.json"
@@ -115,6 +152,22 @@ def execute_paid(
             raise ValueError("Cost reservations cannot be changed")
         if published and not published_reservations_present(published, ledger):
             raise ValueError("Published reservations cannot be reset")
+        if resume_preflight:
+            if (
+                ledger.get("halt_reason")
+                != "Initial model discovery failed; zero generation sends"
+                or ledger["slots"]
+                or ledger.get("preflight_recovery")
+            ):
+                raise ValueError(
+                    "Preflight recovery is limited to the original zero-send discovery failure"
+                )
+            ledger["preflight_recovery"] = {
+                "at_utc": timestamp(),
+                "prior_halt_reason": ledger.pop("halt_reason"),
+                "reason": "Correct empty Python TLS trust store using existing certifi CA bundle; no generation reservation is removed or reused",
+            }
+            write_json(path, ledger)
         if ledger.get("halt_reason") or any(
             r["requests_sent"] is None for r in ledger["slots"]
         ):
@@ -144,7 +197,14 @@ def execute_paid(
                     }
                 )
                 write_json(path, ledger)
-            except (ProviderError, ValueError, ArithmeticError, KeyError, TypeError):
+            except (
+                ProviderError,
+                ValueError,
+                ArithmeticError,
+                KeyError,
+                TypeError,
+            ) as exc:
+                ledger["discovery_error"] = error_diagnostic(exc)
                 ledger["halt_reason"] = (
                     "Initial model discovery failed; zero generation sends"
                 )
@@ -255,6 +315,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--slot", type=int, choices=range(1, 13), required=True)
     parser.add_argument("--max-requests", type=int, choices=[1], required=True)
+    parser.add_argument("--metadata-only", action="store_true")
+    parser.add_argument("--resume-preflight", action="store_true")
     args = parser.parse_args()
     folder = REPO_ROOT / "docs/evidence/10/deepseek"
     try:
@@ -262,6 +324,10 @@ def main():
             REPO_ROOT, args.slot
         )
         provider = DeepSeekProvider(os.environ.get("DEEPSEEK_API_KEY", ""))
+        if args.metadata_only:
+            record = diagnose_metadata(provider, folder)
+            print("Metadata-only diagnosis:", record["status"], "generation sends: 0")
+            return 0 if record["status"] == "completed" else 1
         settings = json.loads((folder / "request-plan.json").read_text())["settings"]
         published = folder / "ledger.json"
         result, directory, halt = execute_paid(
@@ -273,6 +339,7 @@ def main():
             prompt,
             settings,
             json.loads(published.read_text()) if published.exists() else None,
+            resume_preflight=args.resume_preflight,
         )
         write_json(
             folder / "ledger.json",
