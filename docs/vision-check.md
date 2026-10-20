@@ -1,19 +1,60 @@
 # Check one screenshot with DeepSeek
 
 `l10n-check` sends one PNG to the vision model and returns either validated
-findings (`checked`) or `not_checked` with a reason. No prompt tuning, tiling,
-metrics or matching here.
+findings (`checked`) or `not_checked` with a reason. Response readability is
+validated before findings can enter the result (D-013, D-031).
 
 ## Interface
 
-- `l10n_checker.vision` holds the draft v0 finding schema (`SCHEMA_VERSION =
-  "v0-draft"`), the detector prompt (`PROMPT_VERSION = "v0"`), `CheckResult`,
+- `l10n_checker.vision` holds response schema v1 (`SCHEMA_VERSION = "v1"`),
+  the detector prompt (`PROMPT_VERSION = "v1"`), `CheckResult`,
   the per-run request cap and the run recorder. It does not talk to any API.
 - `l10n_checker.deepseek` is the only module that talks to the DeepSeek API
   (D-034). It uses httpx.
 - A finding has `defect_type` (`truncated_text`, `overlap`, `untranslated`,
   `other`), `text_seen`, `region` on a 3×3 grid (`top-left` … `bottom-right`,
   `center`) and `confidence` in 0..1 (D-018).
+
+## Labeling and readability
+
+Prompt v1 takes its defect rules from [labeling.md](labeling.md), without
+screen-specific examples: scroll clipping is not a defect when scrolling
+reveals the full content; an ellipsis is a defect only when the full text is
+not visible elsewhere on the same screenshot; a raw key is `untranslated` and
+a broken placeholder is `other`; region uses the centre of the text's bounding
+box. The prompt also explains that readability concerns text inside the visible
+viewport, not hidden scroll content or icons. Scroll clipping alone does not
+make the visible text unreadable.
+
+Every response requires all four fields, including an explicit null when no
+readability reason is supplied:
+
+```json
+{
+  "readability": "readable",
+  "unreadable_regions": [],
+  "readability_reason": null,
+  "findings": []
+}
+```
+
+| Readability | Required regions | Result |
+|---|---|---|
+| `readable` | empty list | `checked` with the findings |
+| `partial` | at least one valid 3×3 cell | `not_checked`, no result findings |
+| `unreadable` | empty list or valid 3×3 cells | `not_checked`, no result findings |
+
+`readability_reason` is a short string or null. Wrong types, unknown values,
+missing or extra fields, and inconsistent readability/regions are rejected as
+`invalid_response`, without coercion or repair. The finding objects retain
+their D-018 fields and validation.
+
+For a valid `partial` or `unreadable` response, the reason is
+`unreadable_text: <readability>, <JSON region list>, <reason or null>`.
+The complete response, including any partial findings, remains in
+`response_raw.json` as diagnostic evidence. Those findings never enter
+`CheckResult.findings` or `result.json` findings. An empty list on an unreadable
+screen never means "no defects".
 
 ## Request settings (D-034)
 
@@ -26,8 +67,8 @@ and `.netrc` settings from the environment (`trust_env` off).
 
 JSON object mode guarantees JSON but does not enforce a schema. The detector
 prompt is therefore sent unchanged, followed by a format wrapper
-(`deepseek-json-object-v1`) that appends the `ModelOutput` JSON Schema. A change
-to the wrapper text bumps `WRAPPER_VERSION`; a change to the prompt bumps
+(`deepseek-json-object-v2`) that appends the `ModelOutput` JSON Schema. A change
+to the wrapper text or appended schema bumps `WRAPPER_VERSION`; a change to the prompt bumps
 `PROMPT_VERSION`.
 
 ## When a screen is not checked
@@ -43,6 +84,7 @@ to the wrapper text bumps `WRAPPER_VERSION`; a change to the prompt bumps
 | no choices, or empty message content | `empty_response` |
 | `finish_reason` other than `stop` (for example `length`) | `incomplete_response` |
 | content that is not valid JSON, has extra or missing fields, or breaks the schema | `invalid_response` |
+| validated `partial` or `unreadable` text | `unreadable_text: <readability>, <regions>, <reason>` |
 | the per-run request cap refuses the request | `request_cap_reached` |
 
 The response is never repaired, stripped of Markdown or trimmed to pass
@@ -65,7 +107,8 @@ Every run writes `data/runs/<run_id>/` (`run_id` is `YYYYMMDDTHHMMSSZ-<hex>`):
   the sha256 of the prompt and of the text sent, all request settings, image
   path, sha256, size in bytes and pixels, the cap and `requests_sent`, attempts
   with outcome and latency, token usage (prompt, completion, cache hit and miss)
-  and `estimated_cost`;
+  and `estimated_cost`; validated `readability`, `unreadable_regions` and
+  `readability_reason` (all null if no response validated);
 - `prompt.txt`: the detector prompt;
 - `prompt_sent.txt`: the exact text sent (prompt plus wrapper);
 - `response_raw.json`: the raw API response, or the HTTP status and body of an
@@ -97,6 +140,10 @@ key, bad image or runs folder outside `data/`).
 
 The issue #32 confirmation run (three slice screenshots, one request each) is in
 [evidence/32/report.md](evidence/32/report.md).
+The paired prompt/schema v1 confirmation is in
+[evidence/35/report.md](evidence/35/report.md), with a frozen prompt and matching
+image hashes. Three screenshots support observations only, not aggregate
+quality claims.
 
 ## Verify offline
 

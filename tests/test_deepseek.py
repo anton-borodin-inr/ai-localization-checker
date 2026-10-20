@@ -36,6 +36,18 @@ USAGE = {
 }
 
 
+def model_output(findings=None, **extra):
+    return json.dumps(
+        {
+            "readability": "readable",
+            "unreadable_regions": [],
+            "readability_reason": None,
+            "findings": [] if findings is None else findings,
+            **extra,
+        }
+    )
+
+
 def completion(content, finish_reason="stop", **extra):
     return {
         "id": "x",
@@ -85,7 +97,7 @@ def check(server, screenshot, tmp_path, max_requests=1):
 
 
 def test_success(screenshot, tmp_path):
-    server = FakeServer(completion(json.dumps({"findings": [FINDING]})))
+    server = FakeServer(completion(model_output([FINDING])))
     result, run_dir = check(server, screenshot, tmp_path)
     assert result.status == "checked"
     assert [f.model_dump() for f in result.findings] == [FINDING]
@@ -102,7 +114,7 @@ def test_success(screenshot, tmp_path):
 
 
 def test_request_payload_and_settings(screenshot, tmp_path):
-    server = FakeServer(completion('{"findings": []}'))
+    server = FakeServer(completion(model_output()))
     _, run_dir = check(server, screenshot, tmp_path)
     (request,) = server.requests
     assert request.method == "POST"
@@ -139,14 +151,14 @@ def test_wrapper_schema_is_the_model_output_schema():
     ("outcome", "reason"),
     [
         (completion("not json"), "invalid_response"),
-        (completion('```json\n{"findings": []}\n```'), "invalid_response"),
+        (completion(f"```json\n{model_output()}\n```"), "invalid_response"),
         (
-            completion(json.dumps({"findings": [{**FINDING, "note": "x"}]})),
+            completion(model_output([{**FINDING, "note": "x"}])),
             "invalid_response",
         ),
-        (completion(json.dumps({"findings": [], "extra": 1})), "invalid_response"),
+        (completion(model_output(extra=1)), "invalid_response"),
         (
-            completion(json.dumps({"findings": [{"text_seen": "x"}]})),
+            completion(model_output([{"text_seen": "x"}])),
             "invalid_response",
         ),
         (completion("{}"), "invalid_response"),
@@ -154,7 +166,7 @@ def test_wrapper_schema_is_the_model_output_schema():
         (completion(None), "empty_response"),
         ({**completion("{}"), "choices": []}, "empty_response"),
         (completion('{"findings": [', finish_reason="length"), "incomplete_response"),
-        (completion('{"findings": []}', finish_reason=None), "incomplete_response"),
+        (completion(model_output(), finish_reason=None), "incomplete_response"),
         (httpx.ReadTimeout("read timed out"), "timeout"),
         (httpx.ConnectError("connection refused"), "api_error"),
         (httpx.Response(500, text="internal"), "api_error"),
@@ -201,7 +213,7 @@ def test_http_error_has_no_usage(screenshot, tmp_path):
 
 
 def test_invalid_output_is_kept_raw_not_repaired(screenshot, tmp_path):
-    content = json.dumps({"findings": [{**FINDING, "note": "x"}]})
+    content = model_output([{**FINDING, "note": "x"}])
     _, run_dir = check(FakeServer(completion(content)), screenshot, tmp_path)
     raw = json.loads((run_dir / "response_raw.json").read_text())
     assert raw["choices"][0]["message"]["content"] == content
@@ -224,7 +236,7 @@ def test_cap_reached_sends_nothing(screenshot, tmp_path):
 
 
 def test_rate_limit_is_not_retried_with_cap_one(screenshot, tmp_path):
-    server = FakeServer(httpx.Response(429), completion('{"findings": []}'))
+    server = FakeServer(httpx.Response(429), completion(model_output()))
     result, _ = check(server, screenshot, tmp_path)
     assert result.reason.startswith("rate_limited")
     assert len(server.requests) == 1
@@ -254,7 +266,7 @@ def test_cost_unknown_without_usable_usage(usage):
 
 
 def test_cost_is_recorded(screenshot, tmp_path):
-    _, run_dir = check(FakeServer(completion('{"findings": []}')), screenshot, tmp_path)
+    _, run_dir = check(FakeServer(completion(model_output())), screenshot, tmp_path)
     run = json.loads((run_dir / "run.json").read_text())
     assert Decimal(run["estimated_cost"]["peak_usd"]) == Decimal("0.000423")
 
@@ -277,8 +289,8 @@ def test_only_the_adapter_talks_to_the_api():
 
 
 OUTCOMES = {
-    "success": completion('{"findings": []}'),
-    "invalid": completion(json.dumps({"findings": [], "x": KEY})),
+    "success": completion(model_output()),
+    "invalid": completion(model_output(x=KEY)),
     "length": completion("{", finish_reason="length"),
     "timeout": httpx.ReadTimeout(f"timed out for {KEY}"),
     "connect": httpx.ConnectError(f"refused for {KEY}"),

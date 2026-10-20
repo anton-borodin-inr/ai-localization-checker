@@ -1,6 +1,6 @@
 """Provider-agnostic vision check: one screenshot in, findings or "not checked" out.
 
-The finding schema here is a draft (v0). It is finalized in Stage 1.
+Response schema v1 adds readability to the unchanged finding objects.
 """
 
 import hashlib
@@ -16,9 +16,9 @@ from pydantic import BaseModel, ConfigDict, Field, ValidationError, model_valida
 
 from l10n_checker.capture import png_size
 
-SCHEMA_VERSION = "v0-draft"
+SCHEMA_VERSION = "v1"
 # Bump whenever PROMPT changes.
-PROMPT_VERSION = "v0"
+PROMPT_VERSION = "v1"
 
 DefectType = Literal["truncated_text", "overlap", "untranslated", "other"]
 Region = Literal[
@@ -36,20 +36,36 @@ Region = Literal[
 PROMPT = """\
 You are a localization QA engineer reviewing one screenshot of a mobile game UI.
 Report localization defects that are visible in the screenshot:
-- truncated_text: text cut off, clipped by its container or ending in an ellipsis \
-because it does not fit;
+- truncated_text: text cut off or clipped by its container; a label ending in an \
+ellipsis is truncated_text only when the full text is not visible anywhere else on the same screenshot;
 - overlap: text overlapping other text, icons or the edge of its container;
 - untranslated: text left in a different language than the rest of the UI;
 - other: any other visible localization defect.
+Apply these labeling rules:
+- Text or elements cut off at the edge of a scrollable area (a list, panel or \
+tree) are not defects when the full content becomes visible by scrolling.
+- For technical text, a raw string key or identifier shown instead of translated text is untranslated; \
+a broken placeholder (shown literally or wrongly substituted) is other.
 For each defect give the affected text exactly as you see it (text_seen), the \
 coarse screen region on a 3x3 grid (top-left, top, top-right, left, center, \
 right, bottom-left, bottom, bottom-right) and your confidence from 0 to 1.
-Return an empty findings list only if you see no defects.
+The region is the cell that contains the centre of the text's bounding box. \
+Text spanning two cells gets the cell of its centre, not where it starts.
+Also assess the readability of text inside the visible viewport, not hidden \
+scroll content or untranscribed icons. Scroll clipping alone does not make the visible text partial or unreadable.
+Return readability: readable if the visible text can be read, partial if some \
+of it cannot be read, or unreadable if the screenshot's text cannot be read.
+Return unreadable_regions as a list of the 3x3 cells: readable requires an empty \
+list; partial requires at least one region; unreadable may have an empty list.
+Return readability_reason as a short string or null. Include all three fields \
+and findings in every response. Findings from partial or unreadable responses \
+are diagnostic observations only; the screen cannot be checked.
+An empty findings list means no defects only when readability is readable.
 """
 
 
 class Finding(BaseModel):
-    """Draft v0 finding; the schema is finalized in Stage 1."""
+    """A finding with the unchanged D-018 fields."""
 
     model_config = ConfigDict(extra="forbid")
 
@@ -62,9 +78,20 @@ class Finding(BaseModel):
 class ModelOutput(BaseModel):
     """What the model must return, requested as structured output."""
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="forbid", strict=True)
 
+    readability: Literal["readable", "partial", "unreadable"]
+    unreadable_regions: list[Region]
+    readability_reason: str | None
     findings: list[Finding]
+
+    @model_validator(mode="after")
+    def _readability_is_consistent(self):
+        if self.readability == "readable" and self.unreadable_regions:
+            raise ValueError("readable requires empty unreadable_regions")
+        if self.readability == "partial" and not self.unreadable_regions:
+            raise ValueError("partial requires at least one unreadable region")
+        return self
 
 
 class CheckResult(BaseModel):
@@ -217,6 +244,7 @@ def run_check(
     attempts: list[dict] = []
     response: ProviderResponse | None = None
     raw: dict | None = None
+    output: ModelOutput | None = None
     findings: list[Finding] = []
     reason: str | None = None
     try:
@@ -224,7 +252,16 @@ def run_check(
         raw = response.raw
         if not response.text.strip():
             raise ProviderError("empty_response", "the response has no text", raw)
-        findings = ModelOutput.model_validate_json(response.text).findings
+        output = ModelOutput.model_validate_json(response.text)
+        if output.readability == "readable":
+            findings = output.findings
+        else:
+            detail = output.readability_reason
+            reason = (
+                f"unreadable_text: {output.readability}, "
+                f"{json.dumps(output.unreadable_regions)}, "
+                f"{detail if detail is not None else 'null'}"
+            )
     except BudgetExceeded as exc:
         reason = f"request_cap_reached: {exc}"
     except ProviderError as exc:
@@ -246,6 +283,9 @@ def run_check(
         "sdk_version": provider.sdk_version,
         "system_fingerprint": response.system_fingerprint if response else None,
         "schema_version": SCHEMA_VERSION,
+        "readability": output.readability if output else None,
+        "unreadable_regions": output.unreadable_regions if output else None,
+        "readability_reason": output.readability_reason if output else None,
         "prompt_version": PROMPT_VERSION,
         "prompt_sha256": _sha256(PROMPT.encode()),
         "wrapper_version": provider.wrapper_version,

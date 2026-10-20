@@ -1,0 +1,28 @@
+{
+  "id": "62b16df4-233d-4781-be9d-fbd8614d5d39",
+  "object": "chat.completion",
+  "created": 1792507680,
+  "model": "deepseek-flash",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\"readability\":\"readable\",\"unreadable_regions\":[],\"readability_reason\":null,\"findings\":[{\"defect_type\":\"truncated_text\",\"text_seen\":\"Bergbau und Erzgew...\",\"region\":\"left\",\"confidence\":0.9}]}"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1836,
+    "completion_tokens": 58,
+    "total_tokens": 1894,
+    "prompt_tokens_details": {
+      "cached_tokens": 896
+    },
+    "prompt_cache_hit_tokens": 896,
+    "prompt_cache_miss_tokens": 940
+  },
+  "system_fingerprint": "e72d3c7f663d3e1383b00b3884cb4501"
+}

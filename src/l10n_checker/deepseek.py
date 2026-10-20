@@ -15,8 +15,8 @@ DEFAULT_TIMEOUT_S = 120
 
 # JSON object mode does not enforce a schema, so the schema goes into the prompt
 # and the response is still validated strictly by ModelOutput. Bump the version
-# whenever WRAPPER changes.
-WRAPPER_VERSION = "deepseek-json-object-v1"
+# whenever WRAPPER or the appended schema changes.
+WRAPPER_VERSION = "deepseek-json-object-v2"
 WRAPPER = (
     "\nReturn only a JSON object that conforms to this JSON Schema, "
     "with no other fields and no Markdown:\n"

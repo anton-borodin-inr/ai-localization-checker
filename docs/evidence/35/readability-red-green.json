@@ -1,0 +1,174 @@
+{
+  "base_ref": "dbb56648c0717e06cf0d58725e5d28ab21956186",
+  "red_test_commit": "0d53c9a",
+  "test_file_sha256": "1c172bc9c815dc3ba62cb28e2ab9e71e8de193f57a607cb4edf7038b8b3524d4",
+  "before": {
+    "command": "uv run pytest tests/test_readability.py -vv --junitxml=../readability-red.xml",
+    "exit_code": 1,
+    "failed": 26,
+    "production_diff_from_base": "empty"
+  },
+  "after": {
+    "command": "uv run pytest tests/test_readability.py -vv --junitxml=../readability-green.xml",
+    "exit_code": 0,
+    "passed": 26
+  },
+  "cases": [
+    {
+      "node_id": "tests/test_readability.py::test_readable_is_checked[clean]",
+      "before": "failed",
+      "before_message": "AssertionError: assert 'not_checked' == 'checked'\n  \n  - checked\n  + not_checked\n  ? ++++",
+      "after": "passed"
+    },
+    {
+      "node_id": "tests/test_readability.py::test_readable_is_checked[finding]",
+      "before": "failed",
+      "before_message": "AssertionError: assert 'not_checked' == 'checked'\n  \n  - checked\n  + not_checked\n  ? ++++",
+      "after": "passed"
+    },
+    {
+      "node_id": "tests/test_readability.py::test_unreadable_text_is_not_checked[partial]",
+      "before": "failed",
+      "before_message": "assert 'invalid_response: readability: Extra inputs are not permitted; unreadable_regions: Extra inputs are not permitted; readability_reason: Extra inputs are not permitted' == 'unreadable_text: partial, [\"top\"], Small visible text cannot be read'\n  \n  - unreadable_text: partial, [\"top\"], Small visible text cannot be read\n  + invalid_response: readability: Extra inputs are not permitted; unreadable_regions: Extra inputs are not permitted; readability_reason: Extra inputs are not permitted",
+      "after": "passed"
+    },
+    {
+      "node_id": "tests/test_readability.py::test_unreadable_text_is_not_checked[unreadable-no-regions]",
+      "before": "failed",
+      "before_message": "AssertionError: assert 'invalid_response: readability: Extra inputs are not permitted; unreadable_regions: Extra inputs are not permitted; readability_reason: Extra inputs are not permitted' == 'unreadable_text: unreadable, [], Text cannot be read'\n  \n  - unreadable_text: unreadable, [], Text cannot be read\n  + invalid_response: readability: Extra inputs are not permitted; unreadable_regions: Extra inputs are not permitted; readability_reason: Extra inputs are not permitted",
+      "after": "passed"
+    },
+    {
+      "node_id": "tests/test_readability.py::test_unreadable_text_is_not_checked[unreadable-with-region]",
+      "before": "failed",
+      "before_message": "assert 'invalid_response: readability: Extra inputs are not permitted; unreadable_regions: Extra inputs are not permitted; readability_reason: Extra inputs are not permitted' == 'unreadable_text: unreadable, [\"left\"], null'\n  \n  - unreadable_text: unreadable, [\"left\"], null\n  + invalid_response: readability: Extra inputs are not permitted; unreadable_regions: Extra inputs are not permitted; readability_reason: Extra inputs are not permitted",
+      "after": "passed"
+    },
+    {
+      "node_id": "tests/test_readability.py::test_partial_observations_are_diagnostics_only[partial]",
+      "before": "failed",
+      "before_message": "AssertionError: assert False\n +  where False = <built-in method startswith of str object at 0x10c363d20>('unreadable_text: partial,')\n +    where <built-in method startswith of str object at 0x10c363d20> = 'invalid_response: readability: Extra inputs are not permitted; unreadable_regions: Extra inputs are not permitted; readability_reason: Extra inputs are not permitted'.startswith\n +      where 'invalid_response: readability: Extra inputs are not permitted; unreadable_regions: Extra inputs are not permitted; readability_reason: Extra inputs are not permitted' = CheckResult(status='not_checked', findings=[], reason='invalid_response: readability: Extra inputs are not permitted; unreadable_regions: Extra inputs are not permitted; readability_reason: Extra inputs are not permitted', metadata={'run_id': '20261020T144201Z-944df1', 'provider': 'deepseek', 'model': 'deepseek-flash', 'model_version': 'deepseek-flash', 'sdk_version': 'httpx-0.28.1', 'system_fingerprint': None, 'schema_version': 'v0-draft', 'prompt_version': 'v0', 'prompt_sha256': '3c8284cf3720e48a9cc52c7b8294fd98182e300fb2e5243ede77995f7bb860e6', 'wrapper_version': 'deepseek-json-object-v1', 'sent_prompt_sha256': 'd2c552a1f58ef47b7e0a80792f47a7ca89b136b9abc3e95b693267ac05a92790', 'settings': {'endpoint': 'https://api.deepseek.com/chat/completions', 'temperature': 0, 'max_tokens': 4096, 'stream': False, 'thinking': {'type': 'disabled'}, 'response_format': {'type': 'json_object'}, 'image_detail': 'original', 'timeout_s': 120, 'transport_retries': 0, 'follow_redirects': False, 'trust_env': False}, 'image': {'path': '/private/var/folders/ry/v2zcn07s40xg1yxvs2mqf4200000gn/T/pytest-of-antonborodin/pytest-114/test_partial_observations_are_0/main-menu__en__4x2__original__1.png', 'sha256': 'b78a28269a30bb868511ae366143b5b3e44ca9cdcdf49567b1e2702681f806c1', 'bytes': 73, 'width': 4, 'height': 2, 'mime_type': 'image/png'}, 'max_requests': 1, 'requests_sent': 1, 'attempts': [{'outcome': 'ok', 'latency_s': 0.0}], 'usage': None, 'estimated_cost': None}).reason",
+      "after": "passed"
+    },
+    {
+      "node_id": "tests/test_readability.py::test_partial_observations_are_diagnostics_only[unreadable]",
+      "before": "failed",
+      "before_message": "AssertionError: assert False\n +  where False = <built-in method startswith of str object at 0x10c3e2c10>('unreadable_text: unreadable,')\n +    where <built-in method startswith of str object at 0x10c3e2c10> = 'invalid_response: readability: Extra inputs are not permitted; unreadable_regions: Extra inputs are not permitted; readability_reason: Extra inputs are not permitted'.startswith\n +      where 'invalid_response: readability: Extra inputs are not permitted; unreadable_regions: Extra inputs are not permitted; readability_reason: Extra inputs are not permitted' = CheckResult(status='not_checked', findings=[], reason='invalid_response: readability: Extra inputs are not permitted; unreadable_regions: Extra inputs are not permitted; readability_reason: Extra inputs are not permitted', metadata={'run_id': '20261020T144201Z-ba8099', 'provider': 'deepseek', 'model': 'deepseek-flash', 'model_version': 'deepseek-flash', 'sdk_version': 'httpx-0.28.1', 'system_fingerprint': None, 'schema_version': 'v0-draft', 'prompt_version': 'v0', 'prompt_sha256': '3c8284cf3720e48a9cc52c7b8294fd98182e300fb2e5243ede77995f7bb860e6', 'wrapper_version': 'deepseek-json-object-v1', 'sent_prompt_sha256': 'd2c552a1f58ef47b7e0a80792f47a7ca89b136b9abc3e95b693267ac05a92790', 'settings': {'endpoint': 'https://api.deepseek.com/chat/completions', 'temperature': 0, 'max_tokens': 4096, 'stream': False, 'thinking': {'type': 'disabled'}, 'response_format': {'type': 'json_object'}, 'image_detail': 'original', 'timeout_s': 120, 'transport_retries': 0, 'follow_redirects': False, 'trust_env': False}, 'image': {'path': '/private/var/folders/ry/v2zcn07s40xg1yxvs2mqf4200000gn/T/pytest-of-antonborodin/pytest-114/test_partial_observations_are_1/main-menu__en__4x2__original__1.png', 'sha256': 'b78a28269a30bb868511ae366143b5b3e44ca9cdcdf49567b1e2702681f806c1', 'bytes': 73, 'width': 4, 'height': 2, 'mime_type': 'image/png'}, 'max_requests': 1, 'requests_sent': 1, 'attempts': [{'outcome': 'ok', 'latency_s': 0.0}], 'usage': None, 'estimated_cost': None}).reason",
+      "after": "passed"
+    },
+    {
+      "node_id": "tests/test_readability.py::test_readability_consistency_is_validated[readable-with-regions]",
+      "before": "failed",
+      "before_message": "assert False\n +  where False = any(<generator object test_readability_consistency_is_validated.<locals>.<genexpr> at 0x10c32ea40>)",
+      "after": "passed"
+    },
+    {
+      "node_id": "tests/test_readability.py::test_readability_consistency_is_validated[partial-without-regions]",
+      "before": "failed",
+      "before_message": "assert False\n +  where False = any(<generator object test_readability_consistency_is_validated.<locals>.<genexpr> at 0x10c32eea0>)",
+      "after": "passed"
+    },
+    {
+      "node_id": "tests/test_readability.py::test_readability_fields_are_required[readability]",
+      "before": "failed",
+      "before_message": "assert False\n +  where False = any(<generator object test_readability_fields_are_required.<locals>.<genexpr> at 0x10c32f060>)",
+      "after": "passed"
+    },
+    {
+      "node_id": "tests/test_readability.py::test_readability_fields_are_required[unreadable_regions]",
+      "before": "failed",
+      "before_message": "assert False\n +  where False = any(<generator object test_readability_fields_are_required.<locals>.<genexpr> at 0x10c32ef80>)",
+      "after": "passed"
+    },
+    {
+      "node_id": "tests/test_readability.py::test_readability_fields_are_required[readability_reason]",
+      "before": "failed",
+      "before_message": "assert False\n +  where False = any(<generator object test_readability_fields_are_required.<locals>.<genexpr> at 0x10c32f5a0>)",
+      "after": "passed"
+    },
+    {
+      "node_id": "tests/test_readability.py::test_readability_values_are_strict[unknown-readability]",
+      "before": "failed",
+      "before_message": "assert False\n +  where False = any(<generator object test_readability_values_are_strict.<locals>.<genexpr> at 0x10c32f680>)",
+      "after": "passed"
+    },
+    {
+      "node_id": "tests/test_readability.py::test_readability_values_are_strict[null-readability]",
+      "before": "failed",
+      "before_message": "assert False\n +  where False = any(<generator object test_readability_values_are_strict.<locals>.<genexpr> at 0x10c32fd80>)",
+      "after": "passed"
+    },
+    {
+      "node_id": "tests/test_readability.py::test_readability_values_are_strict[null-regions]",
+      "before": "failed",
+      "before_message": "assert False\n +  where False = any(<generator object test_readability_values_are_strict.<locals>.<genexpr> at 0x10c32f3e0>)",
+      "after": "passed"
+    },
+    {
+      "node_id": "tests/test_readability.py::test_readability_values_are_strict[bad-cell]",
+      "before": "failed",
+      "before_message": "assert False\n +  where False = any(<generator object test_readability_values_are_strict.<locals>.<genexpr> at 0x10c41c580>)",
+      "after": "passed"
+    },
+    {
+      "node_id": "tests/test_readability.py::test_readability_values_are_strict[numeric-reason]",
+      "before": "failed",
+      "before_message": "assert False\n +  where False = any(<generator object test_readability_values_are_strict.<locals>.<genexpr> at 0x10c41c740>)",
+      "after": "passed"
+    },
+    {
+      "node_id": "tests/test_readability.py::test_prompt_carries_labeling_and_readability_rules[scroll]",
+      "before": "failed",
+      "before_message": "AssertionError: assert 'when the full content becomes visible by scrolling' in 'You are a localization QA engineer reviewing one screenshot of a mobile game UI.\\nReport localization defects that are visible in the screenshot:\\n- truncated_text: text cut off, clipped by its container or ending in an ellipsis because it does not fit;\\n- overlap: text overlapping other text, icons or the edge of its container;\\n- untranslated: text left in a different language than the rest of the UI;\\n- other: any other visible localization defect.\\nFor each defect give the affected text exactly as you see it (text_seen), the coarse screen region on a 3x3 grid (top-left, top, top-right, left, center, right, bottom-left, bottom, bottom-right) and your confidence from 0 to 1.\\nReturn an empty findings list only if you see no defects.\\n'",
+      "after": "passed"
+    },
+    {
+      "node_id": "tests/test_readability.py::test_prompt_carries_labeling_and_readability_rules[ellipsis]",
+      "before": "failed",
+      "before_message": "AssertionError: assert 'when the full text is not visible anywhere else on the same screenshot' in 'You are a localization QA engineer reviewing one screenshot of a mobile game UI.\\nReport localization defects that are visible in the screenshot:\\n- truncated_text: text cut off, clipped by its container or ending in an ellipsis because it does not fit;\\n- overlap: text overlapping other text, icons or the edge of its container;\\n- untranslated: text left in a different language than the rest of the UI;\\n- other: any other visible localization defect.\\nFor each defect give the affected text exactly as you see it (text_seen), the coarse screen region on a 3x3 grid (top-left, top, top-right, left, center, right, bottom-left, bottom, bottom-right) and your confidence from 0 to 1.\\nReturn an empty findings list only if you see no defects.\\n'",
+      "after": "passed"
+    },
+    {
+      "node_id": "tests/test_readability.py::test_prompt_carries_labeling_and_readability_rules[raw-key]",
+      "before": "failed",
+      "before_message": "AssertionError: assert 'a raw string key or identifier shown instead of translated text is untranslated' in 'You are a localization QA engineer reviewing one screenshot of a mobile game UI.\\nReport localization defects that are visible in the screenshot:\\n- truncated_text: text cut off, clipped by its container or ending in an ellipsis because it does not fit;\\n- overlap: text overlapping other text, icons or the edge of its container;\\n- untranslated: text left in a different language than the rest of the UI;\\n- other: any other visible localization defect.\\nFor each defect give the affected text exactly as you see it (text_seen), the coarse screen region on a 3x3 grid (top-left, top, top-right, left, center, right, bottom-left, bottom, bottom-right) and your confidence from 0 to 1.\\nReturn an empty findings list only if you see no defects.\\n'",
+      "after": "passed"
+    },
+    {
+      "node_id": "tests/test_readability.py::test_prompt_carries_labeling_and_readability_rules[placeholder]",
+      "before": "failed",
+      "before_message": "AssertionError: assert 'a broken placeholder (shown literally or wrongly substituted) is other' in 'You are a localization QA engineer reviewing one screenshot of a mobile game UI.\\nReport localization defects that are visible in the screenshot:\\n- truncated_text: text cut off, clipped by its container or ending in an ellipsis because it does not fit;\\n- overlap: text overlapping other text, icons or the edge of its container;\\n- untranslated: text left in a different language than the rest of the UI;\\n- other: any other visible localization defect.\\nFor each defect give the affected text exactly as you see it (text_seen), the coarse screen region on a 3x3 grid (top-left, top, top-right, left, center, right, bottom-left, bottom, bottom-right) and your confidence from 0 to 1.\\nReturn an empty findings list only if you see no defects.\\n'",
+      "after": "passed"
+    },
+    {
+      "node_id": "tests/test_readability.py::test_prompt_carries_labeling_and_readability_rules[region-centre]",
+      "before": "failed",
+      "before_message": "assert \"contains the centre of the text's bounding box\" in 'You are a localization QA engineer reviewing one screenshot of a mobile game UI.\\nReport localization defects that are visible in the screenshot:\\n- truncated_text: text cut off, clipped by its container or ending in an ellipsis because it does not fit;\\n- overlap: text overlapping other text, icons or the edge of its container;\\n- untranslated: text left in a different language than the rest of the UI;\\n- other: any other visible localization defect.\\nFor each defect give the affected text exactly as you see it (text_seen), the coarse screen region on a 3x3 grid (top-left, top, top-right, left, center, right, bottom-left, bottom, bottom-right) and your confidence from 0 to 1.\\nReturn an empty findings list only if you see no defects.\\n'",
+      "after": "passed"
+    },
+    {
+      "node_id": "tests/test_readability.py::test_prompt_carries_labeling_and_readability_rules[visible-readability]",
+      "before": "failed",
+      "before_message": "AssertionError: assert 'Scroll clipping alone does not make the visible text partial or unreadable' in 'You are a localization QA engineer reviewing one screenshot of a mobile game UI.\\nReport localization defects that are visible in the screenshot:\\n- truncated_text: text cut off, clipped by its container or ending in an ellipsis because it does not fit;\\n- overlap: text overlapping other text, icons or the edge of its container;\\n- untranslated: text left in a different language than the rest of the UI;\\n- other: any other visible localization defect.\\nFor each defect give the affected text exactly as you see it (text_seen), the coarse screen region on a 3x3 grid (top-left, top, top-right, left, center, right, bottom-left, bottom, bottom-right) and your confidence from 0 to 1.\\nReturn an empty findings list only if you see no defects.\\n'",
+      "after": "passed"
+    },
+    {
+      "node_id": "tests/test_readability.py::test_v1_versions_are_recordable[prompt]",
+      "before": "failed",
+      "before_message": "AssertionError: assert 'v0' == 'v1'\n  \n  - v1\n  + v0",
+      "after": "passed"
+    },
+    {
+      "node_id": "tests/test_readability.py::test_v1_versions_are_recordable[schema]",
+      "before": "failed",
+      "before_message": "AssertionError: assert 'v0-draft' == 'v1'\n  \n  - v1\n  + v0-draft",
+      "after": "passed"
+    },
+    {
+      "node_id": "tests/test_readability.py::test_v1_versions_are_recordable[wrapper]",
+      "before": "failed",
+      "before_message": "AssertionError: assert 'deepseek-json-object-v1' == 'deepseek-json-object-v2'\n  \n  - deepseek-json-object-v2\n  ?                       ^\n  + deepseek-json-object-v1\n  ?                       ^",
+      "after": "passed"
+    }
+  ]
+}
