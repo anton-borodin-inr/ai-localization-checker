@@ -1,6 +1,7 @@
 """Type-free, per-screen detection matching (D-026). No provider calls or I/O."""
 
 import math
+import re
 import unicodedata
 from collections import Counter
 from collections.abc import Sequence
@@ -116,17 +117,31 @@ def _label_score(finding: str, label: Label, config: MatchingConfig) -> Fraction
     return max(scores) if scores else None
 
 
-def _text_is_present(text: str, screen_texts: Sequence[str], config: MatchingConfig):
+def _text_is_present(
+    text: str,
+    screen_texts: Sequence[str],
+    labels: Sequence[Label],
+    config: MatchingConfig,
+) -> bool:
+    """Whether an unassigned finding names real text (PR #27, rule 3).
+
+    Presence is deliberately weaker than identification (golden case 08c), but
+    a fragment must be whole words: the finding's body, without a terminal
+    ellipsis, must sit at word boundaries inside a visible text. Near-exact
+    similarity to a visible text also counts, and so does identifying any
+    label's expected text, so such a finding is never a hallucination.
+    """
     text = normalize_text(text)
     if not text:
         return False
-    # Presence is deliberately weaker than identification: a literal fragment
-    # can be real text without identifying a label (golden case 08c).
-    fragment = text.removesuffix("...").rstrip()
+    body = text.removesuffix("...").rstrip()
+    words = re.compile(rf"(?<!\w){re.escape(body)}(?!\w)") if body else None
     return any(
-        (bool(fragment) and fragment in normalize_text(visible))
+        (words is not None and words.search(normalize_text(visible)) is not None)
         or text_similarity(text, visible) >= config.text_threshold
         for visible in screen_texts
+    ) or any(
+        _match_score(text, label.text_expected, config) is not None for label in labels
     )
 
 
@@ -234,7 +249,7 @@ def match_screen(
     hallucinations = tuple(
         index
         for index in unmatched
-        if not _text_is_present(findings[index].text_seen, screen_texts, config)
+        if not _text_is_present(findings[index].text_seen, screen_texts, labels, config)
     )
     return ScreenMatches(
         status,

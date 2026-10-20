@@ -199,3 +199,42 @@ def test_equal_assignments_follow_input_order():
         ["Spielstand lade", "Spielstand ladx"],
     )
     assert pairs(result) == [(0, 0), (1, 1)]
+
+
+def test_single_letter_finding_is_a_hallucination():
+    result = match_screen([label()], [finding("e")], ["Bergbau und Erzgew..."])
+    assert result.unmatched_finding_indices == (0,)
+    assert result.hallucination_indices == (0,)
+
+
+@pytest.mark.parametrize(
+    "text",
+    ["Bergbau", "Bergbau und", "und Erzgew...", "Erzgew", "Optionen"],
+)
+def test_whole_words_of_visible_text_are_present(text):
+    result = match_screen(
+        [label()], [finding(text)], ["Bergbau und Erzgew...", "(Optionen):"]
+    )
+    assert result.unmatched_finding_indices == (0,)
+    assert not result.hallucination_indices
+
+
+@pytest.mark.parametrize("text", ["erg", "Bergba", "und Erz", "ptionen"])
+def test_partial_words_are_not_present(text):
+    result = match_screen(
+        [label()], [finding(text)], ["Bergbau und Erzgew...", "(Optionen):"]
+    )
+    assert result.hallucination_indices == (0,)
+
+
+def test_region_blocked_expected_text_is_not_a_hallucination():
+    # Repeated visible text needs the same region, so the finding is unassigned,
+    # but it names the label's expected text.
+    text = "Alpha beta gam..."
+    result = match_screen(
+        [label(text, "center")],
+        [finding("Alpha beta gamma delta", "right")],
+        [text, text],
+    )
+    assert result.unmatched_finding_indices == (0,)
+    assert not result.hallucination_indices
