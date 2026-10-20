@@ -348,7 +348,8 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 ## D-036 — Response schema v1 and labeling prompt v1
 
 - **Date:** 2026-10-20
-- **Status:** Proposed
+- **Status:** Accepted
+- **Accepted by:** Anton
 - **Decision:** Implement the D-031 acceptance recorded in issue #35: require `readability` (`readable`, `partial`, `unreadable`), `unreadable_regions` (3×3 cells) and `readability_reason` (string or null) alongside the unchanged D-018 finding objects. Enforce empty regions for `readable` and at least one for `partial`; `unreadable` allows none. Only `readable` produces checked findings; the other two produce `not_checked` with `unreadable_text`, retaining observations only in the raw diagnostic response. Prompt v1 expresses D-023/D-025/D-027 from `labeling.md`, plus the visible-viewport readability contract; response schema is `v1`, and the DeepSeek format wrapper is `deepseek-json-object-v2`.
 - **Why:** Issue #35 explicitly authorizes the schema extension and labeling rules before confirmation calls. An empty defect list cannot establish that the screen was readable. The old detector prompt also lacked the accepted defect boundaries.
 - **Alternatives considered:** Infer readability from findings (cannot distinguish a clean screen from unreadable text); expose partial findings as checked output (violates D-013); repair missing fields (hides an invalid model response); adjust the prompt after confirmation results (would tune it to the slice).
