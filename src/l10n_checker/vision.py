@@ -88,13 +88,24 @@ ErrorKind = Literal[
 
 
 class ProviderError(Exception):
-    """A provider call that produced no usable response."""
+    """A provider call that produced no usable response.
 
-    def __init__(self, kind: ErrorKind, message: str, raw: dict | None = None):
+    `response` carries what the API did return for a rejected answer (model,
+    usage), so the run record keeps it; it is never used as findings.
+    """
+
+    def __init__(
+        self,
+        kind: ErrorKind,
+        message: str,
+        raw: dict | None = None,
+        response: "ProviderResponse | None" = None,
+    ):
         super().__init__(f"{kind}: {message}")
         self.kind = kind
         self.message = message
         self.raw = raw
+        self.response = response
 
 
 @dataclass
@@ -219,6 +230,7 @@ def run_check(
     except ProviderError as exc:
         reason = f"{exc.kind}: {exc.message}"
         raw = exc.raw
+        response = exc.response or response
     except ValidationError as exc:
         errors = "; ".join(
             f"{'.'.join(map(str, e['loc'])) or 'response'}: {e['msg']}"

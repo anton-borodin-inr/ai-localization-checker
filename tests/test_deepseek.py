@@ -172,6 +172,34 @@ def test_failures_are_not_checked(screenshot, tmp_path, outcome, reason):
     assert json.loads((run_dir / "run.json").read_text())["requests_sent"] == 1
 
 
+@pytest.mark.parametrize(
+    ("outcome", "reason"),
+    [
+        (completion('{"findings": [', finish_reason="length"), "incomplete_response"),
+        (completion(""), "empty_response"),
+        (completion(None), "empty_response"),
+        ({**completion("{}"), "choices": []}, "empty_response"),
+        (completion("not json"), "invalid_response"),
+    ],
+)
+def test_rejected_response_keeps_usage_and_cost(screenshot, tmp_path, outcome, reason):
+    result, run_dir = check(FakeServer(outcome), screenshot, tmp_path)
+    assert result.status == "not_checked"
+    assert result.findings == []
+    assert result.reason.startswith(reason)
+    run = json.loads((run_dir / "run.json").read_text())
+    assert run["usage"] == USAGE
+    assert Decimal(run["estimated_cost"]["peak_usd"]) == Decimal("0.000423")
+    assert run["model_version"] == MODEL
+    assert run["system_fingerprint"] == "fp-1"
+
+
+def test_http_error_has_no_usage(screenshot, tmp_path):
+    _, run_dir = check(FakeServer(httpx.Response(500)), screenshot, tmp_path)
+    run = json.loads((run_dir / "run.json").read_text())
+    assert run["usage"] is None and run["estimated_cost"] is None
+
+
 def test_invalid_output_is_kept_raw_not_repaired(screenshot, tmp_path):
     content = json.dumps({"findings": [{**FINDING, "note": "x"}]})
     _, run_dir = check(FakeServer(completion(content)), screenshot, tmp_path)

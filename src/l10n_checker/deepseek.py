@@ -163,21 +163,29 @@ class DeepSeekProvider:
 
     @staticmethod
     def _parse(raw: dict) -> ProviderResponse:
-        choices = raw.get("choices")
-        if not isinstance(choices, list) or not choices:
-            raise ProviderError("empty_response", "no choices", raw)
-        choice = choices[0] if isinstance(choices[0], dict) else {}
-        finish = choice.get("finish_reason")
-        if finish != "stop":
-            raise ProviderError("incomplete_response", f"finish_reason={finish}", raw)
-        message = choice.get("message")
-        content = message.get("content") if isinstance(message, dict) else None
-        if not isinstance(content, str) or not content.strip():
-            raise ProviderError("empty_response", "the response has no text", raw)
-        return ProviderResponse(
-            text=content,
+        # Model and usage are kept even when the answer is rejected below, so
+        # the run record still accounts for the tokens that were billed.
+        response = ProviderResponse(
+            text="",
             raw=raw,
             model_version=raw.get("model"),
             usage=raw.get("usage"),
             system_fingerprint=raw.get("system_fingerprint"),
         )
+
+        def reject(kind, message):
+            return ProviderError(kind, message, raw, response=response)
+
+        choices = raw.get("choices")
+        if not isinstance(choices, list) or not choices:
+            raise reject("empty_response", "no choices")
+        choice = choices[0] if isinstance(choices[0], dict) else {}
+        finish = choice.get("finish_reason")
+        if finish != "stop":
+            raise reject("incomplete_response", f"finish_reason={finish}")
+        message = choice.get("message")
+        content = message.get("content") if isinstance(message, dict) else None
+        if not isinstance(content, str) or not content.strip():
+            raise reject("empty_response", "the response has no text")
+        response.text = content
+        return response
