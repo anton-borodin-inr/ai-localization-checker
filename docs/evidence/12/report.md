@@ -184,6 +184,79 @@ TP/FP status: that requires the D-026 matcher owned by issue #13.
 
 [All slot decisions](records/20261019T155118Z-659d65/diagnostics.json), [raw OCR](records/20261019T155118Z-659d65/ocr.tsv), [used source entries](records/20261019T155118Z-659d65/source-entries.json).
 
+### Every finding in the `baseline-v0.1` records (PR #28 review)
+
+Re-run on 2026-10-20 at code commit `5265b67` (rules from `9c6c389`), same command,
+screenshots, manifest, inventory and fork commits as the v0 runs; offline, no provider
+call, labels not read. Byte-for-byte checks against the v0 records: `ocr.tsv`,
+`source-entries.json` and `diagnostics.json` are identical; every non-missing finding is
+identical; each missing finding differs only in `text_seen`, which now carries the
+expected string. Missing-rule rows show the rule in bold and are listed by index in
+`missing_rule_findings`. These rows are not observed text; the D-026 matcher decides
+TP/FP against human labels, which this report does not open.
+
+#### `tech-picker__de__2400x1080__clean__1271001.png` ([20261020T122145Z-8ae059](records/20261020T122145Z-8ae059/result.json))
+
+`missing_rule_findings`: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+
+| # | Slot | Expected text | Rule | text_seen | Region | Confidence |
+|---:|---|---|---|---|---|---:|
+| 0 | writing | Schrift | **missing** | Schrift | top | 0.500000 |
+| 1 | agriculture | Landwirtschaft | **missing** | Landwirtschaft | top-left | 0.500000 |
+| 2 | animal-husbandry | Tierhaltung | **missing** | Tierhaltung | top | 0.500000 |
+| 3 | archery | Bogenschießen | **missing** | Bogenschießen | center | 0.500000 |
+| 4 | mining | Bergbau | **missing** | Bergbau | center | 0.500000 |
+| 5 | masonry | Mauerarbeiten | **missing** | Mauerarbeiten | center | 0.500000 |
+| 6 | bronze-working | Bronzebearbeitung | **missing** | Bronzebearbeitung | bottom | 0.500000 |
+| 7 | horseback-riding | Reiten | **missing** | Reiten | top-right | 0.500000 |
+| 8 | research | Bogenschießen erforschen | **missing** | Bogenschießen erforschen | bottom-right | 0.500000 |
+| 9 | archer | Bogenschütze | **missing** | Bogenschütze | bottom | 0.500000 |
+| 10 | wonder-name | Tempel der Artemis | **missing** | Tempel der Artemis | bottom | 0.500000 |
+| 11 | wonder-culture | Kultur | **missing** | Kultur | bottom | 0.500000 |
+| 12 | wonder-food | +10% Nahrung in allen Städten | **missing** | +10% Nahrung in allen Städten | bottom | 0.500000 |
+| 13 | wonder-archery-production | +15% Produktion beim Bau von Bogenschießen Einheiten in dieser Stadt | **missing** | +15% Produktion beim Bau von Bogenschießen Einheiten in dieser Stadt | bottom | 0.500000 |
+| 14 | wonder-ranged-production | +15% Produktion beim Bau von Schießpulver-Fernkampf Einheiten in dieser Stadt | **missing** | +15% Produktion beim Bau von Schießpulver-Fernkampf Einheiten in dieser Stadt | bottom | 0.500000 |
+
+#### `tech-picker__de__2400x1080__injected__1271002.png` ([20261020T122146Z-1eacd3](records/20261020T122146Z-1eacd3/result.json))
+
+`missing_rule_findings`: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+
+| # | Slot | Expected text | Rule | text_seen | Region | Confidence |
+|---:|---|---|---|---|---|---:|
+| 0 | writing | Schrift | **missing** | Schrift | top | 0.500000 |
+| 1 | agriculture | Landwirtschaft | **missing** | Landwirtschaft | top-left | 0.500000 |
+| 2 | animal-husbandry | Tierhaltung | **missing** | Tierhaltung | top | 0.500000 |
+| 3 | archery | Bogenschießen | **missing** | Bogenschießen | center | 0.500000 |
+| 4 | mining | Bergbau und Erzgewinnung | **missing** | Bergbau und Erzgewinnung | center | 0.500000 |
+| 5 | research | Bogenschießen erforschen | **missing** | Bogenschießen erforschen | bottom-right | 0.500000 |
+| 6 | archer | Bogenschütze | **missing** | Bogenschütze | bottom | 0.500000 |
+| 7 | wonder-name | Tempel der Artemis | **missing** | Tempel der Artemis | bottom | 0.500000 |
+| 8 | wonder-culture | Kultur | **missing** | Kultur | bottom | 0.500000 |
+| 9 | wonder-food | +10% Nahrung in allen Städten | **missing** | +10% Nahrung in allen Städten | bottom | 0.500000 |
+| 10 | wonder-archery-production | +15% Produktion beim Bau von Bogenschießen Einheiten in dieser Stadt | **missing** | +15% Produktion beim Bau von Bogenschießen Einheiten in dieser Stadt | bottom | 0.500000 |
+| 11 | wonder-ranged-production | +15% Produktion beim Bau von Schießpulver-Fernkampf Einheiten in dieser Stadt | **missing** | +15% Produktion beim Bau von Schießpulver-Fernkampf Einheiten in dieser Stadt | bottom | 0.500000 |
+
+#### `tech-picker__en__2400x1080__clean__1271001.png` ([20261020T122147Z-9f2ef6](records/20261020T122147Z-9f2ef6/result.json))
+
+`missing_rule_findings`: [0, 1, 2, 3, 4, 7, 9, 10, 11, 13]
+
+| # | Slot | Expected text | Rule | text_seen | Region | Confidence |
+|---:|---|---|---|---|---|---:|
+| 0 | writing | Writing | **missing** | Writing | top | 0.500000 |
+| 1 | agriculture | Agriculture | **missing** | Agriculture | top-left | 0.500000 |
+| 2 | animal-husbandry | Animal Husbandry | **missing** | Animal Husbandry | top | 0.500000 |
+| 3 | archery | Archery | **missing** | Archery | center | 0.500000 |
+| 4 | mining | Mining | **missing** | Mining | center | 0.500000 |
+| 5 | research | Research Archery | prefix | Research | bottom-right | 0.933007 |
+| 6 | units-header | Units enabled: | prefix | Units enabled | bottom-left | 0.965067 |
+| 7 | archer | Archer | **missing** | Archer | bottom | 0.500000 |
+| 8 | wonders-header | Wonders enabled: | prefix | Wonders enabled | bottom-left | 0.961966 |
+| 9 | wonder-name | Temple of Artemis | **missing** | Temple of Artemis | bottom | 0.500000 |
+| 10 | wonder-culture | Culture | **missing** | Culture | bottom | 0.500000 |
+| 11 | wonder-food | +10% Food in all cities | **missing** | +10% Food in all cities | bottom | 0.500000 |
+| 12 | wonder-archery-production | +15% Production when constructing Archery units in this city | prefix | +15% Production when constructing Archery units in this | bottom | 0.854629 |
+| 13 | wonder-ranged-production | +15% Production when constructing Ranged Gunpowder units in this city | **missing** | +15% Production when constructing Ranged Gunpowder units in this city | bottom | 0.500000 |
+
 ### Interpretation and limits
 
 The frozen sparse-text OCR frequently groups coloured technology buttons and
@@ -285,6 +358,21 @@ operations, not inference calls.
 - `docs/evidence/12/records/20261019T155118Z-659d65/result.json`
 - `docs/evidence/12/records/20261019T155118Z-659d65/run.json`
 - `docs/evidence/12/records/20261019T155118Z-659d65/source-entries.json`
+- `docs/evidence/12/records/20261020T122145Z-8ae059/diagnostics.json`
+- `docs/evidence/12/records/20261020T122145Z-8ae059/ocr.tsv`
+- `docs/evidence/12/records/20261020T122145Z-8ae059/result.json`
+- `docs/evidence/12/records/20261020T122145Z-8ae059/run.json`
+- `docs/evidence/12/records/20261020T122145Z-8ae059/source-entries.json`
+- `docs/evidence/12/records/20261020T122146Z-1eacd3/diagnostics.json`
+- `docs/evidence/12/records/20261020T122146Z-1eacd3/ocr.tsv`
+- `docs/evidence/12/records/20261020T122146Z-1eacd3/result.json`
+- `docs/evidence/12/records/20261020T122146Z-1eacd3/run.json`
+- `docs/evidence/12/records/20261020T122146Z-1eacd3/source-entries.json`
+- `docs/evidence/12/records/20261020T122147Z-9f2ef6/diagnostics.json`
+- `docs/evidence/12/records/20261020T122147Z-9f2ef6/ocr.tsv`
+- `docs/evidence/12/records/20261020T122147Z-9f2ef6/result.json`
+- `docs/evidence/12/records/20261020T122147Z-9f2ef6/run.json`
+- `docs/evidence/12/records/20261020T122147Z-9f2ef6/source-entries.json`
 - `docs/evidence/12/report.md`
 - `docs/evidence/12/run-index.json`
 - `docs/evidence/12/tech-picker.json`

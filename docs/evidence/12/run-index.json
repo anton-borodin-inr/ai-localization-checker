@@ -10,7 +10,8 @@
       "findings": 15,
       "requests_sent": 0,
       "latency_s": 0.853,
-      "code_commit": "9abdbcb30c760b2d8b0b70ede6d6adb2e3d572e0"
+      "code_commit": "9abdbcb30c760b2d8b0b70ede6d6adb2e3d572e0",
+      "settings_version": "baseline-v0"
     },
     {
       "run_id": "20261019T155117Z-7e8171",
@@ -19,7 +20,8 @@
       "findings": 12,
       "requests_sent": 0,
       "latency_s": 0.871,
-      "code_commit": "9abdbcb30c760b2d8b0b70ede6d6adb2e3d572e0"
+      "code_commit": "9abdbcb30c760b2d8b0b70ede6d6adb2e3d572e0",
+      "settings_version": "baseline-v0"
     },
     {
       "run_id": "20261019T155118Z-659d65",
@@ -28,7 +30,42 @@
       "findings": 14,
       "requests_sent": 0,
       "latency_s": 0.527,
-      "code_commit": "9abdbcb30c760b2d8b0b70ede6d6adb2e3d572e0"
+      "code_commit": "9abdbcb30c760b2d8b0b70ede6d6adb2e3d572e0",
+      "settings_version": "baseline-v0"
+    },
+    {
+      "run_id": "20261020T122145Z-8ae059",
+      "screenshot": "tech-picker__de__2400x1080__clean__1271001.png",
+      "status": "checked",
+      "findings": 15,
+      "missing_rule_findings": 15,
+      "requests_sent": 0,
+      "latency_s": 0.864,
+      "code_commit": "5265b67",
+      "settings_version": "baseline-v0.1"
+    },
+    {
+      "run_id": "20261020T122146Z-1eacd3",
+      "screenshot": "tech-picker__de__2400x1080__injected__1271002.png",
+      "status": "checked",
+      "findings": 12,
+      "missing_rule_findings": 12,
+      "requests_sent": 0,
+      "latency_s": 0.851,
+      "code_commit": "5265b67",
+      "settings_version": "baseline-v0.1"
+    },
+    {
+      "run_id": "20261020T122147Z-9f2ef6",
+      "screenshot": "tech-picker__en__2400x1080__clean__1271001.png",
+      "status": "checked",
+      "findings": 14,
+      "missing_rule_findings": 10,
+      "requests_sent": 0,
+      "latency_s": 0.516,
+      "code_commit": "5265b67",
+      "settings_version": "baseline-v0.1"
     }
-  ]
+  ],
+  "rebase_note": "PR #28 was rebased on main on 2026-10-20 (D-029 from #27 kept; this decision became D-030). The pre-rebase commits 05032f8 and 9abdbcb named above became d83bf21 and 9250331 with identical src/l10n_checker/baseline*.py and unciv_text.py; the v0 records were produced by the pre-rebase commits."
 }
