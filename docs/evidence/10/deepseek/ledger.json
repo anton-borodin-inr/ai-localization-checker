@@ -1,0 +1,322 @@
+{
+  "approval_sha256": "b55c6107c239ad1630ee7c01dac5f1fd996b27c3b1f43705e03cfce289196c68",
+  "max_requests": 12,
+  "max_usd": "0.25",
+  "slots": [
+    {
+      "slot": 1,
+      "run_id": "20261020T110538Z-03f139",
+      "reservation": 1,
+      "reserved_usd": "0.0196608",
+      "requests_sent": 1,
+      "status": "checked",
+      "balance_before_usd": "2.00",
+      "usage_peak_estimate_usd": "0.0010104",
+      "usage_source": "raw API response",
+      "balance_after_usd": "2.00"
+    },
+    {
+      "slot": 2,
+      "run_id": "20261020T110607Z-504fcd",
+      "reservation": 1,
+      "reserved_usd": "0.0196608",
+      "requests_sent": 1,
+      "status": "checked",
+      "balance_before_usd": "2.00",
+      "usage_peak_estimate_usd": "0.0011256",
+      "usage_source": "raw API response",
+      "balance_after_usd": "2.00"
+    },
+    {
+      "slot": 3,
+      "run_id": "20261020T110611Z-d87d4d",
+      "reservation": 1,
+      "reserved_usd": "0.0196608",
+      "requests_sent": 1,
+      "status": "not_checked",
+      "balance_before_usd": "2.00",
+      "usage_peak_estimate_usd": "0.0015324",
+      "usage_source": "raw API response",
+      "balance_after_usd": "2.00"
+    },
+    {
+      "slot": 4,
+      "run_id": "20261020T110616Z-150386",
+      "reservation": 1,
+      "reserved_usd": "0.0196608",
+      "requests_sent": 1,
+      "status": "checked",
+      "balance_before_usd": "2.00",
+      "usage_peak_estimate_usd": "0.000543",
+      "usage_source": "raw API response",
+      "balance_after_usd": "2.00"
+    },
+    {
+      "slot": 5,
+      "run_id": "20261020T110619Z-28c8ed",
+      "reservation": 1,
+      "reserved_usd": "0.0196608",
+      "requests_sent": 1,
+      "status": "checked",
+      "balance_before_usd": "2.00",
+      "usage_peak_estimate_usd": "0.0007626",
+      "usage_source": "raw API response",
+      "balance_after_usd": "2.00"
+    },
+    {
+      "slot": 6,
+      "run_id": "20261020T110623Z-84c480",
+      "reservation": 1,
+      "reserved_usd": "0.0196608",
+      "requests_sent": 1,
+      "status": "checked",
+      "balance_before_usd": "2.00",
+      "usage_peak_estimate_usd": "0.0005253",
+      "usage_source": "raw API response",
+      "balance_after_usd": "2.00"
+    },
+    {
+      "slot": 7,
+      "run_id": "20261020T110626Z-d7f0c1",
+      "reservation": 1,
+      "reserved_usd": "0.0196608",
+      "requests_sent": 1,
+      "status": "checked",
+      "balance_before_usd": "2.00",
+      "usage_peak_estimate_usd": "0.0005382",
+      "usage_source": "raw API response",
+      "balance_after_usd": "2.00"
+    },
+    {
+      "slot": 8,
+      "run_id": "20261020T110629Z-cbf87c",
+      "reservation": 1,
+      "reserved_usd": "0.0196608",
+      "requests_sent": 1,
+      "status": "checked",
+      "balance_before_usd": "2.00",
+      "usage_peak_estimate_usd": "0.000669",
+      "usage_source": "raw API response",
+      "balance_after_usd": "2.00"
+    },
+    {
+      "slot": 9,
+      "run_id": "20261020T110632Z-6dd4bb",
+      "reservation": 1,
+      "reserved_usd": "0.0196608",
+      "requests_sent": 1,
+      "status": "checked",
+      "balance_before_usd": "2.00",
+      "usage_peak_estimate_usd": "0.0004533",
+      "usage_source": "raw API response",
+      "balance_after_usd": "2.00"
+    },
+    {
+      "slot": 10,
+      "run_id": "20261020T110635Z-777496",
+      "reservation": 1,
+      "reserved_usd": "0.0196608",
+      "requests_sent": 1,
+      "status": "checked",
+      "balance_before_usd": "2.00",
+      "usage_peak_estimate_usd": "0.000603",
+      "usage_source": "raw API response",
+      "balance_after_usd": "2.00"
+    },
+    {
+      "slot": 11,
+      "run_id": "20261020T110638Z-73fd38",
+      "reservation": 1,
+      "reserved_usd": "0.0196608",
+      "requests_sent": 1,
+      "status": "checked",
+      "balance_before_usd": "2.00",
+      "usage_peak_estimate_usd": "0.000428712",
+      "usage_source": "raw API response",
+      "balance_after_usd": "2.00"
+    },
+    {
+      "slot": 12,
+      "run_id": "20261020T110641Z-036be3",
+      "reservation": 1,
+      "reserved_usd": "0.0196608",
+      "requests_sent": 1,
+      "status": "checked",
+      "balance_before_usd": "2.00",
+      "usage_peak_estimate_usd": "0.0005205",
+      "usage_source": "raw API response",
+      "balance_after_usd": "2.00"
+    }
+  ],
+  "discovery": [
+    {
+      "method": "GET",
+      "path": "/models",
+      "at_utc": "2026-10-20T11:05:38.047183+00:00",
+      "result": {
+        "data": [
+          {
+            "id": "deepseek-flash",
+            "object": "model",
+            "owned_by": "deepseek"
+          },
+          {
+            "id": "deepseek-v4-pro",
+            "object": "model",
+            "owned_by": "deepseek"
+          }
+        ]
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/user/balance",
+      "at_utc": "2026-10-20T11:05:38.538253+00:00",
+      "usd": "2.00"
+    },
+    {
+      "method": "GET",
+      "path": "/user/balance",
+      "at_utc": "2026-10-20T11:05:42.156543+00:00",
+      "usd": "2.00"
+    },
+    {
+      "method": "GET",
+      "path": "/user/balance",
+      "at_utc": "2026-10-20T11:06:07.527752+00:00",
+      "usd": "2.00"
+    },
+    {
+      "method": "GET",
+      "path": "/user/balance",
+      "at_utc": "2026-10-20T11:06:11.240803+00:00",
+      "usd": "2.00"
+    },
+    {
+      "method": "GET",
+      "path": "/user/balance",
+      "at_utc": "2026-10-20T11:06:11.862678+00:00",
+      "usd": "2.00"
+    },
+    {
+      "method": "GET",
+      "path": "/user/balance",
+      "at_utc": "2026-10-20T11:06:16.313507+00:00",
+      "usd": "2.00"
+    },
+    {
+      "method": "GET",
+      "path": "/user/balance",
+      "at_utc": "2026-10-20T11:06:16.964873+00:00",
+      "usd": "2.00"
+    },
+    {
+      "method": "GET",
+      "path": "/user/balance",
+      "at_utc": "2026-10-20T11:06:19.276816+00:00",
+      "usd": "2.00"
+    },
+    {
+      "method": "GET",
+      "path": "/user/balance",
+      "at_utc": "2026-10-20T11:06:19.881657+00:00",
+      "usd": "2.00"
+    },
+    {
+      "method": "GET",
+      "path": "/user/balance",
+      "at_utc": "2026-10-20T11:06:22.672566+00:00",
+      "usd": "2.00"
+    },
+    {
+      "method": "GET",
+      "path": "/user/balance",
+      "at_utc": "2026-10-20T11:06:23.325053+00:00",
+      "usd": "2.00"
+    },
+    {
+      "method": "GET",
+      "path": "/user/balance",
+      "at_utc": "2026-10-20T11:06:25.512393+00:00",
+      "usd": "2.00"
+    },
+    {
+      "method": "GET",
+      "path": "/user/balance",
+      "at_utc": "2026-10-20T11:06:26.107677+00:00",
+      "usd": "2.00"
+    },
+    {
+      "method": "GET",
+      "path": "/user/balance",
+      "at_utc": "2026-10-20T11:06:28.500732+00:00",
+      "usd": "2.00"
+    },
+    {
+      "method": "GET",
+      "path": "/user/balance",
+      "at_utc": "2026-10-20T11:06:29.092448+00:00",
+      "usd": "2.00"
+    },
+    {
+      "method": "GET",
+      "path": "/user/balance",
+      "at_utc": "2026-10-20T11:06:31.646469+00:00",
+      "usd": "2.00"
+    },
+    {
+      "method": "GET",
+      "path": "/user/balance",
+      "at_utc": "2026-10-20T11:06:32.212165+00:00",
+      "usd": "2.00"
+    },
+    {
+      "method": "GET",
+      "path": "/user/balance",
+      "at_utc": "2026-10-20T11:06:34.463037+00:00",
+      "usd": "2.00"
+    },
+    {
+      "method": "GET",
+      "path": "/user/balance",
+      "at_utc": "2026-10-20T11:06:35.098335+00:00",
+      "usd": "2.00"
+    },
+    {
+      "method": "GET",
+      "path": "/user/balance",
+      "at_utc": "2026-10-20T11:06:37.414800+00:00",
+      "usd": "2.00"
+    },
+    {
+      "method": "GET",
+      "path": "/user/balance",
+      "at_utc": "2026-10-20T11:06:38.048426+00:00",
+      "usd": "2.00"
+    },
+    {
+      "method": "GET",
+      "path": "/user/balance",
+      "at_utc": "2026-10-20T11:06:40.734464+00:00",
+      "usd": "2.00"
+    },
+    {
+      "method": "GET",
+      "path": "/user/balance",
+      "at_utc": "2026-10-20T11:06:41.394888+00:00",
+      "usd": "2.00"
+    },
+    {
+      "method": "GET",
+      "path": "/user/balance",
+      "at_utc": "2026-10-20T11:06:43.982484+00:00",
+      "usd": "2.00"
+    }
+  ],
+  "preflight_recovery": {
+    "at_utc": "2026-10-20T11:05:37.518212+00:00",
+    "prior_halt_reason": "Initial model discovery failed; zero generation sends",
+    "reason": "Correct empty Python TLS trust store using existing certifi CA bundle; no generation reservation is removed or reused"
+  },
+  "initial_balance_usd": "2.00"
+}

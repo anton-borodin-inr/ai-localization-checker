@@ -1,0 +1,19 @@
+{
+  "default_python_CA_store": {
+    "x509": 0,
+    "x509_ca": 0
+  },
+  "unauthenticated_HEAD": "https://api.deepseek.com",
+  "observed_failure": "SSLCertVerificationError: unable to get local issuer certificate",
+  "existing_certifi_CA_store": {
+    "x509": 121,
+    "x509_ca": 121
+  },
+  "certificate_verification": "CERT_REQUIRED and hostname checking remain enabled",
+  "package_changes": "none; certifi already in uv.lock through existing SDK/httpx dependencies",
+  "paid_generation_requests_sent_before_recovery": 0,
+  "failed_authenticated_models_attempts_before_recovery": 2,
+  "successful_HTTP_models_responses_before_recovery": 0,
+  "recovery": "One explicit preflight recovery allowed only for the original discovery failure with zero generation slots. Original halt is retained in ledger history; no paid reservation is reset.",
+  "initial_path_refusal": "uv could not find checkout .env; zero network calls. Existing scratch Gemini driver supplied the actual secret-file path without inspecting its contents."
+}

@@ -1,0 +1,61 @@
+{
+  "findings": [],
+  "readings": [
+    {
+      "text_seen": "Trapping",
+      "region": "center"
+    },
+    {
+      "text_seen": "10",
+      "region": "center"
+    },
+    {
+      "text_seen": "Horseback Riding",
+      "region": "center"
+    },
+    {
+      "text_seen": "19",
+      "region": "center"
+    },
+    {
+      "text_seen": "The Wheel",
+      "region": "center"
+    },
+    {
+      "text_seen": "10",
+      "region": "center"
+    },
+    {
+      "text_seen": "Mathematics",
+      "region": "center"
+    },
+    {
+      "text_seen": "19",
+      "region": "center"
+    },
+    {
+      "text_seen": "Masonry",
+      "region": "bottom-left"
+    },
+    {
+      "text_seen": "10",
+      "region": "bottom-left"
+    },
+    {
+      "text_seen": "Construction",
+      "region": "bottom-right"
+    },
+    {
+      "text_seen": "19",
+      "region": "bottom-right"
+    },
+    {
+      "text_seen": "Bronze Working",
+      "region": "bottom-left"
+    },
+    {
+      "text_seen": "10",
+      "region": "bottom-left"
+    }
+  ]
+}

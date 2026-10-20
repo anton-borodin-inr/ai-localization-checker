@@ -1,0 +1,40 @@
+{
+  "findings": [
+    {
+      "defect_type": "truncated_text",
+      "text_seen": "Bergbau und Erzgew...",
+      "region": "bottom-right",
+      "confidence": 0.9
+    }
+  ],
+  "readings": [
+    {
+      "text_seen": "Landwirtschaft",
+      "region": "left"
+    },
+    {
+      "text_seen": "Tierhaltung",
+      "region": "top-right"
+    },
+    {
+      "text_seen": "6",
+      "region": "top-right"
+    },
+    {
+      "text_seen": "Bogenschießen",
+      "region": "right"
+    },
+    {
+      "text_seen": "6",
+      "region": "right"
+    },
+    {
+      "text_seen": "Bergbau und Erzgew...",
+      "region": "bottom-right"
+    },
+    {
+      "text_seen": "6",
+      "region": "bottom-right"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "id": "504798b6-8dca-4e72-b7a2-6976b631daee",
+  "object": "chat.completion",
+  "created": 1792494402,
+  "model": "deepseek-flash",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\"findings\": [], \"readings\": [{\"text_seen\": \"Schließen\", \"region\": \"left\"}, {\"text_seen\": \"Freigeschaltete Einheiten:\", \"region\": \"top\"}, {\"text_seen\": \"Bogenschütze (5\", \"region\": \"top\"}, {\"text_seen\": \"7\", \"region\": \"top\"}, {\"text_seen\": \"Freigeschaltete Wunder:\", \"region\": \"center\"}, {\"text_seen\": \"Tempel der Artemis (+1\", \"region\": \"bottom-left\"}, {\"text_seen\": \"Kultur; +10%\", \"region\": \"bottom\"}, {\"text_seen\": \"Nahrung in allen Städten; +15% Produktion beim Bau von\", \"region\": \"bottom\"}, {\"text_seen\": \"Bogenschießen erforschen\", \"region\": \"right\"}, {\"text_seen\": \"(0/24)\", \"region\": \"right\"}]}"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 907,
+    "completion_tokens": 207,
+    "total_tokens": 1114,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 907
+  },
+  "system_fingerprint": "e72d3c7f663d3e1383b00b3884cb4501"
+}

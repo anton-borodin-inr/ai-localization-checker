@@ -1,0 +1,33 @@
+{
+  "findings": [],
+  "readings": [
+    {
+      "text_seen": "Agriculture",
+      "region": "left"
+    },
+    {
+      "text_seen": "Animal Husbandry",
+      "region": "center"
+    },
+    {
+      "text_seen": "6",
+      "region": "center"
+    },
+    {
+      "text_seen": "Archery",
+      "region": "center"
+    },
+    {
+      "text_seen": "6",
+      "region": "center"
+    },
+    {
+      "text_seen": "Mining",
+      "region": "center"
+    },
+    {
+      "text_seen": "6",
+      "region": "center"
+    }
+  ]
+}

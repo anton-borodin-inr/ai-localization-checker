@@ -1,0 +1,28 @@
+{
+  "id": "28bf3cd5-812a-4540-9986-1c358e1f8007",
+  "object": "chat.completion",
+  "created": 1792494386,
+  "model": "deepseek-flash",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\"findings\": [], \"readings\": [{\"text_seen\": \"Agriculture\", \"region\": \"left\"}, {\"text_seen\": \"Animal Husbandry\", \"region\": \"center\"}, {\"text_seen\": \"6\", \"region\": \"center\"}, {\"text_seen\": \"Archery\", \"region\": \"center\"}, {\"text_seen\": \"6\", \"region\": \"center\"}, {\"text_seen\": \"Mining\", \"region\": \"center\"}, {\"text_seen\": \"6\", \"region\": \"center\"}]}"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1338,
+    "completion_tokens": 114,
+    "total_tokens": 1452,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 1338
+  },
+  "system_fingerprint": "e72d3c7f663d3e1383b00b3884cb4501"
+}

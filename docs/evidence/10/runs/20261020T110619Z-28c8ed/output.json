@@ -1,0 +1,81 @@
+{
+  "findings": [],
+  "readings": [
+    {
+      "text_seen": "Schritt",
+      "region": "top"
+    },
+    {
+      "text_seen": "10",
+      "region": "top"
+    },
+    {
+      "text_seen": "6",
+      "region": "left"
+    },
+    {
+      "text_seen": "Fallenstellen",
+      "region": "center"
+    },
+    {
+      "text_seen": "10",
+      "region": "center"
+    },
+    {
+      "text_seen": "6",
+      "region": "left"
+    },
+    {
+      "text_seen": "Das Rad",
+      "region": "center"
+    },
+    {
+      "text_seen": "10",
+      "region": "center"
+    },
+    {
+      "text_seen": "Reiten",
+      "region": "right"
+    },
+    {
+      "text_seen": "19",
+      "region": "right"
+    },
+    {
+      "text_seen": "Mathematik",
+      "region": "right"
+    },
+    {
+      "text_seen": "19",
+      "region": "right"
+    },
+    {
+      "text_seen": "6",
+      "region": "left"
+    },
+    {
+      "text_seen": "Mauerarbeiten",
+      "region": "bottom-left"
+    },
+    {
+      "text_seen": "10",
+      "region": "bottom-left"
+    },
+    {
+      "text_seen": "Baukunst",
+      "region": "bottom-right"
+    },
+    {
+      "text_seen": "19",
+      "region": "bottom-right"
+    },
+    {
+      "text_seen": "Bronzebearbeitung",
+      "region": "bottom-left"
+    },
+    {
+      "text_seen": "10",
+      "region": "bottom-left"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "prior_evidence_files_preserved": 253,
+  "previous_main_index_archived_byte_for_byte": true,
+  "source_and_crop_bytes_unchanged": true,
+  "all_12_cap_1_requests_sent_1_one_attempt": true,
+  "no_generation_retry": true,
+  "approved_prompt_schema_reference_hashes_unchanged": true,
+  "strict_validator_unchanged": true,
+  "deepseek_requests_sent": 12,
+  "combined_actual_requests_sent": 53,
+  "reserved_usd": "0.2359296",
+  "usage_peak_estimate_usd": "0.008712012",
+  "unknown_usage_reservations_usd": "0",
+  "observed_balance_delta_usd": "0.00",
+  "validated_readings_visually_reviewed": 163,
+  "raw_readings_separately_reviewed": 33,
+  "independent_review": "pending"
+}

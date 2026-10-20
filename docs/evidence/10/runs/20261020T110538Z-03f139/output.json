@@ -1,0 +1,125 @@
+{
+  "findings": [],
+  "readings": [
+    {
+      "text_seen": "Landwirtschaft",
+      "region": "left"
+    },
+    {
+      "text_seen": "Tierhaltung",
+      "region": "center"
+    },
+    {
+      "text_seen": "6",
+      "region": "center"
+    },
+    {
+      "text_seen": "Bogenschießen",
+      "region": "center"
+    },
+    {
+      "text_seen": "6",
+      "region": "center"
+    },
+    {
+      "text_seen": "Bergbau",
+      "region": "center"
+    },
+    {
+      "text_seen": "6",
+      "region": "center"
+    },
+    {
+      "text_seen": "Schrift",
+      "region": "top"
+    },
+    {
+      "text_seen": "10",
+      "region": "top"
+    },
+    {
+      "text_seen": "Fallenstellen",
+      "region": "center"
+    },
+    {
+      "text_seen": "10",
+      "region": "center"
+    },
+    {
+      "text_seen": "Das Rad",
+      "region": "center"
+    },
+    {
+      "text_seen": "10",
+      "region": "center"
+    },
+    {
+      "text_seen": "Mauerarbeiten",
+      "region": "center"
+    },
+    {
+      "text_seen": "10",
+      "region": "center"
+    },
+    {
+      "text_seen": "Bronzebearbeitung",
+      "region": "center"
+    },
+    {
+      "text_seen": "10",
+      "region": "center"
+    },
+    {
+      "text_seen": "Reiten",
+      "region": "right"
+    },
+    {
+      "text_seen": "19",
+      "region": "right"
+    },
+    {
+      "text_seen": "Mathematik",
+      "region": "right"
+    },
+    {
+      "text_seen": "19",
+      "region": "right"
+    },
+    {
+      "text_seen": "Baukunst",
+      "region": "right"
+    },
+    {
+      "text_seen": "19",
+      "region": "right"
+    },
+    {
+      "text_seen": "Schließen",
+      "region": "bottom-left"
+    },
+    {
+      "text_seen": "Freigeschaltete Einheiten:",
+      "region": "bottom-left"
+    },
+    {
+      "text_seen": "• Bogenschütze (5, 7)",
+      "region": "bottom-left"
+    },
+    {
+      "text_seen": "Freigeschaltete Wunder:",
+      "region": "bottom-left"
+    },
+    {
+      "text_seen": "• Tempel der Artemis (+1 Kultur, +10% Nahrung in allen Städten, +15% Produktion beim Bau von",
+      "region": "bottom-left"
+    },
+    {
+      "text_seen": "Bogenschießen erforschen",
+      "region": "bottom-right"
+    },
+    {
+      "text_seen": "(0/24)",
+      "region": "bottom-right"
+    }
+  ]
+}

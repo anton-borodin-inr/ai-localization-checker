@@ -1,12 +1,11 @@
-# Issue 10 Report: Gemini and approved local Qwen comparison
+# Issue 10 Report: Gemini, Qwen and approved paid DeepSeek comparison
 
-**Combined actual generation requests_sent: 41/41 — Gemini 27, local Qwen 14/14.** Every failed send counts. Cloud quality comparison remains incomplete because of 503/429. Local status: 2 checked / 12 not_checked. Independent review and Anton's conclusions remain pending.
+**53 generation requests_sent: 27 Gemini + 14 local Qwen + 12 DeepSeek.** No further call in these batches. Gemini quality comparison remains incomplete after 503/429; Qwen has 2/14 validated responses. DeepSeek has 11/12 validated responses, with its injected original rejected for extra reading confidence. Independent review and Anton's final conclusions remain pending.
 
-- [Local Report: side-by-side results, every local run, visual/region audit, checks and every changed file](local-model/report.md)
-- [Preserved Gemini Report: complete metric tables and all 27 cloud runs](report-gemini.md)
-- [Initial 15-call Report](report-initial.md)
-- [Frozen cloud aggregate](combined-summary.json), [local aggregate](local-model/summary.json)
+- [DeepSeek Report: metrics, every finding, costs, all twelve runs, verification and every changed file](deepseek/report.md)
+- [Preserved Gemini Report: all 27 cloud runs](report-gemini.md)
+- [Preserved Qwen Report: all 14 local runs](local-model/report.md)
 
-The local model is qwen/qwen3-vl-8b, MLX 8-bit. The same screenshot/crop bytes, prompt, response schema and confirmed reference (16/20/20) are used. HIGH/ULTRA_HIGH are Gemini-specific. Anton approved the local exception and initial 12-send plan, then timeout 400 s/cap 13 and finally 1800 s/cap 14 after the recorded timeouts. Gemini remains frozen at 27; no new cloud call was made. Production defaults, labels and comparison thresholds are unchanged.
+DeepSeek token-derived cost is $0.004356006 at the documented off-peak tariff, $0.008712012 conservatively at peak; the balance endpoint returned $2.00 before/after, so its observed $0.00 delta does not establish free calls. Conservative reserved budget $0.2359296 is below the approved $0.25 and is not the amount spent.
 
-D-029–D-032 are Proposed. See the linked Reports for What changed, How it was verified, Deviations, Decisions, Open questions and API usage. No self-approval or merge.
+Original screenshots/crops, human-confirmed reference 16/20/20, labels and metrics remain unchanged. The DeepSeek JSON-mode format wrapper is a declared provider difference. Production remains Gemini. D-029–D-033 are Proposed. No self-approval or merge.

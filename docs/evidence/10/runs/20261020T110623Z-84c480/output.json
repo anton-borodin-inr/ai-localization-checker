@@ -1,0 +1,45 @@
+{
+  "findings": [],
+  "readings": [
+    {
+      "text_seen": "Schließen",
+      "region": "left"
+    },
+    {
+      "text_seen": "Freigeschaltete Einheiten:",
+      "region": "top"
+    },
+    {
+      "text_seen": "Bogenschütze (5",
+      "region": "top"
+    },
+    {
+      "text_seen": "7",
+      "region": "top"
+    },
+    {
+      "text_seen": "Freigeschaltete Wunder:",
+      "region": "center"
+    },
+    {
+      "text_seen": "Tempel der Artemis (+1",
+      "region": "bottom-left"
+    },
+    {
+      "text_seen": "Kultur, +10%",
+      "region": "bottom"
+    },
+    {
+      "text_seen": "Nahrung in allen Städten: +1,5% Produktion beim Bau von",
+      "region": "bottom"
+    },
+    {
+      "text_seen": "Bogenschießen erforschen",
+      "region": "top-right"
+    },
+    {
+      "text_seen": "(0/24)",
+      "region": "top-right"
+    }
+  ]
+}

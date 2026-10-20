@@ -1,0 +1,368 @@
+{
+  "reviewer": "coding agent; independent PR review pending",
+  "scope": "Visual audit of all validated readings/findings; unchanged labels and thresholds.",
+  "runs": [
+    {
+      "run_id": "20261020T110538Z-03f139",
+      "slot": 1,
+      "output_sha256": "14bc5170115499a9568818a98649d2355a984a7488f516ea269381042d67bcae",
+      "readings_reviewed": 30,
+      "invented_strings": [],
+      "hidden_completions": [],
+      "reading_errors": [
+        {
+          "index": 27,
+          "text_seen": "• Tempel der Artemis (+1 Kultur, +10% Nahrung in allen Städten, +15% Produktion beim Bau von",
+          "review": "Two commas replace visible semicolons in the clipped German description."
+        }
+      ],
+      "all_reading_indices_reviewed": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29
+      ],
+      "review_notes": "All returned readings compared with unchanged screenshots/crops. Icons may be omitted. No wholly invented string or hidden continuation identified. Original fragmentation preserved; listed reading errors are not silently corrected.",
+      "findings_review": []
+    },
+    {
+      "run_id": "20261020T110607Z-504fcd",
+      "slot": 2,
+      "output_sha256": "daa31b23615673d4294f0a5135bbc2e7bcbdc978a18ad07fe2b82c375ba72a70",
+      "readings_reviewed": 33,
+      "invented_strings": [],
+      "hidden_completions": [],
+      "reading_errors": [
+        {
+          "index": 29,
+          "text_seen": "Archer units in this city;",
+          "review": "Archer units misreads visible Archery units; not a hidden completion."
+        }
+      ],
+      "all_reading_indices_reviewed": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32
+      ],
+      "review_notes": "All returned readings compared with unchanged screenshots/crops. Icons may be omitted. No wholly invented string or hidden continuation identified. Original fragmentation preserved; listed reading errors are not silently corrected.",
+      "findings_review": []
+    },
+    {
+      "run_id": "20261020T110616Z-150386",
+      "slot": 4,
+      "output_sha256": "a67db7b98a46bb75b9ee850b7c152d5b7399c2eaad42ab17f80a1538a4f529a4",
+      "readings_reviewed": 7,
+      "invented_strings": [],
+      "hidden_completions": [],
+      "reading_errors": [],
+      "all_reading_indices_reviewed": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "review_notes": "All returned readings compared with unchanged screenshots/crops. Icons may be omitted. No wholly invented string or hidden continuation identified. Original fragmentation preserved; listed reading errors are not silently corrected.",
+      "findings_review": []
+    },
+    {
+      "run_id": "20261020T110619Z-28c8ed",
+      "slot": 5,
+      "output_sha256": "9baeb881c7c9b04d0460542edff91f3fc5b1de50875a2154dcd8fe3c633c66ef",
+      "readings_reviewed": 19,
+      "invented_strings": [],
+      "hidden_completions": [],
+      "reading_errors": [
+        {
+          "index": 0,
+          "text_seen": "Schritt",
+          "review": "Schritt misreads the vertically clipped visible Schrift."
+        }
+      ],
+      "all_reading_indices_reviewed": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18
+      ],
+      "review_notes": "All returned readings compared with unchanged screenshots/crops. Icons may be omitted. No wholly invented string or hidden continuation identified. Original fragmentation preserved; listed reading errors are not silently corrected.",
+      "findings_review": []
+    },
+    {
+      "run_id": "20261020T110623Z-84c480",
+      "slot": 6,
+      "output_sha256": "575a795986c5dfdd13013a2a2f803bc840654d714b335b9c9bdb15a69819454c",
+      "readings_reviewed": 10,
+      "invented_strings": [],
+      "hidden_completions": [],
+      "reading_errors": [
+        {
+          "index": 6,
+          "text_seen": "Kultur, +10%",
+          "review": "Comma substitutes for visible semicolon after Kultur."
+        },
+        {
+          "index": 7,
+          "text_seen": "Nahrung in allen Städten: +1,5% Produktion beim Bau von",
+          "review": "Colon substitutes for semicolon after Städten; +1,5% misreads visible +15%."
+        }
+      ],
+      "all_reading_indices_reviewed": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "review_notes": "All returned readings compared with unchanged screenshots/crops. Icons may be omitted. No wholly invented string or hidden continuation identified. Original fragmentation preserved; listed reading errors are not silently corrected.",
+      "findings_review": []
+    },
+    {
+      "run_id": "20261020T110626Z-d7f0c1",
+      "slot": 7,
+      "output_sha256": "00192e7c5c0e063eecb60d80f7f81f7a07eacf9d644887bad353f0dd4229f744",
+      "readings_reviewed": 7,
+      "invented_strings": [],
+      "hidden_completions": [],
+      "reading_errors": [],
+      "all_reading_indices_reviewed": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "review_notes": "All returned readings compared with unchanged screenshots/crops. Icons may be omitted. No wholly invented string or hidden continuation identified. Original fragmentation preserved; listed reading errors are not silently corrected.",
+      "findings_review": []
+    },
+    {
+      "run_id": "20261020T110629Z-cbf87c",
+      "slot": 8,
+      "output_sha256": "e33637a32a4439250b1fa9b0a914cf1f5d2d9696c85f2f833aedd0bf777943d1",
+      "readings_reviewed": 14,
+      "invented_strings": [],
+      "hidden_completions": [],
+      "reading_errors": [],
+      "all_reading_indices_reviewed": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ],
+      "review_notes": "All returned readings compared with unchanged screenshots/crops. Icons may be omitted. No wholly invented string or hidden continuation identified. Original fragmentation preserved; listed reading errors are not silently corrected.",
+      "findings_review": []
+    },
+    {
+      "run_id": "20261020T110632Z-6dd4bb",
+      "slot": 9,
+      "output_sha256": "2c512799b0f09a3a141f6a9053665a931113a629a738fe72a823a9f6de7de442",
+      "readings_reviewed": 7,
+      "invented_strings": [],
+      "hidden_completions": [],
+      "reading_errors": [
+        {
+          "index": 4,
+          "text_seen": "• Temple of Artemis (+1 Culture; +10% Food in all cities; +15% Production when constructing Archer units in this city;",
+          "review": "Archer units misreads visible Archery units."
+        },
+        {
+          "index": 5,
+          "text_seen": "Research Archer",
+          "review": "Research Archer misreads visible Research Archery."
+        }
+      ],
+      "all_reading_indices_reviewed": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "review_notes": "All returned readings compared with unchanged screenshots/crops. Icons may be omitted. No wholly invented string or hidden continuation identified. Original fragmentation preserved; listed reading errors are not silently corrected.",
+      "findings_review": []
+    },
+    {
+      "run_id": "20261020T110635Z-777496",
+      "slot": 10,
+      "output_sha256": "be7e1f8b33826f06c6158ce1bbf95310614d195c6dc91b60e7ff56c8188967e8",
+      "readings_reviewed": 7,
+      "invented_strings": [],
+      "hidden_completions": [],
+      "reading_errors": [],
+      "all_reading_indices_reviewed": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "review_notes": "All returned readings compared with unchanged screenshots/crops. Icons may be omitted. No wholly invented string or hidden continuation identified. Original fragmentation preserved; listed reading errors are not silently corrected.",
+      "findings_review": [
+        {
+          "index": 0,
+          "defect_type": "truncated_text",
+          "text_seen": "Bergbau und Erzgew...",
+          "region": "bottom-right",
+          "confidence": 0.9,
+          "defect_review": "Identifies the existing human-labeled Mining ellipsis; no new label created.",
+          "region_review": "Correct local bottom-right cell for injected tree-left crop. Coarse original mapping may remain ambiguous; reference is center."
+        }
+      ]
+    },
+    {
+      "run_id": "20261020T110638Z-73fd38",
+      "slot": 11,
+      "output_sha256": "2809d88a262d13f31a41e10d3244a57760b5723cbfcef3379c79b99d3256f0e7",
+      "readings_reviewed": 19,
+      "invented_strings": [],
+      "hidden_completions": [],
+      "reading_errors": [
+        {
+          "index": 0,
+          "text_seen": "Schritt",
+          "review": "Schritt misreads vertically clipped Schrift."
+        }
+      ],
+      "all_reading_indices_reviewed": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18
+      ],
+      "review_notes": "All returned readings compared with unchanged screenshots/crops. Icons may be omitted. No wholly invented string or hidden continuation identified. Original fragmentation preserved; listed reading errors are not silently corrected.",
+      "findings_review": []
+    },
+    {
+      "run_id": "20261020T110641Z-036be3",
+      "slot": 12,
+      "output_sha256": "48605c5ef5dc141ddc09edcc6b672b80a94d338ea1fe35ba28408626d9eefaf5",
+      "readings_reviewed": 10,
+      "invented_strings": [],
+      "hidden_completions": [],
+      "reading_errors": [],
+      "all_reading_indices_reviewed": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "review_notes": "All returned readings compared with unchanged screenshots/crops. Icons may be omitted. No wholly invented string or hidden continuation identified. Original fragmentation preserved; listed reading errors are not silently corrected.",
+      "findings_review": []
+    }
+  ]
+}

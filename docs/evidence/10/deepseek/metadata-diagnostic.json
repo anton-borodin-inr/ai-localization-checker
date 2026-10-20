@@ -1,0 +1,13 @@
+{
+  "method": "GET",
+  "path": "/models",
+  "at_utc": "2026-10-20T11:03:12.863929+00:00",
+  "generation_requests_sent": 0,
+  "status": "failed",
+  "reason": "Additional read-only diagnosis after initial discovery failed; no generation retry",
+  "error": {
+    "kind": "api_error",
+    "message": "URLError",
+    "raw": null
+  }
+}

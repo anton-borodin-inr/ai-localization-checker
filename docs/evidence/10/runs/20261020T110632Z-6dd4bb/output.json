@@ -1,0 +1,33 @@
+{
+  "findings": [],
+  "readings": [
+    {
+      "text_seen": "Close",
+      "region": "left"
+    },
+    {
+      "text_seen": "Units enabled:",
+      "region": "top-left"
+    },
+    {
+      "text_seen": "• Archer (5, 7)",
+      "region": "top-left"
+    },
+    {
+      "text_seen": "Wonders enabled:",
+      "region": "left"
+    },
+    {
+      "text_seen": "• Temple of Artemis (+1 Culture; +10% Food in all cities; +15% Production when constructing Archer units in this city;",
+      "region": "bottom"
+    },
+    {
+      "text_seen": "Research Archer",
+      "region": "right"
+    },
+    {
+      "text_seen": "(0/24)",
+      "region": "right"
+    }
+  ]
+}

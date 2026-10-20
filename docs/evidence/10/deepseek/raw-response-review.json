@@ -1,0 +1,261 @@
+{
+  "run_id": "20261020T110611Z-d87d4d",
+  "raw_sha256": "890468041c088a810f976e4767b545e1a03b3e2d61d1dbda7cb6d23e9dcf98fa",
+  "status": "not_checked",
+  "reason": "33 readings contain additional confidence fields; strict validator rejects the complete JSON response. JSON object mode does not enforce the supplied schema.",
+  "primary_rescoring": false,
+  "readings_reviewed": 33,
+  "invented_strings": [],
+  "hidden_completions": [],
+  "reading_errors": [
+    {
+      "index": 0,
+      "text_seen": "Schritt",
+      "review": "Schritt misreads visible clipped Schrift."
+    }
+  ],
+  "all_readings": [
+    {
+      "index": 0,
+      "text_seen": "Schritt",
+      "region": "top",
+      "confidence": 0.9,
+      "review": "Schrift misread"
+    },
+    {
+      "index": 1,
+      "text_seen": "10",
+      "region": "top",
+      "confidence": 0.9,
+      "review": "Visible text; original fragmentation preserved; no hidden continuation identified."
+    },
+    {
+      "index": 2,
+      "text_seen": "Tierhaltung",
+      "region": "center",
+      "confidence": 0.9,
+      "review": "Visible text; original fragmentation preserved; no hidden continuation identified."
+    },
+    {
+      "index": 3,
+      "text_seen": "6",
+      "region": "center",
+      "confidence": 0.9,
+      "review": "Visible text; original fragmentation preserved; no hidden continuation identified."
+    },
+    {
+      "index": 4,
+      "text_seen": "Landwirtschaft",
+      "region": "left",
+      "confidence": 0.9,
+      "review": "Visible text; original fragmentation preserved; no hidden continuation identified."
+    },
+    {
+      "index": 5,
+      "text_seen": "Bogenschießen",
+      "region": "center",
+      "confidence": 0.9,
+      "review": "Visible text; original fragmentation preserved; no hidden continuation identified."
+    },
+    {
+      "index": 6,
+      "text_seen": "6",
+      "region": "center",
+      "confidence": 0.9,
+      "review": "Visible text; original fragmentation preserved; no hidden continuation identified."
+    },
+    {
+      "index": 7,
+      "text_seen": "Bergbau und Erzgew...",
+      "region": "left",
+      "confidence": 0.9,
+      "review": "Visible text; original fragmentation preserved; no hidden continuation identified."
+    },
+    {
+      "index": 8,
+      "text_seen": "6",
+      "region": "left",
+      "confidence": 0.9,
+      "review": "Visible text; original fragmentation preserved; no hidden continuation identified."
+    },
+    {
+      "index": 9,
+      "text_seen": "Fallenstellen",
+      "region": "center",
+      "confidence": 0.9,
+      "review": "Visible text; original fragmentation preserved; no hidden continuation identified."
+    },
+    {
+      "index": 10,
+      "text_seen": "10",
+      "region": "center",
+      "confidence": 0.9,
+      "review": "Visible text; original fragmentation preserved; no hidden continuation identified."
+    },
+    {
+      "index": 11,
+      "text_seen": "Das Rad",
+      "region": "center",
+      "confidence": 0.9,
+      "review": "Visible text; original fragmentation preserved; no hidden continuation identified."
+    },
+    {
+      "index": 12,
+      "text_seen": "10",
+      "region": "center",
+      "confidence": 0.9,
+      "review": "Visible text; original fragmentation preserved; no hidden continuation identified."
+    },
+    {
+      "index": 13,
+      "text_seen": "Mauerarbeiten",
+      "region": "center",
+      "confidence": 0.9,
+      "review": "Visible text; original fragmentation preserved; no hidden continuation identified."
+    },
+    {
+      "index": 14,
+      "text_seen": "10",
+      "region": "center",
+      "confidence": 0.9,
+      "review": "Visible text; original fragmentation preserved; no hidden continuation identified."
+    },
+    {
+      "index": 15,
+      "text_seen": "Bronzebearbeitung",
+      "region": "center",
+      "confidence": 0.9,
+      "review": "Visible text; original fragmentation preserved; no hidden continuation identified."
+    },
+    {
+      "index": 16,
+      "text_seen": "10",
+      "region": "center",
+      "confidence": 0.9,
+      "review": "Visible text; original fragmentation preserved; no hidden continuation identified."
+    },
+    {
+      "index": 17,
+      "text_seen": "Reiten",
+      "region": "right",
+      "confidence": 0.9,
+      "review": "Visible text; original fragmentation preserved; no hidden continuation identified."
+    },
+    {
+      "index": 18,
+      "text_seen": "19",
+      "region": "right",
+      "confidence": 0.9,
+      "review": "Visible text; original fragmentation preserved; no hidden continuation identified."
+    },
+    {
+      "index": 19,
+      "text_seen": "Mathematik",
+      "region": "right",
+      "confidence": 0.9,
+      "review": "Visible text; original fragmentation preserved; no hidden continuation identified."
+    },
+    {
+      "index": 20,
+      "text_seen": "19",
+      "region": "right",
+      "confidence": 0.9,
+      "review": "Visible text; original fragmentation preserved; no hidden continuation identified."
+    },
+    {
+      "index": 21,
+      "text_seen": "Baukunst",
+      "region": "right",
+      "confidence": 0.9,
+      "review": "Visible text; original fragmentation preserved; no hidden continuation identified."
+    },
+    {
+      "index": 22,
+      "text_seen": "19",
+      "region": "right",
+      "confidence": 0.9,
+      "review": "Visible text; original fragmentation preserved; no hidden continuation identified."
+    },
+    {
+      "index": 23,
+      "text_seen": "Schließen",
+      "region": "bottom-left",
+      "confidence": 0.9,
+      "review": "Visible text; original fragmentation preserved; no hidden continuation identified."
+    },
+    {
+      "index": 24,
+      "text_seen": "Freigeschaltete Einheiten:",
+      "region": "bottom-left",
+      "confidence": 0.9,
+      "review": "Visible text; original fragmentation preserved; no hidden continuation identified."
+    },
+    {
+      "index": 25,
+      "text_seen": "Bogenschütze (5",
+      "region": "bottom-left",
+      "confidence": 0.9,
+      "review": "Visible text; original fragmentation preserved; no hidden continuation identified."
+    },
+    {
+      "index": 26,
+      "text_seen": ", 7",
+      "region": "bottom-left",
+      "confidence": 0.9,
+      "review": "Visible text; original fragmentation preserved; no hidden continuation identified."
+    },
+    {
+      "index": 27,
+      "text_seen": "Freigeschaltete Wunder:",
+      "region": "bottom-left",
+      "confidence": 0.9,
+      "review": "Visible text; original fragmentation preserved; no hidden continuation identified."
+    },
+    {
+      "index": 28,
+      "text_seen": "Tempel der Artemis (+1",
+      "region": "bottom-left",
+      "confidence": 0.9,
+      "review": "Visible text; original fragmentation preserved; no hidden continuation identified."
+    },
+    {
+      "index": 29,
+      "text_seen": "Kultur; +10%",
+      "region": "bottom-left",
+      "confidence": 0.9,
+      "review": "Visible text; original fragmentation preserved; no hidden continuation identified."
+    },
+    {
+      "index": 30,
+      "text_seen": "Nahrung in allen Städten; +15% Produktion beim Bau von",
+      "region": "bottom-left",
+      "confidence": 0.9,
+      "review": "Visible text; original fragmentation preserved; no hidden continuation identified."
+    },
+    {
+      "index": 31,
+      "text_seen": "Bogenschießen erforschen",
+      "region": "bottom-right",
+      "confidence": 0.9,
+      "review": "Visible text; original fragmentation preserved; no hidden continuation identified."
+    },
+    {
+      "index": 32,
+      "text_seen": "(0/24)",
+      "region": "bottom-right",
+      "confidence": 0.9,
+      "review": "Visible text; original fragmentation preserved; no hidden continuation identified."
+    }
+  ],
+  "findings_review": [
+    {
+      "index": 0,
+      "defect_type": "truncated_text",
+      "text_seen": "Bergbau und Erzgew...",
+      "region": "left",
+      "confidence": 0.9,
+      "defect_review": "Text identifies existing Mining defect; rejected output is not credited as a checked detection.",
+      "region_review": "Incorrect original-image cell left; existing reference cell is center."
+    }
+  ]
+}

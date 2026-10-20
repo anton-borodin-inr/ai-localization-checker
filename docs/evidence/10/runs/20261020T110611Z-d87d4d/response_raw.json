@@ -1,0 +1,28 @@
+{
+  "id": "8f988a28-8de1-4317-ba23-dcb2892622aa",
+  "object": "chat.completion",
+  "created": 1792494372,
+  "model": "deepseek-flash",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\"findings\": [{\"defect_type\": \"truncated_text\", \"text_seen\": \"Bergbau und Erzgew...\", \"region\": \"left\", \"confidence\": 0.9}], \"readings\": [{\"text_seen\": \"Schritt\", \"region\": \"top\", \"confidence\": 0.9}, {\"text_seen\": \"10\", \"region\": \"top\", \"confidence\": 0.9}, {\"text_seen\": \"Tierhaltung\", \"region\": \"center\", \"confidence\": 0.9}, {\"text_seen\": \"6\", \"region\": \"center\", \"confidence\": 0.9}, {\"text_seen\": \"Landwirtschaft\", \"region\": \"left\", \"confidence\": 0.9}, {\"text_seen\": \"Bogenschießen\", \"region\": \"center\", \"confidence\": 0.9}, {\"text_seen\": \"6\", \"region\": \"center\", \"confidence\": 0.9}, {\"text_seen\": \"Bergbau und Erzgew...\", \"region\": \"left\", \"confidence\": 0.9}, {\"text_seen\": \"6\", \"region\": \"left\", \"confidence\": 0.9}, {\"text_seen\": \"Fallenstellen\", \"region\": \"center\", \"confidence\": 0.9}, {\"text_seen\": \"10\", \"region\": \"center\", \"confidence\": 0.9}, {\"text_seen\": \"Das Rad\", \"region\": \"center\", \"confidence\": 0.9}, {\"text_seen\": \"10\", \"region\": \"center\", \"confidence\": 0.9}, {\"text_seen\": \"Mauerarbeiten\", \"region\": \"center\", \"confidence\": 0.9}, {\"text_seen\": \"10\", \"region\": \"center\", \"confidence\": 0.9}, {\"text_seen\": \"Bronzebearbeitung\", \"region\": \"center\", \"confidence\": 0.9}, {\"text_seen\": \"10\", \"region\": \"center\", \"confidence\": 0.9}, {\"text_seen\": \"Reiten\", \"region\": \"right\", \"confidence\": 0.9}, {\"text_seen\": \"19\", \"region\": \"right\", \"confidence\": 0.9}, {\"text_seen\": \"Mathematik\", \"region\": \"right\", \"confidence\": 0.9}, {\"text_seen\": \"19\", \"region\": \"right\", \"confidence\": 0.9}, {\"text_seen\": \"Baukunst\", \"region\": \"right\", \"confidence\": 0.9}, {\"text_seen\": \"19\", \"region\": \"right\", \"confidence\": 0.9}, {\"text_seen\": \"Schließen\", \"region\": \"bottom-left\", \"confidence\": 0.9}, {\"text_seen\": \"Freigeschaltete Einheiten:\", \"region\": \"bottom-left\", \"confidence\": 0.9}, {\"text_seen\": \"Bogenschütze (5\", \"region\": \"bottom-left\", \"confidence\": 0.9}, {\"text_seen\": \", 7\", \"region\": \"bottom-left\", \"confidence\": 0.9}, {\"text_seen\": \"Freigeschaltete Wunder:\", \"region\": \"bottom-left\", \"confidence\": 0.9}, {\"text_seen\": \"Tempel der Artemis (+1\", \"region\": \"bottom-left\", \"confidence\": 0.9}, {\"text_seen\": \"Kultur; +10%\", \"region\": \"bottom-left\", \"confidence\": 0.9}, {\"text_seen\": \"Nahrung in allen Städten; +15% Produktion beim Bau von\", \"region\": \"bottom-left\", \"confidence\": 0.9}, {\"text_seen\": \"Bogenschießen erforschen\", \"region\": \"bottom-right\", \"confidence\": 0.9}, {\"text_seen\": \"(0/24)\", \"region\": \"bottom-right\", \"confidence\": 0.9}]}"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1620,
+    "completion_tokens": 872,
+    "total_tokens": 2492,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 1620
+  },
+  "system_fingerprint": "e72d3c7f663d3e1383b00b3884cb4501"
+}

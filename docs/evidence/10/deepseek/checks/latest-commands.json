@@ -1,0 +1,34 @@
+[
+  {
+    "command": [
+      ".venv/bin/pytest",
+      "-q"
+    ],
+    "exit_code": 0
+  },
+  {
+    "command": [
+      ".venv/bin/ruff",
+      "check",
+      "."
+    ],
+    "exit_code": 0
+  },
+  {
+    "command": [
+      ".venv/bin/ruff",
+      "format",
+      "--check",
+      "."
+    ],
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit_code": 0
+  }
+]

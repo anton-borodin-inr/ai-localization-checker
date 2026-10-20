@@ -1,0 +1,16 @@
+Inspect this mobile game UI image. Transcribe all visible text in readings,
+including ordinary labels, buttons, description text and numeric counters.
+For each reading return text_seen exactly as visible and region on the LOCAL
+3x3 grid of the supplied image. Keep separate UI elements as separate readings.
+Do not complete text hidden beyond an image or scroll boundary. Do not guess
+unreadable characters. Icons need not be transcribed.
+Also return findings for visible localization defects, using defect_type,
+text_seen, local region and confidence. Types: truncated_text, overlap,
+untranslated, other. An ellipsis is a defect only if the full text is not
+available elsewhere on the original screenshot. Scroll viewport clipping is
+not a defect. The input may be a crop: image edges and missing context alone
+are not evidence of a localization defect. Return an empty findings list when
+no defect is supported. Reading ordinary text does not make it a defect.
+
+Return only a JSON object conforming to this schema. Do not add fields or markdown. Synthetic format example only: {"findings": [], "readings": [{"text_seen": "Example", "region": "center"}]}. The example is not screenshot content. JSON Schema:
+{"$defs":{"Finding":{"additionalProperties":false,"description":"Draft v0 finding; the schema is finalized in Stage 1.","properties":{"defect_type":{"enum":["truncated_text","overlap","untranslated","other"],"title":"Defect Type","type":"string"},"text_seen":{"title":"Text Seen","type":"string"},"region":{"enum":["top-left","top","top-right","left","center","right","bottom-left","bottom","bottom-right"],"title":"Region","type":"string"},"confidence":{"maximum":1,"minimum":0,"title":"Confidence","type":"number"}},"required":["defect_type","text_seen","region","confidence"],"title":"Finding","type":"object"},"Reading":{"additionalProperties":false,"properties":{"text_seen":{"title":"Text Seen","type":"string"},"region":{"enum":["top-left","top","top-right","left","center","right","bottom-left","bottom","bottom-right"],"title":"Region","type":"string"}},"required":["text_seen","region"],"title":"Reading","type":"object"}},"additionalProperties":false,"properties":{"findings":{"items":{"$ref":"#/$defs/Finding"},"title":"Findings","type":"array"},"readings":{"items":{"$ref":"#/$defs/Reading"},"title":"Readings","type":"array"}},"required":["findings","readings"],"title":"ReadingOutput","type":"object"}

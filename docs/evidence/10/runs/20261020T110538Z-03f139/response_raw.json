@@ -1,0 +1,28 @@
+{
+  "id": "1fa8ae65-807e-4850-81ca-2b0776cdfd77",
+  "object": "chat.completion",
+  "created": 1792494339,
+  "model": "deepseek-flash",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\"findings\":[],\"readings\":[{\"text_seen\":\"Landwirtschaft\",\"region\":\"left\"},{\"text_seen\":\"Tierhaltung\",\"region\":\"center\"},{\"text_seen\":\"6\",\"region\":\"center\"},{\"text_seen\":\"Bogenschießen\",\"region\":\"center\"},{\"text_seen\":\"6\",\"region\":\"center\"},{\"text_seen\":\"Bergbau\",\"region\":\"center\"},{\"text_seen\":\"6\",\"region\":\"center\"},{\"text_seen\":\"Schrift\",\"region\":\"top\"},{\"text_seen\":\"10\",\"region\":\"top\"},{\"text_seen\":\"Fallenstellen\",\"region\":\"center\"},{\"text_seen\":\"10\",\"region\":\"center\"},{\"text_seen\":\"Das Rad\",\"region\":\"center\"},{\"text_seen\":\"10\",\"region\":\"center\"},{\"text_seen\":\"Mauerarbeiten\",\"region\":\"center\"},{\"text_seen\":\"10\",\"region\":\"center\"},{\"text_seen\":\"Bronzebearbeitung\",\"region\":\"center\"},{\"text_seen\":\"10\",\"region\":\"center\"},{\"text_seen\":\"Reiten\",\"region\":\"right\"},{\"text_seen\":\"19\",\"region\":\"right\"},{\"text_seen\":\"Mathematik\",\"region\":\"right\"},{\"text_seen\":\"19\",\"region\":\"right\"},{\"text_seen\":\"Baukunst\",\"region\":\"right\"},{\"text_seen\":\"19\",\"region\":\"right\"},{\"text_seen\":\"Schließen\",\"region\":\"bottom-left\"},{\"text_seen\":\"Freigeschaltete Einheiten:\",\"region\":\"bottom-left\"},{\"text_seen\":\"• Bogenschütze (5, 7)\",\"region\":\"bottom-left\"},{\"text_seen\":\"Freigeschaltete Wunder:\",\"region\":\"bottom-left\"},{\"text_seen\":\"• Tempel der Artemis (+1 Kultur, +10% Nahrung in allen Städten, +15% Produktion beim Bau von\",\"region\":\"bottom-left\"},{\"text_seen\":\"Bogenschießen erforschen\",\"region\":\"bottom-right\"},{\"text_seen\":\"(0/24)\",\"region\":\"bottom-right\"}]}"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1620,
+    "completion_tokens": 437,
+    "total_tokens": 2057,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 1620
+  },
+  "system_fingerprint": "e72d3c7f663d3e1383b00b3884cb4501"
+}

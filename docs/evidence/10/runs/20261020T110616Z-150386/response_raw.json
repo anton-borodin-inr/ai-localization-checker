@@ -1,0 +1,28 @@
+{
+  "id": "f166d22b-d672-4535-a15a-df66a578e0c2",
+  "object": "chat.completion",
+  "created": 1792494377,
+  "model": "deepseek-flash",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\"findings\": [], \"readings\": [{\"text_seen\": \"Landwirtschaft\", \"region\": \"left\"}, {\"text_seen\": \"Tierhaltung\", \"region\": \"center\"}, {\"text_seen\": \"6\", \"region\": \"center\"}, {\"text_seen\": \"Bogenschießen\", \"region\": \"center\"}, {\"text_seen\": \"6\", \"region\": \"center\"}, {\"text_seen\": \"Bergbau\", \"region\": \"center\"}, {\"text_seen\": \"6\", \"region\": \"center\"}]}"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1338,
+    "completion_tokens": 118,
+    "total_tokens": 1456,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 1338
+  },
+  "system_fingerprint": "e72d3c7f663d3e1383b00b3884cb4501"
+}

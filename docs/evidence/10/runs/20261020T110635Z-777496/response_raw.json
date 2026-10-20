@@ -1,0 +1,28 @@
+{
+  "id": "8c1a76c0-99da-4560-a603-6c1a9b56ce6a",
+  "object": "chat.completion",
+  "created": 1792494395,
+  "model": "deepseek-flash",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\"findings\": [{\"defect_type\": \"truncated_text\", \"text_seen\": \"Bergbau und Erzgew...\", \"region\": \"bottom-right\", \"confidence\": 0.9}], \"readings\": [{\"text_seen\": \"Landwirtschaft\", \"region\": \"left\"}, {\"text_seen\": \"Tierhaltung\", \"region\": \"top-right\"}, {\"text_seen\": \"6\", \"region\": \"top-right\"}, {\"text_seen\": \"Bogenschießen\", \"region\": \"right\"}, {\"text_seen\": \"6\", \"region\": \"right\"}, {\"text_seen\": \"Bergbau und Erzgew...\", \"region\": \"bottom-right\"}, {\"text_seen\": \"6\", \"region\": \"bottom-right\"}]}"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1338,
+    "completion_tokens": 168,
+    "total_tokens": 1506,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 1338
+  },
+  "system_fingerprint": "e72d3c7f663d3e1383b00b3884cb4501"
+}

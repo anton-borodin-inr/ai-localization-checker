@@ -1,0 +1,12 @@
+{
+  "slot": 4,
+  "run_id": "20261020T110616Z-150386",
+  "reservation": 1,
+  "reserved_usd": "0.0196608",
+  "requests_sent": 1,
+  "status": "checked",
+  "balance_before_usd": "2.00",
+  "usage_peak_estimate_usd": "0.000543",
+  "usage_source": "raw API response",
+  "balance_after_usd": "2.00"
+}

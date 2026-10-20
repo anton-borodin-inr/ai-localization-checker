@@ -1,0 +1,28 @@
+{
+  "id": "3c696237-f981-44da-8407-8d73eb80de28",
+  "object": "chat.completion",
+  "created": 1792494389,
+  "model": "deepseek-flash",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\"findings\": [], \"readings\": [{\"text_seen\": \"Trapping\", \"region\": \"center\"}, {\"text_seen\": \"10\", \"region\": \"center\"}, {\"text_seen\": \"Horseback Riding\", \"region\": \"center\"}, {\"text_seen\": \"19\", \"region\": \"center\"}, {\"text_seen\": \"The Wheel\", \"region\": \"center\"}, {\"text_seen\": \"10\", \"region\": \"center\"}, {\"text_seen\": \"Mathematics\", \"region\": \"center\"}, {\"text_seen\": \"19\", \"region\": \"center\"}, {\"text_seen\": \"Masonry\", \"region\": \"bottom-left\"}, {\"text_seen\": \"10\", \"region\": \"bottom-left\"}, {\"text_seen\": \"Construction\", \"region\": \"bottom-right\"}, {\"text_seen\": \"19\", \"region\": \"bottom-right\"}, {\"text_seen\": \"Bronze Working\", \"region\": \"bottom-left\"}, {\"text_seen\": \"10\", \"region\": \"bottom-left\"}]}"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1338,
+    "completion_tokens": 223,
+    "total_tokens": 1561,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 1338
+  },
+  "system_fingerprint": "e72d3c7f663d3e1383b00b3884cb4501"
+}

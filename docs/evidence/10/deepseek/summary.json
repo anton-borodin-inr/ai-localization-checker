@@ -1,0 +1,3360 @@
+{
+  "generation_cap": 12,
+  "spending_cap_usd": "0.25",
+  "runs": [
+    {
+      "slot": 1,
+      "run_id": "20261020T110538Z-03f139",
+      "request": {
+        "image": "docs/evidence/8/final/tech-picker__de__2400x1080__clean__1271001.png",
+        "image_sha256": "a6a5beb3ef17ce4a640261821ff1bfc02f2dfda0e81c1cfb3aadaa32407f954e",
+        "tile": "full",
+        "box": [
+          0,
+          0,
+          2400,
+          1080
+        ],
+        "max_requests": 1,
+        "slot": 1,
+        "parent_gemini_slot": 1,
+        "option": "original",
+        "prepared_image_sha256": "a6a5beb3ef17ce4a640261821ff1bfc02f2dfda0e81c1cfb3aadaa32407f954e"
+      },
+      "status": "checked",
+      "reason": null,
+      "requests_sent": 1,
+      "settings": {
+        "endpoint": "https://api.deepseek.com/chat/completions",
+        "temperature": 0,
+        "max_tokens": 8192,
+        "stream": false,
+        "thinking": {
+          "type": "disabled"
+        },
+        "response_format": {
+          "type": "json_object"
+        },
+        "image_detail": "original",
+        "timeout_s": 1800,
+        "transport_retries": 0,
+        "redirects": false,
+        "proxies": false,
+        "input_token_reservation": 32768,
+        "peak_usd_reservation": "0.0196608"
+      },
+      "model_version": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 1620,
+        "completion_tokens": 437,
+        "total_tokens": 2057,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 1620
+      },
+      "latency_s": 3.178,
+      "cost": {
+        "slot": 1,
+        "run_id": "20261020T110538Z-03f139",
+        "reservation": 1,
+        "reserved_usd": "0.0196608",
+        "requests_sent": 1,
+        "status": "checked",
+        "balance_before_usd": "2.00",
+        "usage_peak_estimate_usd": "0.0010104",
+        "usage_source": "raw API response",
+        "balance_after_usd": "2.00"
+      },
+      "image_tokens": null
+    },
+    {
+      "slot": 2,
+      "run_id": "20261020T110607Z-504fcd",
+      "request": {
+        "image": "docs/evidence/8/final/tech-picker__en__2400x1080__clean__1271001.png",
+        "image_sha256": "88ff1c55aef33cc9ff0fd89cd5912384b7a1017d8d9ca2d88965ec39389b9f47",
+        "tile": "full",
+        "box": [
+          0,
+          0,
+          2400,
+          1080
+        ],
+        "max_requests": 1,
+        "slot": 2,
+        "parent_gemini_slot": 2,
+        "option": "original",
+        "prepared_image_sha256": "88ff1c55aef33cc9ff0fd89cd5912384b7a1017d8d9ca2d88965ec39389b9f47"
+      },
+      "status": "checked",
+      "reason": null,
+      "requests_sent": 1,
+      "settings": {
+        "endpoint": "https://api.deepseek.com/chat/completions",
+        "temperature": 0,
+        "max_tokens": 8192,
+        "stream": false,
+        "thinking": {
+          "type": "disabled"
+        },
+        "response_format": {
+          "type": "json_object"
+        },
+        "image_detail": "original",
+        "timeout_s": 1800,
+        "transport_retries": 0,
+        "redirects": false,
+        "proxies": false,
+        "input_token_reservation": 32768,
+        "peak_usd_reservation": "0.0196608"
+      },
+      "model_version": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 1620,
+        "completion_tokens": 533,
+        "total_tokens": 2153,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 1620
+      },
+      "latency_s": 3.259,
+      "cost": {
+        "slot": 2,
+        "run_id": "20261020T110607Z-504fcd",
+        "reservation": 1,
+        "reserved_usd": "0.0196608",
+        "requests_sent": 1,
+        "status": "checked",
+        "balance_before_usd": "2.00",
+        "usage_peak_estimate_usd": "0.0011256",
+        "usage_source": "raw API response",
+        "balance_after_usd": "2.00"
+      },
+      "image_tokens": null
+    },
+    {
+      "slot": 3,
+      "run_id": "20261020T110611Z-d87d4d",
+      "request": {
+        "image": "docs/evidence/8/final/tech-picker__de__2400x1080__injected__1271002.png",
+        "image_sha256": "372aa318ce3bf4d553b4b9d427a7fe6d87f566953605c21bc705dd10df816b93",
+        "tile": "full",
+        "box": [
+          0,
+          0,
+          2400,
+          1080
+        ],
+        "max_requests": 1,
+        "slot": 3,
+        "parent_gemini_slot": 3,
+        "option": "original",
+        "prepared_image_sha256": "372aa318ce3bf4d553b4b9d427a7fe6d87f566953605c21bc705dd10df816b93"
+      },
+      "status": "not_checked",
+      "reason": "invalid_response: readings.0.confidence: Extra inputs are not permitted; readings.1.confidence: Extra inputs are not permitted; readings.2.confidence: Extra inputs are not permitted; readings.3.confidence: Extra inputs are not permitted; readings.4.confidence: Extra inputs are not permitted; readings.5.confidence: Extra inputs are not permitted; readings.6.confidence: Extra inputs are not permitted; readings.7.confidence: Extra inputs are not permitted; readings.8.confidence: Extra inputs are not permitted; readings.9.confidence: Extra inputs are not permitted; readings.10.confidence: Extra inputs are not permitted; readings.11.confidence: Extra inputs are not permitted; readings.12.confidence: Extra inputs are not permitted; readings.13.confidence: Extra inputs are not permitted; readings.14.confidence: Extra inputs are not permitted; readings.15.confidence: Extra inputs are not permitted; readings.16.confidence: Extra inputs are not permitted; readings.17.confidence: Extra inputs are not permitted; readings.18.confidence: Extra inputs are not permitted; readings.19.confidence: Extra inputs are not permitted; readings.20.confidence: Extra inputs are not permitted; readings.21.confidence: Extra inputs are not permitted; readings.22.confidence: Extra inputs are not permitted; readings.23.confidence: Extra inputs are not permitted; readings.24.confidence: Extra inputs are not permitted; readings.25.confidence: Extra inputs are not permitted; readings.26.confidence: Extra inputs are not permitted; readings.27.confidence: Extra inputs are not permitted; readings.28.confidence: Extra inputs are not permitted; readings.29.confidence: Extra inputs are not permitted; readings.30.confidence: Extra inputs are not permitted; readings.31.confidence: Extra inputs are not permitted; readings.32.confidence: Extra inputs are not permitted",
+      "requests_sent": 1,
+      "settings": {
+        "endpoint": "https://api.deepseek.com/chat/completions",
+        "temperature": 0,
+        "max_tokens": 8192,
+        "stream": false,
+        "thinking": {
+          "type": "disabled"
+        },
+        "response_format": {
+          "type": "json_object"
+        },
+        "image_detail": "original",
+        "timeout_s": 1800,
+        "transport_retries": 0,
+        "redirects": false,
+        "proxies": false,
+        "input_token_reservation": 32768,
+        "peak_usd_reservation": "0.0196608"
+      },
+      "model_version": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 1620,
+        "completion_tokens": 872,
+        "total_tokens": 2492,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 1620
+      },
+      "latency_s": 3.966,
+      "cost": {
+        "slot": 3,
+        "run_id": "20261020T110611Z-d87d4d",
+        "reservation": 1,
+        "reserved_usd": "0.0196608",
+        "requests_sent": 1,
+        "status": "not_checked",
+        "balance_before_usd": "2.00",
+        "usage_peak_estimate_usd": "0.0015324",
+        "usage_source": "raw API response",
+        "balance_after_usd": "2.00"
+      },
+      "image_tokens": null
+    },
+    {
+      "slot": 4,
+      "run_id": "20261020T110616Z-150386",
+      "request": {
+        "image": "docs/evidence/8/final/tech-picker__de__2400x1080__clean__1271001.png",
+        "image_sha256": "a6a5beb3ef17ce4a640261821ff1bfc02f2dfda0e81c1cfb3aadaa32407f954e",
+        "tile": "tree-left",
+        "box": [
+          0,
+          0,
+          1320,
+          920
+        ],
+        "max_requests": 1,
+        "slot": 4,
+        "parent_gemini_slot": 7,
+        "option": "tiles",
+        "prepared_image_sha256": "c9d7ea686fa17def0b126d2346ede7bf38a8f23ccc4a0b4c131c1dfe767b3143"
+      },
+      "status": "checked",
+      "reason": null,
+      "requests_sent": 1,
+      "settings": {
+        "endpoint": "https://api.deepseek.com/chat/completions",
+        "temperature": 0,
+        "max_tokens": 8192,
+        "stream": false,
+        "thinking": {
+          "type": "disabled"
+        },
+        "response_format": {
+          "type": "json_object"
+        },
+        "image_detail": "original",
+        "timeout_s": 1800,
+        "transport_retries": 0,
+        "redirects": false,
+        "proxies": false,
+        "input_token_reservation": 32768,
+        "peak_usd_reservation": "0.0196608"
+      },
+      "model_version": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 1338,
+        "completion_tokens": 118,
+        "total_tokens": 1456,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 1338
+      },
+      "latency_s": 1.889,
+      "cost": {
+        "slot": 4,
+        "run_id": "20261020T110616Z-150386",
+        "reservation": 1,
+        "reserved_usd": "0.0196608",
+        "requests_sent": 1,
+        "status": "checked",
+        "balance_before_usd": "2.00",
+        "usage_peak_estimate_usd": "0.000543",
+        "usage_source": "raw API response",
+        "balance_after_usd": "2.00"
+      },
+      "image_tokens": null
+    },
+    {
+      "slot": 5,
+      "run_id": "20261020T110619Z-28c8ed",
+      "request": {
+        "image": "docs/evidence/8/final/tech-picker__de__2400x1080__clean__1271001.png",
+        "image_sha256": "a6a5beb3ef17ce4a640261821ff1bfc02f2dfda0e81c1cfb3aadaa32407f954e",
+        "tile": "tree-right",
+        "box": [
+          1080,
+          0,
+          2400,
+          920
+        ],
+        "max_requests": 1,
+        "slot": 5,
+        "parent_gemini_slot": 8,
+        "option": "tiles",
+        "prepared_image_sha256": "ed8e2bec0d525c8dff551c68ce50bcdb77954a79ce77dc7c4689f7dacd66da8f"
+      },
+      "status": "checked",
+      "reason": null,
+      "requests_sent": 1,
+      "settings": {
+        "endpoint": "https://api.deepseek.com/chat/completions",
+        "temperature": 0,
+        "max_tokens": 8192,
+        "stream": false,
+        "thinking": {
+          "type": "disabled"
+        },
+        "response_format": {
+          "type": "json_object"
+        },
+        "image_detail": "original",
+        "timeout_s": 1800,
+        "transport_retries": 0,
+        "redirects": false,
+        "proxies": false,
+        "input_token_reservation": 32768,
+        "peak_usd_reservation": "0.0196608"
+      },
+      "model_version": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 1338,
+        "completion_tokens": 301,
+        "total_tokens": 1639,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 1338
+      },
+      "latency_s": 2.329,
+      "cost": {
+        "slot": 5,
+        "run_id": "20261020T110619Z-28c8ed",
+        "reservation": 1,
+        "reserved_usd": "0.0196608",
+        "requests_sent": 1,
+        "status": "checked",
+        "balance_before_usd": "2.00",
+        "usage_peak_estimate_usd": "0.0007626",
+        "usage_source": "raw API response",
+        "balance_after_usd": "2.00"
+      },
+      "image_tokens": null
+    },
+    {
+      "slot": 6,
+      "run_id": "20261020T110623Z-84c480",
+      "request": {
+        "image": "docs/evidence/8/final/tech-picker__de__2400x1080__clean__1271001.png",
+        "image_sha256": "a6a5beb3ef17ce4a640261821ff1bfc02f2dfda0e81c1cfb3aadaa32407f954e",
+        "tile": "description",
+        "box": [
+          0,
+          900,
+          2400,
+          1080
+        ],
+        "max_requests": 1,
+        "slot": 6,
+        "parent_gemini_slot": 9,
+        "option": "tiles",
+        "prepared_image_sha256": "b5f0e70bcf35c1ce6cfe79a1793dd5c4b6b85f5bff53b32bd7ab5960cccba95c"
+      },
+      "status": "checked",
+      "reason": null,
+      "requests_sent": 1,
+      "settings": {
+        "endpoint": "https://api.deepseek.com/chat/completions",
+        "temperature": 0,
+        "max_tokens": 8192,
+        "stream": false,
+        "thinking": {
+          "type": "disabled"
+        },
+        "response_format": {
+          "type": "json_object"
+        },
+        "image_detail": "original",
+        "timeout_s": 1800,
+        "transport_retries": 0,
+        "redirects": false,
+        "proxies": false,
+        "input_token_reservation": 32768,
+        "peak_usd_reservation": "0.0196608"
+      },
+      "model_version": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 907,
+        "completion_tokens": 211,
+        "total_tokens": 1118,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 907
+      },
+      "latency_s": 1.762,
+      "cost": {
+        "slot": 6,
+        "run_id": "20261020T110623Z-84c480",
+        "reservation": 1,
+        "reserved_usd": "0.0196608",
+        "requests_sent": 1,
+        "status": "checked",
+        "balance_before_usd": "2.00",
+        "usage_peak_estimate_usd": "0.0005253",
+        "usage_source": "raw API response",
+        "balance_after_usd": "2.00"
+      },
+      "image_tokens": null
+    },
+    {
+      "slot": 7,
+      "run_id": "20261020T110626Z-d7f0c1",
+      "request": {
+        "image": "docs/evidence/8/final/tech-picker__en__2400x1080__clean__1271001.png",
+        "image_sha256": "88ff1c55aef33cc9ff0fd89cd5912384b7a1017d8d9ca2d88965ec39389b9f47",
+        "tile": "tree-left",
+        "box": [
+          0,
+          0,
+          1320,
+          920
+        ],
+        "max_requests": 1,
+        "slot": 7,
+        "parent_gemini_slot": 10,
+        "option": "tiles",
+        "prepared_image_sha256": "9132136828960e486ecca2cae18ceb0f0e9e774797e8b9a69212df689dca5e1d"
+      },
+      "status": "checked",
+      "reason": null,
+      "requests_sent": 1,
+      "settings": {
+        "endpoint": "https://api.deepseek.com/chat/completions",
+        "temperature": 0,
+        "max_tokens": 8192,
+        "stream": false,
+        "thinking": {
+          "type": "disabled"
+        },
+        "response_format": {
+          "type": "json_object"
+        },
+        "image_detail": "original",
+        "timeout_s": 1800,
+        "transport_retries": 0,
+        "redirects": false,
+        "proxies": false,
+        "input_token_reservation": 32768,
+        "peak_usd_reservation": "0.0196608"
+      },
+      "model_version": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 1338,
+        "completion_tokens": 114,
+        "total_tokens": 1452,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 1338
+      },
+      "latency_s": 1.926,
+      "cost": {
+        "slot": 7,
+        "run_id": "20261020T110626Z-d7f0c1",
+        "reservation": 1,
+        "reserved_usd": "0.0196608",
+        "requests_sent": 1,
+        "status": "checked",
+        "balance_before_usd": "2.00",
+        "usage_peak_estimate_usd": "0.0005382",
+        "usage_source": "raw API response",
+        "balance_after_usd": "2.00"
+      },
+      "image_tokens": null
+    },
+    {
+      "slot": 8,
+      "run_id": "20261020T110629Z-cbf87c",
+      "request": {
+        "image": "docs/evidence/8/final/tech-picker__en__2400x1080__clean__1271001.png",
+        "image_sha256": "88ff1c55aef33cc9ff0fd89cd5912384b7a1017d8d9ca2d88965ec39389b9f47",
+        "tile": "tree-right",
+        "box": [
+          1080,
+          0,
+          2400,
+          920
+        ],
+        "max_requests": 1,
+        "slot": 8,
+        "parent_gemini_slot": 11,
+        "option": "tiles",
+        "prepared_image_sha256": "6d8ffb10c721878f241cedcbaaa39b6f934440d354c4f55766209fc0d8410cba"
+      },
+      "status": "checked",
+      "reason": null,
+      "requests_sent": 1,
+      "settings": {
+        "endpoint": "https://api.deepseek.com/chat/completions",
+        "temperature": 0,
+        "max_tokens": 8192,
+        "stream": false,
+        "thinking": {
+          "type": "disabled"
+        },
+        "response_format": {
+          "type": "json_object"
+        },
+        "image_detail": "original",
+        "timeout_s": 1800,
+        "transport_retries": 0,
+        "redirects": false,
+        "proxies": false,
+        "input_token_reservation": 32768,
+        "peak_usd_reservation": "0.0196608"
+      },
+      "model_version": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 1338,
+        "completion_tokens": 223,
+        "total_tokens": 1561,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 1338
+      },
+      "latency_s": 2.037,
+      "cost": {
+        "slot": 8,
+        "run_id": "20261020T110629Z-cbf87c",
+        "reservation": 1,
+        "reserved_usd": "0.0196608",
+        "requests_sent": 1,
+        "status": "checked",
+        "balance_before_usd": "2.00",
+        "usage_peak_estimate_usd": "0.000669",
+        "usage_source": "raw API response",
+        "balance_after_usd": "2.00"
+      },
+      "image_tokens": null
+    },
+    {
+      "slot": 9,
+      "run_id": "20261020T110632Z-6dd4bb",
+      "request": {
+        "image": "docs/evidence/8/final/tech-picker__en__2400x1080__clean__1271001.png",
+        "image_sha256": "88ff1c55aef33cc9ff0fd89cd5912384b7a1017d8d9ca2d88965ec39389b9f47",
+        "tile": "description",
+        "box": [
+          0,
+          900,
+          2400,
+          1080
+        ],
+        "max_requests": 1,
+        "slot": 9,
+        "parent_gemini_slot": 12,
+        "option": "tiles",
+        "prepared_image_sha256": "a574ebb07e38730d7ea47b82f35874447a0a0ef13bfd50f152496afc9cde22e4"
+      },
+      "status": "checked",
+      "reason": null,
+      "requests_sent": 1,
+      "settings": {
+        "endpoint": "https://api.deepseek.com/chat/completions",
+        "temperature": 0,
+        "max_tokens": 8192,
+        "stream": false,
+        "thinking": {
+          "type": "disabled"
+        },
+        "response_format": {
+          "type": "json_object"
+        },
+        "image_detail": "original",
+        "timeout_s": 1800,
+        "transport_retries": 0,
+        "redirects": false,
+        "proxies": false,
+        "input_token_reservation": 32768,
+        "peak_usd_reservation": "0.0196608"
+      },
+      "model_version": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 907,
+        "completion_tokens": 151,
+        "total_tokens": 1058,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 907
+      },
+      "latency_s": 1.834,
+      "cost": {
+        "slot": 9,
+        "run_id": "20261020T110632Z-6dd4bb",
+        "reservation": 1,
+        "reserved_usd": "0.0196608",
+        "requests_sent": 1,
+        "status": "checked",
+        "balance_before_usd": "2.00",
+        "usage_peak_estimate_usd": "0.0004533",
+        "usage_source": "raw API response",
+        "balance_after_usd": "2.00"
+      },
+      "image_tokens": null
+    },
+    {
+      "slot": 10,
+      "run_id": "20261020T110635Z-777496",
+      "request": {
+        "image": "docs/evidence/8/final/tech-picker__de__2400x1080__injected__1271002.png",
+        "image_sha256": "372aa318ce3bf4d553b4b9d427a7fe6d87f566953605c21bc705dd10df816b93",
+        "tile": "tree-left",
+        "box": [
+          0,
+          0,
+          1320,
+          920
+        ],
+        "max_requests": 1,
+        "slot": 10,
+        "parent_gemini_slot": 13,
+        "option": "tiles",
+        "prepared_image_sha256": "4b88b42867b960ae016ba7e0042765166fbfd30999f26279653d4e4f45f66243"
+      },
+      "status": "checked",
+      "reason": null,
+      "requests_sent": 1,
+      "settings": {
+        "endpoint": "https://api.deepseek.com/chat/completions",
+        "temperature": 0,
+        "max_tokens": 8192,
+        "stream": false,
+        "thinking": {
+          "type": "disabled"
+        },
+        "response_format": {
+          "type": "json_object"
+        },
+        "image_detail": "original",
+        "timeout_s": 1800,
+        "transport_retries": 0,
+        "redirects": false,
+        "proxies": false,
+        "input_token_reservation": 32768,
+        "peak_usd_reservation": "0.0196608"
+      },
+      "model_version": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 1338,
+        "completion_tokens": 168,
+        "total_tokens": 1506,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 1338
+      },
+      "latency_s": 1.824,
+      "cost": {
+        "slot": 10,
+        "run_id": "20261020T110635Z-777496",
+        "reservation": 1,
+        "reserved_usd": "0.0196608",
+        "requests_sent": 1,
+        "status": "checked",
+        "balance_before_usd": "2.00",
+        "usage_peak_estimate_usd": "0.000603",
+        "usage_source": "raw API response",
+        "balance_after_usd": "2.00"
+      },
+      "image_tokens": null
+    },
+    {
+      "slot": 11,
+      "run_id": "20261020T110638Z-73fd38",
+      "request": {
+        "image": "docs/evidence/8/final/tech-picker__de__2400x1080__injected__1271002.png",
+        "image_sha256": "372aa318ce3bf4d553b4b9d427a7fe6d87f566953605c21bc705dd10df816b93",
+        "tile": "tree-right",
+        "box": [
+          1080,
+          0,
+          2400,
+          920
+        ],
+        "max_requests": 1,
+        "slot": 11,
+        "parent_gemini_slot": 14,
+        "option": "tiles",
+        "prepared_image_sha256": "ed8e2bec0d525c8dff551c68ce50bcdb77954a79ce77dc7c4689f7dacd66da8f"
+      },
+      "status": "checked",
+      "reason": null,
+      "requests_sent": 1,
+      "settings": {
+        "endpoint": "https://api.deepseek.com/chat/completions",
+        "temperature": 0,
+        "max_tokens": 8192,
+        "stream": false,
+        "thinking": {
+          "type": "disabled"
+        },
+        "response_format": {
+          "type": "json_object"
+        },
+        "image_detail": "original",
+        "timeout_s": 1800,
+        "transport_retries": 0,
+        "redirects": false,
+        "proxies": false,
+        "input_token_reservation": 32768,
+        "peak_usd_reservation": "0.0196608"
+      },
+      "model_version": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 1338,
+        "completion_tokens": 305,
+        "total_tokens": 1643,
+        "prompt_tokens_details": {
+          "cached_tokens": 1152
+        },
+        "prompt_cache_hit_tokens": 1152,
+        "prompt_cache_miss_tokens": 186
+      },
+      "latency_s": 2.248,
+      "cost": {
+        "slot": 11,
+        "run_id": "20261020T110638Z-73fd38",
+        "reservation": 1,
+        "reserved_usd": "0.0196608",
+        "requests_sent": 1,
+        "status": "checked",
+        "balance_before_usd": "2.00",
+        "usage_peak_estimate_usd": "0.000428712",
+        "usage_source": "raw API response",
+        "balance_after_usd": "2.00"
+      },
+      "image_tokens": null
+    },
+    {
+      "slot": 12,
+      "run_id": "20261020T110641Z-036be3",
+      "request": {
+        "image": "docs/evidence/8/final/tech-picker__de__2400x1080__injected__1271002.png",
+        "image_sha256": "372aa318ce3bf4d553b4b9d427a7fe6d87f566953605c21bc705dd10df816b93",
+        "tile": "description",
+        "box": [
+          0,
+          900,
+          2400,
+          1080
+        ],
+        "max_requests": 1,
+        "slot": 12,
+        "parent_gemini_slot": 15,
+        "option": "tiles",
+        "prepared_image_sha256": "7daf629e79c3946463104160655a6f41fc3c378bd2e59bbeda183821d2b28697"
+      },
+      "status": "checked",
+      "reason": null,
+      "requests_sent": 1,
+      "settings": {
+        "endpoint": "https://api.deepseek.com/chat/completions",
+        "temperature": 0,
+        "max_tokens": 8192,
+        "stream": false,
+        "thinking": {
+          "type": "disabled"
+        },
+        "response_format": {
+          "type": "json_object"
+        },
+        "image_detail": "original",
+        "timeout_s": 1800,
+        "transport_retries": 0,
+        "redirects": false,
+        "proxies": false,
+        "input_token_reservation": 32768,
+        "peak_usd_reservation": "0.0196608"
+      },
+      "model_version": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 907,
+        "completion_tokens": 207,
+        "total_tokens": 1114,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 907
+      },
+      "latency_s": 2.168,
+      "cost": {
+        "slot": 12,
+        "run_id": "20261020T110641Z-036be3",
+        "reservation": 1,
+        "reserved_usd": "0.0196608",
+        "requests_sent": 1,
+        "status": "checked",
+        "balance_before_usd": "2.00",
+        "usage_peak_estimate_usd": "0.0005205",
+        "usage_source": "raw API response",
+        "balance_after_usd": "2.00"
+      },
+      "image_tokens": null
+    }
+  ],
+  "pending_or_interrupted": [],
+  "comparisons": [
+    {
+      "image": "docs/evidence/8/final/tech-picker__de__2400x1080__clean__1271001.png",
+      "option": "original",
+      "status": "checked",
+      "coverage": {
+        "primary": {
+          "reference_count": 16,
+          "exact_count": 16,
+          "fuzzy_count": 16,
+          "exact_share": 1.0,
+          "fuzzy_share": 1.0
+        },
+        "sections": {
+          "tree": {
+            "reference_count": 11,
+            "exact_count": 11,
+            "fuzzy_count": 11,
+            "exact_share": 1.0,
+            "fuzzy_share": 1.0
+          },
+          "controls": {
+            "reference_count": 2,
+            "exact_count": 2,
+            "fuzzy_count": 2,
+            "exact_share": 1.0,
+            "fuzzy_share": 1.0
+          },
+          "description": {
+            "reference_count": 3,
+            "exact_count": 3,
+            "fuzzy_count": 3,
+            "exact_share": 1.0,
+            "fuzzy_share": 1.0
+          }
+        },
+        "diagnostic_clipped": {
+          "reference_count": 5,
+          "exact_count": 5,
+          "fuzzy_count": 5,
+          "exact_share": 1.0,
+          "fuzzy_share": 1.0
+        },
+        "matches": [
+          {
+            "reference_id": "Agriculture",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              0
+            ]
+          },
+          {
+            "reference_id": "Animal Husbandry",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              1
+            ]
+          },
+          {
+            "reference_id": "Archery",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              3
+            ]
+          },
+          {
+            "reference_id": "Mining",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              5
+            ]
+          },
+          {
+            "reference_id": "Writing",
+            "section": "tree",
+            "primary": false,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              7
+            ]
+          },
+          {
+            "reference_id": "Trapping",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              9
+            ]
+          },
+          {
+            "reference_id": "The Wheel",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              11
+            ]
+          },
+          {
+            "reference_id": "Masonry",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              13
+            ]
+          },
+          {
+            "reference_id": "Bronze Working",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              15
+            ]
+          },
+          {
+            "reference_id": "Horseback Riding",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              17
+            ]
+          },
+          {
+            "reference_id": "Mathematics",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              19
+            ]
+          },
+          {
+            "reference_id": "Construction",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              21
+            ]
+          },
+          {
+            "reference_id": "close",
+            "section": "controls",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              23
+            ]
+          },
+          {
+            "reference_id": "research",
+            "section": "controls",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              28
+            ]
+          },
+          {
+            "reference_id": "units-heading",
+            "section": "description",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              24
+            ]
+          },
+          {
+            "reference_id": "archer",
+            "section": "description",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              25
+            ]
+          },
+          {
+            "reference_id": "wonders-heading",
+            "section": "description",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              26
+            ]
+          },
+          {
+            "reference_id": "temple",
+            "section": "description",
+            "primary": false,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              27
+            ]
+          },
+          {
+            "reference_id": "culture",
+            "section": "description",
+            "primary": false,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              27
+            ]
+          },
+          {
+            "reference_id": "food",
+            "section": "description",
+            "primary": false,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              27
+            ]
+          },
+          {
+            "reference_id": "production",
+            "section": "description",
+            "primary": false,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              27
+            ]
+          }
+        ]
+      },
+      "partial_evidence": null,
+      "requests_sent": 1,
+      "latency_s": 3.178,
+      "run_ids": [
+        "20261020T110538Z-03f139"
+      ]
+    },
+    {
+      "image": "docs/evidence/8/final/tech-picker__de__2400x1080__clean__1271001.png",
+      "option": "tiles",
+      "status": "checked",
+      "coverage": {
+        "primary": {
+          "reference_count": 16,
+          "exact_count": 16,
+          "fuzzy_count": 16,
+          "exact_share": 1.0,
+          "fuzzy_share": 1.0
+        },
+        "sections": {
+          "tree": {
+            "reference_count": 11,
+            "exact_count": 11,
+            "fuzzy_count": 11,
+            "exact_share": 1.0,
+            "fuzzy_share": 1.0
+          },
+          "controls": {
+            "reference_count": 2,
+            "exact_count": 2,
+            "fuzzy_count": 2,
+            "exact_share": 1.0,
+            "fuzzy_share": 1.0
+          },
+          "description": {
+            "reference_count": 3,
+            "exact_count": 3,
+            "fuzzy_count": 3,
+            "exact_share": 1.0,
+            "fuzzy_share": 1.0
+          }
+        },
+        "diagnostic_clipped": {
+          "reference_count": 5,
+          "exact_count": 1,
+          "fuzzy_count": 2,
+          "exact_share": 0.2,
+          "fuzzy_share": 0.4
+        },
+        "matches": [
+          {
+            "reference_id": "Agriculture",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              0
+            ]
+          },
+          {
+            "reference_id": "Animal Husbandry",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              1
+            ]
+          },
+          {
+            "reference_id": "Archery",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              3
+            ]
+          },
+          {
+            "reference_id": "Mining",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              5
+            ]
+          },
+          {
+            "reference_id": "Writing",
+            "section": "tree",
+            "primary": false,
+            "exact": false,
+            "fuzzy": false,
+            "best_score": 0.0,
+            "reading_indices": []
+          },
+          {
+            "reference_id": "Trapping",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              10
+            ]
+          },
+          {
+            "reference_id": "The Wheel",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              13
+            ]
+          },
+          {
+            "reference_id": "Masonry",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              20
+            ]
+          },
+          {
+            "reference_id": "Bronze Working",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              24
+            ]
+          },
+          {
+            "reference_id": "Horseback Riding",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              15
+            ]
+          },
+          {
+            "reference_id": "Mathematics",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              17
+            ]
+          },
+          {
+            "reference_id": "Construction",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              22
+            ]
+          },
+          {
+            "reference_id": "close",
+            "section": "controls",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              26
+            ]
+          },
+          {
+            "reference_id": "research",
+            "section": "controls",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              34
+            ]
+          },
+          {
+            "reference_id": "units-heading",
+            "section": "description",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              27
+            ]
+          },
+          {
+            "reference_id": "archer",
+            "section": "description",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              28
+            ]
+          },
+          {
+            "reference_id": "wonders-heading",
+            "section": "description",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              30
+            ]
+          },
+          {
+            "reference_id": "temple",
+            "section": "description",
+            "primary": false,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              31
+            ]
+          },
+          {
+            "reference_id": "culture",
+            "section": "description",
+            "primary": false,
+            "exact": false,
+            "fuzzy": false,
+            "best_score": 0.3,
+            "reading_indices": []
+          },
+          {
+            "reference_id": "food",
+            "section": "description",
+            "primary": false,
+            "exact": false,
+            "fuzzy": false,
+            "best_score": 0.888889,
+            "reading_indices": []
+          },
+          {
+            "reference_id": "production",
+            "section": "description",
+            "primary": false,
+            "exact": false,
+            "fuzzy": true,
+            "best_score": 0.982456,
+            "reading_indices": [
+              33
+            ]
+          }
+        ]
+      },
+      "partial_evidence": null,
+      "requests_sent": 3,
+      "latency_s": 5.98,
+      "run_ids": [
+        "20261020T110616Z-150386",
+        "20261020T110619Z-28c8ed",
+        "20261020T110623Z-84c480"
+      ]
+    },
+    {
+      "image": "docs/evidence/8/final/tech-picker__en__2400x1080__clean__1271001.png",
+      "option": "original",
+      "status": "checked",
+      "coverage": {
+        "primary": {
+          "reference_count": 20,
+          "exact_count": 16,
+          "fuzzy_count": 16,
+          "exact_share": 0.8,
+          "fuzzy_share": 0.8
+        },
+        "sections": {
+          "tree": {
+            "reference_count": 11,
+            "exact_count": 11,
+            "fuzzy_count": 11,
+            "exact_share": 1.0,
+            "fuzzy_share": 1.0
+          },
+          "controls": {
+            "reference_count": 2,
+            "exact_count": 1,
+            "fuzzy_count": 1,
+            "exact_share": 0.5,
+            "fuzzy_share": 0.5
+          },
+          "description": {
+            "reference_count": 7,
+            "exact_count": 4,
+            "fuzzy_count": 4,
+            "exact_share": 0.5714285714285714,
+            "fuzzy_share": 0.5714285714285714
+          }
+        },
+        "diagnostic_clipped": {
+          "reference_count": 0,
+          "exact_count": 0,
+          "fuzzy_count": 0,
+          "exact_share": null,
+          "fuzzy_share": null
+        },
+        "matches": [
+          {
+            "reference_id": "Agriculture",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              0
+            ]
+          },
+          {
+            "reference_id": "Animal Husbandry",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              1
+            ]
+          },
+          {
+            "reference_id": "Archery",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              3,
+              31
+            ]
+          },
+          {
+            "reference_id": "Mining",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              5
+            ]
+          },
+          {
+            "reference_id": "Trapping",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              7
+            ]
+          },
+          {
+            "reference_id": "The Wheel",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              9
+            ]
+          },
+          {
+            "reference_id": "Masonry",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              11
+            ]
+          },
+          {
+            "reference_id": "Bronze Working",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              13
+            ]
+          },
+          {
+            "reference_id": "Horseback Riding",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              15
+            ]
+          },
+          {
+            "reference_id": "Mathematics",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              17
+            ]
+          },
+          {
+            "reference_id": "Construction",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              19
+            ]
+          },
+          {
+            "reference_id": "close",
+            "section": "controls",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              21
+            ]
+          },
+          {
+            "reference_id": "research",
+            "section": "controls",
+            "primary": true,
+            "exact": false,
+            "fuzzy": false,
+            "best_score": 0.387097,
+            "reading_indices": []
+          },
+          {
+            "reference_id": "units-heading",
+            "section": "description",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              22
+            ]
+          },
+          {
+            "reference_id": "archer",
+            "section": "description",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              23,
+              29
+            ]
+          },
+          {
+            "reference_id": "wonders-heading",
+            "section": "description",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              25
+            ]
+          },
+          {
+            "reference_id": "temple",
+            "section": "description",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              26
+            ]
+          },
+          {
+            "reference_id": "culture",
+            "section": "description",
+            "primary": true,
+            "exact": false,
+            "fuzzy": false,
+            "best_score": 0.777778,
+            "reading_indices": []
+          },
+          {
+            "reference_id": "food",
+            "section": "description",
+            "primary": true,
+            "exact": false,
+            "fuzzy": false,
+            "best_score": 0.857143,
+            "reading_indices": []
+          },
+          {
+            "reference_id": "production",
+            "section": "description",
+            "primary": true,
+            "exact": false,
+            "fuzzy": false,
+            "best_score": 0.611111,
+            "reading_indices": []
+          }
+        ]
+      },
+      "partial_evidence": null,
+      "requests_sent": 1,
+      "latency_s": 3.259,
+      "run_ids": [
+        "20261020T110607Z-504fcd"
+      ]
+    },
+    {
+      "image": "docs/evidence/8/final/tech-picker__en__2400x1080__clean__1271001.png",
+      "option": "tiles",
+      "status": "checked",
+      "coverage": {
+        "primary": {
+          "reference_count": 20,
+          "exact_count": 18,
+          "fuzzy_count": 20,
+          "exact_share": 0.9,
+          "fuzzy_share": 1.0
+        },
+        "sections": {
+          "tree": {
+            "reference_count": 11,
+            "exact_count": 11,
+            "fuzzy_count": 11,
+            "exact_share": 1.0,
+            "fuzzy_share": 1.0
+          },
+          "controls": {
+            "reference_count": 2,
+            "exact_count": 1,
+            "fuzzy_count": 2,
+            "exact_share": 0.5,
+            "fuzzy_share": 1.0
+          },
+          "description": {
+            "reference_count": 7,
+            "exact_count": 6,
+            "fuzzy_count": 7,
+            "exact_share": 0.8571428571428571,
+            "fuzzy_share": 1.0
+          }
+        },
+        "diagnostic_clipped": {
+          "reference_count": 0,
+          "exact_count": 0,
+          "fuzzy_count": 0,
+          "exact_share": null,
+          "fuzzy_share": null
+        },
+        "matches": [
+          {
+            "reference_id": "Agriculture",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              0
+            ]
+          },
+          {
+            "reference_id": "Animal Husbandry",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              1
+            ]
+          },
+          {
+            "reference_id": "Archery",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              3
+            ]
+          },
+          {
+            "reference_id": "Mining",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              5
+            ]
+          },
+          {
+            "reference_id": "Trapping",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              7
+            ]
+          },
+          {
+            "reference_id": "The Wheel",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              11
+            ]
+          },
+          {
+            "reference_id": "Masonry",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              15
+            ]
+          },
+          {
+            "reference_id": "Bronze Working",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              19
+            ]
+          },
+          {
+            "reference_id": "Horseback Riding",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              9
+            ]
+          },
+          {
+            "reference_id": "Mathematics",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              13
+            ]
+          },
+          {
+            "reference_id": "Construction",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              17
+            ]
+          },
+          {
+            "reference_id": "close",
+            "section": "controls",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              21
+            ]
+          },
+          {
+            "reference_id": "research",
+            "section": "controls",
+            "primary": true,
+            "exact": false,
+            "fuzzy": true,
+            "best_score": 0.967742,
+            "reading_indices": [
+              26
+            ]
+          },
+          {
+            "reference_id": "units-heading",
+            "section": "description",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              22
+            ]
+          },
+          {
+            "reference_id": "archer",
+            "section": "description",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              23
+            ]
+          },
+          {
+            "reference_id": "wonders-heading",
+            "section": "description",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              24
+            ]
+          },
+          {
+            "reference_id": "temple",
+            "section": "description",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              25
+            ]
+          },
+          {
+            "reference_id": "culture",
+            "section": "description",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              25
+            ]
+          },
+          {
+            "reference_id": "food",
+            "section": "description",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              25
+            ]
+          },
+          {
+            "reference_id": "production",
+            "section": "description",
+            "primary": true,
+            "exact": false,
+            "fuzzy": true,
+            "best_score": 0.983333,
+            "reading_indices": [
+              25
+            ]
+          }
+        ]
+      },
+      "partial_evidence": null,
+      "requests_sent": 3,
+      "latency_s": 5.797,
+      "run_ids": [
+        "20261020T110626Z-d7f0c1",
+        "20261020T110629Z-cbf87c",
+        "20261020T110632Z-6dd4bb"
+      ]
+    },
+    {
+      "image": "docs/evidence/8/final/tech-picker__de__2400x1080__injected__1271002.png",
+      "option": "original",
+      "status": "not_checked",
+      "coverage": null,
+      "partial_evidence": null,
+      "requests_sent": 1,
+      "latency_s": 3.966,
+      "run_ids": [
+        "20261020T110611Z-d87d4d"
+      ]
+    },
+    {
+      "image": "docs/evidence/8/final/tech-picker__de__2400x1080__injected__1271002.png",
+      "option": "tiles",
+      "status": "checked",
+      "coverage": {
+        "primary": {
+          "reference_count": 20,
+          "exact_count": 18,
+          "fuzzy_count": 18,
+          "exact_share": 0.9,
+          "fuzzy_share": 0.9
+        },
+        "sections": {
+          "tree": {
+            "reference_count": 11,
+            "exact_count": 11,
+            "fuzzy_count": 11,
+            "exact_share": 1.0,
+            "fuzzy_share": 1.0
+          },
+          "controls": {
+            "reference_count": 2,
+            "exact_count": 2,
+            "fuzzy_count": 2,
+            "exact_share": 1.0,
+            "fuzzy_share": 1.0
+          },
+          "description": {
+            "reference_count": 7,
+            "exact_count": 5,
+            "fuzzy_count": 5,
+            "exact_share": 0.7142857142857143,
+            "fuzzy_share": 0.7142857142857143
+          }
+        },
+        "diagnostic_clipped": {
+          "reference_count": 1,
+          "exact_count": 0,
+          "fuzzy_count": 0,
+          "exact_share": 0.0,
+          "fuzzy_share": 0.0
+        },
+        "matches": [
+          {
+            "reference_id": "Agriculture",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              0
+            ]
+          },
+          {
+            "reference_id": "Animal Husbandry",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              1
+            ]
+          },
+          {
+            "reference_id": "Archery",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              3
+            ]
+          },
+          {
+            "reference_id": "Mining",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              5
+            ]
+          },
+          {
+            "reference_id": "Writing",
+            "section": "tree",
+            "primary": false,
+            "exact": false,
+            "fuzzy": false,
+            "best_score": 0.0,
+            "reading_indices": []
+          },
+          {
+            "reference_id": "Trapping",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              10
+            ]
+          },
+          {
+            "reference_id": "The Wheel",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              15
+            ]
+          },
+          {
+            "reference_id": "Masonry",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              20
+            ]
+          },
+          {
+            "reference_id": "Bronze Working",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              24
+            ]
+          },
+          {
+            "reference_id": "Horseback Riding",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              12
+            ]
+          },
+          {
+            "reference_id": "Mathematics",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              17
+            ]
+          },
+          {
+            "reference_id": "Construction",
+            "section": "tree",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              22
+            ]
+          },
+          {
+            "reference_id": "units-heading",
+            "section": "description",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              27
+            ]
+          },
+          {
+            "reference_id": "archer",
+            "section": "description",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              28
+            ]
+          },
+          {
+            "reference_id": "wonders-heading",
+            "section": "description",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              30
+            ]
+          },
+          {
+            "reference_id": "temple",
+            "section": "description",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              31
+            ]
+          },
+          {
+            "reference_id": "culture",
+            "section": "description",
+            "primary": true,
+            "exact": false,
+            "fuzzy": false,
+            "best_score": 0.3,
+            "reading_indices": []
+          },
+          {
+            "reference_id": "food",
+            "section": "description",
+            "primary": true,
+            "exact": false,
+            "fuzzy": false,
+            "best_score": 0.888889,
+            "reading_indices": []
+          },
+          {
+            "reference_id": "production",
+            "section": "description",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              33
+            ]
+          },
+          {
+            "reference_id": "close",
+            "section": "controls",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              26
+            ]
+          },
+          {
+            "reference_id": "research",
+            "section": "controls",
+            "primary": true,
+            "exact": true,
+            "fuzzy": true,
+            "best_score": 1.0,
+            "reading_indices": [
+              34
+            ]
+          }
+        ]
+      },
+      "partial_evidence": null,
+      "requests_sent": 3,
+      "latency_s": 6.24,
+      "run_ids": [
+        "20261020T110635Z-777496",
+        "20261020T110638Z-73fd38",
+        "20261020T110641Z-036be3"
+      ]
+    }
+  ],
+  "reading_audit": [
+    {
+      "run_id": "20261020T110538Z-03f139",
+      "index": 0,
+      "text_seen": "Landwirtschaft",
+      "region": "left",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110538Z-03f139",
+      "index": 1,
+      "text_seen": "Tierhaltung",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110538Z-03f139",
+      "index": 2,
+      "text_seen": "6",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110538Z-03f139",
+      "index": 3,
+      "text_seen": "Bogenschießen",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110538Z-03f139",
+      "index": 4,
+      "text_seen": "6",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110538Z-03f139",
+      "index": 5,
+      "text_seen": "Bergbau",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110538Z-03f139",
+      "index": 6,
+      "text_seen": "6",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110538Z-03f139",
+      "index": 7,
+      "text_seen": "Schrift",
+      "region": "top",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110538Z-03f139",
+      "index": 8,
+      "text_seen": "10",
+      "region": "top",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110538Z-03f139",
+      "index": 9,
+      "text_seen": "Fallenstellen",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110538Z-03f139",
+      "index": 10,
+      "text_seen": "10",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110538Z-03f139",
+      "index": 11,
+      "text_seen": "Das Rad",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110538Z-03f139",
+      "index": 12,
+      "text_seen": "10",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110538Z-03f139",
+      "index": 13,
+      "text_seen": "Mauerarbeiten",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110538Z-03f139",
+      "index": 14,
+      "text_seen": "10",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110538Z-03f139",
+      "index": 15,
+      "text_seen": "Bronzebearbeitung",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110538Z-03f139",
+      "index": 16,
+      "text_seen": "10",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110538Z-03f139",
+      "index": 17,
+      "text_seen": "Reiten",
+      "region": "right",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110538Z-03f139",
+      "index": 18,
+      "text_seen": "19",
+      "region": "right",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110538Z-03f139",
+      "index": 19,
+      "text_seen": "Mathematik",
+      "region": "right",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110538Z-03f139",
+      "index": 20,
+      "text_seen": "19",
+      "region": "right",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110538Z-03f139",
+      "index": 21,
+      "text_seen": "Baukunst",
+      "region": "right",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110538Z-03f139",
+      "index": 22,
+      "text_seen": "19",
+      "region": "right",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110538Z-03f139",
+      "index": 23,
+      "text_seen": "Schließen",
+      "region": "bottom-left",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110538Z-03f139",
+      "index": 24,
+      "text_seen": "Freigeschaltete Einheiten:",
+      "region": "bottom-left",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110538Z-03f139",
+      "index": 25,
+      "text_seen": "• Bogenschütze (5, 7)",
+      "region": "bottom-left",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110538Z-03f139",
+      "index": 26,
+      "text_seen": "Freigeschaltete Wunder:",
+      "region": "bottom-left",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110538Z-03f139",
+      "index": 27,
+      "text_seen": "• Tempel der Artemis (+1 Kultur, +10% Nahrung in allen Städten, +15% Produktion beim Bau von",
+      "region": "bottom-left",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110538Z-03f139",
+      "index": 28,
+      "text_seen": "Bogenschießen erforschen",
+      "region": "bottom-right",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110538Z-03f139",
+      "index": 29,
+      "text_seen": "(0/24)",
+      "region": "bottom-right",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110607Z-504fcd",
+      "index": 0,
+      "text_seen": "Agriculture",
+      "region": "left",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110607Z-504fcd",
+      "index": 1,
+      "text_seen": "Animal Husbandry",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110607Z-504fcd",
+      "index": 2,
+      "text_seen": "6",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110607Z-504fcd",
+      "index": 3,
+      "text_seen": "Archery",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110607Z-504fcd",
+      "index": 4,
+      "text_seen": "6",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110607Z-504fcd",
+      "index": 5,
+      "text_seen": "Mining",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110607Z-504fcd",
+      "index": 6,
+      "text_seen": "6",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110607Z-504fcd",
+      "index": 7,
+      "text_seen": "Trapping",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110607Z-504fcd",
+      "index": 8,
+      "text_seen": "10",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110607Z-504fcd",
+      "index": 9,
+      "text_seen": "The Wheel",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110607Z-504fcd",
+      "index": 10,
+      "text_seen": "10",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110607Z-504fcd",
+      "index": 11,
+      "text_seen": "Masonry",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110607Z-504fcd",
+      "index": 12,
+      "text_seen": "10",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110607Z-504fcd",
+      "index": 13,
+      "text_seen": "Bronze Working",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110607Z-504fcd",
+      "index": 14,
+      "text_seen": "10",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110607Z-504fcd",
+      "index": 15,
+      "text_seen": "Horseback Riding",
+      "region": "right",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110607Z-504fcd",
+      "index": 16,
+      "text_seen": "19",
+      "region": "right",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110607Z-504fcd",
+      "index": 17,
+      "text_seen": "Mathematics",
+      "region": "right",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110607Z-504fcd",
+      "index": 18,
+      "text_seen": "19",
+      "region": "right",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110607Z-504fcd",
+      "index": 19,
+      "text_seen": "Construction",
+      "region": "right",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110607Z-504fcd",
+      "index": 20,
+      "text_seen": "19",
+      "region": "right",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110607Z-504fcd",
+      "index": 21,
+      "text_seen": "Close",
+      "region": "bottom-left",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110607Z-504fcd",
+      "index": 22,
+      "text_seen": "Units enabled:",
+      "region": "bottom-left",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110607Z-504fcd",
+      "index": 23,
+      "text_seen": "Archer (5",
+      "region": "bottom-left",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110607Z-504fcd",
+      "index": 24,
+      "text_seen": "7",
+      "region": "bottom-left",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110607Z-504fcd",
+      "index": 25,
+      "text_seen": "Wonders enabled:",
+      "region": "bottom-left",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110607Z-504fcd",
+      "index": 26,
+      "text_seen": "Temple of Artemis (+1",
+      "region": "bottom-left",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110607Z-504fcd",
+      "index": 27,
+      "text_seen": "Culture; +10%",
+      "region": "bottom-left",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110607Z-504fcd",
+      "index": 28,
+      "text_seen": "Food in all cities; +15% Production when constructing",
+      "region": "bottom-left",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110607Z-504fcd",
+      "index": 29,
+      "text_seen": "Archer units in this city;",
+      "region": "bottom-left",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110607Z-504fcd",
+      "index": 30,
+      "text_seen": "Research",
+      "region": "bottom-right",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110607Z-504fcd",
+      "index": 31,
+      "text_seen": "Archery",
+      "region": "bottom-right",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110607Z-504fcd",
+      "index": 32,
+      "text_seen": "(0/24)",
+      "region": "bottom-right",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110616Z-150386",
+      "index": 0,
+      "text_seen": "Landwirtschaft",
+      "region": "left",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110616Z-150386",
+      "index": 1,
+      "text_seen": "Tierhaltung",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110616Z-150386",
+      "index": 2,
+      "text_seen": "6",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110616Z-150386",
+      "index": 3,
+      "text_seen": "Bogenschießen",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110616Z-150386",
+      "index": 4,
+      "text_seen": "6",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110616Z-150386",
+      "index": 5,
+      "text_seen": "Bergbau",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110616Z-150386",
+      "index": 6,
+      "text_seen": "6",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110619Z-28c8ed",
+      "index": 0,
+      "text_seen": "Schritt",
+      "region": "top",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110619Z-28c8ed",
+      "index": 1,
+      "text_seen": "10",
+      "region": "top",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110619Z-28c8ed",
+      "index": 2,
+      "text_seen": "6",
+      "region": "left",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110619Z-28c8ed",
+      "index": 3,
+      "text_seen": "Fallenstellen",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110619Z-28c8ed",
+      "index": 4,
+      "text_seen": "10",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110619Z-28c8ed",
+      "index": 5,
+      "text_seen": "6",
+      "region": "left",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110619Z-28c8ed",
+      "index": 6,
+      "text_seen": "Das Rad",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110619Z-28c8ed",
+      "index": 7,
+      "text_seen": "10",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110619Z-28c8ed",
+      "index": 8,
+      "text_seen": "Reiten",
+      "region": "right",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110619Z-28c8ed",
+      "index": 9,
+      "text_seen": "19",
+      "region": "right",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110619Z-28c8ed",
+      "index": 10,
+      "text_seen": "Mathematik",
+      "region": "right",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110619Z-28c8ed",
+      "index": 11,
+      "text_seen": "19",
+      "region": "right",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110619Z-28c8ed",
+      "index": 12,
+      "text_seen": "6",
+      "region": "left",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110619Z-28c8ed",
+      "index": 13,
+      "text_seen": "Mauerarbeiten",
+      "region": "bottom-left",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110619Z-28c8ed",
+      "index": 14,
+      "text_seen": "10",
+      "region": "bottom-left",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110619Z-28c8ed",
+      "index": 15,
+      "text_seen": "Baukunst",
+      "region": "bottom-right",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110619Z-28c8ed",
+      "index": 16,
+      "text_seen": "19",
+      "region": "bottom-right",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110619Z-28c8ed",
+      "index": 17,
+      "text_seen": "Bronzebearbeitung",
+      "region": "bottom-left",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110619Z-28c8ed",
+      "index": 18,
+      "text_seen": "10",
+      "region": "bottom-left",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110623Z-84c480",
+      "index": 0,
+      "text_seen": "Schließen",
+      "region": "left",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110623Z-84c480",
+      "index": 1,
+      "text_seen": "Freigeschaltete Einheiten:",
+      "region": "top",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110623Z-84c480",
+      "index": 2,
+      "text_seen": "Bogenschütze (5",
+      "region": "top",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110623Z-84c480",
+      "index": 3,
+      "text_seen": "7",
+      "region": "top",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110623Z-84c480",
+      "index": 4,
+      "text_seen": "Freigeschaltete Wunder:",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110623Z-84c480",
+      "index": 5,
+      "text_seen": "Tempel der Artemis (+1",
+      "region": "bottom-left",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110623Z-84c480",
+      "index": 6,
+      "text_seen": "Kultur, +10%",
+      "region": "bottom",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110623Z-84c480",
+      "index": 7,
+      "text_seen": "Nahrung in allen Städten: +1,5% Produktion beim Bau von",
+      "region": "bottom",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110623Z-84c480",
+      "index": 8,
+      "text_seen": "Bogenschießen erforschen",
+      "region": "top-right",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110623Z-84c480",
+      "index": 9,
+      "text_seen": "(0/24)",
+      "region": "top-right",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110626Z-d7f0c1",
+      "index": 0,
+      "text_seen": "Agriculture",
+      "region": "left",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110626Z-d7f0c1",
+      "index": 1,
+      "text_seen": "Animal Husbandry",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110626Z-d7f0c1",
+      "index": 2,
+      "text_seen": "6",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110626Z-d7f0c1",
+      "index": 3,
+      "text_seen": "Archery",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110626Z-d7f0c1",
+      "index": 4,
+      "text_seen": "6",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110626Z-d7f0c1",
+      "index": 5,
+      "text_seen": "Mining",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110626Z-d7f0c1",
+      "index": 6,
+      "text_seen": "6",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110629Z-cbf87c",
+      "index": 0,
+      "text_seen": "Trapping",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110629Z-cbf87c",
+      "index": 1,
+      "text_seen": "10",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110629Z-cbf87c",
+      "index": 2,
+      "text_seen": "Horseback Riding",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110629Z-cbf87c",
+      "index": 3,
+      "text_seen": "19",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110629Z-cbf87c",
+      "index": 4,
+      "text_seen": "The Wheel",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110629Z-cbf87c",
+      "index": 5,
+      "text_seen": "10",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110629Z-cbf87c",
+      "index": 6,
+      "text_seen": "Mathematics",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110629Z-cbf87c",
+      "index": 7,
+      "text_seen": "19",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110629Z-cbf87c",
+      "index": 8,
+      "text_seen": "Masonry",
+      "region": "bottom-left",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110629Z-cbf87c",
+      "index": 9,
+      "text_seen": "10",
+      "region": "bottom-left",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110629Z-cbf87c",
+      "index": 10,
+      "text_seen": "Construction",
+      "region": "bottom-right",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110629Z-cbf87c",
+      "index": 11,
+      "text_seen": "19",
+      "region": "bottom-right",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110629Z-cbf87c",
+      "index": 12,
+      "text_seen": "Bronze Working",
+      "region": "bottom-left",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110629Z-cbf87c",
+      "index": 13,
+      "text_seen": "10",
+      "region": "bottom-left",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110632Z-6dd4bb",
+      "index": 0,
+      "text_seen": "Close",
+      "region": "left",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110632Z-6dd4bb",
+      "index": 1,
+      "text_seen": "Units enabled:",
+      "region": "top-left",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110632Z-6dd4bb",
+      "index": 2,
+      "text_seen": "• Archer (5, 7)",
+      "region": "top-left",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110632Z-6dd4bb",
+      "index": 3,
+      "text_seen": "Wonders enabled:",
+      "region": "left",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110632Z-6dd4bb",
+      "index": 4,
+      "text_seen": "• Temple of Artemis (+1 Culture; +10% Food in all cities; +15% Production when constructing Archer units in this city;",
+      "region": "bottom",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110632Z-6dd4bb",
+      "index": 5,
+      "text_seen": "Research Archer",
+      "region": "right",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110632Z-6dd4bb",
+      "index": 6,
+      "text_seen": "(0/24)",
+      "region": "right",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110635Z-777496",
+      "index": 0,
+      "text_seen": "Landwirtschaft",
+      "region": "left",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110635Z-777496",
+      "index": 1,
+      "text_seen": "Tierhaltung",
+      "region": "top-right",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110635Z-777496",
+      "index": 2,
+      "text_seen": "6",
+      "region": "top-right",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110635Z-777496",
+      "index": 3,
+      "text_seen": "Bogenschießen",
+      "region": "right",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110635Z-777496",
+      "index": 4,
+      "text_seen": "6",
+      "region": "right",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110635Z-777496",
+      "index": 5,
+      "text_seen": "Bergbau und Erzgew...",
+      "region": "bottom-right",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110635Z-777496",
+      "index": 6,
+      "text_seen": "6",
+      "region": "bottom-right",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110638Z-73fd38",
+      "index": 0,
+      "text_seen": "Schritt",
+      "region": "top-left",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110638Z-73fd38",
+      "index": 1,
+      "text_seen": "10",
+      "region": "top",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110638Z-73fd38",
+      "index": 2,
+      "text_seen": "6",
+      "region": "left",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110638Z-73fd38",
+      "index": 3,
+      "text_seen": "Fallenstellen",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110638Z-73fd38",
+      "index": 4,
+      "text_seen": "10",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110638Z-73fd38",
+      "index": 5,
+      "text_seen": "Reiten",
+      "region": "top-right",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110638Z-73fd38",
+      "index": 6,
+      "text_seen": "19",
+      "region": "top-right",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110638Z-73fd38",
+      "index": 7,
+      "text_seen": "6",
+      "region": "left",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110638Z-73fd38",
+      "index": 8,
+      "text_seen": "Das Rad",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110638Z-73fd38",
+      "index": 9,
+      "text_seen": "10",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110638Z-73fd38",
+      "index": 10,
+      "text_seen": "Mathematik",
+      "region": "right",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110638Z-73fd38",
+      "index": 11,
+      "text_seen": "19",
+      "region": "right",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110638Z-73fd38",
+      "index": 12,
+      "text_seen": "6",
+      "region": "bottom-left",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110638Z-73fd38",
+      "index": 13,
+      "text_seen": "Mauerarbeiten",
+      "region": "bottom-left",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110638Z-73fd38",
+      "index": 14,
+      "text_seen": "10",
+      "region": "bottom-left",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110638Z-73fd38",
+      "index": 15,
+      "text_seen": "Baukunst",
+      "region": "bottom-right",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110638Z-73fd38",
+      "index": 16,
+      "text_seen": "19",
+      "region": "bottom-right",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110638Z-73fd38",
+      "index": 17,
+      "text_seen": "Bronzebearbeitung",
+      "region": "bottom-left",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110638Z-73fd38",
+      "index": 18,
+      "text_seen": "10",
+      "region": "bottom-left",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110641Z-036be3",
+      "index": 0,
+      "text_seen": "Schließen",
+      "region": "left",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110641Z-036be3",
+      "index": 1,
+      "text_seen": "Freigeschaltete Einheiten:",
+      "region": "top",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110641Z-036be3",
+      "index": 2,
+      "text_seen": "Bogenschütze (5",
+      "region": "top",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110641Z-036be3",
+      "index": 3,
+      "text_seen": "7",
+      "region": "top",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110641Z-036be3",
+      "index": 4,
+      "text_seen": "Freigeschaltete Wunder:",
+      "region": "center",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110641Z-036be3",
+      "index": 5,
+      "text_seen": "Tempel der Artemis (+1",
+      "region": "bottom-left",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110641Z-036be3",
+      "index": 6,
+      "text_seen": "Kultur; +10%",
+      "region": "bottom",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110641Z-036be3",
+      "index": 7,
+      "text_seen": "Nahrung in allen Städten; +15% Produktion beim Bau von",
+      "region": "bottom",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110641Z-036be3",
+      "index": 8,
+      "text_seen": "Bogenschießen erforschen",
+      "region": "right",
+      "review": "reviewed"
+    },
+    {
+      "run_id": "20261020T110641Z-036be3",
+      "index": 9,
+      "text_seen": "(0/24)",
+      "region": "right",
+      "review": "reviewed"
+    }
+  ],
+  "halt_reason": null,
+  "confirmed_deepseek_requests_sent": 12,
+  "deepseek_requests_sent": 12,
+  "combined_actual_requests_sent": 53,
+  "reserved_usd": "0.2359296",
+  "usage_peak_estimate_usd": "0.008712012",
+  "usage_off_peak_estimate_usd": "0.004356006",
+  "unknown_usage_reservations_usd": "0",
+  "balance_initial_usd": "2.00",
+  "balance_last_usd": "2.00",
+  "observed_balance_delta_usd": "0.00"
+}

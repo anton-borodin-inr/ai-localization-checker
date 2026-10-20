@@ -1,0 +1,33 @@
+{
+  "findings": [],
+  "readings": [
+    {
+      "text_seen": "Landwirtschaft",
+      "region": "left"
+    },
+    {
+      "text_seen": "Tierhaltung",
+      "region": "center"
+    },
+    {
+      "text_seen": "6",
+      "region": "center"
+    },
+    {
+      "text_seen": "Bogenschießen",
+      "region": "center"
+    },
+    {
+      "text_seen": "6",
+      "region": "center"
+    },
+    {
+      "text_seen": "Bergbau",
+      "region": "center"
+    },
+    {
+      "text_seen": "6",
+      "region": "center"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "id": "6a0eb839-b711-4c77-8292-8bd4d5b90e80",
+  "object": "chat.completion",
+  "created": 1792494368,
+  "model": "deepseek-flash",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\"findings\": [], \"readings\": [{\"text_seen\": \"Agriculture\", \"region\": \"left\"}, {\"text_seen\": \"Animal Husbandry\", \"region\": \"center\"}, {\"text_seen\": \"6\", \"region\": \"center\"}, {\"text_seen\": \"Archery\", \"region\": \"center\"}, {\"text_seen\": \"6\", \"region\": \"center\"}, {\"text_seen\": \"Mining\", \"region\": \"center\"}, {\"text_seen\": \"6\", \"region\": \"center\"}, {\"text_seen\": \"Trapping\", \"region\": \"center\"}, {\"text_seen\": \"10\", \"region\": \"center\"}, {\"text_seen\": \"The Wheel\", \"region\": \"center\"}, {\"text_seen\": \"10\", \"region\": \"center\"}, {\"text_seen\": \"Masonry\", \"region\": \"center\"}, {\"text_seen\": \"10\", \"region\": \"center\"}, {\"text_seen\": \"Bronze Working\", \"region\": \"center\"}, {\"text_seen\": \"10\", \"region\": \"center\"}, {\"text_seen\": \"Horseback Riding\", \"region\": \"right\"}, {\"text_seen\": \"19\", \"region\": \"right\"}, {\"text_seen\": \"Mathematics\", \"region\": \"right\"}, {\"text_seen\": \"19\", \"region\": \"right\"}, {\"text_seen\": \"Construction\", \"region\": \"right\"}, {\"text_seen\": \"19\", \"region\": \"right\"}, {\"text_seen\": \"Close\", \"region\": \"bottom-left\"}, {\"text_seen\": \"Units enabled:\", \"region\": \"bottom-left\"}, {\"text_seen\": \"Archer (5\", \"region\": \"bottom-left\"}, {\"text_seen\": \"7\", \"region\": \"bottom-left\"}, {\"text_seen\": \"Wonders enabled:\", \"region\": \"bottom-left\"}, {\"text_seen\": \"Temple of Artemis (+1\", \"region\": \"bottom-left\"}, {\"text_seen\": \"Culture; +10%\", \"region\": \"bottom-left\"}, {\"text_seen\": \"Food in all cities; +15% Production when constructing\", \"region\": \"bottom-left\"}, {\"text_seen\": \"Archer units in this city;\", \"region\": \"bottom-left\"}, {\"text_seen\": \"Research\", \"region\": \"bottom-right\"}, {\"text_seen\": \"Archery\", \"region\": \"bottom-right\"}, {\"text_seen\": \"(0/24)\", \"region\": \"bottom-right\"}]}"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1620,
+    "completion_tokens": 533,
+    "total_tokens": 2153,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 1620
+  },
+  "system_fingerprint": "e72d3c7f663d3e1383b00b3884cb4501"
+}

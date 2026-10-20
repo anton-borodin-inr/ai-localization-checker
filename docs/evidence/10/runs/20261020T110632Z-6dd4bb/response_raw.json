@@ -1,0 +1,28 @@
+{
+  "id": "257e0079-2473-4e2d-be3a-209da54f38fc",
+  "object": "chat.completion",
+  "created": 1792494392,
+  "model": "deepseek-flash",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\"findings\": [], \"readings\": [{\"text_seen\": \"Close\", \"region\": \"left\"}, {\"text_seen\": \"Units enabled:\", \"region\": \"top-left\"}, {\"text_seen\": \"• Archer (5, 7)\", \"region\": \"top-left\"}, {\"text_seen\": \"Wonders enabled:\", \"region\": \"left\"}, {\"text_seen\": \"• Temple of Artemis (+1 Culture; +10% Food in all cities; +15% Production when constructing Archer units in this city;\", \"region\": \"bottom\"}, {\"text_seen\": \"Research Archer\", \"region\": \"right\"}, {\"text_seen\": \"(0/24)\", \"region\": \"right\"}]}"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 907,
+    "completion_tokens": 151,
+    "total_tokens": 1058,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 907
+  },
+  "system_fingerprint": "e72d3c7f663d3e1383b00b3884cb4501"
+}

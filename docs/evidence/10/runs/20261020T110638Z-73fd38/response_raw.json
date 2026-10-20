@@ -1,0 +1,28 @@
+{
+  "id": "fd8b716b-ba90-4828-acef-1cc17d1d7f53",
+  "object": "chat.completion",
+  "created": 1792494398,
+  "model": "deepseek-flash",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\"findings\": [], \"readings\": [{\"text_seen\": \"Schritt\", \"region\": \"top-left\"}, {\"text_seen\": \"10\", \"region\": \"top\"}, {\"text_seen\": \"6\", \"region\": \"left\"}, {\"text_seen\": \"Fallenstellen\", \"region\": \"center\"}, {\"text_seen\": \"10\", \"region\": \"center\"}, {\"text_seen\": \"Reiten\", \"region\": \"top-right\"}, {\"text_seen\": \"19\", \"region\": \"top-right\"}, {\"text_seen\": \"6\", \"region\": \"left\"}, {\"text_seen\": \"Das Rad\", \"region\": \"center\"}, {\"text_seen\": \"10\", \"region\": \"center\"}, {\"text_seen\": \"Mathematik\", \"region\": \"right\"}, {\"text_seen\": \"19\", \"region\": \"right\"}, {\"text_seen\": \"6\", \"region\": \"bottom-left\"}, {\"text_seen\": \"Mauerarbeiten\", \"region\": \"bottom-left\"}, {\"text_seen\": \"10\", \"region\": \"bottom-left\"}, {\"text_seen\": \"Baukunst\", \"region\": \"bottom-right\"}, {\"text_seen\": \"19\", \"region\": \"bottom-right\"}, {\"text_seen\": \"Bronzebearbeitung\", \"region\": \"bottom-left\"}, {\"text_seen\": \"10\", \"region\": \"bottom-left\"}]}"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1338,
+    "completion_tokens": 305,
+    "total_tokens": 1643,
+    "prompt_tokens_details": {
+      "cached_tokens": 1152
+    },
+    "prompt_cache_hit_tokens": 1152,
+    "prompt_cache_miss_tokens": 186
+  },
+  "system_fingerprint": "e72d3c7f663d3e1383b00b3884cb4501"
+}

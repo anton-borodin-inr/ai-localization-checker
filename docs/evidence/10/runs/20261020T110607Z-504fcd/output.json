@@ -1,0 +1,137 @@
+{
+  "findings": [],
+  "readings": [
+    {
+      "text_seen": "Agriculture",
+      "region": "left"
+    },
+    {
+      "text_seen": "Animal Husbandry",
+      "region": "center"
+    },
+    {
+      "text_seen": "6",
+      "region": "center"
+    },
+    {
+      "text_seen": "Archery",
+      "region": "center"
+    },
+    {
+      "text_seen": "6",
+      "region": "center"
+    },
+    {
+      "text_seen": "Mining",
+      "region": "center"
+    },
+    {
+      "text_seen": "6",
+      "region": "center"
+    },
+    {
+      "text_seen": "Trapping",
+      "region": "center"
+    },
+    {
+      "text_seen": "10",
+      "region": "center"
+    },
+    {
+      "text_seen": "The Wheel",
+      "region": "center"
+    },
+    {
+      "text_seen": "10",
+      "region": "center"
+    },
+    {
+      "text_seen": "Masonry",
+      "region": "center"
+    },
+    {
+      "text_seen": "10",
+      "region": "center"
+    },
+    {
+      "text_seen": "Bronze Working",
+      "region": "center"
+    },
+    {
+      "text_seen": "10",
+      "region": "center"
+    },
+    {
+      "text_seen": "Horseback Riding",
+      "region": "right"
+    },
+    {
+      "text_seen": "19",
+      "region": "right"
+    },
+    {
+      "text_seen": "Mathematics",
+      "region": "right"
+    },
+    {
+      "text_seen": "19",
+      "region": "right"
+    },
+    {
+      "text_seen": "Construction",
+      "region": "right"
+    },
+    {
+      "text_seen": "19",
+      "region": "right"
+    },
+    {
+      "text_seen": "Close",
+      "region": "bottom-left"
+    },
+    {
+      "text_seen": "Units enabled:",
+      "region": "bottom-left"
+    },
+    {
+      "text_seen": "Archer (5",
+      "region": "bottom-left"
+    },
+    {
+      "text_seen": "7",
+      "region": "bottom-left"
+    },
+    {
+      "text_seen": "Wonders enabled:",
+      "region": "bottom-left"
+    },
+    {
+      "text_seen": "Temple of Artemis (+1",
+      "region": "bottom-left"
+    },
+    {
+      "text_seen": "Culture; +10%",
+      "region": "bottom-left"
+    },
+    {
+      "text_seen": "Food in all cities; +15% Production when constructing",
+      "region": "bottom-left"
+    },
+    {
+      "text_seen": "Archer units in this city;",
+      "region": "bottom-left"
+    },
+    {
+      "text_seen": "Research",
+      "region": "bottom-right"
+    },
+    {
+      "text_seen": "Archery",
+      "region": "bottom-right"
+    },
+    {
+      "text_seen": "(0/24)",
+      "region": "bottom-right"
+    }
+  ]
+}

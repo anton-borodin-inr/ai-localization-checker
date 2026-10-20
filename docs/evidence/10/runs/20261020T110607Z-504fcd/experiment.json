@@ -1,0 +1,17 @@
+{
+  "image": "docs/evidence/8/final/tech-picker__en__2400x1080__clean__1271001.png",
+  "image_sha256": "88ff1c55aef33cc9ff0fd89cd5912384b7a1017d8d9ca2d88965ec39389b9f47",
+  "tile": "full",
+  "box": [
+    0,
+    0,
+    2400,
+    1080
+  ],
+  "max_requests": 1,
+  "slot": 2,
+  "parent_gemini_slot": 2,
+  "option": "original",
+  "prepared_image_sha256": "88ff1c55aef33cc9ff0fd89cd5912384b7a1017d8d9ca2d88965ec39389b9f47",
+  "approval_sha256": "b55c6107c239ad1630ee7c01dac5f1fd996b27c3b1f43705e03cfce289196c68"
+}
