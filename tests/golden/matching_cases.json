@@ -622,6 +622,129 @@
         "confusion": [],
         "fn_on_not_checked": 1
       }
+    },
+    {
+      "id": "12_full_text_for_truncated_label",
+      "rule": "A finding that reports the full expected text of a truncated label identifies that label (text_expected). It is a TP and not a hallucination.",
+      "labels": [
+        {
+          "id": "L1",
+          "defect_type": "truncated_text",
+          "text_expected": "Bergbau und Erzgewinnung",
+          "text_seen": "Bergbau und Erzgew...",
+          "region": "center"
+        }
+      ],
+      "findings": [
+        {
+          "id": "F1",
+          "defect_type": "truncated_text",
+          "text_seen": "Bergbau und Erzgewinnung",
+          "region": "center",
+          "confidence": 0.9
+        }
+      ],
+      "status": "checked",
+      "screen_texts": [
+        "Bergbau und Erzgew...",
+        "Bogenschießen",
+        "Tierhaltung",
+        "Landwirtschaft"
+      ],
+      "expected": {
+        "tp": 1,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall_checked": 1.0,
+        "recall_all": 1.0,
+        "hallucinations": 0,
+        "duplicates_collapsed": 0,
+        "not_checked_screens": 0,
+        "confusion": [
+          {
+            "label_type": "truncated_text",
+            "finding_type": "truncated_text",
+            "count": 1
+          }
+        ],
+        "matches": [
+          [
+            "F1",
+            "L1"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "13_one_to_one_assignment",
+      "rule": "Each label matches at most one finding, and the assignment maximizes matched labels: a finding equally close to a taken label and a free label goes to the free one instead of becoming a duplicate.",
+      "labels": [
+        {
+          "id": "L1",
+          "defect_type": "untranslated",
+          "text_expected": "Nouvelle partie",
+          "text_seen": "Neues Spiel",
+          "region": "top"
+        },
+        {
+          "id": "L2",
+          "defect_type": "untranslated",
+          "text_expected": "Nouvelles parties",
+          "text_seen": "Neue Spiele",
+          "region": "center"
+        }
+      ],
+      "findings": [
+        {
+          "id": "F1",
+          "defect_type": "untranslated",
+          "text_seen": "Neues Spiel",
+          "region": "top",
+          "confidence": 0.9
+        },
+        {
+          "id": "F2",
+          "defect_type": "untranslated",
+          "text_seen": "Neue Spiel",
+          "region": "center",
+          "confidence": 0.9
+        }
+      ],
+      "status": "checked",
+      "screen_texts": [
+        "Neues Spiel",
+        "Neue Spiele",
+        "Optionen"
+      ],
+      "expected": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall_checked": 1.0,
+        "recall_all": 1.0,
+        "hallucinations": 0,
+        "duplicates_collapsed": 0,
+        "not_checked_screens": 0,
+        "confusion": [
+          {
+            "label_type": "untranslated",
+            "finding_type": "untranslated",
+            "count": 2
+          }
+        ],
+        "matches": [
+          [
+            "F1",
+            "L1"
+          ],
+          [
+            "F2",
+            "L2"
+          ]
+        ]
+      }
     }
   ]
 }
