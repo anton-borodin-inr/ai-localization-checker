@@ -166,7 +166,7 @@ def test_key_never_leaks(name, screenshot, tmp_path, capsys, caplog, monkeypatch
     outcome = response() if name == "success" else {**FAILURES, **RESPONSES}[name]
     monkeypatch.setenv("GEMINI_API_KEY", KEY)
     monkeypatch.setattr(
-        cli, "make_provider", lambda key, model, timeout: provider(outcome)
+        cli, "make_provider", lambda name, key, timeout: provider(outcome)
     )
     monkeypatch.setattr(cli, "output_directory", lambda path: path)
     runs = tmp_path / "runs"
@@ -181,6 +181,8 @@ def test_key_never_leaks(name, screenshot, tmp_path, capsys, caplog, monkeypatch
             str(runs),
             "--max-requests",
             "2",
+            "--provider",
+            "gemini",
         ],
     )
     monkeypatch.setattr("l10n_checker.vision.time.sleep", lambda s: None)

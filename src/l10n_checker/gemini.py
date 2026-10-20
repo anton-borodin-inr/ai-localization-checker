@@ -40,6 +40,7 @@ def response_schema() -> dict:
 class GeminiProvider:
     name = "gemini"
     sdk_version = SDK_VERSION
+    wrapper_version = None
 
     def __init__(
         self,
@@ -78,6 +79,12 @@ class GeminiProvider:
             "timeout_s": timeout_s,
             "sdk_retry_attempts": self._http_options.retry_options.attempts,
         }
+
+    def wrap_prompt(self, prompt: str) -> str:
+        return prompt
+
+    def estimate_cost(self, usage: dict | None) -> dict | None:
+        return None
 
     def generate(self, image: bytes, mime_type: str, prompt: str) -> ProviderResponse:
         try:

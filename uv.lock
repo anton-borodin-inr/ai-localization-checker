@@ -12,6 +12,7 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "google-genai" },
+    { name = "httpx" },
     { name = "pillow" },
     { name = "pydantic" },
 ]
@@ -25,6 +26,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "google-genai", specifier = ">=2.31.0" },
+    { name = "httpx", specifier = ">=0.28.1" },
     { name = "pillow", specifier = ">=13.0.0" },
     { name = "pydantic", specifier = ">=2.14.1" },
 ]

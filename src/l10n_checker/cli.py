@@ -63,31 +63,41 @@ def main() -> int:
     return 0
 
 
-def make_provider(api_key: str, model: str, timeout_s: int):
-    from l10n_checker.gemini import GeminiProvider
+API_KEY_VARIABLES = {"deepseek": "DEEPSEEK_API_KEY", "gemini": "GEMINI_API_KEY"}
 
-    return GeminiProvider(api_key, model, timeout_s)
+
+def make_provider(provider: str, api_key: str, timeout_s: int | None):
+    if provider == "deepseek":
+        from l10n_checker.deepseek import DEFAULT_TIMEOUT_S, DeepSeekProvider
+
+        return DeepSeekProvider(api_key, timeout_s or DEFAULT_TIMEOUT_S)
+    from l10n_checker.gemini import DEFAULT_MODEL, DEFAULT_TIMEOUT_S, GeminiProvider
+
+    return GeminiProvider(api_key, DEFAULT_MODEL, timeout_s or DEFAULT_TIMEOUT_S)
 
 
 def check_main() -> int:
-    from l10n_checker.gemini import DEFAULT_MODEL, DEFAULT_TIMEOUT_S
-
     parser = argparse.ArgumentParser(
-        description="Check one screenshot for localization defects with Gemini."
+        description="Check one screenshot for localization defects with a vision LLM."
     )
     parser.add_argument("--image", type=Path, required=True)
     parser.add_argument("--runs-dir", type=Path, default=Path("data/runs"))
     parser.add_argument("--max-requests", type=int, default=1)
-    parser.add_argument("--model", default=DEFAULT_MODEL)
-    parser.add_argument("--timeout", type=int, default=DEFAULT_TIMEOUT_S)
+    parser.add_argument(
+        "--provider", choices=sorted(API_KEY_VARIABLES), default="deepseek"
+    )
+    parser.add_argument(
+        "--timeout", type=int, help="Seconds; defaults to the provider's default."
+    )
     args = parser.parse_args()
-    api_key = os.environ.get("GEMINI_API_KEY", "")
+    variable = API_KEY_VARIABLES[args.provider]
+    api_key = os.environ.get(variable, "")
     if not api_key:
-        print("GEMINI_API_KEY is not set; no request was sent.", file=sys.stderr)
+        print(f"{variable} is not set; no request was sent.", file=sys.stderr)
         return 1
     try:
         result, run_dir = run_check(
-            make_provider(api_key, args.model, args.timeout),
+            make_provider(args.provider, api_key, args.timeout),
             args.image,
             output_directory(args.runs_dir),
             RequestBudget(args.max_requests),

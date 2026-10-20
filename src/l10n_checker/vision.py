@@ -17,6 +17,8 @@ from pydantic import BaseModel, ConfigDict, Field, ValidationError, model_valida
 from l10n_checker.capture import png_size
 
 SCHEMA_VERSION = "v0-draft"
+# Bump whenever PROMPT changes.
+PROMPT_VERSION = "v0"
 
 DefectType = Literal["truncated_text", "overlap", "untranslated", "other"]
 Region = Literal[
@@ -101,6 +103,7 @@ class ProviderResponse:
     raw: dict
     model_version: str | None = None
     usage: dict | None = None
+    system_fingerprint: str | None = None
 
 
 class VisionProvider(Protocol):
@@ -108,6 +111,13 @@ class VisionProvider(Protocol):
     model: str
     settings: dict[str, Any]
     sdk_version: str
+    wrapper_version: str | None
+
+    def wrap_prompt(self, prompt: str) -> str:
+        """The exact text sent: the detector prompt plus any provider format wrapper."""
+        ...
+
+    def estimate_cost(self, usage: dict | None) -> dict | None: ...
 
     def generate(
         self, image: bytes, mime_type: str, prompt: str
@@ -146,6 +156,7 @@ def new_run_id() -> str:
 def _call(
     provider: VisionProvider,
     image: bytes,
+    prompt: str,
     budget: RequestBudget,
     attempts: list[dict],
     retry_delay_s: float,
@@ -155,7 +166,7 @@ def _call(
         budget.take()
         started = time.monotonic()
         try:
-            response = provider.generate(image, "image/png", PROMPT)
+            response = provider.generate(image, "image/png", prompt)
         except ProviderError as exc:
             attempts.append(_attempt(started, exc.kind))
             if exc.kind != "rate_limited" or len(attempts) > 1:
@@ -172,6 +183,10 @@ def _attempt(started: float, outcome: str) -> dict:
     return {"outcome": outcome, "latency_s": round(time.monotonic() - started, 3)}
 
 
+def _sha256(data: bytes) -> str:
+    return hashlib.sha256(data).hexdigest()
+
+
 def run_check(
     provider: VisionProvider,
     image_path: Path,
@@ -183,6 +198,7 @@ def run_check(
     """Check one screenshot and record the run under runs_dir/<run_id>/."""
     image = image_path.read_bytes()
     width, height = png_size(image)
+    sent_prompt = provider.wrap_prompt(PROMPT)
     run_id = new_run_id()
     run_dir = runs_dir / run_id
     run_dir.mkdir(parents=True)
@@ -193,7 +209,7 @@ def run_check(
     findings: list[Finding] = []
     reason: str | None = None
     try:
-        response = _call(provider, image, budget, attempts, retry_delay_s)
+        response = _call(provider, image, sent_prompt, budget, attempts, retry_delay_s)
         raw = response.raw
         if not response.text.strip():
             raise ProviderError("empty_response", "the response has no text", raw)
@@ -216,18 +232,26 @@ def run_check(
         "model": provider.model,
         "model_version": response.model_version if response else None,
         "sdk_version": provider.sdk_version,
+        "system_fingerprint": response.system_fingerprint if response else None,
         "schema_version": SCHEMA_VERSION,
+        "prompt_version": PROMPT_VERSION,
+        "prompt_sha256": _sha256(PROMPT.encode()),
+        "wrapper_version": provider.wrapper_version,
+        "sent_prompt_sha256": _sha256(sent_prompt.encode()),
         "settings": provider.settings,
         "image": {
             "path": str(image_path),
-            "sha256": hashlib.sha256(image).hexdigest(),
+            "sha256": _sha256(image),
+            "bytes": len(image),
             "width": width,
             "height": height,
+            "mime_type": "image/png",
         },
         "max_requests": budget.max_requests,
         "requests_sent": budget.used,
         "attempts": attempts,
         "usage": response.usage if response else None,
+        "estimated_cost": provider.estimate_cost(response.usage) if response else None,
     }
     if reason is None:
         result = CheckResult(
@@ -245,6 +269,7 @@ def run_check(
         (run_dir / name).write_text(redact(text, secrets), encoding="utf-8")
 
     write("prompt.txt", PROMPT)
+    write("prompt_sent.txt", sent_prompt)
     write("run.json", json.dumps(metadata, indent=2, ensure_ascii=False))
     if raw is not None:
         write("response_raw.json", json.dumps(raw, indent=2, ensure_ascii=False))
