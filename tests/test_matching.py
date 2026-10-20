@@ -1,6 +1,7 @@
 """Algorithm boundaries/invariants; hand-computed score examples stay in golden/."""
 
 import math
+from time import perf_counter
 
 import pytest
 
@@ -238,3 +239,19 @@ def test_region_blocked_expected_text_is_not_a_hallucination():
     )
     assert result.unmatched_finding_indices == (0,)
     assert not result.hallucination_indices
+
+
+def test_twenty_five_similar_labels_finish_under_one_second():
+    texts = [f"Technologie Nummer {number:02d}" for number in range(1, 26)]
+    labels = [label(text, text_expected=text) for text in texts]
+    findings = [finding(text) for text in texts]
+    started = perf_counter()
+    result = match_screen(labels, findings, texts)
+    elapsed = perf_counter() - started
+    assert elapsed < 1, f"match_screen took {elapsed:.6f}s (limit: 1s)"
+    assert pairs(result) == [(index, index) for index in range(25)]
+    assert not result.duplicate_finding_indices
+    assert not result.unmatched_finding_indices
+    assert not result.unmatched_label_indices
+    assert not result.hallucination_indices
+    print(f"25 similar labels / 25 findings: match_screen took {elapsed:.6f}s")

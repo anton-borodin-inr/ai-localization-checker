@@ -7,7 +7,6 @@ from collections import Counter
 from collections.abc import Sequence
 from dataclasses import dataclass
 from fractions import Fraction
-from functools import cache
 from typing import Literal
 
 from pydantic import BaseModel, ConfigDict
@@ -145,37 +144,113 @@ def _text_is_present(
     )
 
 
-def _assign(candidates: Sequence[Sequence[tuple[int, Fraction]]]) -> list[int | None]:
-    """Optimal one-to-one assignment of findings to labels (PR #27, rule 2).
+def _minimum_cost_columns(costs: Sequence[Sequence[int]]) -> list[int]:
+    """Rectangular Hungarian algorithm; nonempty rows <= columns.
 
-    `candidates[f]` lists (label index, score) for finding f in ascending label
-    order. The result maximizes the number of matched labels, then the total
-    exact score. Among equal assignments it is the lexicographically smallest
-    by input order: findings are decided in order, each trying its labels in
-    ascending order before staying unassigned, and the first option that still
-    reaches the optimum is kept. The search is exact; its state is the set of
-    labels already taken, which stays small for one screen's labels.
+    Return one distinct column per row in O(rows**2 * columns) integer
+    operations. Potentials and shortest augmenting paths use exact integers.
+    Column zero is the temporary root of each augmenting path.
     """
+    rows, columns = len(costs), len(costs[0])
+    row_potential = [0] * (rows + 1)
+    column_potential = [0] * (columns + 1)
+    row_for_column = [0] * (columns + 1)
+    predecessor = [0] * (columns + 1)
+    for row in range(1, rows + 1):
+        row_for_column[0] = row
+        column = 0
+        minimum: list[int | None] = [None] * (columns + 1)
+        visited = [False] * (columns + 1)
+        while True:
+            visited[column] = True
+            current_row = row_for_column[column]
+            delta = None
+            next_column = 0
+            for target in range(1, columns + 1):
+                if visited[target]:
+                    continue
+                reduced = (
+                    costs[current_row - 1][target - 1]
+                    - row_potential[current_row]
+                    - column_potential[target]
+                )
+                if minimum[target] is None or reduced < minimum[target]:
+                    minimum[target] = reduced
+                    predecessor[target] = column
+                if delta is None or minimum[target] < delta:
+                    delta, next_column = minimum[target], target
+            # There is always a free column because rows <= columns.
+            assert delta is not None
+            for target in range(columns + 1):
+                if visited[target]:
+                    row_potential[row_for_column[target]] += delta
+                    column_potential[target] -= delta
+                elif minimum[target] is not None:
+                    minimum[target] -= delta
+            column = next_column
+            if row_for_column[column] == 0:
+                break
+        while column:
+            previous = predecessor[column]
+            row_for_column[column] = row_for_column[previous]
+            column = previous
 
-    @cache
-    def best(finding: int, taken: int) -> tuple[tuple[int, Fraction], tuple]:
-        if finding == len(candidates):
-            return (0, Fraction(0)), ()
-        options = [
-            (label, score)
-            for label, score in candidates[finding]
-            if not taken >> label & 1
+    assigned = [0] * rows
+    for column in range(1, columns + 1):
+        if row_for_column[column]:
+            assigned[row_for_column[column] - 1] = column - 1
+    return assigned
+
+
+def _assign(candidates: Sequence[Sequence[tuple[int, Fraction]]]) -> list[int | None]:
+    """Optimal one-to-one assignment with the exact search's tie-breaking.
+
+    `candidates[f]` lists distinct (label index, score) pairs in ascending label
+    order. Maximize matched labels, then the exact Fraction score sum. For ties,
+    choose the lexicographically smallest assignment in finding input order,
+    with ascending label indices preferred before None at every position.
+
+    Scale scores by their denominators' LCM and encode the three priorities
+    as one integer weight; no float rounding or epsilon is used. The Hungarian
+    algorithm assigns F findings to L real plus F dummy columns in
+    O(F**2 * (L + F)) integer operations and O(F * (L + F)) space. Integer bit
+    lengths are polynomial in the input size; see docs/matching-metrics.md
+    for the weight bounds. Neither candidate generation nor scoring changes.
+    """
+    findings = len(candidates)
+    labels = sorted({label for row in candidates for label, _ in row})
+    if not labels:
+        return [None] * findings
+    label_columns = {label: column for column, label in enumerate(labels)}
+    denominator = math.lcm(
+        *(score.denominator for row in candidates for _, score in row)
+    )
+    scaled = [
+        [
+            (label_columns[label], score.numerator * (denominator // score.denominator))
+            for label, score in row
         ]
-        chosen = None
-        for label, score in [*options, (None, Fraction(0))]:
-            rest_taken = taken if label is None else taken | 1 << label
-            (count, total), rest = best(finding + 1, rest_taken)
-            value = (count + (label is not None), total + score)
-            if chosen is None or value > chosen[0]:
-                chosen = (value, (label, *rest))
-        return chosen
-
-    return list(best(0, 0)[1])
+        for row in candidates
+    ]
+    max_score = max(abs(score) for row in scaled for _, score in row)
+    base = len(labels) + 1
+    score_weight = base**findings
+    # Total scaled scores lie in [-F*M, F*M]; tie digits total < score_weight.
+    count_weight = (2 * findings * max_score + 1) * score_weight
+    place = score_weight // base
+    costs = []
+    for row in scaled:
+        # Nonedges cost 1, dummy columns 0, real edges < 0. With F dummies,
+        # any nonedge could be replaced by a free dummy, so none is optimal.
+        costs.append([1] * len(labels) + [0] * findings)
+        for column, score in row:
+            preference = (len(labels) - column) * place
+            costs[-1][column] = -(count_weight + score * score_weight + preference)
+        place //= base
+    return [
+        labels[column] if column < len(labels) else None
+        for column in _minimum_cost_columns(costs)
+    ]
 
 
 @dataclass(frozen=True)

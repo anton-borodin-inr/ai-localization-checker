@@ -39,9 +39,8 @@ Provisional conventions (D-029, Proposed):
   are decided in order, each prefers its lowest-index label, and a finding stays
   unassigned only if that still reaches the optimum. A finding equally close to
   a taken label and a free label therefore takes the free one (golden case 13).
-  The search is exact and adds no dependency; its state is the set of labels
-  already taken, which is small for one screen. Type and confidence do not
-  affect detection.
+  The polynomial assignment described below is exact and adds no dependency.
+  Type and confidence do not affect detection.
 - Region restricts candidates only when a label's normalized visible text occurs
   more than once in `screen_texts` or the labels. It must then equal the label's
   grid cell. Unique text ignores region, including distant cells. Region values
@@ -70,6 +69,62 @@ provisional, not a final evaluation threshold.
 indices and hallucination indices. A `not_checked` result carries no findings
 and does not classify labels as checked misses. Unknown status or findings on a
 `not_checked` screen raise `ValueError` rather than silently becoming clean.
+
+## Exact polynomial assignment (issue #31)
+
+`_assign` uses a rectangular Hungarian algorithm with one row per finding,
+`L` real columns for the distinct candidate labels, and `F` dummy columns for
+unassigned findings. Missing label indices are compressed in ascending order;
+the returned indices still refer to the original labels. Its objective and
+result are identical to the former exact search:
+
+1. Maximize the number of matched labels.
+2. Maximize the total exact `Fraction` score.
+3. Choose the lexicographically smallest assignment in finding input order,
+   preferring ascending label indices before `None` at each position.
+
+The priorities are encoded as exact integer weights. Let `D` be the LCM of
+all candidate score denominators and scale each score to integer `s`.
+Let `M = max(abs(s))`, `B = L + 1`, `T = B**F`, and
+`C = (2 * F * M + 1) * T`. A candidate at finding index `f` and compressed
+label index `j` has weight:
+
+```text
+C + s * T + (L - j) * B**(F - 1 - f)
+```
+
+The final term encodes the tie-breaking as base-`B` digits: a lower label index
+has a larger digit, an unassigned finding has digit zero, and earlier findings
+occupy more significant positions. The total tie term lies in `[0, T - 1]`, so
+one scaled score unit outweighs every possible tie difference. Total scaled
+scores lie in `[-F*M, F*M]`, so one additional match's `C` outweighs every
+possible score and tie difference combined. This also handles zero or negative
+candidate scores without weakening cardinality priority, although the current
+text matcher supplies positive scores.
+
+Hungarian minimizes the negated candidate weights. Dummy edges cost zero and
+nonedges cost one; valid candidate edges always have negative cost. There are
+`F` dummy columns, so an assignment using a nonedge could always improve by
+switching that row to an unused dummy. Thus a nonedge is never selected.
+
+The algorithm takes `O(F**2 * (L + F))` integer operations and
+`O(F * (L + F))` space. Although the encoded weights have large numeric values,
+their **bit lengths** are polynomial: the LCM's bit length is at most the sum
+of the input denominator bit lengths, and `B**F` needs `O(F * log(L + 1))`
+bits. There is no rounding, floating-point objective or epsilon tie-breaker.
+Candidate construction, normalization, thresholds, region rules, duplicate
+collapse, hallucination rules and metrics are unchanged.
+
+`tests/test_assignment.py` preserves the former production search from
+`335f6a4` as an independent test oracle. It compares complete assignments on
+1000 seeded small inputs (up to eight labels and ten findings), with deliberate
+score ties, sparse indices, empty/dense graphs and exact fractions. Boundary
+cases also cover tied sums with different denominators, differences below float
+precision, and cardinality priority. The same tests were committed and passed
+before replacing the production algorithm. The integration performance test
+uses 25 mutually similar `Technologie Nummer NN` labels and 25 findings and
+requires the entire `match_screen` call to take less than one second. Existing
+human-owned golden expectations remain unchanged.
 
 ## Metrics API
 
