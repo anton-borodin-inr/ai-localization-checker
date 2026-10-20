@@ -1,3 +1,4 @@
+import hashlib
 import json
 
 import pytest
@@ -5,6 +6,7 @@ from pydantic import ValidationError
 
 from l10n_checker.vision import (
     PROMPT,
+    PROMPT_VERSION,
     SCHEMA_VERSION,
     CheckResult,
     Finding,
@@ -26,11 +28,18 @@ class FakeProvider:
     name = "fake"
     model = "fake-model"
     sdk_version = "0"
+    wrapper_version = None
 
     def __init__(self, *outcomes):
         self.settings = {"temperature": 0}
         self.outcomes = list(outcomes)
         self.calls = 0
+
+    def wrap_prompt(self, prompt):
+        return prompt
+
+    def estimate_cost(self, usage):
+        return None
 
     def generate(self, image, mime_type, prompt):
         self.calls += 1
@@ -171,12 +180,19 @@ def test_run_record(screenshot, tmp_path):
     assert run_dir.parent == tmp_path / "runs"
     assert sorted(p.name for p in run_dir.iterdir()) == [
         "prompt.txt",
+        "prompt_sent.txt",
         "response_raw.json",
         "result.json",
         "run.json",
     ]
     assert (run_dir / "prompt.txt").read_text() == PROMPT
+    assert (run_dir / "prompt_sent.txt").read_text() == PROMPT
     run = json.loads((run_dir / "run.json").read_text())
+    assert run["prompt_version"] == PROMPT_VERSION
+    assert run["prompt_sha256"] == hashlib.sha256(PROMPT.encode()).hexdigest()
+    assert run["sent_prompt_sha256"] == run["prompt_sha256"]
+    assert run["wrapper_version"] is None
+    assert run["image"]["bytes"] == screenshot.stat().st_size
     assert run["model"] == "fake-model"
     assert run["model_version"] == "fake-model-001"
     assert run["schema_version"] == SCHEMA_VERSION

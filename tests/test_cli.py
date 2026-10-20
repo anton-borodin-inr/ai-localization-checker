@@ -47,7 +47,7 @@ def check_argv(monkeypatch, *extra):
 
 
 def test_check_without_key_sends_nothing(monkeypatch, capsys):
-    monkeypatch.delenv("GEMINI_API_KEY", raising=False)
+    monkeypatch.delenv("DEEPSEEK_API_KEY", raising=False)
     check_argv(monkeypatch)
 
     def no_provider(*args):
@@ -56,14 +56,14 @@ def test_check_without_key_sends_nothing(monkeypatch, capsys):
     monkeypatch.setattr(cli, "make_provider", no_provider)
     assert cli.check_main() == 1
     output = capsys.readouterr()
-    assert "GEMINI_API_KEY is not set" in output.err
+    assert "DEEPSEEK_API_KEY is not set" in output.err
     assert "Traceback" not in output.err
 
 
 def test_check_runs_dir_must_be_inside_data(monkeypatch, capsys, tmp_path):
-    monkeypatch.setenv("GEMINI_API_KEY", "test-key-DO-NOT-LEAK")
+    monkeypatch.setenv("DEEPSEEK_API_KEY", "test-key-DO-NOT-LEAK")
     check_argv(monkeypatch, "--runs-dir", str(tmp_path))
-    monkeypatch.setattr(cli, "make_provider", lambda key, model, timeout: object())
+    monkeypatch.setattr(cli, "make_provider", lambda key, timeout: object())
     assert cli.check_main() == 1
     output = capsys.readouterr()
     assert "data/" in output.err
@@ -75,19 +75,32 @@ def test_check_reports_not_checked(monkeypatch, capsys, screenshot, tmp_path):
 
     class Failing:
         name, model, sdk_version, settings = "fake", "fake-model", "0", {}
+        wrapper_version = None
+
+        def wrap_prompt(self, prompt):
+            return prompt
+
+        def estimate_cost(self, usage):
+            return None
 
         def generate(self, *args):
             raise ProviderError("timeout", "read timed out")
 
-    monkeypatch.setenv("GEMINI_API_KEY", "k")
+    monkeypatch.setenv("DEEPSEEK_API_KEY", "k")
     check_argv(monkeypatch, "--runs-dir", str(tmp_path / "runs"))
     monkeypatch.setattr(sys, "argv", [*sys.argv[:2], str(screenshot), *sys.argv[3:]])
-    monkeypatch.setattr(cli, "make_provider", lambda key, model, timeout: Failing())
+    monkeypatch.setattr(cli, "make_provider", lambda key, timeout: Failing())
     monkeypatch.setattr(cli, "output_directory", lambda path: path)
     assert cli.check_main() == 2
     out = capsys.readouterr().out.splitlines()
     assert out[0].startswith(str(tmp_path / "runs"))
     assert out[1] == "not_checked: timeout: read timed out"
+
+
+def test_make_provider_uses_deepseek():
+    provider = cli.make_provider("k", 120)
+    assert provider.name == "deepseek"
+    assert provider.settings["timeout_s"] == 120
 
 
 def capture_argv(monkeypatch, *langs):

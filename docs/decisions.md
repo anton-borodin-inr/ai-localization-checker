@@ -159,7 +159,7 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 ## D-017 — v1 model and request settings
 
 - **Date:** 2026-10-17
-- **Status:** Accepted
+- **Status:** Superseded by D-034
 - **Decision:** The v1 provider (D-006) is `gemini-3.6-flash` on the Gemini API free tier. Requests use structured output (`application/json` with the finding schema), temperature 0 and `media_resolution` `MEDIA_RESOLUTION_HIGH`. The SDK's own retries are disabled; one retry after HTTP 429 is allowed only within the per-run request cap. The default timeout is 180 s (`--timeout`), and a server-side `504 DEADLINE_EXCEEDED` is reported as `timeout`.
 - **Why:** The SDK sends the timeout to the server as `X-Server-Timeout`; with 60 s, the first image call (run `20261017T182052Z-fb1925`) was cut off by the server after 59.2 s with no response. Every generation request to `gemini-3.8-flash` ended in 504: two image requests (60 s and 180 s) and a one-line text-only probe (30 s). The same text probe on `gemini-3.6-flash` answered in 1.8 s, while the key and `models.list` worked. `media_resolution` is set explicitly because the API default is not recorded and can change; HIGH matches the 1078 image tokens of the live run. Disabling SDK retries makes the request cap count real requests.
 - **Alternatives considered:** `gemini-3.8-flash` (504 on the free tier); the paid tier with 3.8 (out of scope for issue #3); `gemini-3.5-flash-lite` (weaker on small text, which D-014 must check).
@@ -273,7 +273,7 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 ## D-028 — The coding agent may run live free-tier calls within the issue budget
 
 - **Date:** 2026-10-19
-- **Status:** Accepted
+- **Status:** Superseded by D-035
 - **Accepted by:** Anton
 - **Decision:** The coding agent runs the live provider calls of a task itself, instead of handing a command to Anton. Conditions: the issue states a request budget; calls go only through the project's commands with the per-run request cap; only the free-tier key; never the hold-out set; the agent never reads or prints `.env` or the key (`uv run --env-file .env` loads it); every run is recorded under `data/runs/` and the report lists run ids and `requests_sent`.
 - **Why:** Anton does not want to run the live calls by hand for every experiment. The free tier has no spend, the request cap already exists in code and every request is recorded, so the agent's report can be checked against the run records rather than taken on trust.
@@ -324,3 +324,23 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 - **Why:** D-018's `text_seen` describes suspected defects, not every visible string. Absence from findings cannot measure whether ordinary text was read. The reference lists deliberately clipped diagnostics separately, so invisible or incomplete viewport content does not inflate primary misses. Source/APK byte checks bind translations to each screenshot's build.
 - **Alternatives considered:** Derive the reference from model output (circular); require every normal label to be a defect (changes finding semantics); call text coverage defect recall (misleading); penalize unique text for a wrong region (contradicts the separation in D-026).
 - **Consequences:** Transcription needs its own response field (readings) next to the unchanged finding objects. Reference units are counted once across tile overlap; research-button text cannot stand in for a separate tree label. Failed variants have unavailable coverage, with partial evidence kept separate. This does not change D-026/D-029 matching, their thresholds, existing human labels or goldens.
+
+## D-034 — v1 provider: DeepSeek `deepseek-flash`
+
+- **Date:** 2026-10-20
+- **Status:** Accepted
+- **Accepted by:** Anton
+- **Decision:** The v1 provider (D-006) is DeepSeek `deepseek-flash` on the official API (`https://api.deepseek.com/chat/completions`). Requests use non-thinking mode, temperature 0, `response_format` `json_object`, image `detail: original` with the PNG bytes sent unchanged, `max_tokens` 4096, a 120 s timeout, no streaming, no redirects and no transport retries; one retry after HTTP 429 is allowed only within the per-run request cap. The detector prompt and the finding schema (D-018) stay unchanged; JSON object mode does not enforce a schema, so a versioned format wrapper (`deepseek-json-object-v1`) appends the `ModelOutput` JSON Schema to the prompt, and the response is validated strictly and locally, never repaired. This supersedes the provider part of D-017.
+- **Why:** The Gemini paid tier cannot be paid for from Anton's account (cross-country billing errors), and the Gemini free tier was unstable in #10 (19 of 27 requests failed with HTTP 503/429). In #29, 12 DeepSeek requests all returned a response, `detail: original` read the German clean screen 16/16, and the total cost was about USD 0.004–0.009. 4096 output tokens leave room for a findings list while bounding the worst-case cost of a request.
+- **Alternatives considered:** Gemini paid tier (cannot be billed); Gemini free tier (unstable); the local Qwen adapter (#30; 2 of 14 validated responses in #10, dropped for now); `json_schema` response format (not offered by the DeepSeek API).
+- **Consequences:** `l10n_checker.deepseek` is the only module that calls the DeepSeek API. Every run records the requested model, the model name the API returns (only the alias; no immutable model revision is available), `system_fingerprint` if present, all request settings, prompt and wrapper versions, token usage with cache hit/miss, and an estimated cost from a tariff snapshot kept in the code. After the #32 confirmation run, the Gemini adapter is removed and D-017 is set to `Superseded by D-034`. DeepSeek processes the screenshots under its own terms; they are screenshots of an open-source game.
+
+## D-035 — The coding agent may run live paid calls within the issue budget in requests and USD
+
+- **Date:** 2026-10-20
+- **Status:** Accepted
+- **Accepted by:** Anton
+- **Decision:** The coding agent runs the live provider calls of a task itself, instead of handing a command to Anton. Conditions: the issue states a budget in requests and USD; calls go only through the project's commands with the per-run request cap; only the provider key named in the issue, within the issue budget in requests and USD across all runs of the task, failed requests included; never the hold-out set; the agent never reads or prints `.env` or the key (`uv run --env-file .env` loads it); every run is recorded under `data/runs/` and the report lists run ids, `requests_sent`, token usage and the estimated cost. This supersedes D-028 and restates all its conditions except the free-tier one.
+- **Why:** D-034 moves v1 to a paid provider, so the "free-tier key only" condition of D-028 cannot hold. The DeepSeek account uses a small prepaid balance, which is the hard ceiling; the issue's USD budget and the per-run request cap keep each task far below it. The other D-028 reasons stay: the request cap exists in code, every request is recorded, and the report can be checked against the run records.
+- **Alternatives considered:** Keep D-028 and give Anton every paid call (a manual step in every experiment); amend D-028 in place (the decision log does not edit accepted entries).
+- **Consequences:** The hard rule in CLAUDE.md and AGENTS.md changes. Review checks `data/runs/*/run.json` (or a committed copy) against the report, including token usage and estimated cost.
