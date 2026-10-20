@@ -1,0 +1,53 @@
+{
+  "prompt_version": "v1",
+  "schema_version": "v1",
+  "wrapper_version": "deepseek-json-object-v2",
+  "prompt_sha256": "4359255e06a6d64bf35be0ee30e635f4f7e3b8b1a909c6736a07030a463779eb",
+  "sent_prompt_sha256": "26f4b4f9225b5d4744b70525f4011f526efad1375bb2ca9fb1515d803e312231",
+  "model_output_schema_sha256": "c734874957fced4aea993f0283729fb20481e86513f95bffd797927154c11349",
+  "prompt_bytes": 2064,
+  "sent_prompt_bytes": 3474,
+  "settings": {
+    "endpoint": "https://api.deepseek.com/chat/completions",
+    "temperature": 0,
+    "max_tokens": 4096,
+    "stream": false,
+    "thinking": {
+      "type": "disabled"
+    },
+    "response_format": {
+      "type": "json_object"
+    },
+    "image_detail": "original",
+    "timeout_s": 120,
+    "transport_retries": 0,
+    "follow_redirects": false,
+    "trust_env": false
+  },
+  "budget": {
+    "max_live_requests": 6,
+    "max_total_usd": "0.10",
+    "per_run_max_requests": 1,
+    "reserved_peak_usd_per_unknown_request": "0.0147456",
+    "assumed_input_token_upper_bound": 32768,
+    "max_output_tokens": 4096,
+    "all_six_requests_reserved_peak_usd": "0.0884736"
+  },
+  "screenshots": [
+    {
+      "path": "docs/evidence/8/final/tech-picker__en__2400x1080__clean__1271001.png",
+      "sha256": "88ff1c55aef33cc9ff0fd89cd5912384b7a1017d8d9ca2d88965ec39389b9f47",
+      "v0_run_id": "20261020T134619Z-68d6fd"
+    },
+    {
+      "path": "docs/evidence/8/final/tech-picker__de__2400x1080__clean__1271001.png",
+      "sha256": "a6a5beb3ef17ce4a640261821ff1bfc02f2dfda0e81c1cfb3aadaa32407f954e",
+      "v0_run_id": "20261020T134628Z-88d08c"
+    },
+    {
+      "path": "docs/evidence/8/final/tech-picker__de__2400x1080__injected__1271002.png",
+      "sha256": "372aa318ce3bf4d553b4b9d427a7fe6d87f566953605c21bc705dd10df816b93",
+      "v0_run_id": "20261020T134635Z-76d8d0"
+    }
+  ]
+}

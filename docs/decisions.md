@@ -301,7 +301,7 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 ## D-031 — Propose an explicit visible-text readability result
 
 - **Date:** 2026-10-19
-- **Status:** Proposed
+- **Status:** Accepted
 - **Decision:** Propose a response-level `readability` value (`readable`, `partial`, `unreadable`), with `unreadable_regions` and a short reason. `partial` or `unreadable` makes the screen `not_checked`; raw partial observations may remain diagnostic evidence but never become a clean checked result. This is a proposal, not a production schema change in issue #10.
 - **Why:** The current D-018 response describes defects only. An empty findings list cannot distinguish a clean screen from unreadable text. Issue #10 separated ordinary transcription from findings to measure reading, but a validated experimental response still does not prove all visible text was readable.
 - **Alternatives considered:** A synthetic defect class for unreadability (mixes check failure with a localization defect); treating empty readings as sufficient proof (cannot identify partial omissions); adding a confidence threshold now (not calibrated).
@@ -344,3 +344,12 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 - **Why:** D-034 moves v1 to a paid provider, so the "free-tier key only" condition of D-028 cannot hold. The DeepSeek account uses a small prepaid balance, which is the hard ceiling; the issue's USD budget and the per-run request cap keep each task far below it. The other D-028 reasons stay: the request cap exists in code, every request is recorded, and the report can be checked against the run records.
 - **Alternatives considered:** Keep D-028 and give Anton every paid call (a manual step in every experiment); amend D-028 in place (the decision log does not edit accepted entries).
 - **Consequences:** The hard rule in CLAUDE.md and AGENTS.md changes. Review checks `data/runs/*/run.json` (or a committed copy) against the report, including token usage and estimated cost.
+
+## D-036 — Response schema v1 and labeling prompt v1
+
+- **Date:** 2026-10-20
+- **Status:** Proposed
+- **Decision:** Implement the D-031 acceptance recorded in issue #35: require `readability` (`readable`, `partial`, `unreadable`), `unreadable_regions` (3×3 cells) and `readability_reason` (string or null) alongside the unchanged D-018 finding objects. Enforce empty regions for `readable` and at least one for `partial`; `unreadable` allows none. Only `readable` produces checked findings; the other two produce `not_checked` with `unreadable_text`, retaining observations only in the raw diagnostic response. Prompt v1 expresses D-023/D-025/D-027 from `labeling.md`, plus the visible-viewport readability contract; response schema is `v1`, and the DeepSeek format wrapper is `deepseek-json-object-v2`.
+- **Why:** Issue #35 explicitly authorizes the schema extension and labeling rules before confirmation calls. An empty defect list cannot establish that the screen was readable. The old detector prompt also lacked the accepted defect boundaries.
+- **Alternatives considered:** Infer readability from findings (cannot distinguish a clean screen from unreadable text); expose partial findings as checked output (violates D-013); repair missing fields (hides an invalid model response); adjust the prompt after confirmation results (would tune it to the slice).
+- **Consequences:** This proposes the v1 response that replaces D-018's v0 draft response while preserving every finding field. It updates the prompt/schema/wrapper versions used in D-034's #32 implementation; the provider and request settings remain those of D-034. New fields and consistency are strictly validated locally. Matching, metrics, labels, goldens and the OCR baseline are unchanged. The prompt and sent-schema hashes are frozen before live calls and recorded with every run; the three v1 screenshots are compared with #32 by identical PNG hashes. D-031's status is changed to Accepted on Anton's explicit instruction in issue #35; its original text is preserved.

@@ -24,6 +24,18 @@ FINDING = {
 }
 
 
+def model_output(findings=None, **extra):
+    return json.dumps(
+        {
+            "readability": "readable",
+            "unreadable_regions": [],
+            "readability_reason": None,
+            "findings": [] if findings is None else findings,
+            **extra,
+        }
+    )
+
+
 class FakeProvider:
     name = "fake"
     model = "fake-model"
@@ -65,16 +77,14 @@ def check(provider, screenshot, tmp_path, max_requests=1):
 
 
 def test_findings_are_validated(screenshot, tmp_path):
-    result, _ = check(
-        FakeProvider(json.dumps({"findings": [FINDING]})), screenshot, tmp_path
-    )
+    result, _ = check(FakeProvider(model_output([FINDING])), screenshot, tmp_path)
     assert result.status == "checked"
     assert result.findings == [Finding(**FINDING)]
     assert result.reason is None
 
 
 def test_explicit_empty_list_is_the_only_no_defects(screenshot, tmp_path):
-    result, _ = check(FakeProvider('{"findings": []}'), screenshot, tmp_path)
+    result, _ = check(FakeProvider(model_output()), screenshot, tmp_path)
     assert result.status == "checked"
     assert result.findings == []
 
@@ -96,17 +106,17 @@ def test_explicit_empty_list_is_the_only_no_defects(screenshot, tmp_path):
         (["not json"], 1, "invalid_response"),
         (['{"items": []}'], 1, "invalid_response"),
         (
-            [json.dumps({"findings": [{**FINDING, "region": "middle"}]})],
+            [model_output([{**FINDING, "region": "middle"}])],
             1,
             "invalid_response",
         ),
         (
-            [json.dumps({"findings": [{**FINDING, "confidence": 1.5}]})],
+            [model_output([{**FINDING, "confidence": 1.5}])],
             1,
             "invalid_response",
         ),
         (
-            [json.dumps({"findings": [{**FINDING, "defect_type": "typo"}]})],
+            [model_output([{**FINDING, "defect_type": "typo"}])],
             1,
             "invalid_response",
         ),
@@ -123,7 +133,7 @@ def test_failures_are_not_checked(screenshot, tmp_path, outcomes, max_requests, 
 
 
 def test_single_retry_on_rate_limit(screenshot, tmp_path):
-    provider = FakeProvider(ProviderError("rate_limited", "429"), '{"findings": []}')
+    provider = FakeProvider(ProviderError("rate_limited", "429"), model_output())
     result, _ = check(provider, screenshot, tmp_path, max_requests=2)
     assert result.status == "checked"
     assert provider.calls == 2
@@ -138,7 +148,7 @@ def test_no_retry_beyond_one(screenshot, tmp_path):
 
 
 def test_cap_refuses_the_retry(screenshot, tmp_path):
-    provider = FakeProvider(ProviderError("rate_limited", "429"), '{"findings": []}')
+    provider = FakeProvider(ProviderError("rate_limited", "429"), model_output())
     result, _ = check(provider, screenshot, tmp_path, max_requests=1)
     assert result.status == "not_checked"
     assert provider.calls == 1
@@ -146,7 +156,7 @@ def test_cap_refuses_the_retry(screenshot, tmp_path):
 
 
 def test_cap_refuses_any_request(screenshot, tmp_path):
-    provider = FakeProvider('{"findings": []}')
+    provider = FakeProvider(model_output())
     result, _ = check(provider, screenshot, tmp_path, max_requests=0)
     assert result.status == "not_checked"
     assert result.reason.startswith("request_cap_reached")
@@ -176,7 +186,7 @@ def test_result_invariant(status, findings, reason):
 
 
 def test_run_record(screenshot, tmp_path):
-    _, run_dir = check(FakeProvider('{"findings": []}'), screenshot, tmp_path)
+    _, run_dir = check(FakeProvider(model_output()), screenshot, tmp_path)
     assert run_dir.parent == tmp_path / "runs"
     assert sorted(p.name for p in run_dir.iterdir()) == [
         "prompt.txt",
