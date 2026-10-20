@@ -1,0 +1,23 @@
+{
+  "accepted_by": "Anton",
+  "status": "confirmed",
+  "date": "2026-10-19",
+  "reference_sha256": "bba4e51d48d81bfa836eb80632697069b4e70fd67944a09f93d71aada609dd19",
+  "amends_reference_sha256": "e20d9ede40afcdc052052062273cfc4b00c8db9e9d953fbfd20415cbd568b964",
+  "confirmation": "Confirmed both visible controls and injected primary denominator 20 in chat after the continuation calls.",
+  "timing": "post-call correction; all 27 calls had completed",
+  "changes": {
+    "injected_primary_denominator": {
+      "before": 18,
+      "after": 20
+    },
+    "added_units": [
+      "close",
+      "research"
+    ],
+    "numeric_diagnostics_added": [
+      "(0/24)"
+    ]
+  },
+  "basis": "Reinspection of the unchanged original screenshot and exact build 1271002 packaged/source translation bytes. The discrepancy was noticed during output review; the agent acknowledged its original reference-selection error. No defect label or comparison threshold changed."
+}
