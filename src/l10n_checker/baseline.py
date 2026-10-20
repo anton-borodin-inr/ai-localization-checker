@@ -21,7 +21,7 @@ from l10n_checker.unciv_text import RenderingError, TranslationTable
 from l10n_checker.vision import CheckResult, Finding, new_run_id
 
 SETTINGS = {
-    "version": "baseline-v0",
+    "version": "baseline-v0.1",
     "oem": 1,
     "psm": 11,
     "languages": {"en": "eng", "de": "deu+eng"},
@@ -30,6 +30,7 @@ SETTINGS = {
     "prefix_min_letters": 4,
     "prefix_min_fraction": 0.5,
     "missing_confidence": 0.5,
+    "missing_text_seen": "expected string",
     "ocr_confidence_filter": None,
 }
 GRID = (
@@ -375,7 +376,9 @@ def detect(inventory: Inventory, tables: dict, language: str, words: list[Word],
             )
         else:
             kind, evidence, rule = "truncated_text", None, "missing"
-        text, evidence_words = evidence if evidence else ("", [])
+        # A missing candidate names the string it failed to find (review of
+        # PR #28); run.json lists these findings in missing_rule_findings.
+        text, evidence_words = evidence if evidence else (expected, [])
         finding = Finding(
             defect_type=kind,
             text_seen=text,
@@ -405,6 +408,7 @@ def run_baseline(
         "settings": SETTINGS,
         "requests_sent": 0,
         "run_id": run_dir.name,
+        "missing_rule_findings": [],
     }
     diagnostics, findings = [], []
     reason = None
@@ -419,6 +423,9 @@ def run_baseline(
         (run_dir / "ocr.tsv").write_text(output.tsv, encoding="utf-8")
         words = parse_tsv(output.tsv, size)
         findings, diagnostics = detect(slots, tables, lang, words, size)
+        metadata["missing_rule_findings"] = [
+            row["finding_index"] for row in diagnostics if row["rule"] == "missing"
+        ]
         write_json(
             run_dir / "source-entries.json",
             {lang: table.source_entries() for lang, table in tables.items()},

@@ -99,15 +99,16 @@ def test_prefix_with_or_without_marker(text):
 def test_short_prefix_is_not_invented_as_observed_text(text):
     findings, diag = detection(text, "Bergbau und Erzgewinnung")
     assert diag[0]["rule"] == "missing"
-    assert findings[0].text_seen == ""
+    # The OCR fragment is not used; the candidate names the expected string.
+    assert findings[0].text_seen == "Bergbau und Erzgewinnung" != text
     assert findings[0].confidence == 0.5
 
 
-def test_missing_expected_keeps_empty_text_and_slot_region():
+def test_missing_expected_carries_expected_text_and_slot_region():
     findings, diag = detection("unrelated", box=(0.7, 0.7, 1, 1))
-    assert findings[0].text_seen == ""
+    assert findings[0].text_seen == diag[0]["expected"] == "Bergbau"
     assert findings[0].region == "bottom-right"
-    assert diag[0]["expected"] == "Bergbau"
+    assert findings[0].confidence == 0.5
 
 
 @pytest.mark.parametrize(("language", "text"), [("de", "Mining"), ("en", "Bergbau")])
@@ -296,6 +297,23 @@ def test_build_specific_expectations_and_unmodified_schema(inputs):
     assert injected.metadata["requests_sent"] == 0
     assert (directory / "source-entries.json").is_file()
     assert (directory / "ocr.tsv").is_file()
+
+
+def test_run_output_marks_missing_rule_findings(inputs):
+    found, found_dir = run(
+        inputs, variant="injected", engine=FakeOcr("Bergbau und Erzgew...")
+    )
+    missing, missing_dir = run(inputs, variant="injected", engine=FakeOcr("unrelated"))
+    assert found.findings and found.metadata["missing_rule_findings"] == []
+    assert [f.text_seen for f in missing.findings] == ["Bergbau und Erzgewinnung"]
+    assert missing.metadata["missing_rule_findings"] == [0]
+    for result, directory in ((found, found_dir), (missing, missing_dir)):
+        run_json = json.loads((directory / "run.json").read_text())
+        result_json = json.loads((directory / "result.json").read_text())
+        expected = result.metadata["missing_rule_findings"]
+        assert run_json["missing_rule_findings"] == expected
+        assert result_json["metadata"]["missing_rule_findings"] == expected
+        assert run_json["settings"]["version"] == "baseline-v0.1"
 
 
 def test_labels_and_secrets_are_never_opened(inputs, monkeypatch):
