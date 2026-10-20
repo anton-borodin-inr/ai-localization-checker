@@ -1,0 +1,250 @@
+{
+  "schema_version": 1,
+  "screen": "tech-picker",
+  "base_commit": "899367522cea36d6063c84b02b41eedfa9a0d0e9",
+  "context": "Manual source inventory of the existing Archery-selected screenshot widgets. Boxes are normalized widget/search slots, not defect labels or OCR-derived ground truth. Description fragments include the clipped continuation of the same scrollable widget. Numeric stats, counters and icons are outside textual coverage. No exclusions for scroll clipping or ellipsis.",
+  "slots": [
+    {
+      "id": "writing",
+      "request": "Writing",
+      "box": [
+        0.57,
+        0,
+        0.72,
+        0.07
+      ],
+      "source": "core/src/com/unciv/ui/screens/pickerscreens/TechPickerScreen.kt: TechButton titles, techName.tr(true)"
+    },
+    {
+      "id": "agriculture",
+      "request": "Agriculture",
+      "box": [
+        0.05,
+        0.29,
+        0.2,
+        0.37
+      ],
+      "source": "core/src/com/unciv/ui/screens/pickerscreens/TechPickerScreen.kt: TechButton titles, techName.tr(true)"
+    },
+    {
+      "id": "animal-husbandry",
+      "request": "Animal Husbandry",
+      "box": [
+        0.315,
+        0.16,
+        0.46499999999999997,
+        0.27
+      ],
+      "source": "core/src/com/unciv/ui/screens/pickerscreens/TechPickerScreen.kt: TechButton titles, techName.tr(true)"
+    },
+    {
+      "id": "archery",
+      "request": "Archery",
+      "box": [
+        0.315,
+        0.38,
+        0.46499999999999997,
+        0.49
+      ],
+      "source": "core/src/com/unciv/ui/screens/pickerscreens/TechPickerScreen.kt: TechButton titles, techName.tr(true)"
+    },
+    {
+      "id": "mining",
+      "request": "Mining",
+      "box": [
+        0.315,
+        0.6,
+        0.46499999999999997,
+        0.71
+      ],
+      "source": "core/src/com/unciv/ui/screens/pickerscreens/TechPickerScreen.kt: TechButton titles, techName.tr(true)"
+    },
+    {
+      "id": "trapping",
+      "request": "Trapping",
+      "box": [
+        0.575,
+        0.16,
+        0.725,
+        0.27
+      ],
+      "source": "core/src/com/unciv/ui/screens/pickerscreens/TechPickerScreen.kt: TechButton titles, techName.tr(true)"
+    },
+    {
+      "id": "wheel",
+      "request": "The Wheel",
+      "box": [
+        0.575,
+        0.38,
+        0.725,
+        0.49
+      ],
+      "source": "core/src/com/unciv/ui/screens/pickerscreens/TechPickerScreen.kt: TechButton titles, techName.tr(true)"
+    },
+    {
+      "id": "masonry",
+      "request": "Masonry",
+      "box": [
+        0.575,
+        0.6,
+        0.725,
+        0.71
+      ],
+      "source": "core/src/com/unciv/ui/screens/pickerscreens/TechPickerScreen.kt: TechButton titles, techName.tr(true)"
+    },
+    {
+      "id": "bronze-working",
+      "request": "Bronze Working",
+      "box": [
+        0.575,
+        0.72,
+        0.725,
+        0.81
+      ],
+      "source": "core/src/com/unciv/ui/screens/pickerscreens/TechPickerScreen.kt: TechButton titles, techName.tr(true)"
+    },
+    {
+      "id": "horseback-riding",
+      "request": "Horseback Riding",
+      "box": [
+        0.835,
+        0.16,
+        0.985,
+        0.27
+      ],
+      "source": "core/src/com/unciv/ui/screens/pickerscreens/TechPickerScreen.kt: TechButton titles, techName.tr(true)"
+    },
+    {
+      "id": "mathematics",
+      "request": "Mathematics",
+      "box": [
+        0.835,
+        0.38,
+        0.985,
+        0.49
+      ],
+      "source": "core/src/com/unciv/ui/screens/pickerscreens/TechPickerScreen.kt: TechButton titles, techName.tr(true)"
+    },
+    {
+      "id": "construction",
+      "request": "Construction",
+      "box": [
+        0.835,
+        0.6,
+        0.985,
+        0.71
+      ],
+      "source": "core/src/com/unciv/ui/screens/pickerscreens/TechPickerScreen.kt: TechButton titles, techName.tr(true)"
+    },
+    {
+      "id": "close",
+      "request": "Close",
+      "box": [
+        0,
+        0.84,
+        0.09,
+        1
+      ],
+      "source": "core/src/com/unciv/ui/screens/pickerscreens/PickerScreen.kt: close button"
+    },
+    {
+      "id": "research",
+      "request": "Research [Archery]",
+      "box": [
+        0.78,
+        0.84,
+        1,
+        1
+      ],
+      "source": "core/src/com/unciv/ui/screens/pickerscreens/TechPickerScreen.kt:457-459; selected Archery, progress (0/24) is nonlinguistic"
+    },
+    {
+      "id": "units-header",
+      "request": "{Units enabled}:",
+      "box": [
+        0.07,
+        0.84,
+        0.79,
+        0.9
+      ],
+      "source": "core/src/com/unciv/ui/objectdescriptions/TechnologyDescriptions.kt:getDescription; Archery in Civ V - Gods & Kings; Units.json/Buildings.json"
+    },
+    {
+      "id": "archer",
+      "request": "Archer",
+      "box": [
+        0.07,
+        0.89,
+        0.79,
+        0.94
+      ],
+      "source": "core/src/com/unciv/ui/objectdescriptions/TechnologyDescriptions.kt:getDescription; Archery in Civ V - Gods & Kings; Units.json/Buildings.json"
+    },
+    {
+      "id": "wonders-header",
+      "request": "{Wonders enabled}:",
+      "box": [
+        0.07,
+        0.94,
+        0.79,
+        0.98
+      ],
+      "source": "core/src/com/unciv/ui/objectdescriptions/TechnologyDescriptions.kt:getDescription; Archery in Civ V - Gods & Kings; Units.json/Buildings.json"
+    },
+    {
+      "id": "wonder-name",
+      "request": "Temple of Artemis",
+      "box": [
+        0.07,
+        0.98,
+        0.79,
+        1
+      ],
+      "source": "core/src/com/unciv/ui/objectdescriptions/TechnologyDescriptions.kt:getDescription; Archery in Civ V - Gods & Kings; Units.json/Buildings.json"
+    },
+    {
+      "id": "wonder-culture",
+      "request": "Culture",
+      "box": [
+        0.07,
+        0.98,
+        0.79,
+        1
+      ],
+      "source": "core/src/com/unciv/ui/objectdescriptions/TechnologyDescriptions.kt:getDescription; Archery in Civ V - Gods & Kings; Units.json/Buildings.json; culture=1"
+    },
+    {
+      "id": "wonder-food",
+      "request": "[+10]% [Food] [in all cities]",
+      "box": [
+        0.07,
+        0.98,
+        0.79,
+        1
+      ],
+      "source": "core/src/com/unciv/ui/objectdescriptions/TechnologyDescriptions.kt:getDescription; Archery in Civ V - Gods & Kings; Units.json/Buildings.json; Temple of Artemis unique[0]"
+    },
+    {
+      "id": "wonder-archery-production",
+      "request": "[+15]% Production when constructing [Archery] units [in this city]",
+      "box": [
+        0.07,
+        0.98,
+        0.79,
+        1
+      ],
+      "source": "core/src/com/unciv/ui/objectdescriptions/TechnologyDescriptions.kt:getDescription; Archery in Civ V - Gods & Kings; Units.json/Buildings.json; Temple of Artemis unique[1]"
+    },
+    {
+      "id": "wonder-ranged-production",
+      "request": "[+15]% Production when constructing [Ranged Gunpowder] units [in this city]",
+      "box": [
+        0.07,
+        0.98,
+        0.79,
+        1
+      ],
+      "source": "core/src/com/unciv/ui/objectdescriptions/TechnologyDescriptions.kt:getDescription; Archery in Civ V - Gods & Kings; Units.json/Buildings.json; Temple of Artemis unique[2]"
+    }
+  ]
+}

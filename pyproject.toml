@@ -26,6 +26,7 @@ packages = ["src/l10n_checker"]
 [project.scripts]
 l10n-capture = "l10n_checker.cli:main"
 l10n-check = "l10n_checker.cli:check_main"
+l10n-baseline = "l10n_checker.baseline_cli:main"
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]
