@@ -1,0 +1,275 @@
+{
+  "status": "captures_and_human_labels_verified_independent_review_pending",
+  "base_tag": "4.22.10",
+  "base_commit": "899367522cea36d6063c84b02b41eedfa9a0d0e9",
+  "accepted_defect_boundary": {
+    "decision": "D-023",
+    "status": "Accepted",
+    "accepted_by": "Anton",
+    "rule": "Ellipsis counts as truncated_text only if the full text is not visible elsewhere in the same screenshot."
+  },
+  "chosen_injection": "Mining",
+  "currently_installed_version_code": 1271002,
+  "fdroid_restoration": "not_run_separate_approval_required",
+  "buildconfig_change": "versionCode build metadata only; not translation or game logic",
+  "reference_save": {
+    "save_name": "issue-8-pair",
+    "created_manually_by": "Anton",
+    "turn": 1,
+    "civilization": "The Ottomans",
+    "city": "Istanbul",
+    "save_bytes": 118426,
+    "save_sha256": "9d2a4cd5e1de2b2ae9102a2e6e6d15210e32ae5188c895f84e8a3a6ce19c3b4e",
+    "settings_stable_during_backup": true,
+    "settings_sha256": "dc35061fcf8011635bfb2d0f94999c5de7bf8b4fafea64ace9803264f8117b10",
+    "backup_mode": "read_only_adb_root_finally_unroot",
+    "adbd_final_user": "shell",
+    "game_data_written_by_agent": false,
+    "private_backup": "data/issue-8/backups/probe-saved-pair/",
+    "base_ruleset": "Civ V - Gods & Kings",
+    "mods": [],
+    "base_ruleset_basis": "Source default in pinned GameParameters.kt and BaseRuleset.kt; baseRuleset omitted from saved JSON",
+    "mods_basis": "Source default empty set; mods omitted from saved JSON"
+  },
+  "builds": {
+    "clean": {
+      "kind": "clean",
+      "base_tag": "4.22.10",
+      "base_commit": "899367522cea36d6063c84b02b41eedfa9a0d0e9",
+      "fork_commit": "2e4d6af664e204c4ddcc06383a0e2e700a9665c4",
+      "package": "com.unciv.app",
+      "version_name": "4.22.10",
+      "version_code": 1271001,
+      "translation_injections": [],
+      "worker_translation_restored_to_base": true,
+      "tracked_source_differences_from_base": [
+        "buildSrc/src/main/kotlin/BuildConfig.kt"
+      ],
+      "buildconfig_change": "versionCode build metadata only; not translation or game logic",
+      "gradle_duration": "1m 29s",
+      "wall_seconds": 89.84,
+      "signing_certificate_sha256": "b4752f8cee80842f55883ca2a9b62ca75c898df5a1b7cefd63959ba1b8fecb99",
+      "apk": "Unciv-clean-1271001.apk",
+      "apk_bytes": 32475086,
+      "apk_sha256": "47b98d930c8699625e8df6dee3fce49ae0d600cab2356382279e006ce791f644",
+      "packaged_translation_bytes_match_expected": true,
+      "android_launcher_dex_reference": true,
+      "arm64_libgdx": true,
+      "installed": true,
+      "capture_status": "German_and_English_captured",
+      "installation": {
+        "authorization": "Anton explicitly approved replacing probe with clean",
+        "command": "adb -s emulator-5554 install -r -d outputs/issue-8/Unciv-clean-1271001.apk",
+        "exit_code": 0,
+        "stdout": "Performing Streamed Install\nSuccess",
+        "independent_version_code": 1271001,
+        "settings_sha256_unchanged": "dc35061fcf8011635bfb2d0f94999c5de7bf8b4fafea64ace9803264f8117b10",
+        "save_sha256_unchanged": "9d2a4cd5e1de2b2ae9102a2e6e6d15210e32ae5188c895f84e8a3a6ce19c3b4e",
+        "verified_before_first_clean_launch": true,
+        "adbd_final_user": "shell"
+      }
+    },
+    "defective": {
+      "kind": "defective",
+      "base_tag": "4.22.10",
+      "base_commit": "899367522cea36d6063c84b02b41eedfa9a0d0e9",
+      "fork_commit": "038329f93966a8d1d0ac7f23f551c98feb32614c",
+      "package": "com.unciv.app",
+      "version_name": "4.22.10",
+      "version_code": 1271002,
+      "translation_injections": [
+        {
+          "key": "Mining",
+          "before": "Bergbau",
+          "after": "Bergbau und Erzgewinnung"
+        }
+      ],
+      "worker_translation_restored_to_base": true,
+      "tracked_source_differences_from_base": [
+        "android/assets/jsons/translations/German.properties",
+        "buildSrc/src/main/kotlin/BuildConfig.kt"
+      ],
+      "buildconfig_change": "versionCode build metadata only; not translation or game logic",
+      "gradle_duration": "1m 26s",
+      "wall_seconds": 86.78,
+      "signing_certificate_sha256": "b4752f8cee80842f55883ca2a9b62ca75c898df5a1b7cefd63959ba1b8fecb99",
+      "apk": "Unciv-defective-1271002.apk",
+      "apk_bytes": 32475095,
+      "apk_sha256": "cac0bb72d87fa91e2de7a132827f3acd2c23716e2f0aba41d287db74e023c7b4",
+      "packaged_translation_bytes_match_expected": true,
+      "android_launcher_dex_reference": true,
+      "arm64_libgdx": true,
+      "installed": true,
+      "capture_status": "German_captured",
+      "installation": {
+        "authorization": "Anton explicitly approved replacing clean with defective",
+        "command": "adb -s emulator-5554 install -r outputs/issue-8/Unciv-defective-1271002.apk",
+        "exit_code": 0,
+        "stdout": "Performing Streamed Install\nSuccess",
+        "independent_version_code": 1271002,
+        "settings_sha256_unchanged": "e0b6586f1893ac84f6249809ab349a4d6fc4a2fdea7fe79b53142bf7c1436808",
+        "save_sha256_unchanged": "9d2a4cd5e1de2b2ae9102a2e6e6d15210e32ae5188c895f84e8a3a6ce19c3b4e",
+        "verified_before_first_defective_launch": true,
+        "adbd_final_user": "shell"
+      }
+    }
+  },
+  "captures": [
+    {
+      "purpose": "candidate_vertical_slice_screenshot",
+      "label_status": "provided_by_Anton_format_and_references_validated",
+      "screen": "tech-picker",
+      "file": "tech-picker__de__2400x1080__clean__1271001.png",
+      "bytes": 459752,
+      "sha256": "a6a5beb3ef17ce4a640261821ff1bfc02f2dfda0e81c1cfb3aadaa32407f954e",
+      "png_size": [
+        2400,
+        1080
+      ],
+      "language": "German",
+      "variant": "clean",
+      "version_code": 1271001,
+      "screen_size_setting": "Small",
+      "font_size_multiplier": 1,
+      "default_font_family": true,
+      "settings_sha256_before_after": "dc35061fcf8011635bfb2d0f94999c5de7bf8b4fafea64ace9803264f8117b10",
+      "cutout_before_after": "passed",
+      "foreground_before_after": "passed",
+      "installed_version_before_after": "passed",
+      "app_restart_during_capture": false,
+      "agent_app_data_overwrite": false,
+      "reference_save_name": "issue-8-pair",
+      "reference_save_sha256": "9d2a4cd5e1de2b2ae9102a2e6e6d15210e32ae5188c895f84e8a3a6ce19c3b4e",
+      "reference_save_loading": "manual_by_Anton_not_automatically_verified",
+      "visual_observation": {
+        "selected_technology": "Archery / Bogenschießen",
+        "mining_title": "Bergbau fully visible on its button",
+        "description_panel": "Archery content; no full injected Mining name",
+        "scope": "Target observation only; not a human ground-truth label"
+      },
+      "human_label_file": "final/tech-picker__de__2400x1080__clean__1271001.labels.json",
+      "human_label_sha256": "34343ca94e8f0ccf652aec9869a79e85ff60d5c42588ac300c23c304f1e68a43"
+    },
+    {
+      "purpose": "candidate_vertical_slice_screenshot",
+      "label_status": "provided_by_Anton_format_and_references_validated",
+      "screen": "tech-picker",
+      "file": "tech-picker__en__2400x1080__clean__1271001.png",
+      "bytes": 460083,
+      "sha256": "88ff1c55aef33cc9ff0fd89cd5912384b7a1017d8d9ca2d88965ec39389b9f47",
+      "png_size": [
+        2400,
+        1080
+      ],
+      "language": "English",
+      "variant": "clean",
+      "version_code": 1271001,
+      "screen_size_setting": "Small",
+      "font_size_multiplier": 1,
+      "default_font_family": true,
+      "settings_sha256_before_after": "e0b6586f1893ac84f6249809ab349a4d6fc4a2fdea7fe79b53142bf7c1436808",
+      "cutout_before_after": "passed",
+      "foreground_before_after": "passed",
+      "installed_version_before_after": "passed",
+      "app_restart_during_capture": false,
+      "agent_app_data_overwrite": false,
+      "reference_save_name": "issue-8-pair",
+      "reference_save_sha256": "9d2a4cd5e1de2b2ae9102a2e6e6d15210e32ae5188c895f84e8a3a6ce19c3b4e",
+      "reference_save_loading": "manual_by_Anton_not_automatically_verified",
+      "visual_observation": {
+        "selected_technology": "Archery",
+        "mining_title": "Mining fully visible on its button",
+        "description_panel": "Archery content",
+        "scope": "Target observation only; not a human ground-truth label"
+      },
+      "human_label_file": "final/tech-picker__en__2400x1080__clean__1271001.labels.json",
+      "human_label_sha256": "33e8e1aa6de3e3d7101978a2e48fc673473a03b28839c55140ceb8feedb0311a"
+    },
+    {
+      "purpose": "candidate_vertical_slice_screenshot",
+      "label_status": "provided_by_Anton_format_and_references_validated",
+      "screen": "tech-picker",
+      "file": "tech-picker__de__2400x1080__injected__1271002.png",
+      "bytes": 480275,
+      "sha256": "372aa318ce3bf4d553b4b9d427a7fe6d87f566953605c21bc705dd10df816b93",
+      "png_size": [
+        2400,
+        1080
+      ],
+      "language": "German",
+      "variant": "injected",
+      "version_code": 1271002,
+      "screen_size_setting": "Small",
+      "font_size_multiplier": 1,
+      "default_font_family": true,
+      "settings_sha256_before_after": "1f3c27fd5599b9c7a1051efd24e565a3257d50558dcd0feb4696af41368e0f63",
+      "cutout_before_after": "passed",
+      "foreground_before_after": "passed",
+      "installed_version_before_after": "passed",
+      "app_restart_during_capture": false,
+      "agent_app_data_overwrite": false,
+      "reference_save_name": "issue-8-pair",
+      "reference_save_sha256": "9d2a4cd5e1de2b2ae9102a2e6e6d15210e32ae5188c895f84e8a3a6ce19c3b4e",
+      "reference_save_loading": "manual_by_Anton_not_automatically_verified",
+      "visual_observation": {
+        "selected_technology": "Archery / Bogenschießen",
+        "mining_title": "Ends in intentional ellipsis after Erzgew; full injected name absent elsewhere in the frame",
+        "description_panel": "Archery content; minor vertical-scroll difference from clean",
+        "relation_to_decision": "Observed condition required by D-023; final human labels remain Anton-owned",
+        "scope": "Target observation only; not a human ground-truth label"
+      },
+      "human_label_file": "final/tech-picker__de__2400x1080__injected__1271002.labels.json",
+      "human_label_sha256": "cc38f51351bf9ca71bc54f9d15c7cdbdda2e0e3f812be7b7f6d680f1acfed533"
+    }
+  ],
+  "human_label_validation": {
+    "result": "passed",
+    "scope": "JSON format, allowed fields/types/regions, filename/language references, PNG hashes and byte identity with the original committed human labels",
+    "human_label_author": "Anton",
+    "labels_changed_by_agent": false,
+    "detector_output_used": false,
+    "labeling_rules": "docs/labeling.md; Accepted D-023 and D-025",
+    "files": [
+      {
+        "file": "final/tech-picker__de__2400x1080__clean__1271001.labels.json",
+        "screenshot": "tech-picker__de__2400x1080__clean__1271001.png",
+        "language": "de",
+        "bytes": 128,
+        "sha256": "34343ca94e8f0ccf652aec9869a79e85ff60d5c42588ac300c23c304f1e68a43",
+        "screenshot_sha256": "a6a5beb3ef17ce4a640261821ff1bfc02f2dfda0e81c1cfb3aadaa32407f954e",
+        "label_count": 0,
+        "provided_by": "Anton",
+        "source_commit": "83e84cd2985f91cecfc5341123e61a44790d4da0"
+      },
+      {
+        "file": "final/tech-picker__de__2400x1080__injected__1271002.labels.json",
+        "screenshot": "tech-picker__de__2400x1080__injected__1271002.png",
+        "language": "de",
+        "bytes": 507,
+        "sha256": "cc38f51351bf9ca71bc54f9d15c7cdbdda2e0e3f812be7b7f6d680f1acfed533",
+        "screenshot_sha256": "372aa318ce3bf4d553b4b9d427a7fe6d87f566953605c21bc705dd10df816b93",
+        "label_count": 1,
+        "provided_by": "Anton",
+        "source_commit": "83e84cd2985f91cecfc5341123e61a44790d4da0"
+      },
+      {
+        "file": "final/tech-picker__en__2400x1080__clean__1271001.labels.json",
+        "screenshot": "tech-picker__en__2400x1080__clean__1271001.png",
+        "language": "en",
+        "bytes": 128,
+        "sha256": "33e8e1aa6de3e3d7101978a2e48fc673473a03b28839c55140ceb8feedb0311a",
+        "screenshot_sha256": "88ff1c55aef33cc9ff0fd89cd5912384b7a1017d8d9ca2d88965ec39389b9f47",
+        "label_count": 0,
+        "provided_by": "Anton",
+        "source_commit": "421bacc7d4875b40fc22c806c7055bed4b6e07d8"
+      }
+    ]
+  },
+  "accepted_labeling_rules": {
+    "decision": "D-025",
+    "accepted_by": "Anton",
+    "document": "docs/labeling.md"
+  },
+  "labels_created_by_agent": false,
+  "live_provider_calls": 0
+}

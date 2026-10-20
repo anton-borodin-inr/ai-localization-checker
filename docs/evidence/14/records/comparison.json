@@ -1,0 +1,1736 @@
+{
+  "scope": "Variants of one source screen, not quality estimates.",
+  "expected_images": [
+    "tech-picker__de__2400x1080__clean__1271001.png",
+    "tech-picker__de__2400x1080__injected__1271002.png",
+    "tech-picker__en__2400x1080__clean__1271001.png"
+  ],
+  "missing_images": [],
+  "budget_stops": [],
+  "reference_source": "docs/experiments/issue-10/reference-amendment-candidate.json",
+  "reference_sha256": "bba4e51d48d81bfa836eb80632697069b4e70fd67944a09f93d71aada609dd19",
+  "reference_limitations": "Reference #10 is a transcription inventory, not an exhaustive occurrence map. All rows/text_seen and supplied numeric diagnostics are used unchanged; clipped diagnostics are included, hidden assembled_full_text is excluded. Numbers lack occurrence counts/regions; split spans and punctuation may affect hallucination counts. See the human-review gap audit in the issue 14 report.",
+  "time_definition": "Baseline complete run elapsed; vision sum of provider attempt latency.",
+  "matching_config": {
+    "text_threshold": 0.9,
+    "prefix_min_coverage": 0.5,
+    "prefix_min_words": 2
+  },
+  "rows": [
+    {
+      "image": "tech-picker__de__2400x1080__clean__1271001.png",
+      "detector": "baseline",
+      "run_id": "20261020T151513Z-d62dbd",
+      "status": "checked",
+      "reason": null,
+      "readability": null,
+      "findings": 15,
+      "finding_details": [
+        {
+          "defect_type": "truncated_text",
+          "text_seen": "Schrift",
+          "region": "top",
+          "confidence": 0.5
+        },
+        {
+          "defect_type": "truncated_text",
+          "text_seen": "Landwirtschaft",
+          "region": "top-left",
+          "confidence": 0.5
+        },
+        {
+          "defect_type": "truncated_text",
+          "text_seen": "Tierhaltung",
+          "region": "top",
+          "confidence": 0.5
+        },
+        {
+          "defect_type": "truncated_text",
+          "text_seen": "Bogenschießen",
+          "region": "center",
+          "confidence": 0.5
+        },
+        {
+          "defect_type": "truncated_text",
+          "text_seen": "Bergbau",
+          "region": "center",
+          "confidence": 0.5
+        },
+        {
+          "defect_type": "truncated_text",
+          "text_seen": "Mauerarbeiten",
+          "region": "center",
+          "confidence": 0.5
+        },
+        {
+          "defect_type": "truncated_text",
+          "text_seen": "Bronzebearbeitung",
+          "region": "bottom",
+          "confidence": 0.5
+        },
+        {
+          "defect_type": "truncated_text",
+          "text_seen": "Reiten",
+          "region": "top-right",
+          "confidence": 0.5
+        },
+        {
+          "defect_type": "truncated_text",
+          "text_seen": "Bogenschießen erforschen",
+          "region": "bottom-right",
+          "confidence": 0.5
+        },
+        {
+          "defect_type": "truncated_text",
+          "text_seen": "Bogenschütze",
+          "region": "bottom",
+          "confidence": 0.5
+        },
+        {
+          "defect_type": "truncated_text",
+          "text_seen": "Tempel der Artemis",
+          "region": "bottom",
+          "confidence": 0.5
+        },
+        {
+          "defect_type": "truncated_text",
+          "text_seen": "Kultur",
+          "region": "bottom",
+          "confidence": 0.5
+        },
+        {
+          "defect_type": "truncated_text",
+          "text_seen": "+10% Nahrung in allen Städten",
+          "region": "bottom",
+          "confidence": 0.5
+        },
+        {
+          "defect_type": "truncated_text",
+          "text_seen": "+15% Produktion beim Bau von Bogenschießen Einheiten in dieser Stadt",
+          "region": "bottom",
+          "confidence": 0.5
+        },
+        {
+          "defect_type": "truncated_text",
+          "text_seen": "+15% Produktion beim Bau von Schießpulver-Fernkampf Einheiten in dieser Stadt",
+          "region": "bottom",
+          "confidence": 0.5
+        }
+      ],
+      "missing_rule_findings": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "matches": [],
+      "false_positive_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "hallucination_indices": [
+        13,
+        14
+      ],
+      "tp": 0,
+      "fp": 15,
+      "fn": 0,
+      "precision": 0.0,
+      "recall_checked": null,
+      "recall_all": null,
+      "hallucinations": 2,
+      "duplicates_collapsed": 0,
+      "not_checked_screens": 0,
+      "confusion": [],
+      "fn_on_not_checked": 0,
+      "requests_sent": 0,
+      "usage": null,
+      "estimated_peak_usd": "0",
+      "latency_s": 0.825,
+      "screen_texts_source": [
+        {
+          "source": "rows/0/text_seen",
+          "text": "Landwirtschaft",
+          "id": "Agriculture",
+          "visibility": "full",
+          "region": "top-left"
+        },
+        {
+          "source": "rows/1/text_seen",
+          "text": "Tierhaltung",
+          "id": "Animal Husbandry",
+          "visibility": "full",
+          "region": "top"
+        },
+        {
+          "source": "rows/2/text_seen",
+          "text": "Bogenschießen",
+          "id": "Archery",
+          "visibility": "full",
+          "region": "center"
+        },
+        {
+          "source": "rows/3/text_seen",
+          "text": "Bergbau",
+          "id": "Mining",
+          "visibility": "full",
+          "region": "center"
+        },
+        {
+          "source": "rows/4/text_seen",
+          "text": "Schrift",
+          "id": "Writing",
+          "visibility": "vertical_clip",
+          "region": "top"
+        },
+        {
+          "source": "rows/5/text_seen",
+          "text": "Fallenstellen",
+          "id": "Trapping",
+          "visibility": "full",
+          "region": "top"
+        },
+        {
+          "source": "rows/6/text_seen",
+          "text": "Das Rad",
+          "id": "The Wheel",
+          "visibility": "full",
+          "region": "center"
+        },
+        {
+          "source": "rows/7/text_seen",
+          "text": "Mauerarbeiten",
+          "id": "Masonry",
+          "visibility": "full",
+          "region": "center"
+        },
+        {
+          "source": "rows/8/text_seen",
+          "text": "Bronzebearbeitung",
+          "id": "Bronze Working",
+          "visibility": "full",
+          "region": "bottom"
+        },
+        {
+          "source": "rows/9/text_seen",
+          "text": "Reiten",
+          "id": "Horseback Riding",
+          "visibility": "full",
+          "region": "top-right"
+        },
+        {
+          "source": "rows/10/text_seen",
+          "text": "Mathematik",
+          "id": "Mathematics",
+          "visibility": "full",
+          "region": "right"
+        },
+        {
+          "source": "rows/11/text_seen",
+          "text": "Baukunst",
+          "id": "Construction",
+          "visibility": "full",
+          "region": "right"
+        },
+        {
+          "source": "rows/12/text_seen",
+          "text": "Schließen",
+          "id": "close",
+          "visibility": "full",
+          "region": "bottom-left"
+        },
+        {
+          "source": "rows/13/text_seen",
+          "text": "Bogenschießen erforschen",
+          "id": "research",
+          "visibility": "full",
+          "region": "bottom-right"
+        },
+        {
+          "source": "rows/14/text_seen",
+          "text": "Freigeschaltete Einheiten:",
+          "id": "units-heading",
+          "visibility": "full",
+          "region": "bottom-left"
+        },
+        {
+          "source": "rows/15/text_seen",
+          "text": "Bogenschütze",
+          "id": "archer",
+          "visibility": "full",
+          "region": "bottom-left"
+        },
+        {
+          "source": "rows/16/text_seen",
+          "text": "Freigeschaltete Wunder:",
+          "id": "wonders-heading",
+          "visibility": "full",
+          "region": "bottom-left"
+        },
+        {
+          "source": "rows/17/text_seen",
+          "text": "Tempel der Artemis",
+          "id": "temple",
+          "visibility": "vertical_clip",
+          "region": "bottom-left"
+        },
+        {
+          "source": "rows/18/text_seen",
+          "text": "+1 Kultur",
+          "id": "culture",
+          "visibility": "vertical_clip",
+          "region": "bottom-left"
+        },
+        {
+          "source": "rows/19/text_seen",
+          "text": "+10% Nahrung in allen Städten",
+          "id": "food",
+          "visibility": "vertical_clip",
+          "region": "bottom"
+        },
+        {
+          "source": "rows/20/text_seen",
+          "text": "+15% Produktion beim Bau von",
+          "id": "production",
+          "visibility": "vertical_clip",
+          "region": "bottom"
+        },
+        {
+          "source": "numeric_diagnostics/0",
+          "text": "6"
+        },
+        {
+          "source": "numeric_diagnostics/1",
+          "text": "10"
+        },
+        {
+          "source": "numeric_diagnostics/2",
+          "text": "19"
+        },
+        {
+          "source": "numeric_diagnostics/3",
+          "text": "5"
+        },
+        {
+          "source": "numeric_diagnostics/4",
+          "text": "7"
+        },
+        {
+          "source": "numeric_diagnostics/5",
+          "text": "+1"
+        },
+        {
+          "source": "numeric_diagnostics/6",
+          "text": "+10%"
+        },
+        {
+          "source": "numeric_diagnostics/7",
+          "text": "+15%"
+        },
+        {
+          "source": "numeric_diagnostics/8",
+          "text": "(0/24)"
+        }
+      ]
+    },
+    {
+      "image": "tech-picker__de__2400x1080__clean__1271001.png",
+      "detector": "vision",
+      "run_id": "20261020T151514Z-cb46c9",
+      "status": "checked",
+      "reason": null,
+      "readability": "readable",
+      "findings": 0,
+      "finding_details": [],
+      "missing_rule_findings": [],
+      "matches": [],
+      "false_positive_indices": [],
+      "hallucination_indices": [],
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "precision": null,
+      "recall_checked": null,
+      "recall_all": null,
+      "hallucinations": 0,
+      "duplicates_collapsed": 0,
+      "not_checked_screens": 0,
+      "confusion": [],
+      "fn_on_not_checked": 0,
+      "requests_sent": 1,
+      "usage": {
+        "prompt_tokens": 1836,
+        "completion_tokens": 30,
+        "total_tokens": 1866,
+        "prompt_tokens_details": {
+          "cached_tokens": 1664
+        },
+        "prompt_cache_hit_tokens": 1664,
+        "prompt_cache_miss_tokens": 172
+      },
+      "estimated_peak_usd": "0.000097584",
+      "latency_s": 1.766,
+      "screen_texts_source": [
+        {
+          "source": "rows/0/text_seen",
+          "text": "Landwirtschaft",
+          "id": "Agriculture",
+          "visibility": "full",
+          "region": "top-left"
+        },
+        {
+          "source": "rows/1/text_seen",
+          "text": "Tierhaltung",
+          "id": "Animal Husbandry",
+          "visibility": "full",
+          "region": "top"
+        },
+        {
+          "source": "rows/2/text_seen",
+          "text": "Bogenschießen",
+          "id": "Archery",
+          "visibility": "full",
+          "region": "center"
+        },
+        {
+          "source": "rows/3/text_seen",
+          "text": "Bergbau",
+          "id": "Mining",
+          "visibility": "full",
+          "region": "center"
+        },
+        {
+          "source": "rows/4/text_seen",
+          "text": "Schrift",
+          "id": "Writing",
+          "visibility": "vertical_clip",
+          "region": "top"
+        },
+        {
+          "source": "rows/5/text_seen",
+          "text": "Fallenstellen",
+          "id": "Trapping",
+          "visibility": "full",
+          "region": "top"
+        },
+        {
+          "source": "rows/6/text_seen",
+          "text": "Das Rad",
+          "id": "The Wheel",
+          "visibility": "full",
+          "region": "center"
+        },
+        {
+          "source": "rows/7/text_seen",
+          "text": "Mauerarbeiten",
+          "id": "Masonry",
+          "visibility": "full",
+          "region": "center"
+        },
+        {
+          "source": "rows/8/text_seen",
+          "text": "Bronzebearbeitung",
+          "id": "Bronze Working",
+          "visibility": "full",
+          "region": "bottom"
+        },
+        {
+          "source": "rows/9/text_seen",
+          "text": "Reiten",
+          "id": "Horseback Riding",
+          "visibility": "full",
+          "region": "top-right"
+        },
+        {
+          "source": "rows/10/text_seen",
+          "text": "Mathematik",
+          "id": "Mathematics",
+          "visibility": "full",
+          "region": "right"
+        },
+        {
+          "source": "rows/11/text_seen",
+          "text": "Baukunst",
+          "id": "Construction",
+          "visibility": "full",
+          "region": "right"
+        },
+        {
+          "source": "rows/12/text_seen",
+          "text": "Schließen",
+          "id": "close",
+          "visibility": "full",
+          "region": "bottom-left"
+        },
+        {
+          "source": "rows/13/text_seen",
+          "text": "Bogenschießen erforschen",
+          "id": "research",
+          "visibility": "full",
+          "region": "bottom-right"
+        },
+        {
+          "source": "rows/14/text_seen",
+          "text": "Freigeschaltete Einheiten:",
+          "id": "units-heading",
+          "visibility": "full",
+          "region": "bottom-left"
+        },
+        {
+          "source": "rows/15/text_seen",
+          "text": "Bogenschütze",
+          "id": "archer",
+          "visibility": "full",
+          "region": "bottom-left"
+        },
+        {
+          "source": "rows/16/text_seen",
+          "text": "Freigeschaltete Wunder:",
+          "id": "wonders-heading",
+          "visibility": "full",
+          "region": "bottom-left"
+        },
+        {
+          "source": "rows/17/text_seen",
+          "text": "Tempel der Artemis",
+          "id": "temple",
+          "visibility": "vertical_clip",
+          "region": "bottom-left"
+        },
+        {
+          "source": "rows/18/text_seen",
+          "text": "+1 Kultur",
+          "id": "culture",
+          "visibility": "vertical_clip",
+          "region": "bottom-left"
+        },
+        {
+          "source": "rows/19/text_seen",
+          "text": "+10% Nahrung in allen Städten",
+          "id": "food",
+          "visibility": "vertical_clip",
+          "region": "bottom"
+        },
+        {
+          "source": "rows/20/text_seen",
+          "text": "+15% Produktion beim Bau von",
+          "id": "production",
+          "visibility": "vertical_clip",
+          "region": "bottom"
+        },
+        {
+          "source": "numeric_diagnostics/0",
+          "text": "6"
+        },
+        {
+          "source": "numeric_diagnostics/1",
+          "text": "10"
+        },
+        {
+          "source": "numeric_diagnostics/2",
+          "text": "19"
+        },
+        {
+          "source": "numeric_diagnostics/3",
+          "text": "5"
+        },
+        {
+          "source": "numeric_diagnostics/4",
+          "text": "7"
+        },
+        {
+          "source": "numeric_diagnostics/5",
+          "text": "+1"
+        },
+        {
+          "source": "numeric_diagnostics/6",
+          "text": "+10%"
+        },
+        {
+          "source": "numeric_diagnostics/7",
+          "text": "+15%"
+        },
+        {
+          "source": "numeric_diagnostics/8",
+          "text": "(0/24)"
+        }
+      ]
+    },
+    {
+      "image": "tech-picker__de__2400x1080__injected__1271002.png",
+      "detector": "baseline",
+      "run_id": "20261020T151516Z-51ab4d",
+      "status": "checked",
+      "reason": null,
+      "readability": null,
+      "findings": 12,
+      "finding_details": [
+        {
+          "defect_type": "truncated_text",
+          "text_seen": "Schrift",
+          "region": "top",
+          "confidence": 0.5
+        },
+        {
+          "defect_type": "truncated_text",
+          "text_seen": "Landwirtschaft",
+          "region": "top-left",
+          "confidence": 0.5
+        },
+        {
+          "defect_type": "truncated_text",
+          "text_seen": "Tierhaltung",
+          "region": "top",
+          "confidence": 0.5
+        },
+        {
+          "defect_type": "truncated_text",
+          "text_seen": "Bogenschießen",
+          "region": "center",
+          "confidence": 0.5
+        },
+        {
+          "defect_type": "truncated_text",
+          "text_seen": "Bergbau und Erzgewinnung",
+          "region": "center",
+          "confidence": 0.5
+        },
+        {
+          "defect_type": "truncated_text",
+          "text_seen": "Bogenschießen erforschen",
+          "region": "bottom-right",
+          "confidence": 0.5
+        },
+        {
+          "defect_type": "truncated_text",
+          "text_seen": "Bogenschütze",
+          "region": "bottom",
+          "confidence": 0.5
+        },
+        {
+          "defect_type": "truncated_text",
+          "text_seen": "Tempel der Artemis",
+          "region": "bottom",
+          "confidence": 0.5
+        },
+        {
+          "defect_type": "truncated_text",
+          "text_seen": "Kultur",
+          "region": "bottom",
+          "confidence": 0.5
+        },
+        {
+          "defect_type": "truncated_text",
+          "text_seen": "+10% Nahrung in allen Städten",
+          "region": "bottom",
+          "confidence": 0.5
+        },
+        {
+          "defect_type": "truncated_text",
+          "text_seen": "+15% Produktion beim Bau von Bogenschießen Einheiten in dieser Stadt",
+          "region": "bottom",
+          "confidence": 0.5
+        },
+        {
+          "defect_type": "truncated_text",
+          "text_seen": "+15% Produktion beim Bau von Schießpulver-Fernkampf Einheiten in dieser Stadt",
+          "region": "bottom",
+          "confidence": 0.5
+        }
+      ],
+      "missing_rule_findings": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "matches": [
+        {
+          "finding_index": 4,
+          "label_index": 0
+        }
+      ],
+      "false_positive_indices": [
+        0,
+        1,
+        2,
+        3,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "hallucination_indices": [
+        10,
+        11
+      ],
+      "tp": 1,
+      "fp": 11,
+      "fn": 0,
+      "precision": 0.08333333333333333,
+      "recall_checked": 1.0,
+      "recall_all": 1.0,
+      "hallucinations": 2,
+      "duplicates_collapsed": 0,
+      "not_checked_screens": 0,
+      "confusion": [
+        {
+          "label_type": "truncated_text",
+          "finding_type": "truncated_text",
+          "count": 1
+        }
+      ],
+      "fn_on_not_checked": 0,
+      "requests_sent": 0,
+      "usage": null,
+      "estimated_peak_usd": "0",
+      "latency_s": 0.828,
+      "screen_texts_source": [
+        {
+          "source": "rows/0/text_seen",
+          "text": "Landwirtschaft",
+          "id": "Agriculture",
+          "visibility": "full",
+          "region": "top-left"
+        },
+        {
+          "source": "rows/1/text_seen",
+          "text": "Tierhaltung",
+          "id": "Animal Husbandry",
+          "visibility": "full",
+          "region": "top"
+        },
+        {
+          "source": "rows/2/text_seen",
+          "text": "Bogenschießen",
+          "id": "Archery",
+          "visibility": "full",
+          "region": "center"
+        },
+        {
+          "source": "rows/3/text_seen",
+          "text": "Bergbau und Erzgew...",
+          "id": "Mining",
+          "visibility": "visible_prefix",
+          "region": "center"
+        },
+        {
+          "source": "rows/4/text_seen",
+          "text": "Schrift",
+          "id": "Writing",
+          "visibility": "vertical_clip",
+          "region": "top"
+        },
+        {
+          "source": "rows/5/text_seen",
+          "text": "Fallenstellen",
+          "id": "Trapping",
+          "visibility": "full",
+          "region": "top"
+        },
+        {
+          "source": "rows/6/text_seen",
+          "text": "Das Rad",
+          "id": "The Wheel",
+          "visibility": "full",
+          "region": "center"
+        },
+        {
+          "source": "rows/7/text_seen",
+          "text": "Mauerarbeiten",
+          "id": "Masonry",
+          "visibility": "full",
+          "region": "center"
+        },
+        {
+          "source": "rows/8/text_seen",
+          "text": "Bronzebearbeitung",
+          "id": "Bronze Working",
+          "visibility": "full",
+          "region": "bottom"
+        },
+        {
+          "source": "rows/9/text_seen",
+          "text": "Reiten",
+          "id": "Horseback Riding",
+          "visibility": "full",
+          "region": "top-right"
+        },
+        {
+          "source": "rows/10/text_seen",
+          "text": "Mathematik",
+          "id": "Mathematics",
+          "visibility": "full",
+          "region": "right"
+        },
+        {
+          "source": "rows/11/text_seen",
+          "text": "Baukunst",
+          "id": "Construction",
+          "visibility": "full",
+          "region": "right"
+        },
+        {
+          "source": "rows/12/text_seen",
+          "text": "Freigeschaltete Einheiten:",
+          "id": "units-heading",
+          "visibility": "full",
+          "region": "bottom-left"
+        },
+        {
+          "source": "rows/13/text_seen",
+          "text": "Bogenschütze",
+          "id": "archer",
+          "visibility": "full",
+          "region": "bottom-left"
+        },
+        {
+          "source": "rows/14/text_seen",
+          "text": "Freigeschaltete Wunder:",
+          "id": "wonders-heading",
+          "visibility": "full",
+          "region": "bottom-left"
+        },
+        {
+          "source": "rows/15/text_seen",
+          "text": "Tempel der Artemis",
+          "id": "temple",
+          "visibility": "full",
+          "region": "bottom-left"
+        },
+        {
+          "source": "rows/16/text_seen",
+          "text": "+1 Kultur",
+          "id": "culture",
+          "visibility": "full",
+          "region": "bottom-left"
+        },
+        {
+          "source": "rows/17/text_seen",
+          "text": "+10% Nahrung in allen Städten",
+          "id": "food",
+          "visibility": "full",
+          "region": "bottom"
+        },
+        {
+          "source": "rows/18/text_seen",
+          "text": "+15% Produktion beim Bau von",
+          "id": "production",
+          "visibility": "visible_prefix",
+          "region": "bottom"
+        },
+        {
+          "source": "rows/19/text_seen",
+          "text": "Schließen",
+          "id": "close",
+          "visibility": "full",
+          "region": "bottom-left"
+        },
+        {
+          "source": "rows/20/text_seen",
+          "text": "Bogenschießen erforschen",
+          "id": "research",
+          "visibility": "full",
+          "region": "bottom-right"
+        },
+        {
+          "source": "numeric_diagnostics/0",
+          "text": "6"
+        },
+        {
+          "source": "numeric_diagnostics/1",
+          "text": "10"
+        },
+        {
+          "source": "numeric_diagnostics/2",
+          "text": "19"
+        },
+        {
+          "source": "numeric_diagnostics/3",
+          "text": "5"
+        },
+        {
+          "source": "numeric_diagnostics/4",
+          "text": "7"
+        },
+        {
+          "source": "numeric_diagnostics/5",
+          "text": "+1"
+        },
+        {
+          "source": "numeric_diagnostics/6",
+          "text": "+10%"
+        },
+        {
+          "source": "numeric_diagnostics/7",
+          "text": "+15%"
+        },
+        {
+          "source": "numeric_diagnostics/8",
+          "text": "(0/24)"
+        }
+      ]
+    },
+    {
+      "image": "tech-picker__de__2400x1080__injected__1271002.png",
+      "detector": "vision",
+      "run_id": "20261020T151517Z-fe4b58",
+      "status": "checked",
+      "reason": null,
+      "readability": "readable",
+      "findings": 1,
+      "finding_details": [
+        {
+          "defect_type": "truncated_text",
+          "text_seen": "Bergbau und Erzgew...",
+          "region": "left",
+          "confidence": 0.9
+        }
+      ],
+      "missing_rule_findings": [],
+      "matches": [
+        {
+          "finding_index": 0,
+          "label_index": 0
+        }
+      ],
+      "false_positive_indices": [],
+      "hallucination_indices": [],
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall_checked": 1.0,
+      "recall_all": 1.0,
+      "hallucinations": 0,
+      "duplicates_collapsed": 0,
+      "not_checked_screens": 0,
+      "confusion": [
+        {
+          "label_type": "truncated_text",
+          "finding_type": "truncated_text",
+          "count": 1
+        }
+      ],
+      "fn_on_not_checked": 0,
+      "requests_sent": 1,
+      "usage": {
+        "prompt_tokens": 1836,
+        "completion_tokens": 58,
+        "total_tokens": 1894,
+        "prompt_tokens_details": {
+          "cached_tokens": 1664
+        },
+        "prompt_cache_hit_tokens": 1664,
+        "prompt_cache_miss_tokens": 172
+      },
+      "estimated_peak_usd": "0.000131184",
+      "latency_s": 1.768,
+      "screen_texts_source": [
+        {
+          "source": "rows/0/text_seen",
+          "text": "Landwirtschaft",
+          "id": "Agriculture",
+          "visibility": "full",
+          "region": "top-left"
+        },
+        {
+          "source": "rows/1/text_seen",
+          "text": "Tierhaltung",
+          "id": "Animal Husbandry",
+          "visibility": "full",
+          "region": "top"
+        },
+        {
+          "source": "rows/2/text_seen",
+          "text": "Bogenschießen",
+          "id": "Archery",
+          "visibility": "full",
+          "region": "center"
+        },
+        {
+          "source": "rows/3/text_seen",
+          "text": "Bergbau und Erzgew...",
+          "id": "Mining",
+          "visibility": "visible_prefix",
+          "region": "center"
+        },
+        {
+          "source": "rows/4/text_seen",
+          "text": "Schrift",
+          "id": "Writing",
+          "visibility": "vertical_clip",
+          "region": "top"
+        },
+        {
+          "source": "rows/5/text_seen",
+          "text": "Fallenstellen",
+          "id": "Trapping",
+          "visibility": "full",
+          "region": "top"
+        },
+        {
+          "source": "rows/6/text_seen",
+          "text": "Das Rad",
+          "id": "The Wheel",
+          "visibility": "full",
+          "region": "center"
+        },
+        {
+          "source": "rows/7/text_seen",
+          "text": "Mauerarbeiten",
+          "id": "Masonry",
+          "visibility": "full",
+          "region": "center"
+        },
+        {
+          "source": "rows/8/text_seen",
+          "text": "Bronzebearbeitung",
+          "id": "Bronze Working",
+          "visibility": "full",
+          "region": "bottom"
+        },
+        {
+          "source": "rows/9/text_seen",
+          "text": "Reiten",
+          "id": "Horseback Riding",
+          "visibility": "full",
+          "region": "top-right"
+        },
+        {
+          "source": "rows/10/text_seen",
+          "text": "Mathematik",
+          "id": "Mathematics",
+          "visibility": "full",
+          "region": "right"
+        },
+        {
+          "source": "rows/11/text_seen",
+          "text": "Baukunst",
+          "id": "Construction",
+          "visibility": "full",
+          "region": "right"
+        },
+        {
+          "source": "rows/12/text_seen",
+          "text": "Freigeschaltete Einheiten:",
+          "id": "units-heading",
+          "visibility": "full",
+          "region": "bottom-left"
+        },
+        {
+          "source": "rows/13/text_seen",
+          "text": "Bogenschütze",
+          "id": "archer",
+          "visibility": "full",
+          "region": "bottom-left"
+        },
+        {
+          "source": "rows/14/text_seen",
+          "text": "Freigeschaltete Wunder:",
+          "id": "wonders-heading",
+          "visibility": "full",
+          "region": "bottom-left"
+        },
+        {
+          "source": "rows/15/text_seen",
+          "text": "Tempel der Artemis",
+          "id": "temple",
+          "visibility": "full",
+          "region": "bottom-left"
+        },
+        {
+          "source": "rows/16/text_seen",
+          "text": "+1 Kultur",
+          "id": "culture",
+          "visibility": "full",
+          "region": "bottom-left"
+        },
+        {
+          "source": "rows/17/text_seen",
+          "text": "+10% Nahrung in allen Städten",
+          "id": "food",
+          "visibility": "full",
+          "region": "bottom"
+        },
+        {
+          "source": "rows/18/text_seen",
+          "text": "+15% Produktion beim Bau von",
+          "id": "production",
+          "visibility": "visible_prefix",
+          "region": "bottom"
+        },
+        {
+          "source": "rows/19/text_seen",
+          "text": "Schließen",
+          "id": "close",
+          "visibility": "full",
+          "region": "bottom-left"
+        },
+        {
+          "source": "rows/20/text_seen",
+          "text": "Bogenschießen erforschen",
+          "id": "research",
+          "visibility": "full",
+          "region": "bottom-right"
+        },
+        {
+          "source": "numeric_diagnostics/0",
+          "text": "6"
+        },
+        {
+          "source": "numeric_diagnostics/1",
+          "text": "10"
+        },
+        {
+          "source": "numeric_diagnostics/2",
+          "text": "19"
+        },
+        {
+          "source": "numeric_diagnostics/3",
+          "text": "5"
+        },
+        {
+          "source": "numeric_diagnostics/4",
+          "text": "7"
+        },
+        {
+          "source": "numeric_diagnostics/5",
+          "text": "+1"
+        },
+        {
+          "source": "numeric_diagnostics/6",
+          "text": "+10%"
+        },
+        {
+          "source": "numeric_diagnostics/7",
+          "text": "+15%"
+        },
+        {
+          "source": "numeric_diagnostics/8",
+          "text": "(0/24)"
+        }
+      ]
+    },
+    {
+      "image": "tech-picker__en__2400x1080__clean__1271001.png",
+      "detector": "baseline",
+      "run_id": "20261020T151519Z-56a903",
+      "status": "checked",
+      "reason": null,
+      "readability": null,
+      "findings": 14,
+      "finding_details": [
+        {
+          "defect_type": "truncated_text",
+          "text_seen": "Writing",
+          "region": "top",
+          "confidence": 0.5
+        },
+        {
+          "defect_type": "truncated_text",
+          "text_seen": "Agriculture",
+          "region": "top-left",
+          "confidence": 0.5
+        },
+        {
+          "defect_type": "truncated_text",
+          "text_seen": "Animal Husbandry",
+          "region": "top",
+          "confidence": 0.5
+        },
+        {
+          "defect_type": "truncated_text",
+          "text_seen": "Archery",
+          "region": "center",
+          "confidence": 0.5
+        },
+        {
+          "defect_type": "truncated_text",
+          "text_seen": "Mining",
+          "region": "center",
+          "confidence": 0.5
+        },
+        {
+          "defect_type": "truncated_text",
+          "text_seen": "Research",
+          "region": "bottom-right",
+          "confidence": 0.93300705
+        },
+        {
+          "defect_type": "truncated_text",
+          "text_seen": "Units enabled",
+          "region": "bottom-left",
+          "confidence": 0.96506695
+        },
+        {
+          "defect_type": "truncated_text",
+          "text_seen": "Archer",
+          "region": "bottom",
+          "confidence": 0.5
+        },
+        {
+          "defect_type": "truncated_text",
+          "text_seen": "Wonders enabled",
+          "region": "bottom-left",
+          "confidence": 0.96196606
+        },
+        {
+          "defect_type": "truncated_text",
+          "text_seen": "Temple of Artemis",
+          "region": "bottom",
+          "confidence": 0.5
+        },
+        {
+          "defect_type": "truncated_text",
+          "text_seen": "Culture",
+          "region": "bottom",
+          "confidence": 0.5
+        },
+        {
+          "defect_type": "truncated_text",
+          "text_seen": "+10% Food in all cities",
+          "region": "bottom",
+          "confidence": 0.5
+        },
+        {
+          "defect_type": "truncated_text",
+          "text_seen": "+15% Production when constructing Archery units in this",
+          "region": "bottom",
+          "confidence": 0.854629475
+        },
+        {
+          "defect_type": "truncated_text",
+          "text_seen": "+15% Production when constructing Ranged Gunpowder units in this city",
+          "region": "bottom",
+          "confidence": 0.5
+        }
+      ],
+      "missing_rule_findings": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        7,
+        9,
+        10,
+        11,
+        13
+      ],
+      "matches": [],
+      "false_positive_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ],
+      "hallucination_indices": [
+        0,
+        13
+      ],
+      "tp": 0,
+      "fp": 14,
+      "fn": 0,
+      "precision": 0.0,
+      "recall_checked": null,
+      "recall_all": null,
+      "hallucinations": 2,
+      "duplicates_collapsed": 0,
+      "not_checked_screens": 0,
+      "confusion": [],
+      "fn_on_not_checked": 0,
+      "requests_sent": 0,
+      "usage": null,
+      "estimated_peak_usd": "0",
+      "latency_s": 0.545,
+      "screen_texts_source": [
+        {
+          "source": "rows/0/text_seen",
+          "text": "Agriculture",
+          "id": "Agriculture",
+          "visibility": "full",
+          "region": "top-left"
+        },
+        {
+          "source": "rows/1/text_seen",
+          "text": "Animal Husbandry",
+          "id": "Animal Husbandry",
+          "visibility": "full",
+          "region": "top"
+        },
+        {
+          "source": "rows/2/text_seen",
+          "text": "Archery",
+          "id": "Archery",
+          "visibility": "full",
+          "region": "center"
+        },
+        {
+          "source": "rows/3/text_seen",
+          "text": "Mining",
+          "id": "Mining",
+          "visibility": "full",
+          "region": "center"
+        },
+        {
+          "source": "rows/4/text_seen",
+          "text": "Trapping",
+          "id": "Trapping",
+          "visibility": "full",
+          "region": "top"
+        },
+        {
+          "source": "rows/5/text_seen",
+          "text": "The Wheel",
+          "id": "The Wheel",
+          "visibility": "full",
+          "region": "center"
+        },
+        {
+          "source": "rows/6/text_seen",
+          "text": "Masonry",
+          "id": "Masonry",
+          "visibility": "full",
+          "region": "center"
+        },
+        {
+          "source": "rows/7/text_seen",
+          "text": "Bronze Working",
+          "id": "Bronze Working",
+          "visibility": "full",
+          "region": "bottom"
+        },
+        {
+          "source": "rows/8/text_seen",
+          "text": "Horseback Riding",
+          "id": "Horseback Riding",
+          "visibility": "full",
+          "region": "top-right"
+        },
+        {
+          "source": "rows/9/text_seen",
+          "text": "Mathematics",
+          "id": "Mathematics",
+          "visibility": "full",
+          "region": "right"
+        },
+        {
+          "source": "rows/10/text_seen",
+          "text": "Construction",
+          "id": "Construction",
+          "visibility": "full",
+          "region": "right"
+        },
+        {
+          "source": "rows/11/text_seen",
+          "text": "Close",
+          "id": "close",
+          "visibility": "full",
+          "region": "bottom-left"
+        },
+        {
+          "source": "rows/12/text_seen",
+          "text": "Research Archery",
+          "id": "research",
+          "visibility": "full",
+          "region": "bottom-right"
+        },
+        {
+          "source": "rows/13/text_seen",
+          "text": "Units enabled:",
+          "id": "units-heading",
+          "visibility": "full",
+          "region": "bottom-left"
+        },
+        {
+          "source": "rows/14/text_seen",
+          "text": "Archer",
+          "id": "archer",
+          "visibility": "full",
+          "region": "bottom-left"
+        },
+        {
+          "source": "rows/15/text_seen",
+          "text": "Wonders enabled:",
+          "id": "wonders-heading",
+          "visibility": "full",
+          "region": "bottom-left"
+        },
+        {
+          "source": "rows/16/text_seen",
+          "text": "Temple of Artemis",
+          "id": "temple",
+          "visibility": "full",
+          "region": "bottom-left"
+        },
+        {
+          "source": "rows/17/text_seen",
+          "text": "+1 Culture",
+          "id": "culture",
+          "visibility": "full",
+          "region": "bottom-left"
+        },
+        {
+          "source": "rows/18/text_seen",
+          "text": "+10% Food in all cities",
+          "id": "food",
+          "visibility": "full",
+          "region": "bottom"
+        },
+        {
+          "source": "rows/19/text_seen",
+          "text": "+15% Production when constructing Archery units in this city",
+          "id": "production",
+          "visibility": "full",
+          "region": "bottom"
+        },
+        {
+          "source": "numeric_diagnostics/0",
+          "text": "6"
+        },
+        {
+          "source": "numeric_diagnostics/1",
+          "text": "10"
+        },
+        {
+          "source": "numeric_diagnostics/2",
+          "text": "19"
+        },
+        {
+          "source": "numeric_diagnostics/3",
+          "text": "5"
+        },
+        {
+          "source": "numeric_diagnostics/4",
+          "text": "7"
+        },
+        {
+          "source": "numeric_diagnostics/5",
+          "text": "+1"
+        },
+        {
+          "source": "numeric_diagnostics/6",
+          "text": "+10%"
+        },
+        {
+          "source": "numeric_diagnostics/7",
+          "text": "+15%"
+        },
+        {
+          "source": "numeric_diagnostics/8",
+          "text": "(0/24)"
+        }
+      ]
+    },
+    {
+      "image": "tech-picker__en__2400x1080__clean__1271001.png",
+      "detector": "vision",
+      "run_id": "20261020T151519Z-3f12a3",
+      "status": "checked",
+      "reason": null,
+      "readability": "readable",
+      "findings": 0,
+      "finding_details": [],
+      "missing_rule_findings": [],
+      "matches": [],
+      "false_positive_indices": [],
+      "hallucination_indices": [],
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "precision": null,
+      "recall_checked": null,
+      "recall_all": null,
+      "hallucinations": 0,
+      "duplicates_collapsed": 0,
+      "not_checked_screens": 0,
+      "confusion": [],
+      "fn_on_not_checked": 0,
+      "requests_sent": 1,
+      "usage": {
+        "prompt_tokens": 1836,
+        "completion_tokens": 27,
+        "total_tokens": 1863,
+        "prompt_tokens_details": {
+          "cached_tokens": 1664
+        },
+        "prompt_cache_hit_tokens": 1664,
+        "prompt_cache_miss_tokens": 172
+      },
+      "estimated_peak_usd": "0.000093984",
+      "latency_s": 1.358,
+      "screen_texts_source": [
+        {
+          "source": "rows/0/text_seen",
+          "text": "Agriculture",
+          "id": "Agriculture",
+          "visibility": "full",
+          "region": "top-left"
+        },
+        {
+          "source": "rows/1/text_seen",
+          "text": "Animal Husbandry",
+          "id": "Animal Husbandry",
+          "visibility": "full",
+          "region": "top"
+        },
+        {
+          "source": "rows/2/text_seen",
+          "text": "Archery",
+          "id": "Archery",
+          "visibility": "full",
+          "region": "center"
+        },
+        {
+          "source": "rows/3/text_seen",
+          "text": "Mining",
+          "id": "Mining",
+          "visibility": "full",
+          "region": "center"
+        },
+        {
+          "source": "rows/4/text_seen",
+          "text": "Trapping",
+          "id": "Trapping",
+          "visibility": "full",
+          "region": "top"
+        },
+        {
+          "source": "rows/5/text_seen",
+          "text": "The Wheel",
+          "id": "The Wheel",
+          "visibility": "full",
+          "region": "center"
+        },
+        {
+          "source": "rows/6/text_seen",
+          "text": "Masonry",
+          "id": "Masonry",
+          "visibility": "full",
+          "region": "center"
+        },
+        {
+          "source": "rows/7/text_seen",
+          "text": "Bronze Working",
+          "id": "Bronze Working",
+          "visibility": "full",
+          "region": "bottom"
+        },
+        {
+          "source": "rows/8/text_seen",
+          "text": "Horseback Riding",
+          "id": "Horseback Riding",
+          "visibility": "full",
+          "region": "top-right"
+        },
+        {
+          "source": "rows/9/text_seen",
+          "text": "Mathematics",
+          "id": "Mathematics",
+          "visibility": "full",
+          "region": "right"
+        },
+        {
+          "source": "rows/10/text_seen",
+          "text": "Construction",
+          "id": "Construction",
+          "visibility": "full",
+          "region": "right"
+        },
+        {
+          "source": "rows/11/text_seen",
+          "text": "Close",
+          "id": "close",
+          "visibility": "full",
+          "region": "bottom-left"
+        },
+        {
+          "source": "rows/12/text_seen",
+          "text": "Research Archery",
+          "id": "research",
+          "visibility": "full",
+          "region": "bottom-right"
+        },
+        {
+          "source": "rows/13/text_seen",
+          "text": "Units enabled:",
+          "id": "units-heading",
+          "visibility": "full",
+          "region": "bottom-left"
+        },
+        {
+          "source": "rows/14/text_seen",
+          "text": "Archer",
+          "id": "archer",
+          "visibility": "full",
+          "region": "bottom-left"
+        },
+        {
+          "source": "rows/15/text_seen",
+          "text": "Wonders enabled:",
+          "id": "wonders-heading",
+          "visibility": "full",
+          "region": "bottom-left"
+        },
+        {
+          "source": "rows/16/text_seen",
+          "text": "Temple of Artemis",
+          "id": "temple",
+          "visibility": "full",
+          "region": "bottom-left"
+        },
+        {
+          "source": "rows/17/text_seen",
+          "text": "+1 Culture",
+          "id": "culture",
+          "visibility": "full",
+          "region": "bottom-left"
+        },
+        {
+          "source": "rows/18/text_seen",
+          "text": "+10% Food in all cities",
+          "id": "food",
+          "visibility": "full",
+          "region": "bottom"
+        },
+        {
+          "source": "rows/19/text_seen",
+          "text": "+15% Production when constructing Archery units in this city",
+          "id": "production",
+          "visibility": "full",
+          "region": "bottom"
+        },
+        {
+          "source": "numeric_diagnostics/0",
+          "text": "6"
+        },
+        {
+          "source": "numeric_diagnostics/1",
+          "text": "10"
+        },
+        {
+          "source": "numeric_diagnostics/2",
+          "text": "19"
+        },
+        {
+          "source": "numeric_diagnostics/3",
+          "text": "5"
+        },
+        {
+          "source": "numeric_diagnostics/4",
+          "text": "7"
+        },
+        {
+          "source": "numeric_diagnostics/5",
+          "text": "+1"
+        },
+        {
+          "source": "numeric_diagnostics/6",
+          "text": "+10%"
+        },
+        {
+          "source": "numeric_diagnostics/7",
+          "text": "+15%"
+        },
+        {
+          "source": "numeric_diagnostics/8",
+          "text": "(0/24)"
+        }
+      ]
+    }
+  ],
+  "totals": {
+    "baseline": {
+      "tp": 1,
+      "fp": 40,
+      "fn": 0,
+      "precision": 0.024390243902439025,
+      "recall_checked": 1.0,
+      "recall_all": 1.0,
+      "hallucinations": 6,
+      "duplicates_collapsed": 0,
+      "not_checked_screens": 0,
+      "confusion": [
+        {
+          "label_type": "truncated_text",
+          "finding_type": "truncated_text",
+          "count": 1
+        }
+      ],
+      "fn_on_not_checked": 0,
+      "findings": 41,
+      "requests_sent": 0,
+      "estimated_peak_usd": "0",
+      "latency_s": 2.198
+    },
+    "vision": {
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall_checked": 1.0,
+      "recall_all": 1.0,
+      "hallucinations": 0,
+      "duplicates_collapsed": 0,
+      "not_checked_screens": 0,
+      "confusion": [
+        {
+          "label_type": "truncated_text",
+          "finding_type": "truncated_text",
+          "count": 1
+        }
+      ],
+      "fn_on_not_checked": 0,
+      "findings": 1,
+      "requests_sent": 3,
+      "estimated_peak_usd": "0.000322752",
+      "latency_s": 4.892
+    }
+  }
+}

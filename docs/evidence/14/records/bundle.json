@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "reference_source": "docs/experiments/issue-10/reference-amendment-candidate.json",
+  "matching_config": {
+    "text_threshold": 0.9,
+    "prefix_min_coverage": 0.5,
+    "prefix_min_words": 2
+  },
+  "inputs": {
+    "reference.json": {
+      "file": "reference.json",
+      "sha256": "bba4e51d48d81bfa836eb80632697069b4e70fd67944a09f93d71aada609dd19"
+    },
+    "approval.json": {
+      "file": "approval.json",
+      "sha256": "2b982863c26dc4e48165b2b097f3b42a73b6b2db783af280ded404bd72c13766"
+    },
+    "pair-manifest.json": {
+      "file": "pair-manifest.json",
+      "sha256": "7bcda935b9f36cc98fb389d7c7bc34ceac749d3fc757e62dea284a654ada4c28"
+    },
+    "inventory.json": {
+      "file": "inventory.json",
+      "sha256": "60b2c3a39a82cf9f5378f2cf127d7fe51240e12d80a52957102d3b17373e2d64"
+    }
+  },
+  "screens": [
+    {
+      "image": "tech-picker__de__2400x1080__clean__1271001.png",
+      "sha256": "a6a5beb3ef17ce4a640261821ff1bfc02f2dfda0e81c1cfb3aadaa32407f954e",
+      "labels": {
+        "file": "tech-picker__de__2400x1080__clean__1271001.labels.json",
+        "sha256": "34343ca94e8f0ccf652aec9869a79e85ff60d5c42588ac300c23c304f1e68a43"
+      },
+      "records": {
+        "baseline": {
+          "diagnostics.json": {
+            "file": "baseline/20261020T151513Z-d62dbd/diagnostics.json",
+            "sha256": "0bf1dcb3ba31acb5d1667e391c6e734e5e49fa2c287ec9a4976fff147dacfdb4"
+          },
+          "ocr.tsv": {
+            "file": "baseline/20261020T151513Z-d62dbd/ocr.tsv",
+            "sha256": "ea6c3bf8e8b70a1b6e2aae1197e10b0af949f7f42eb600ed35161dcf818eedd5"
+          },
+          "result.json": {
+            "file": "baseline/20261020T151513Z-d62dbd/result.json",
+            "sha256": "0fa69f6e0ddaeed8996e23496b9c0ba767ecef3401dbe39886194906ba8ee0f6"
+          },
+          "run.json": {
+            "file": "baseline/20261020T151513Z-d62dbd/run.json",
+            "sha256": "37a5d8e9c3d29a29490d70bf889ca63fad5cbc80472abf2c8cff4805f0f570f2"
+          },
+          "source-entries.json": {
+            "file": "baseline/20261020T151513Z-d62dbd/source-entries.json",
+            "sha256": "ff85535016d311c9cbdd96e5c103694f86436ecc09cc9dbfb6087c6cbd305323"
+          }
+        },
+        "vision": {
+          "prompt.txt": {
+            "file": "vision/20261020T151514Z-cb46c9/prompt.txt",
+            "sha256": "4359255e06a6d64bf35be0ee30e635f4f7e3b8b1a909c6736a07030a463779eb"
+          },
+          "prompt_sent.txt": {
+            "file": "vision/20261020T151514Z-cb46c9/prompt_sent.txt",
+            "sha256": "26f4b4f9225b5d4744b70525f4011f526efad1375bb2ca9fb1515d803e312231"
+          },
+          "response_raw.json": {
+            "file": "vision/20261020T151514Z-cb46c9/response_raw.json",
+            "sha256": "31eaace74148f2778f61f80177605f9354c2181c2553e6f68316b295c0602904"
+          },
+          "result.json": {
+            "file": "vision/20261020T151514Z-cb46c9/result.json",
+            "sha256": "ab12c9974a86881249c632b704438c9ca7dfcef08785065012e557876b0ddb32"
+          },
+          "run.json": {
+            "file": "vision/20261020T151514Z-cb46c9/run.json",
+            "sha256": "34a6aca9eb45eed441510f51f22e012ee3382d28f44cc5a237e847fa6dcd12db"
+          }
+        }
+      }
+    },
+    {
+      "image": "tech-picker__de__2400x1080__injected__1271002.png",
+      "sha256": "372aa318ce3bf4d553b4b9d427a7fe6d87f566953605c21bc705dd10df816b93",
+      "labels": {
+        "file": "tech-picker__de__2400x1080__injected__1271002.labels.json",
+        "sha256": "cc38f51351bf9ca71bc54f9d15c7cdbdda2e0e3f812be7b7f6d680f1acfed533"
+      },
+      "records": {
+        "baseline": {
+          "diagnostics.json": {
+            "file": "baseline/20261020T151516Z-51ab4d/diagnostics.json",
+            "sha256": "6b1ac65e09a02741a699c5c5f2ac894d7fc1c5cf44b0878ceeb778ed7b55f70a"
+          },
+          "ocr.tsv": {
+            "file": "baseline/20261020T151516Z-51ab4d/ocr.tsv",
+            "sha256": "4b5da185d99f56328c4e2560899ca211e5f1c0421d9afaee7db13702811a3f06"
+          },
+          "result.json": {
+            "file": "baseline/20261020T151516Z-51ab4d/result.json",
+            "sha256": "4ffd47ed5c5b61e157a30a01b6e7d65fecfad3535cc582e928006c964164b7df"
+          },
+          "run.json": {
+            "file": "baseline/20261020T151516Z-51ab4d/run.json",
+            "sha256": "4941c2ddea757146e698f3ca47947adf3effad87e36059bc640c446839c7526e"
+          },
+          "source-entries.json": {
+            "file": "baseline/20261020T151516Z-51ab4d/source-entries.json",
+            "sha256": "8556bbbf2a814483412431e56b161fbcd84361b660625aef45ab4001922235b7"
+          }
+        },
+        "vision": {
+          "prompt.txt": {
+            "file": "vision/20261020T151517Z-fe4b58/prompt.txt",
+            "sha256": "4359255e06a6d64bf35be0ee30e635f4f7e3b8b1a909c6736a07030a463779eb"
+          },
+          "prompt_sent.txt": {
+            "file": "vision/20261020T151517Z-fe4b58/prompt_sent.txt",
+            "sha256": "26f4b4f9225b5d4744b70525f4011f526efad1375bb2ca9fb1515d803e312231"
+          },
+          "response_raw.json": {
+            "file": "vision/20261020T151517Z-fe4b58/response_raw.json",
+            "sha256": "9b4cb39cc379afbd9a8af5967cd32878417b6c303003195458654ffe28385083"
+          },
+          "result.json": {
+            "file": "vision/20261020T151517Z-fe4b58/result.json",
+            "sha256": "3e6144172a43e83c9d6c056eee6277852a7bfe05d2792c4e95b107669ab1dbe9"
+          },
+          "run.json": {
+            "file": "vision/20261020T151517Z-fe4b58/run.json",
+            "sha256": "e5c182f91860bc83a6772cdac828e6c79fb834e210398e5137569ea7009b212d"
+          }
+        }
+      }
+    },
+    {
+      "image": "tech-picker__en__2400x1080__clean__1271001.png",
+      "sha256": "88ff1c55aef33cc9ff0fd89cd5912384b7a1017d8d9ca2d88965ec39389b9f47",
+      "labels": {
+        "file": "tech-picker__en__2400x1080__clean__1271001.labels.json",
+        "sha256": "33e8e1aa6de3e3d7101978a2e48fc673473a03b28839c55140ceb8feedb0311a"
+      },
+      "records": {
+        "baseline": {
+          "diagnostics.json": {
+            "file": "baseline/20261020T151519Z-56a903/diagnostics.json",
+            "sha256": "4479f9d6f558beb773a50c2f5e98a69436b7363d96facefca411a450aedaa919"
+          },
+          "ocr.tsv": {
+            "file": "baseline/20261020T151519Z-56a903/ocr.tsv",
+            "sha256": "2e743db3dd0bb2556c69c9364fcd66868ab0a231367d7bee2eb9d64441b00be8"
+          },
+          "result.json": {
+            "file": "baseline/20261020T151519Z-56a903/result.json",
+            "sha256": "af4295bf8c728df9151e675359cd5cba7921ef3fadf8f3d72fae89b3e37298df"
+          },
+          "run.json": {
+            "file": "baseline/20261020T151519Z-56a903/run.json",
+            "sha256": "cef41b138bb3f3159a1f5580898f74d4326ae63992396791908ca975a5713db7"
+          },
+          "source-entries.json": {
+            "file": "baseline/20261020T151519Z-56a903/source-entries.json",
+            "sha256": "ff85535016d311c9cbdd96e5c103694f86436ecc09cc9dbfb6087c6cbd305323"
+          }
+        },
+        "vision": {
+          "prompt.txt": {
+            "file": "vision/20261020T151519Z-3f12a3/prompt.txt",
+            "sha256": "4359255e06a6d64bf35be0ee30e635f4f7e3b8b1a909c6736a07030a463779eb"
+          },
+          "prompt_sent.txt": {
+            "file": "vision/20261020T151519Z-3f12a3/prompt_sent.txt",
+            "sha256": "26f4b4f9225b5d4744b70525f4011f526efad1375bb2ca9fb1515d803e312231"
+          },
+          "response_raw.json": {
+            "file": "vision/20261020T151519Z-3f12a3/response_raw.json",
+            "sha256": "21f15e989727cd258a30df9115ecd152c1f998b171bda5a6009568b5839704bb"
+          },
+          "result.json": {
+            "file": "vision/20261020T151519Z-3f12a3/result.json",
+            "sha256": "71c9d757d5aee3dcaf666d650b79d67ed9164046af8a7ccae6abed2c02fe6176"
+          },
+          "run.json": {
+            "file": "vision/20261020T151519Z-3f12a3/run.json",
+            "sha256": "56538a406910207e53cb3e8bfe47a88e4f0b1a212324c0fc279b703f31949626"
+          }
+        }
+      }
+    }
+  ],
+  "expected_images": [
+    "tech-picker__de__2400x1080__clean__1271001.png",
+    "tech-picker__de__2400x1080__injected__1271002.png",
+    "tech-picker__en__2400x1080__clean__1271001.png"
+  ],
+  "budget_stops": []
+}

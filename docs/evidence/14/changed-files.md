@@ -1,0 +1,55 @@
+# Changed files for issue #14
+
+Every added or modified repository file is listed below. The record files are byte-identical copies of the live session; no prior evidence was edited.
+
+- `README.md`
+- `docs/decisions.md`
+- `docs/evidence/14/changed-files.md`
+- `docs/evidence/14/records/baseline/20261020T151513Z-d62dbd/diagnostics.json`
+- `docs/evidence/14/records/baseline/20261020T151513Z-d62dbd/ocr.tsv`
+- `docs/evidence/14/records/baseline/20261020T151513Z-d62dbd/result.json`
+- `docs/evidence/14/records/baseline/20261020T151513Z-d62dbd/run.json`
+- `docs/evidence/14/records/baseline/20261020T151513Z-d62dbd/source-entries.json`
+- `docs/evidence/14/records/baseline/20261020T151516Z-51ab4d/diagnostics.json`
+- `docs/evidence/14/records/baseline/20261020T151516Z-51ab4d/ocr.tsv`
+- `docs/evidence/14/records/baseline/20261020T151516Z-51ab4d/result.json`
+- `docs/evidence/14/records/baseline/20261020T151516Z-51ab4d/run.json`
+- `docs/evidence/14/records/baseline/20261020T151516Z-51ab4d/source-entries.json`
+- `docs/evidence/14/records/baseline/20261020T151519Z-56a903/diagnostics.json`
+- `docs/evidence/14/records/baseline/20261020T151519Z-56a903/ocr.tsv`
+- `docs/evidence/14/records/baseline/20261020T151519Z-56a903/result.json`
+- `docs/evidence/14/records/baseline/20261020T151519Z-56a903/run.json`
+- `docs/evidence/14/records/baseline/20261020T151519Z-56a903/source-entries.json`
+- `docs/evidence/14/records/budget.json`
+- `docs/evidence/14/records/bundle.json`
+- `docs/evidence/14/records/comparison.json`
+- `docs/evidence/14/records/comparison.md`
+- `docs/evidence/14/records/inputs/approval.json`
+- `docs/evidence/14/records/inputs/inventory.json`
+- `docs/evidence/14/records/inputs/pair-manifest.json`
+- `docs/evidence/14/records/inputs/reference.json`
+- `docs/evidence/14/records/inputs/tech-picker__de__2400x1080__clean__1271001.labels.json`
+- `docs/evidence/14/records/inputs/tech-picker__de__2400x1080__injected__1271002.labels.json`
+- `docs/evidence/14/records/inputs/tech-picker__en__2400x1080__clean__1271001.labels.json`
+- `docs/evidence/14/records/vision/20261020T151514Z-cb46c9/prompt.txt`
+- `docs/evidence/14/records/vision/20261020T151514Z-cb46c9/prompt_sent.txt`
+- `docs/evidence/14/records/vision/20261020T151514Z-cb46c9/response_raw.json`
+- `docs/evidence/14/records/vision/20261020T151514Z-cb46c9/result.json`
+- `docs/evidence/14/records/vision/20261020T151514Z-cb46c9/run.json`
+- `docs/evidence/14/records/vision/20261020T151517Z-fe4b58/prompt.txt`
+- `docs/evidence/14/records/vision/20261020T151517Z-fe4b58/prompt_sent.txt`
+- `docs/evidence/14/records/vision/20261020T151517Z-fe4b58/response_raw.json`
+- `docs/evidence/14/records/vision/20261020T151517Z-fe4b58/result.json`
+- `docs/evidence/14/records/vision/20261020T151517Z-fe4b58/run.json`
+- `docs/evidence/14/records/vision/20261020T151519Z-3f12a3/prompt.txt`
+- `docs/evidence/14/records/vision/20261020T151519Z-3f12a3/prompt_sent.txt`
+- `docs/evidence/14/records/vision/20261020T151519Z-3f12a3/response_raw.json`
+- `docs/evidence/14/records/vision/20261020T151519Z-3f12a3/result.json`
+- `docs/evidence/14/records/vision/20261020T151519Z-3f12a3/run.json`
+- `docs/evidence/14/report.md`
+- `docs/evidence/14/verification.txt`
+- `docs/vertical-slice.md`
+- `pyproject.toml`
+- `src/l10n_checker/slice.py`
+- `src/l10n_checker/slice_cli.py`
+- `tests/test_slice.py`

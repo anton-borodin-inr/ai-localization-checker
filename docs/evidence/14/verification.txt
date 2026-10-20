@@ -1,0 +1,49 @@
+$ uv run --offline --cache-dir ../uv-cache --no-editable pytest -q
+........................................................................ [  5%]
+........................................................................ [ 10%]
+........................................................................ [ 15%]
+........................................................................ [ 20%]
+........................................................................ [ 25%]
+........................................................................ [ 30%]
+........................................................................ [ 35%]
+........................................................................ [ 40%]
+........................................................................ [ 45%]
+........................................................................ [ 51%]
+........................................................................ [ 56%]
+........................................................................ [ 61%]
+........................................................................ [ 66%]
+........................................................................ [ 71%]
+........................................................................ [ 76%]
+........................................................................ [ 81%]
+..........s............................................................. [ 86%]
+........................................................................ [ 91%]
+........................................................................ [ 97%]
+.........................................                                [100%]
+1408 passed, 1 skipped in 6.37s
+Exit code: 0
+
+$ uv run --offline --cache-dir ../uv-cache --no-editable ruff check .
+All checks passed!
+Exit code: 0
+
+$ uv run --offline --cache-dir ../uv-cache --no-editable ruff format --check .
+66 files already formatted
+Exit code: 0
+
+$ uv run --offline --cache-dir ../uv-cache --no-editable l10n-slice replay --bundle docs/evidence/14/records/bundle.json --output data/issue-14-replay/comparison
+data/issue-14-replay/comparison
+Exit code: 0
+
+$ cmp docs/evidence/14/records/comparison.json data/issue-14-replay/comparison.json
+Exit code: 0
+
+$ cmp docs/evidence/14/records/comparison.md data/issue-14-replay/comparison.md
+Exit code: 0
+
+$ git diff --check
+Exit code: 0
+
+$ git diff --exit-code origin/main -- src/l10n_checker/vision.py src/l10n_checker/deepseek.py src/l10n_checker/matching.py src/l10n_checker/metrics.py src/l10n_checker/baseline.py tests/golden
+Exit code: 0
+
+41 original evidence files remain byte-identical; all live caps and prompt hashes verified.
