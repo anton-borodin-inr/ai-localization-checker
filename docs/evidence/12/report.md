@@ -2,9 +2,12 @@
 
 **Weak slice result:** the baseline produces **15 false positives on German
 clean and 14 on English clean**. It produces 12 candidates on German injected.
-The Mining expectation is flagged as missing with empty `text_seen`: Tesseract
-never recovered the visible Mining prefix. This is **not evidence of a
-text-identifiable detection TP under D-026**. D-023 expected the baseline to
+In the `baseline-v0` records the Mining expectation is flagged as missing with
+empty `text_seen`: Tesseract never recovered the visible Mining prefix. This is
+**not evidence of a text-identifiable detection TP under D-026**. In the
+`baseline-v0.1` records the same missing candidate carries the expected string
+`Bergbau und Erzgewinnung` as `text_seen`; that is not observed text, and
+whether it counts as a TP is left to the D-026/D-029 matcher (issue #13). D-023 expected the baseline to
 catch the Mining case easily; on this slice it did not. No matching, precision, recall or
 vision-model comparison was run. Independent PR review and Anton's acceptance
 remain pending. All candidates are retained, with no post-run tuning.
@@ -186,7 +189,7 @@ TP/FP status: that requires the D-026 matcher owned by issue #13.
 
 ### Every finding in the `baseline-v0.1` records (PR #28 review)
 
-Re-run on 2026-10-20 at code commit `5265b67` (rules from `9c6c389`), same command,
+Re-run on 2026-10-20 at code commit `5265b67e1be4e18b8942d194ed695f4bef636b85` (rules from `9c6c389`), same command,
 screenshots, manifest, inventory and fork commits as the v0 runs; offline, no provider
 call, labels not read. Byte-for-byte checks against the v0 records: `ocr.tsv`,
 `source-entries.json` and `diagnostics.json` are identical; every non-missing finding is

@@ -41,7 +41,7 @@
       "missing_rule_findings": 15,
       "requests_sent": 0,
       "latency_s": 0.864,
-      "code_commit": "5265b67",
+      "code_commit": "5265b67e1be4e18b8942d194ed695f4bef636b85",
       "settings_version": "baseline-v0.1"
     },
     {
@@ -52,7 +52,7 @@
       "missing_rule_findings": 12,
       "requests_sent": 0,
       "latency_s": 0.851,
-      "code_commit": "5265b67",
+      "code_commit": "5265b67e1be4e18b8942d194ed695f4bef636b85",
       "settings_version": "baseline-v0.1"
     },
     {
@@ -63,7 +63,7 @@
       "missing_rule_findings": 10,
       "requests_sent": 0,
       "latency_s": 0.516,
-      "code_commit": "5265b67",
+      "code_commit": "5265b67e1be4e18b8942d194ed695f4bef636b85",
       "settings_version": "baseline-v0.1"
     }
   ],
