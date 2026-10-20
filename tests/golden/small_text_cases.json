@@ -1,0 +1,12 @@
+{
+  "source": "Reference and these comparison examples confirmed by Anton in chat on 2026-10-19 before any live call. Separate from issue 13 defect matching goldens.",
+  "cases": [
+    ["Bogenschießen", "Bogenschießen", true, true],
+    ["Bogenschießen", "BogenschieBen", false, true],
+    ["Bergbau und Erzgew...", "Bergbau und Erzgev...", false, true],
+    ["Bergbau und Erzgew...", "Bergbau", false, false],
+    ["Mining", "Mininq", false, false],
+    ["Bogenschießen erforschen", "Bogenschießen", false, false],
+    ["+10% Food in all cities", "+10% Food   in all cities", true, true]
+  ]
+}

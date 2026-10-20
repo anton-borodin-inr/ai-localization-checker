@@ -1,0 +1,8 @@
+{
+  "status": "confirmed",
+  "accepted_by": "Anton",
+  "date": "2026-10-19",
+  "evidence": "Anton confirmed the reference and comparison examples in this chat before any live call.",
+  "reference_sha256": "e20d9ede40afcdc052052062273cfc4b00c8db9e9d953fbfd20415cbd568b964",
+  "plan_sha256": "bdf521d2f8c3478bdc2e5aa4caaa0232b54448b1a50ca527ba4b094a21916abc"
+}
