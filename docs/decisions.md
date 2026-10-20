@@ -159,7 +159,7 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 ## D-017 — v1 model and request settings
 
 - **Date:** 2026-10-17
-- **Status:** Accepted
+- **Status:** Superseded by D-034
 - **Decision:** The v1 provider (D-006) is `gemini-3.6-flash` on the Gemini API free tier. Requests use structured output (`application/json` with the finding schema), temperature 0 and `media_resolution` `MEDIA_RESOLUTION_HIGH`. The SDK's own retries are disabled; one retry after HTTP 429 is allowed only within the per-run request cap. The default timeout is 180 s (`--timeout`), and a server-side `504 DEADLINE_EXCEEDED` is reported as `timeout`.
 - **Why:** The SDK sends the timeout to the server as `X-Server-Timeout`; with 60 s, the first image call (run `20261017T182052Z-fb1925`) was cut off by the server after 59.2 s with no response. Every generation request to `gemini-3.8-flash` ended in 504: two image requests (60 s and 180 s) and a one-line text-only probe (30 s). The same text probe on `gemini-3.6-flash` answered in 1.8 s, while the key and `models.list` worked. `media_resolution` is set explicitly because the API default is not recorded and can change; HIGH matches the 1078 image tokens of the live run. Disabling SDK retries makes the request cap count real requests.
 - **Alternatives considered:** `gemini-3.8-flash` (504 on the free tier); the paid tier with 3.8 (out of scope for issue #3); `gemini-3.5-flash-lite` (weaker on small text, which D-014 must check).
