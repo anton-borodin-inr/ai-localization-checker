@@ -1,0 +1,86 @@
+{
+  "findings": [
+    {
+      "defect_type": "truncated_text",
+      "text_seen": "Landwirtschaft",
+      "region": "left",
+      "confidence": 0.99
+    },
+    {
+      "defect_type": "truncated_text",
+      "text_seen": "Tierhaltung",
+      "region": "top",
+      "confidence": 0.99
+    },
+    {
+      "defect_type": "truncated_text",
+      "text_seen": "Bogenschießen",
+      "region": "top",
+      "confidence": 0.99
+    },
+    {
+      "defect_type": "truncated_text",
+      "text_seen": "Bergbau",
+      "region": "top",
+      "confidence": 0.99
+    },
+    {
+      "defect_type": "truncated_text",
+      "text_seen": "6",
+      "region": "top",
+      "confidence": 0.99
+    },
+    {
+      "defect_type": "truncated_text",
+      "text_seen": "6",
+      "region": "top",
+      "confidence": 0.99
+    },
+    {
+      "defect_type": "truncated_text",
+      "text_seen": "6",
+      "region": "top",
+      "confidence": 0.99
+    },
+    {
+      "defect_type": "truncated_text",
+      "text_seen": "6",
+      "region": "top",
+      "confidence": 0.99
+    }
+  ],
+  "readings": [
+    {
+      "text_seen": "Landwirtschaft",
+      "region": "left"
+    },
+    {
+      "text_seen": "Tierhaltung",
+      "region": "top"
+    },
+    {
+      "text_seen": "Bogenschießen",
+      "region": "top"
+    },
+    {
+      "text_seen": "Bergbau",
+      "region": "top"
+    },
+    {
+      "text_seen": "6",
+      "region": "top"
+    },
+    {
+      "text_seen": "6",
+      "region": "top"
+    },
+    {
+      "text_seen": "6",
+      "region": "top"
+    },
+    {
+      "text_seen": "6",
+      "region": "top"
+    }
+  ]
+}

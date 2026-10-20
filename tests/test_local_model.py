@@ -122,6 +122,21 @@ def test_http_failure_counts_and_raw_diagnostic_is_preserved(screenshot, tmp_pat
     assert len(p._opener.requests) == 1
 
 
+def test_extra_reading_confidence_is_preserved_but_not_silently_accepted(
+    screenshot, tmp_path
+):
+    text = '{"findings": [], "readings": [{"text_seen": "Archery", "region": "center", "confidence": 1.0}]}'
+    result, directory = execute_local(
+        provider(response(text)), {"slot": 1}, screenshot, tmp_path, "approved"
+    )
+    assert result.status == "not_checked"
+    assert "readings.0.confidence" in result.reason
+    assert result.metadata["requests_sent"] == 1
+    raw = json.loads((directory / "response_raw.json").read_text())
+    assert raw["choices"][0]["message"]["content"] == text
+    assert not (directory / "output.json").exists()
+
+
 def test_twelve_send_cap_and_published_reservations(screenshot, tmp_path):
     p = provider()
     for slot in range(1, 13):

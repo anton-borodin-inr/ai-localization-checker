@@ -1,0 +1,849 @@
+{
+  "scope": "Visual diagnostics of complete raw JSON that failed the frozen Pydantic contract. Nothing is repaired, stripped, rescored or promoted to checked. All confidence fields and raw responses are preserved.",
+  "basis": "Native exact crops/original screenshot and pre-call confirmed build-pinned reference. Existing human defect labels unchanged.",
+  "runs": [
+    {
+      "run_id": "20261019T204946Z-b5d5d5",
+      "raw_sha256": "4964ef9f15e51c73f2efb18c37dff30431f7029eec3f5b9b9f820a6982c4351e",
+      "raw_readings_reviewed": 28,
+      "original_status": "not_checked",
+      "invented_strings": [],
+      "reading_errors": [],
+      "hidden_completions": [],
+      "primary_coverage": "unavailable under original validation contract",
+      "confidence_values": [
+        1.0
+      ],
+      "note": "All transcribed English text and punctuation is present, including the final semicolon. Many coarse regions are incorrect; e.g. Agriculture is top-left, returned right with confidence 1.0. No writing title was invented."
+    },
+    {
+      "run_id": "20261019T205801Z-0e6d1d",
+      "raw_sha256": "9a1a20efea5f6749006d91236f7cc977d66c50be75223f135ce1b95e2f20b64c",
+      "raw_readings_reviewed": 16,
+      "original_status": "not_checked",
+      "invented_strings": [],
+      "reading_errors": [
+        {
+          "index": 0,
+          "observed": "Schritt",
+          "visible_reference": "Schrift",
+          "kind": "one-letter transcription error on the vertically clipped diagnostic title; not a new invented string"
+        }
+      ],
+      "hidden_completions": [],
+      "primary_coverage": "unavailable under original validation contract",
+      "confidence_values": [
+        0.99
+      ]
+    },
+    {
+      "run_id": "20261019T210014Z-bc6de2",
+      "raw_sha256": "cca08f78c53b3ef8927f9dfcdd9b8bf1de6e6a3ff383610c3429be81c388f485",
+      "raw_readings_reviewed": 7,
+      "original_status": "not_checked",
+      "invented_strings": [],
+      "reading_errors": [
+        {
+          "index": 4,
+          "kind": "two punctuation substitutions: colons instead of visible semicolons after Kultur and Städten. All translated components/prefix are visible; no hidden Production continuation."
+        }
+      ],
+      "hidden_completions": [],
+      "primary_coverage": "unavailable under original validation contract",
+      "confidence_values": [
+        0.99
+      ]
+    },
+    {
+      "run_id": "20261019T210105Z-51cd84",
+      "raw_sha256": "1d39b898ce77fcfdf84c2d1167cd43253ae0f50a8dfa64f2a0cac1c7371b4683",
+      "raw_readings_reviewed": 18,
+      "original_status": "not_checked",
+      "invented_strings": [],
+      "reading_errors": [],
+      "hidden_completions": [],
+      "primary_coverage": "unavailable under original validation contract",
+      "confidence_values": [
+        0.99
+      ],
+      "duplicate_reading_diagnostics": [
+        {
+          "text_seen": "19",
+          "returned_occurrences": 4,
+          "visible_occurrences": 3,
+          "note": "Duplicate existing numeric text, not invented text. Counters are outside primary coverage."
+        }
+      ]
+    },
+    {
+      "run_id": "20261019T210222Z-1fcbbd",
+      "raw_sha256": "55cecc174ecf759b5841f8229a62888fe14aaf0874e6fc4be165f6fb3c1c4cc4",
+      "raw_readings_reviewed": 6,
+      "original_status": "not_checked",
+      "invented_strings": [],
+      "reading_errors": [],
+      "hidden_completions": [],
+      "primary_coverage": "unavailable under original validation contract",
+      "confidence_values": [
+        0.99
+      ]
+    },
+    {
+      "run_id": "20261019T211251Z-24e71b",
+      "raw_sha256": "b25b2d0f649841c891b4e834544fbafc926d013efff6e24e99de43166d7f948d",
+      "raw_readings_reviewed": 16,
+      "original_status": "not_checked",
+      "invented_strings": [],
+      "reading_errors": [
+        {
+          "index": 0,
+          "observed": "Schritt",
+          "visible_reference": "Schrift",
+          "kind": "one-letter transcription error on the vertically clipped diagnostic title; not a new invented string"
+        }
+      ],
+      "hidden_completions": [],
+      "primary_coverage": "unavailable under original validation contract",
+      "confidence_values": [
+        0.99
+      ]
+    },
+    {
+      "run_id": "20261019T211340Z-c54b2c",
+      "raw_sha256": "a4c1ee2ce718be04d612de22a9ca4b43bdff764412dac46a9114eec790e14197",
+      "raw_readings_reviewed": 7,
+      "original_status": "not_checked",
+      "invented_strings": [],
+      "reading_errors": [],
+      "hidden_completions": [],
+      "primary_coverage": "unavailable under original validation contract",
+      "confidence_values": [
+        0.98
+      ]
+    }
+  ],
+  "finding_region_review": [
+    {
+      "run_id": "20261019T205801Z-0e6d1d",
+      "finding_index": 0,
+      "text_seen": "Schritt",
+      "reported_region": "top",
+      "expected_local_regions": [
+        "top-left"
+      ],
+      "local_region_correct_or_compatible": false,
+      "original_region_candidates": [
+        "top",
+        "top-right"
+      ],
+      "note": "For combined elements use the union of their visible text boxes; coarse mapping may be ambiguous.",
+      "defect_diagnostic": "Unsupported truncation on the pre-existing clean control; scroll viewport clipping is excluded by D-025. Raw diagnostics, not a checked finding or new label."
+    },
+    {
+      "run_id": "20261019T205801Z-0e6d1d",
+      "finding_index": 1,
+      "text_seen": "Fallenstellen",
+      "reported_region": "top",
+      "expected_local_regions": [
+        "top-left"
+      ],
+      "local_region_correct_or_compatible": false,
+      "original_region_candidates": [
+        "top",
+        "top-right"
+      ],
+      "note": "For combined elements use the union of their visible text boxes; coarse mapping may be ambiguous.",
+      "defect_diagnostic": "Unsupported truncation on the pre-existing clean control; scroll viewport clipping is excluded by D-025. Raw diagnostics, not a checked finding or new label."
+    },
+    {
+      "run_id": "20261019T205801Z-0e6d1d",
+      "finding_index": 2,
+      "text_seen": "Das Rad",
+      "reported_region": "top",
+      "expected_local_regions": [
+        "left"
+      ],
+      "local_region_correct_or_compatible": false,
+      "original_region_candidates": [
+        "top",
+        "top-right"
+      ],
+      "note": "For combined elements use the union of their visible text boxes; coarse mapping may be ambiguous.",
+      "defect_diagnostic": "Unsupported truncation on the pre-existing clean control; scroll viewport clipping is excluded by D-025. Raw diagnostics, not a checked finding or new label."
+    },
+    {
+      "run_id": "20261019T205801Z-0e6d1d",
+      "finding_index": 3,
+      "text_seen": "Mauerarbeiten",
+      "reported_region": "top",
+      "expected_local_regions": [
+        "bottom-left"
+      ],
+      "local_region_correct_or_compatible": false,
+      "original_region_candidates": [
+        "top",
+        "top-right"
+      ],
+      "note": "For combined elements use the union of their visible text boxes; coarse mapping may be ambiguous.",
+      "defect_diagnostic": "Unsupported truncation on the pre-existing clean control; scroll viewport clipping is excluded by D-025. Raw diagnostics, not a checked finding or new label."
+    },
+    {
+      "run_id": "20261019T205801Z-0e6d1d",
+      "finding_index": 4,
+      "text_seen": "Bronzebearbeitung",
+      "reported_region": "top",
+      "expected_local_regions": [
+        "bottom-left"
+      ],
+      "local_region_correct_or_compatible": false,
+      "original_region_candidates": [
+        "top",
+        "top-right"
+      ],
+      "note": "For combined elements use the union of their visible text boxes; coarse mapping may be ambiguous.",
+      "defect_diagnostic": "Unsupported truncation on the pre-existing clean control; scroll viewport clipping is excluded by D-025. Raw diagnostics, not a checked finding or new label."
+    },
+    {
+      "run_id": "20261019T205801Z-0e6d1d",
+      "finding_index": 5,
+      "text_seen": "Reiten",
+      "reported_region": "top",
+      "expected_local_regions": [
+        "top-right"
+      ],
+      "local_region_correct_or_compatible": false,
+      "original_region_candidates": [
+        "top",
+        "top-right"
+      ],
+      "note": "For combined elements use the union of their visible text boxes; coarse mapping may be ambiguous.",
+      "defect_diagnostic": "Unsupported truncation on the pre-existing clean control; scroll viewport clipping is excluded by D-025. Raw diagnostics, not a checked finding or new label."
+    },
+    {
+      "run_id": "20261019T205801Z-0e6d1d",
+      "finding_index": 6,
+      "text_seen": "Mathematik",
+      "reported_region": "top",
+      "expected_local_regions": [
+        "right"
+      ],
+      "local_region_correct_or_compatible": false,
+      "original_region_candidates": [
+        "top",
+        "top-right"
+      ],
+      "note": "For combined elements use the union of their visible text boxes; coarse mapping may be ambiguous.",
+      "defect_diagnostic": "Unsupported truncation on the pre-existing clean control; scroll viewport clipping is excluded by D-025. Raw diagnostics, not a checked finding or new label."
+    },
+    {
+      "run_id": "20261019T205801Z-0e6d1d",
+      "finding_index": 7,
+      "text_seen": "Baukunst",
+      "reported_region": "top",
+      "expected_local_regions": [
+        "bottom-right"
+      ],
+      "local_region_correct_or_compatible": false,
+      "original_region_candidates": [
+        "top",
+        "top-right"
+      ],
+      "note": "For combined elements use the union of their visible text boxes; coarse mapping may be ambiguous.",
+      "defect_diagnostic": "Unsupported truncation on the pre-existing clean control; scroll viewport clipping is excluded by D-025. Raw diagnostics, not a checked finding or new label."
+    },
+    {
+      "run_id": "20261019T210014Z-bc6de2",
+      "finding_index": 0,
+      "text_seen": "Freigeschaltete Einheiten: •Bogenschütze (5, 7)",
+      "reported_region": "left",
+      "expected_local_regions": [
+        "top-left"
+      ],
+      "local_region_correct_or_compatible": false,
+      "original_region_candidates": [
+        "bottom-left"
+      ],
+      "note": "For combined elements use the union of their visible text boxes; coarse mapping may be ambiguous.",
+      "defect_diagnostic": "Unsupported truncation on the pre-existing clean control; scroll viewport clipping is excluded by D-025. Raw diagnostics, not a checked finding or new label."
+    },
+    {
+      "run_id": "20261019T210014Z-bc6de2",
+      "finding_index": 1,
+      "text_seen": "Freigeschaltete Wunder: •Tempel der Artemis (+1 Kultur: +10% Nahrung in allen Städten: +15% Produktion beim Bau von",
+      "reported_region": "left",
+      "expected_local_regions": [
+        "bottom"
+      ],
+      "local_region_correct_or_compatible": false,
+      "original_region_candidates": [
+        "bottom-left"
+      ],
+      "note": "For combined elements use the union of their visible text boxes; coarse mapping may be ambiguous.",
+      "defect_diagnostic": "Unsupported truncation on the pre-existing clean control; scroll viewport clipping is excluded by D-025. Raw diagnostics, not a checked finding or new label."
+    },
+    {
+      "run_id": "20261019T210014Z-bc6de2",
+      "finding_index": 2,
+      "text_seen": "Bogenschießen erforschen (0/24)",
+      "reported_region": "right",
+      "expected_local_regions": [
+        "right"
+      ],
+      "local_region_correct_or_compatible": true,
+      "original_region_candidates": [
+        "bottom-right"
+      ],
+      "note": "For combined elements use the union of their visible text boxes; coarse mapping may be ambiguous.",
+      "defect_diagnostic": "Unsupported truncation on the pre-existing clean control; scroll viewport clipping is excluded by D-025. Raw diagnostics, not a checked finding or new label."
+    },
+    {
+      "run_id": "20261019T210105Z-51cd84",
+      "finding_index": 0,
+      "text_seen": "Trapping",
+      "reported_region": "center",
+      "expected_local_regions": [
+        "top-left"
+      ],
+      "local_region_correct_or_compatible": false,
+      "original_region_candidates": [
+        "top",
+        "top-right",
+        "center",
+        "right"
+      ],
+      "note": "For combined elements use the union of their visible text boxes; coarse mapping may be ambiguous.",
+      "defect_diagnostic": "Unsupported truncation on the pre-existing clean control; scroll viewport clipping is excluded by D-025. Raw diagnostics, not a checked finding or new label."
+    },
+    {
+      "run_id": "20261019T210105Z-51cd84",
+      "finding_index": 1,
+      "text_seen": "The Wheel",
+      "reported_region": "center",
+      "expected_local_regions": [
+        "left"
+      ],
+      "local_region_correct_or_compatible": false,
+      "original_region_candidates": [
+        "top",
+        "top-right",
+        "center",
+        "right"
+      ],
+      "note": "For combined elements use the union of their visible text boxes; coarse mapping may be ambiguous.",
+      "defect_diagnostic": "Unsupported truncation on the pre-existing clean control; scroll viewport clipping is excluded by D-025. Raw diagnostics, not a checked finding or new label."
+    },
+    {
+      "run_id": "20261019T210105Z-51cd84",
+      "finding_index": 2,
+      "text_seen": "Masonry",
+      "reported_region": "center",
+      "expected_local_regions": [
+        "bottom-left"
+      ],
+      "local_region_correct_or_compatible": false,
+      "original_region_candidates": [
+        "top",
+        "top-right",
+        "center",
+        "right"
+      ],
+      "note": "For combined elements use the union of their visible text boxes; coarse mapping may be ambiguous.",
+      "defect_diagnostic": "Unsupported truncation on the pre-existing clean control; scroll viewport clipping is excluded by D-025. Raw diagnostics, not a checked finding or new label."
+    },
+    {
+      "run_id": "20261019T210105Z-51cd84",
+      "finding_index": 3,
+      "text_seen": "Bronze Working",
+      "reported_region": "center",
+      "expected_local_regions": [
+        "bottom-left"
+      ],
+      "local_region_correct_or_compatible": false,
+      "original_region_candidates": [
+        "top",
+        "top-right",
+        "center",
+        "right"
+      ],
+      "note": "For combined elements use the union of their visible text boxes; coarse mapping may be ambiguous.",
+      "defect_diagnostic": "Unsupported truncation on the pre-existing clean control; scroll viewport clipping is excluded by D-025. Raw diagnostics, not a checked finding or new label."
+    },
+    {
+      "run_id": "20261019T210105Z-51cd84",
+      "finding_index": 4,
+      "text_seen": "Horseback Riding",
+      "reported_region": "center",
+      "expected_local_regions": [
+        "top-right"
+      ],
+      "local_region_correct_or_compatible": false,
+      "original_region_candidates": [
+        "top",
+        "top-right",
+        "center",
+        "right"
+      ],
+      "note": "For combined elements use the union of their visible text boxes; coarse mapping may be ambiguous.",
+      "defect_diagnostic": "Unsupported truncation on the pre-existing clean control; scroll viewport clipping is excluded by D-025. Raw diagnostics, not a checked finding or new label."
+    },
+    {
+      "run_id": "20261019T210105Z-51cd84",
+      "finding_index": 5,
+      "text_seen": "Mathematics",
+      "reported_region": "center",
+      "expected_local_regions": [
+        "right"
+      ],
+      "local_region_correct_or_compatible": false,
+      "original_region_candidates": [
+        "top",
+        "top-right",
+        "center",
+        "right"
+      ],
+      "note": "For combined elements use the union of their visible text boxes; coarse mapping may be ambiguous.",
+      "defect_diagnostic": "Unsupported truncation on the pre-existing clean control; scroll viewport clipping is excluded by D-025. Raw diagnostics, not a checked finding or new label."
+    },
+    {
+      "run_id": "20261019T210105Z-51cd84",
+      "finding_index": 6,
+      "text_seen": "Construction",
+      "reported_region": "center",
+      "expected_local_regions": [
+        "bottom-right"
+      ],
+      "local_region_correct_or_compatible": false,
+      "original_region_candidates": [
+        "top",
+        "top-right",
+        "center",
+        "right"
+      ],
+      "note": "For combined elements use the union of their visible text boxes; coarse mapping may be ambiguous.",
+      "defect_diagnostic": "Unsupported truncation on the pre-existing clean control; scroll viewport clipping is excluded by D-025. Raw diagnostics, not a checked finding or new label."
+    },
+    {
+      "run_id": "20261019T210105Z-51cd84",
+      "finding_index": 7,
+      "text_seen": "10",
+      "reported_region": "center",
+      "expected_local_regions": [
+        "top",
+        "center",
+        "bottom"
+      ],
+      "local_region_correct_or_compatible": true,
+      "original_region_candidates": [
+        "top",
+        "top-right",
+        "center",
+        "right"
+      ],
+      "note": "Repeated counters permit only compatibility, not unique assignment.",
+      "defect_diagnostic": "Unsupported truncation on the pre-existing clean control; scroll viewport clipping is excluded by D-025. Raw diagnostics, not a checked finding or new label."
+    },
+    {
+      "run_id": "20261019T210105Z-51cd84",
+      "finding_index": 8,
+      "text_seen": "19",
+      "reported_region": "center",
+      "expected_local_regions": [
+        "top-right",
+        "right",
+        "bottom-right"
+      ],
+      "local_region_correct_or_compatible": false,
+      "original_region_candidates": [
+        "top",
+        "top-right",
+        "center",
+        "right"
+      ],
+      "note": "Repeated counters permit only compatibility, not unique assignment.",
+      "defect_diagnostic": "Unsupported truncation on the pre-existing clean control; scroll viewport clipping is excluded by D-025. Raw diagnostics, not a checked finding or new label."
+    },
+    {
+      "run_id": "20261019T210105Z-51cd84",
+      "finding_index": 9,
+      "text_seen": "6",
+      "reported_region": "center",
+      "expected_local_regions": [
+        "top-left",
+        "left",
+        "bottom-left"
+      ],
+      "local_region_correct_or_compatible": false,
+      "original_region_candidates": [
+        "top",
+        "top-right",
+        "center",
+        "right"
+      ],
+      "note": "Repeated counters permit only compatibility, not unique assignment.",
+      "defect_diagnostic": "Unsupported truncation on the pre-existing clean control; scroll viewport clipping is excluded by D-025. Raw diagnostics, not a checked finding or new label."
+    },
+    {
+      "run_id": "20261019T210105Z-51cd84",
+      "finding_index": 10,
+      "text_seen": "6",
+      "reported_region": "center",
+      "expected_local_regions": [
+        "top-left",
+        "left",
+        "bottom-left"
+      ],
+      "local_region_correct_or_compatible": false,
+      "original_region_candidates": [
+        "top",
+        "top-right",
+        "center",
+        "right"
+      ],
+      "note": "Repeated counters permit only compatibility, not unique assignment.",
+      "defect_diagnostic": "Unsupported truncation on the pre-existing clean control; scroll viewport clipping is excluded by D-025. Raw diagnostics, not a checked finding or new label."
+    },
+    {
+      "run_id": "20261019T210105Z-51cd84",
+      "finding_index": 11,
+      "text_seen": "6",
+      "reported_region": "center",
+      "expected_local_regions": [
+        "top-left",
+        "left",
+        "bottom-left"
+      ],
+      "local_region_correct_or_compatible": false,
+      "original_region_candidates": [
+        "top",
+        "top-right",
+        "center",
+        "right"
+      ],
+      "note": "Repeated counters permit only compatibility, not unique assignment.",
+      "defect_diagnostic": "Unsupported truncation on the pre-existing clean control; scroll viewport clipping is excluded by D-025. Raw diagnostics, not a checked finding or new label."
+    },
+    {
+      "run_id": "20261019T210105Z-51cd84",
+      "finding_index": 12,
+      "text_seen": "10",
+      "reported_region": "center",
+      "expected_local_regions": [
+        "top",
+        "center",
+        "bottom"
+      ],
+      "local_region_correct_or_compatible": true,
+      "original_region_candidates": [
+        "top",
+        "top-right",
+        "center",
+        "right"
+      ],
+      "note": "Repeated counters permit only compatibility, not unique assignment.",
+      "defect_diagnostic": "Unsupported truncation on the pre-existing clean control; scroll viewport clipping is excluded by D-025. Raw diagnostics, not a checked finding or new label."
+    },
+    {
+      "run_id": "20261019T210105Z-51cd84",
+      "finding_index": 13,
+      "text_seen": "10",
+      "reported_region": "center",
+      "expected_local_regions": [
+        "top",
+        "center",
+        "bottom"
+      ],
+      "local_region_correct_or_compatible": true,
+      "original_region_candidates": [
+        "top",
+        "top-right",
+        "center",
+        "right"
+      ],
+      "note": "Repeated counters permit only compatibility, not unique assignment.",
+      "defect_diagnostic": "Unsupported truncation on the pre-existing clean control; scroll viewport clipping is excluded by D-025. Raw diagnostics, not a checked finding or new label."
+    },
+    {
+      "run_id": "20261019T210105Z-51cd84",
+      "finding_index": 14,
+      "text_seen": "10",
+      "reported_region": "center",
+      "expected_local_regions": [
+        "top",
+        "center",
+        "bottom"
+      ],
+      "local_region_correct_or_compatible": true,
+      "original_region_candidates": [
+        "top",
+        "top-right",
+        "center",
+        "right"
+      ],
+      "note": "Repeated counters permit only compatibility, not unique assignment.",
+      "defect_diagnostic": "Unsupported truncation on the pre-existing clean control; scroll viewport clipping is excluded by D-025. Raw diagnostics, not a checked finding or new label."
+    },
+    {
+      "run_id": "20261019T210105Z-51cd84",
+      "finding_index": 15,
+      "text_seen": "19",
+      "reported_region": "center",
+      "expected_local_regions": [
+        "top-right",
+        "right",
+        "bottom-right"
+      ],
+      "local_region_correct_or_compatible": false,
+      "original_region_candidates": [
+        "top",
+        "top-right",
+        "center",
+        "right"
+      ],
+      "note": "Repeated counters permit only compatibility, not unique assignment.",
+      "defect_diagnostic": "Unsupported truncation on the pre-existing clean control; scroll viewport clipping is excluded by D-025. Raw diagnostics, not a checked finding or new label."
+    },
+    {
+      "run_id": "20261019T210105Z-51cd84",
+      "finding_index": 16,
+      "text_seen": "19",
+      "reported_region": "center",
+      "expected_local_regions": [
+        "top-right",
+        "right",
+        "bottom-right"
+      ],
+      "local_region_correct_or_compatible": false,
+      "original_region_candidates": [
+        "top",
+        "top-right",
+        "center",
+        "right"
+      ],
+      "note": "Repeated counters permit only compatibility, not unique assignment.",
+      "defect_diagnostic": "Unsupported truncation on the pre-existing clean control; scroll viewport clipping is excluded by D-025. Raw diagnostics, not a checked finding or new label."
+    },
+    {
+      "run_id": "20261019T210105Z-51cd84",
+      "finding_index": 17,
+      "text_seen": "19",
+      "reported_region": "center",
+      "expected_local_regions": [
+        "top-right",
+        "right",
+        "bottom-right"
+      ],
+      "local_region_correct_or_compatible": false,
+      "original_region_candidates": [
+        "top",
+        "top-right",
+        "center",
+        "right"
+      ],
+      "note": "Repeated counters permit only compatibility, not unique assignment.",
+      "defect_diagnostic": "Unsupported truncation on the pre-existing clean control; scroll viewport clipping is excluded by D-025. Raw diagnostics, not a checked finding or new label."
+    },
+    {
+      "run_id": "20261019T210222Z-1fcbbd",
+      "finding_index": 0,
+      "text_seen": "Temple of Artemis (+1 Culture; +10% Food in all cities; +15% Production when constructing Archery units in this city;",
+      "reported_region": "center",
+      "expected_local_regions": [
+        "bottom"
+      ],
+      "local_region_correct_or_compatible": false,
+      "original_region_candidates": [
+        "bottom"
+      ],
+      "note": "For combined elements use the union of their visible text boxes; coarse mapping may be ambiguous.",
+      "defect_diagnostic": "Unsupported truncation on the pre-existing clean control; scroll viewport clipping is excluded by D-025. Raw diagnostics, not a checked finding or new label."
+    },
+    {
+      "run_id": "20261019T210222Z-1fcbbd",
+      "finding_index": 1,
+      "text_seen": "Research Archery (0/24)",
+      "reported_region": "right",
+      "expected_local_regions": [
+        "right"
+      ],
+      "local_region_correct_or_compatible": true,
+      "original_region_candidates": [
+        "bottom-right"
+      ],
+      "note": "For combined elements use the union of their visible text boxes; coarse mapping may be ambiguous.",
+      "defect_diagnostic": "Unsupported truncation on the pre-existing clean control; scroll viewport clipping is excluded by D-025. Raw diagnostics, not a checked finding or new label."
+    },
+    {
+      "run_id": "20261019T211251Z-24e71b",
+      "finding_index": 0,
+      "text_seen": "Schritt",
+      "reported_region": "top",
+      "expected_local_regions": [
+        "top-left"
+      ],
+      "local_region_correct_or_compatible": false,
+      "original_region_candidates": [
+        "top",
+        "top-right"
+      ],
+      "note": "For combined elements use the union of their visible text boxes; coarse mapping may be ambiguous.",
+      "defect_diagnostic": "Unsupported for this visible title/panel text under existing human labels: only Mining is labeled in the injected screenshot, and these findings do not identify that label. Viewport clipping is excluded by D-025. Raw diagnostics, not a checked finding or new label."
+    },
+    {
+      "run_id": "20261019T211251Z-24e71b",
+      "finding_index": 1,
+      "text_seen": "Fallenstellen",
+      "reported_region": "top",
+      "expected_local_regions": [
+        "top-left"
+      ],
+      "local_region_correct_or_compatible": false,
+      "original_region_candidates": [
+        "top",
+        "top-right"
+      ],
+      "note": "For combined elements use the union of their visible text boxes; coarse mapping may be ambiguous.",
+      "defect_diagnostic": "Unsupported for this visible title/panel text under existing human labels: only Mining is labeled in the injected screenshot, and these findings do not identify that label. Viewport clipping is excluded by D-025. Raw diagnostics, not a checked finding or new label."
+    },
+    {
+      "run_id": "20261019T211251Z-24e71b",
+      "finding_index": 2,
+      "text_seen": "Das Rad",
+      "reported_region": "top",
+      "expected_local_regions": [
+        "left"
+      ],
+      "local_region_correct_or_compatible": false,
+      "original_region_candidates": [
+        "top",
+        "top-right"
+      ],
+      "note": "For combined elements use the union of their visible text boxes; coarse mapping may be ambiguous.",
+      "defect_diagnostic": "Unsupported for this visible title/panel text under existing human labels: only Mining is labeled in the injected screenshot, and these findings do not identify that label. Viewport clipping is excluded by D-025. Raw diagnostics, not a checked finding or new label."
+    },
+    {
+      "run_id": "20261019T211251Z-24e71b",
+      "finding_index": 3,
+      "text_seen": "Mauerarbeiten",
+      "reported_region": "top",
+      "expected_local_regions": [
+        "bottom-left"
+      ],
+      "local_region_correct_or_compatible": false,
+      "original_region_candidates": [
+        "top",
+        "top-right"
+      ],
+      "note": "For combined elements use the union of their visible text boxes; coarse mapping may be ambiguous.",
+      "defect_diagnostic": "Unsupported for this visible title/panel text under existing human labels: only Mining is labeled in the injected screenshot, and these findings do not identify that label. Viewport clipping is excluded by D-025. Raw diagnostics, not a checked finding or new label."
+    },
+    {
+      "run_id": "20261019T211251Z-24e71b",
+      "finding_index": 4,
+      "text_seen": "Bronzebearbeitung",
+      "reported_region": "top",
+      "expected_local_regions": [
+        "bottom-left"
+      ],
+      "local_region_correct_or_compatible": false,
+      "original_region_candidates": [
+        "top",
+        "top-right"
+      ],
+      "note": "For combined elements use the union of their visible text boxes; coarse mapping may be ambiguous.",
+      "defect_diagnostic": "Unsupported for this visible title/panel text under existing human labels: only Mining is labeled in the injected screenshot, and these findings do not identify that label. Viewport clipping is excluded by D-025. Raw diagnostics, not a checked finding or new label."
+    },
+    {
+      "run_id": "20261019T211251Z-24e71b",
+      "finding_index": 5,
+      "text_seen": "Reiten",
+      "reported_region": "top",
+      "expected_local_regions": [
+        "top-right"
+      ],
+      "local_region_correct_or_compatible": false,
+      "original_region_candidates": [
+        "top",
+        "top-right"
+      ],
+      "note": "For combined elements use the union of their visible text boxes; coarse mapping may be ambiguous.",
+      "defect_diagnostic": "Unsupported for this visible title/panel text under existing human labels: only Mining is labeled in the injected screenshot, and these findings do not identify that label. Viewport clipping is excluded by D-025. Raw diagnostics, not a checked finding or new label."
+    },
+    {
+      "run_id": "20261019T211251Z-24e71b",
+      "finding_index": 6,
+      "text_seen": "Mathematik",
+      "reported_region": "top",
+      "expected_local_regions": [
+        "right"
+      ],
+      "local_region_correct_or_compatible": false,
+      "original_region_candidates": [
+        "top",
+        "top-right"
+      ],
+      "note": "For combined elements use the union of their visible text boxes; coarse mapping may be ambiguous.",
+      "defect_diagnostic": "Unsupported for this visible title/panel text under existing human labels: only Mining is labeled in the injected screenshot, and these findings do not identify that label. Viewport clipping is excluded by D-025. Raw diagnostics, not a checked finding or new label."
+    },
+    {
+      "run_id": "20261019T211251Z-24e71b",
+      "finding_index": 7,
+      "text_seen": "Baukunst",
+      "reported_region": "top",
+      "expected_local_regions": [
+        "bottom-right"
+      ],
+      "local_region_correct_or_compatible": false,
+      "original_region_candidates": [
+        "top",
+        "top-right"
+      ],
+      "note": "For combined elements use the union of their visible text boxes; coarse mapping may be ambiguous.",
+      "defect_diagnostic": "Unsupported for this visible title/panel text under existing human labels: only Mining is labeled in the injected screenshot, and these findings do not identify that label. Viewport clipping is excluded by D-025. Raw diagnostics, not a checked finding or new label."
+    },
+    {
+      "run_id": "20261019T211340Z-c54b2c",
+      "finding_index": 0,
+      "text_seen": "Freigeschaltete Wunder:\n• Tempel der Artemis (+1 🎵 Kultur; +10% 🍃 Nahrung in allen Städten; +15% Produktion beim Bau von",
+      "reported_region": "center",
+      "expected_local_regions": [
+        "bottom"
+      ],
+      "local_region_correct_or_compatible": false,
+      "original_region_candidates": [
+        "bottom"
+      ],
+      "note": "For combined elements use the union of their visible text boxes; coarse mapping may be ambiguous.",
+      "defect_diagnostic": "Unsupported for this visible title/panel text under existing human labels: only Mining is labeled in the injected screenshot, and these findings do not identify that label. Viewport clipping is excluded by D-025. Raw diagnostics, not a checked finding or new label."
+    },
+    {
+      "run_id": "20261019T211340Z-c54b2c",
+      "finding_index": 1,
+      "text_seen": "Bogenschießen erforschen\n(0/24)",
+      "reported_region": "right",
+      "expected_local_regions": [
+        "right"
+      ],
+      "local_region_correct_or_compatible": true,
+      "original_region_candidates": [
+        "bottom-right"
+      ],
+      "note": "For combined elements use the union of their visible text boxes; coarse mapping may be ambiguous.",
+      "defect_diagnostic": "Unsupported for this visible title/panel text under existing human labels: only Mining is labeled in the injected screenshot, and these findings do not identify that label. Viewport clipping is excluded by D-025. Raw diagnostics, not a checked finding or new label."
+    },
+    {
+      "run_id": "20261019T211340Z-c54b2c",
+      "finding_index": 2,
+      "text_seen": "Freigeschaltete Einheiten:\n• 🏹Bogenschütze (5 ❤️, 7 🎯)",
+      "reported_region": "left",
+      "expected_local_regions": [
+        "top-left"
+      ],
+      "local_region_correct_or_compatible": false,
+      "original_region_candidates": [
+        "bottom-left"
+      ],
+      "note": "For combined elements use the union of their visible text boxes; coarse mapping may be ambiguous.",
+      "defect_diagnostic": "Unsupported for this visible title/panel text under existing human labels: only Mining is labeled in the injected screenshot, and these findings do not identify that label. Viewport clipping is excluded by D-025. Raw diagnostics, not a checked finding or new label."
+    }
+  ]
+}

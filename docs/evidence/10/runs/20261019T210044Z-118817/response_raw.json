@@ -1,0 +1,29 @@
+{
+  "id": "chatcmpl-e54bbpb33fh3zbo58o4s18",
+  "object": "chat.completion",
+  "created": 1792443644,
+  "model": "qwen/qwen3-vl-8b",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\"findings\": [{\"defect_type\": \"truncated_text\", \"text_seen\": \"Animal Husbandry 6\", \"region\": \"right\", \"confidence\": 0.99}, {\"defect_type\": \"truncated_text\", \"text_seen\": \"Archery 6\", \"region\": \"right\", \"confidence\": 0.99}, {\"defect_type\": \"truncated_text\", \"text_seen\": \"Mining 6\", \"region\": \"right\", \"confidence\": 0.99}, {\"defect_type\": \"truncated_text\", \"text_seen\": \"Agriculture\", \"region\": \"left\", \"confidence\": 0.99}], \"readings\": [{\"text_seen\": \"Agriculture\", \"region\": \"left\"}, {\"text_seen\": \"Animal Husbandry\", \"region\": \"right\"}, {\"text_seen\": \"Archery\", \"region\": \"right\"}, {\"text_seen\": \"Mining\", \"region\": \"right\"}]}",
+        "reasoning_content": "",
+        "tool_calls": []
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 203,
+    "completion_tokens": 207,
+    "total_tokens": 410,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    }
+  },
+  "stats": {},
+  "system_fingerprint": "qwen/qwen3-vl-8b"
+}

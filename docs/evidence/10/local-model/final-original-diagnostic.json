@@ -1,0 +1,21 @@
+{
+  "run_id": "20261019T211412Z-8cb835",
+  "client_status": "not_checked",
+  "reason": "incomplete_response",
+  "latency_s": 608.848,
+  "timeout_s": 1800,
+  "max_tokens": 8192,
+  "server_finish_reason": "length",
+  "server_reported_usage": {
+    "prompt_tokens": 203,
+    "completion_tokens": 8191,
+    "total_tokens": 8394,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    }
+  },
+  "raw_content_characters": 24068,
+  "repeated_Schluss_occurrences": 243,
+  "observed_pattern": "The German clean original starts with bottom-panel findings, then repeats overlap findings for Schluss and ends mid-object. No complete readings list is available.",
+  "score_eligibility": "none; incomplete JSON/response is not repaired, promoted to checked or credited as detections."
+}

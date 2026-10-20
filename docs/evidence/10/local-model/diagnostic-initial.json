@@ -1,0 +1,13 @@
+{
+  "run_id": "20261019T203555Z-2b7451",
+  "client_status": "not_checked",
+  "client_reason": "timeout after 180.007 s",
+  "source": "Request-specific local server log, lines 299-337; only this request response excerpt is published",
+  "prompt_processing_completed_in_s_approximately": 13,
+  "server_cancelled_on_client_disconnect": true,
+  "repeated_Schluss_objects_in_partial_content": 69,
+  "server_reported_completion_tokens_at_cancel": 2451,
+  "partial_prediction_is_not_a_validated_response": true,
+  "coverage_and_hallucination_metrics": "unavailable; diagnostic is not promoted to checked or used for labels",
+  "extension": "Anton subsequently authorized timeout 400 and 13 total local sends including one retry of slot 1"
+}

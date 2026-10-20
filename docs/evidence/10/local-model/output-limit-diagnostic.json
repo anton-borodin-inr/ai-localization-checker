@@ -1,0 +1,22 @@
+{
+  "run_id": "20261019T210246Z-9286b9",
+  "client_status": "not_checked",
+  "reason": "incomplete_response",
+  "latency_s": 602.724,
+  "timeout_s": 1800,
+  "server_finish_reason": "length",
+  "server_reported_usage": {
+    "prompt_tokens": 203,
+    "completion_tokens": 8191,
+    "total_tokens": 8394,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    }
+  },
+  "raw_content_characters": 23177,
+  "observed_pattern": "The content starts with the existing Mining ellipsis label, then repeats overlap objects including numeric text 6 and ends mid-object. It does not finish findings or provide a complete readings list.",
+  "correct_label_text_seen_in_partial_prefix": "Bergbau und Erzgew...",
+  "partial_finding_local_region": "bottom",
+  "expected_local_region_for_existing_label": "bottom-right",
+  "score_eligibility": "none; incomplete JSON/response is not repaired, promoted to checked or credited as a detection. Human label and reference existed before the call."
+}

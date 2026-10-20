@@ -1,0 +1,186 @@
+{
+  "reviewed_by": "coding agent",
+  "basis": "Native-resolution exact crop and unchanged confirmed source-derived reference; output diagnostics, not new labels.",
+  "runs": [
+    {
+      "run_id": "20261019T205726Z-f54d7f",
+      "output_sha256": "d34bd1ee9fa2b171e76bc2d50f31ca78b620bfbe24b4e7f9a92d34951af6526b",
+      "readings_reviewed": 8,
+      "invented_strings": [],
+      "reading_errors": [],
+      "hidden_completions": [],
+      "duplicate_reading_diagnostics": [
+        {
+          "text_seen": "6",
+          "returned_occurrences": 4,
+          "visible_occurrences_in_crop": 3,
+          "note": "One extra repeated reading of existing numeric text; not a new invented string. Numeric counters are outside primary coverage."
+        }
+      ],
+      "note": "Four source translation units transcribed correctly. Agriculture/Animal Husbandry local cells correct; Archery/Mining local cells incorrect. All predicted defects are unsupported on this clean control."
+    },
+    {
+      "run_id": "20261019T210044Z-118817",
+      "output_sha256": "1d09b5aeefcfc2f94d606e46365678cccd7e2f104588d4984c8375e9355c118f",
+      "readings_reviewed": 4,
+      "invented_strings": [],
+      "reading_errors": [],
+      "hidden_completions": [],
+      "note": "All four ordinary technology names are visible and transcribed correctly. Only Agriculture reading has the correct local cell. All four truncation findings are unsupported on this pre-existing clean control."
+    }
+  ],
+  "finding_region_review": [
+    {
+      "run_id": "20261019T205726Z-f54d7f",
+      "finding_index": 0,
+      "text_seen": "Landwirtschaft",
+      "reported_region": "left",
+      "expected_local_regions": [
+        "left"
+      ],
+      "local_region_correct": true,
+      "region_review": "Correct local cell; coarse mapping remains ambiguous.",
+      "defect_review": "Unsupported truncation on the pre-existing clean control: the text/counter is fully visible. No new label is created."
+    },
+    {
+      "run_id": "20261019T205726Z-f54d7f",
+      "finding_index": 1,
+      "text_seen": "Tierhaltung",
+      "reported_region": "top",
+      "expected_local_regions": [
+        "top"
+      ],
+      "local_region_correct": true,
+      "region_review": "Correct local cell; coarse mapping remains ambiguous.",
+      "defect_review": "Unsupported truncation on the pre-existing clean control: the text/counter is fully visible. No new label is created."
+    },
+    {
+      "run_id": "20261019T205726Z-f54d7f",
+      "finding_index": 2,
+      "text_seen": "Bogenschießen",
+      "reported_region": "top",
+      "expected_local_regions": [
+        "center"
+      ],
+      "local_region_correct": false,
+      "region_review": "Incorrect local cell; expected center.",
+      "defect_review": "Unsupported truncation on the pre-existing clean control: the text/counter is fully visible. No new label is created."
+    },
+    {
+      "run_id": "20261019T205726Z-f54d7f",
+      "finding_index": 3,
+      "text_seen": "Bergbau",
+      "reported_region": "top",
+      "expected_local_regions": [
+        "bottom"
+      ],
+      "local_region_correct": false,
+      "region_review": "Incorrect local cell; expected bottom.",
+      "defect_review": "Unsupported truncation on the pre-existing clean control: the text/counter is fully visible. No new label is created."
+    },
+    {
+      "run_id": "20261019T205726Z-f54d7f",
+      "finding_index": 4,
+      "text_seen": "6",
+      "reported_region": "top",
+      "expected_local_regions": [
+        "top-right",
+        "right",
+        "bottom-right"
+      ],
+      "local_region_correct": false,
+      "region_review": "Incorrect local cell; expected top-right, right, bottom-right. Repeated numeric readings cannot identify one counter.",
+      "defect_review": "Unsupported truncation on the pre-existing clean control: the text/counter is fully visible. No new label is created."
+    },
+    {
+      "run_id": "20261019T205726Z-f54d7f",
+      "finding_index": 5,
+      "text_seen": "6",
+      "reported_region": "top",
+      "expected_local_regions": [
+        "top-right",
+        "right",
+        "bottom-right"
+      ],
+      "local_region_correct": false,
+      "region_review": "Incorrect local cell; expected top-right, right, bottom-right. Repeated numeric readings cannot identify one counter.",
+      "defect_review": "Unsupported truncation on the pre-existing clean control: the text/counter is fully visible. No new label is created."
+    },
+    {
+      "run_id": "20261019T205726Z-f54d7f",
+      "finding_index": 6,
+      "text_seen": "6",
+      "reported_region": "top",
+      "expected_local_regions": [
+        "top-right",
+        "right",
+        "bottom-right"
+      ],
+      "local_region_correct": false,
+      "region_review": "Incorrect local cell; expected top-right, right, bottom-right. Repeated numeric readings cannot identify one counter.",
+      "defect_review": "Unsupported truncation on the pre-existing clean control: the text/counter is fully visible. No new label is created."
+    },
+    {
+      "run_id": "20261019T205726Z-f54d7f",
+      "finding_index": 7,
+      "text_seen": "6",
+      "reported_region": "top",
+      "expected_local_regions": [
+        "top-right",
+        "right",
+        "bottom-right"
+      ],
+      "local_region_correct": false,
+      "region_review": "Incorrect local cell; expected top-right, right, bottom-right. Repeated numeric readings cannot identify one counter.",
+      "defect_review": "Unsupported truncation on the pre-existing clean control: the text/counter is fully visible. No new label is created."
+    },
+    {
+      "run_id": "20261019T210044Z-118817",
+      "finding_index": 0,
+      "text_seen": "Animal Husbandry 6",
+      "reported_region": "right",
+      "expected_local_regions": [
+        "top-right"
+      ],
+      "local_region_correct": false,
+      "region_review": "Incorrect local cell; expected top-right. For combined name plus counter, the bounding-box centre covers both visible text components. Original-cell mapping may remain ambiguous.",
+      "defect_review": "Unsupported truncation on the clean control; the title and counter are fully visible. No new label."
+    },
+    {
+      "run_id": "20261019T210044Z-118817",
+      "finding_index": 1,
+      "text_seen": "Archery 6",
+      "reported_region": "right",
+      "expected_local_regions": [
+        "right"
+      ],
+      "local_region_correct": true,
+      "region_review": "Correct local cell. For combined name plus counter, the bounding-box centre covers both visible text components. Original-cell mapping may remain ambiguous.",
+      "defect_review": "Unsupported truncation on the clean control; the title and counter are fully visible. No new label."
+    },
+    {
+      "run_id": "20261019T210044Z-118817",
+      "finding_index": 2,
+      "text_seen": "Mining 6",
+      "reported_region": "right",
+      "expected_local_regions": [
+        "bottom-right"
+      ],
+      "local_region_correct": false,
+      "region_review": "Incorrect local cell; expected bottom-right. For combined name plus counter, the bounding-box centre covers both visible text components. Original-cell mapping may remain ambiguous.",
+      "defect_review": "Unsupported truncation on the clean control; the title and counter are fully visible. No new label."
+    },
+    {
+      "run_id": "20261019T210044Z-118817",
+      "finding_index": 3,
+      "text_seen": "Agriculture",
+      "reported_region": "left",
+      "expected_local_regions": [
+        "left"
+      ],
+      "local_region_correct": true,
+      "region_review": "Correct local cell. For combined name plus counter, the bounding-box centre covers both visible text components. Original-cell mapping may remain ambiguous.",
+      "defect_review": "Unsupported truncation on the clean control; the title and counter are fully visible. No new label."
+    }
+  ]
+}

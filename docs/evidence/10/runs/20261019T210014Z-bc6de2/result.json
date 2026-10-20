@@ -1,0 +1,153 @@
+{
+  "status": "not_checked",
+  "findings": [],
+  "reason": "invalid_response: readings.0.confidence: Extra inputs are not permitted; readings.1.confidence: Extra inputs are not permitted; readings.2.confidence: Extra inputs are not permitted; readings.3.confidence: Extra inputs are not permitted; readings.4.confidence: Extra inputs are not permitted; readings.5.confidence: Extra inputs are not permitted; readings.6.confidence: Extra inputs are not permitted",
+  "metadata": {
+    "run_id": "20261019T210014Z-bc6de2",
+    "provider": "lmstudio-local",
+    "model": "qwen/qwen3-vl-8b",
+    "model_version": null,
+    "sdk_version": "stdlib-urllib/python-3.14.0",
+    "schema_version": "issue-10-reading-v1",
+    "settings": {
+      "model": "qwen/qwen3-vl-8b",
+      "temperature": 0,
+      "max_tokens": 8192,
+      "stream": false,
+      "response_format": {
+        "type": "json_schema",
+        "json_schema": {
+          "name": "issue_10_reading_v1",
+          "strict": true,
+          "schema": {
+            "properties": {
+              "findings": {
+                "items": {
+                  "description": "Draft v0 finding; the schema is finalized in Stage 1.",
+                  "properties": {
+                    "defect_type": {
+                      "enum": [
+                        "truncated_text",
+                        "overlap",
+                        "untranslated",
+                        "other"
+                      ],
+                      "type": "string"
+                    },
+                    "text_seen": {
+                      "type": "string"
+                    },
+                    "region": {
+                      "enum": [
+                        "top-left",
+                        "top",
+                        "top-right",
+                        "left",
+                        "center",
+                        "right",
+                        "bottom-left",
+                        "bottom",
+                        "bottom-right"
+                      ],
+                      "type": "string"
+                    },
+                    "confidence": {
+                      "maximum": 1,
+                      "minimum": 0,
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "defect_type",
+                    "text_seen",
+                    "region",
+                    "confidence"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "readings": {
+                "items": {
+                  "properties": {
+                    "text_seen": {
+                      "type": "string"
+                    },
+                    "region": {
+                      "enum": [
+                        "top-left",
+                        "top",
+                        "top-right",
+                        "left",
+                        "center",
+                        "right",
+                        "bottom-left",
+                        "bottom",
+                        "bottom-right"
+                      ],
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "text_seen",
+                    "region"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "findings",
+              "readings"
+            ],
+            "type": "object"
+          }
+        }
+      },
+      "endpoint": "http://127.0.0.1:1234/v1/chat/completions",
+      "timeout_s": 1800,
+      "transport_retries": 0,
+      "redirects": false,
+      "proxies": false,
+      "media_resolution": null,
+      "model_metadata_before_run": {
+        "id": "qwen/qwen3-vl-8b",
+        "object": "model",
+        "type": "vlm",
+        "publisher": "qwen",
+        "arch": "qwen3_vl",
+        "compatibility_type": "mlx",
+        "quantization": "8bit",
+        "state": "loaded",
+        "max_context_length": 262144,
+        "loaded_context_length": 16185,
+        "capabilities": [
+          "tool_use"
+        ]
+      }
+    },
+    "image": {
+      "path": "data/issue-10/tiles/tech-picker__de__2400x1080__clean__1271001/description.png",
+      "sha256": "b5f0e70bcf35c1ce6cfe79a1793dd5c4b6b85f5bff53b32bd7ab5960cccba95c",
+      "width": 2400,
+      "height": 180
+    },
+    "max_requests": 1,
+    "requests_sent": 1,
+    "attempts": [
+      {
+        "outcome": "ok",
+        "latency_s": 27.175
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 203,
+      "completion_tokens": 394,
+      "total_tokens": 597,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      }
+    }
+  }
+}

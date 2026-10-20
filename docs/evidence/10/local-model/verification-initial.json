@@ -1,0 +1,16 @@
+{
+  "gemini_evidence_files_unchanged": 151,
+  "gemini_report_preserved_byte_for_byte": true,
+  "original_screenshots_and_crops_unchanged": true,
+  "approved_amended_reference_and_confirmation_unchanged": true,
+  "all_local_prompt_and_response_schemas_equal_to_Gemini": true,
+  "all_local_sends_have_max_requests_1_one_attempt_and_no_retry": true,
+  "local_requests_sent": 1,
+  "local_cap": 12,
+  "gemini_requests_sent": 27,
+  "combined_actual_requests_sent": 28,
+  "combined_actual_cap": 39,
+  "pending_or_interrupted": 0,
+  "visual_review_complete": true,
+  "independent_PR_review": "pending"
+}

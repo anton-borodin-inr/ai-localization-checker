@@ -1,0 +1,29 @@
+{
+  "id": "chatcmpl-h4exe9xadrnazieuiykfd",
+  "object": "chat.completion",
+  "created": 1792442986,
+  "model": "qwen/qwen3-vl-8b",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\"findings\": [], \"readings\": [{\"text_seen\": \"Agriculture\", \"region\": \"right\", \"confidence\": 1.0}, {\"text_seen\": \"Animal Husbandry\", \"region\": \"right\", \"confidence\": 1.0}, {\"text_seen\": \"6\", \"region\": \"right\", \"confidence\": 1.0}, {\"text_seen\": \"Trapping\", \"region\": \"right\", \"confidence\": 1.0}, {\"text_seen\": \"10\", \"region\": \"right\", \"confidence\": 1.0}, {\"text_seen\": \"Horseback Riding\", \"region\": \"right\", \"confidence\": 1.0}, {\"text_seen\": \"19\", \"region\": \"right\", \"confidence\": 1.0}, {\"text_seen\": \"Archery\", \"region\": \"right\", \"confidence\": 1.0}, {\"text_seen\": \"6\", \"region\": \"right\", \"confidence\": 1.0}, {\"text_seen\": \"The Wheel\", \"region\": \"right\", \"confidence\": 1.0}, {\"text_seen\": \"10\", \"region\": \"right\", \"confidence\": 1.0}, {\"text_seen\": \"Mathematics\", \"region\": \"right\", \"confidence\": 1.0}, {\"text_seen\": \"19\", \"region\": \"right\", \"confidence\": 1.0}, {\"text_seen\": \"Mining\", \"region\": \"right\", \"confidence\": 1.0}, {\"text_seen\": \"6\", \"region\": \"right\", \"confidence\": 1.0}, {\"text_seen\": \"Masonry\", \"region\": \"right\", \"confidence\": 1.0}, {\"text_seen\": \"10\", \"region\": \"right\", \"confidence\": 1.0}, {\"text_seen\": \"Construction\", \"region\": \"right\", \"confidence\": 1.0}, {\"text_seen\": \"19\", \"region\": \"right\", \"confidence\": 1.0}, {\"text_seen\": \"Bronze Working\", \"region\": \"right\", \"confidence\": 1.0}, {\"text_seen\": \"10\", \"region\": \"right\", \"confidence\": 1.0}, {\"text_seen\": \"Units enabled:\", \"region\": \"bottom\", \"confidence\": 1.0}, {\"text_seen\": \"• Archer (5, 7)\", \"region\": \"bottom\", \"confidence\": 1.0}, {\"text_seen\": \"Wonders enabled:\", \"region\": \"bottom\", \"confidence\": 1.0}, {\"text_seen\": \"• Temple of Artemis (+1 Culture; +10% Food in all cities; +15% Production when constructing Archery units in this city;\", \"region\": \"bottom\", \"confidence\": 1.0}, {\"text_seen\": \"Close\", \"region\": \"bottom\", \"confidence\": 1.0}, {\"text_seen\": \"Research Archery\", \"region\": \"bottom\", \"confidence\": 1.0}, {\"text_seen\": \"(0/24)\", \"region\": \"bottom\", \"confidence\": 1.0}]}",
+        "reasoning_content": "",
+        "tool_calls": []
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 203,
+    "completion_tokens": 685,
+    "total_tokens": 888,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    }
+  },
+  "stats": {},
+  "system_fingerprint": "qwen/qwen3-vl-8b"
+}

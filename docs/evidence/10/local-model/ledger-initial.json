@@ -1,0 +1,13 @@
+{
+  "approval_sha256": "83f715218650a77fd49c03ab832a806ed6421c6c0eeb13f204ff268d8edceaa2",
+  "local_cap": 12,
+  "slots": [
+    {
+      "slot": 1,
+      "run_id": "20261019T203555Z-2b7451",
+      "reservation": 1,
+      "requests_sent": 1,
+      "status": "not_checked"
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.0, pytest-9.1.1, pluggy-1.7.0
+rootdir: <repository>
+configfile: pyproject.toml
+plugins: anyio-4.15.1
+collected 234 items
+
+tests/test_agent_rules_sync.py .                                         [  0%]
+tests/test_capture.py .................................................. [ 21%]
+.......................                                                  [ 31%]
+tests/test_capture_device.py s                                           [ 32%]
+tests/test_capture_language.py ....................                      [ 40%]
+tests/test_cli.py .........                                              [ 44%]
+tests/test_emulator_scripts.py ..................                        [ 52%]
+tests/test_gemini.py ...................................                 [ 67%]
+tests/test_local_model.py ...................                            [ 75%]
+tests/test_reading_metrics.py .........                                  [ 79%]
+tests/test_small_text.py .........                                       [ 82%]
+tests/test_small_text_resume.py ..........                               [ 87%]
+tests/test_smoke.py .                                                    [ 87%]
+tests/test_tiling.py .....                                               [ 89%]
+tests/test_vision.py ........................                            [100%]
+
+=============================== warnings summary ===============================
+.venv/lib/python3.14/site-packages/google/genai/types.py:42
+  <repository>/.venv/lib/python3.14/site-packages/google/genai/types.py:42: DeprecationWarning: '_UnionGenericAlias' is deprecated and slated for removal in Python 3.17
+    VersionedUnionType = Union[builtin_types.UnionType, _UnionGenericAlias]
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================== 233 passed, 1 skipped, 1 warning in 3.73s ===================

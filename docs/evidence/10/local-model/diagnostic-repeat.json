@@ -1,0 +1,8 @@
+{
+  "run_id": "20261019T204249Z-0c72cd",
+  "client_status": "not_checked",
+  "timeout_s": 400,
+  "repeated_Schluss_objects_in_partial_content": 164,
+  "server_reported_completion_tokens_at_cancel": 5571,
+  "score_eligibility": "none; server-log partial prediction remains separate from validated results"
+}

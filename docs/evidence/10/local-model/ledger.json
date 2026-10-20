@@ -1,0 +1,120 @@
+{
+  "approval_sha256": "83f715218650a77fd49c03ab832a806ed6421c6c0eeb13f204ff268d8edceaa2",
+  "local_cap": 12,
+  "slots": [
+    {
+      "slot": 1,
+      "run_id": "20261019T203555Z-2b7451",
+      "reservation": 1,
+      "requests_sent": 1,
+      "status": "not_checked"
+    },
+    {
+      "slot": 1,
+      "run_id": "20261019T204249Z-0c72cd",
+      "reservation": 1,
+      "requests_sent": 1,
+      "status": "not_checked",
+      "attempt": 2
+    },
+    {
+      "slot": 2,
+      "run_id": "20261019T204946Z-b5d5d5",
+      "reservation": 1,
+      "requests_sent": 1,
+      "status": "not_checked",
+      "attempt": 1
+    },
+    {
+      "slot": 3,
+      "run_id": "20261019T205044Z-a17e6e",
+      "reservation": 1,
+      "requests_sent": 1,
+      "status": "not_checked",
+      "attempt": 1
+    },
+    {
+      "slot": 4,
+      "run_id": "20261019T205726Z-f54d7f",
+      "reservation": 1,
+      "requests_sent": 1,
+      "status": "checked",
+      "attempt": 1
+    },
+    {
+      "slot": 5,
+      "run_id": "20261019T205801Z-0e6d1d",
+      "reservation": 1,
+      "requests_sent": 1,
+      "status": "not_checked",
+      "attempt": 1
+    },
+    {
+      "slot": 6,
+      "run_id": "20261019T210014Z-bc6de2",
+      "reservation": 1,
+      "requests_sent": 1,
+      "status": "not_checked",
+      "attempt": 1
+    },
+    {
+      "slot": 7,
+      "run_id": "20261019T210044Z-118817",
+      "reservation": 1,
+      "requests_sent": 1,
+      "status": "checked",
+      "attempt": 1
+    },
+    {
+      "slot": 8,
+      "run_id": "20261019T210105Z-51cd84",
+      "reservation": 1,
+      "requests_sent": 1,
+      "status": "not_checked",
+      "attempt": 1
+    },
+    {
+      "slot": 9,
+      "run_id": "20261019T210222Z-1fcbbd",
+      "reservation": 1,
+      "requests_sent": 1,
+      "status": "not_checked",
+      "attempt": 1
+    },
+    {
+      "slot": 10,
+      "run_id": "20261019T210246Z-9286b9",
+      "reservation": 1,
+      "requests_sent": 1,
+      "status": "not_checked",
+      "attempt": 1
+    },
+    {
+      "slot": 11,
+      "run_id": "20261019T211251Z-24e71b",
+      "reservation": 1,
+      "requests_sent": 1,
+      "status": "not_checked",
+      "attempt": 1
+    },
+    {
+      "slot": 12,
+      "run_id": "20261019T211340Z-c54b2c",
+      "reservation": 1,
+      "requests_sent": 1,
+      "status": "not_checked",
+      "attempt": 1
+    },
+    {
+      "slot": 1,
+      "run_id": "20261019T211412Z-8cb835",
+      "reservation": 1,
+      "requests_sent": 1,
+      "status": "not_checked",
+      "attempt": 3
+    }
+  ],
+  "extension_sha256": "0772f19fb122086776d1f6304df790315e04822efb2aeaf55f737fe8120792db",
+  "extended_local_cap": 14,
+  "nightly_extension_sha256": "a6368f06bfb241dcd1af2a3892d5599c566312f3b153d4d768ea3c56706226bc"
+}

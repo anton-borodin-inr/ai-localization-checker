@@ -1,0 +1,46 @@
+{
+  "findings": [
+    {
+      "defect_type": "truncated_text",
+      "text_seen": "Animal Husbandry 6",
+      "region": "right",
+      "confidence": 0.99
+    },
+    {
+      "defect_type": "truncated_text",
+      "text_seen": "Archery 6",
+      "region": "right",
+      "confidence": 0.99
+    },
+    {
+      "defect_type": "truncated_text",
+      "text_seen": "Mining 6",
+      "region": "right",
+      "confidence": 0.99
+    },
+    {
+      "defect_type": "truncated_text",
+      "text_seen": "Agriculture",
+      "region": "left",
+      "confidence": 0.99
+    }
+  ],
+  "readings": [
+    {
+      "text_seen": "Agriculture",
+      "region": "left"
+    },
+    {
+      "text_seen": "Animal Husbandry",
+      "region": "right"
+    },
+    {
+      "text_seen": "Archery",
+      "region": "right"
+    },
+    {
+      "text_seen": "Mining",
+      "region": "right"
+    }
+  ]
+}

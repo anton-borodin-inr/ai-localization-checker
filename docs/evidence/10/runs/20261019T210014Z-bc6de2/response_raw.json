@@ -1,0 +1,29 @@
+{
+  "id": "chatcmpl-ijkvgc01c8999dmotq9p2",
+  "object": "chat.completion",
+  "created": 1792443614,
+  "model": "qwen/qwen3-vl-8b",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\"findings\": [{\"defect_type\": \"truncated_text\", \"text_seen\": \"Freigeschaltete Einheiten: •Bogenschütze (5, 7)\", \"region\": \"left\", \"confidence\": 0.99}, {\"defect_type\": \"truncated_text\", \"text_seen\": \"Freigeschaltete Wunder: •Tempel der Artemis (+1 Kultur: +10% Nahrung in allen Städten: +15% Produktion beim Bau von\", \"region\": \"left\", \"confidence\": 0.99}, {\"defect_type\": \"truncated_text\", \"text_seen\": \"Bogenschießen erforschen (0/24)\", \"region\": \"right\", \"confidence\": 0.99}], \"readings\": [{\"text_seen\": \"Schließen\", \"region\": \"left\", \"confidence\": 0.99}, {\"text_seen\": \"Freigeschaltete Einheiten:\", \"region\": \"left\", \"confidence\": 0.99}, {\"text_seen\": \"•Bogenschütze (5, 7)\", \"region\": \"left\", \"confidence\": 0.99}, {\"text_seen\": \"Freigeschaltete Wunder:\", \"region\": \"left\", \"confidence\": 0.99}, {\"text_seen\": \"•Tempel der Artemis (+1 Kultur: +10% Nahrung in allen Städten: +15% Produktion beim Bau von\", \"region\": \"left\", \"confidence\": 0.99}, {\"text_seen\": \"Bogenschießen erforschen\", \"region\": \"right\", \"confidence\": 0.99}, {\"text_seen\": \"(0/24)\", \"region\": \"right\", \"confidence\": 0.99}]}",
+        "reasoning_content": "",
+        "tool_calls": []
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 203,
+    "completion_tokens": 394,
+    "total_tokens": 597,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    }
+  },
+  "stats": {},
+  "system_fingerprint": "qwen/qwen3-vl-8b"
+}
