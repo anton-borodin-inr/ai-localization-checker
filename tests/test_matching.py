@@ -151,3 +151,14 @@ def test_d027_other_labels_and_notes_are_supported():
 def test_inconsistent_status_is_rejected(status, findings):
     with pytest.raises(ValueError):
         match_screen([], findings, [], status=status)
+
+
+def test_full_expected_text_identifies_a_truncated_label():
+    result = match_screen(
+        [label("Alpha beta gam...")],
+        [finding("Alpha beta gamma delta")],
+        ["Alpha beta gam..."],
+    )
+    assert [(p.finding_index, p.label_index) for p in result.matches] == [(0, 0)]
+    assert not result.unmatched_finding_indices
+    assert not result.hallucination_indices

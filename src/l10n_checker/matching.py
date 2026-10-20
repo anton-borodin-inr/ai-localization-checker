@@ -89,6 +89,20 @@ def _match_score(finding: str, label: str, config: MatchingConfig) -> float | No
     return max(scores) if scores else None
 
 
+def _label_score(finding: str, label: Label, config: MatchingConfig) -> float | None:
+    """Best score against either text of the label (review of PR #27, rule 1).
+
+    Models often report the full intended string of a truncated label, so a
+    finding may identify a label by `text_expected` as well as `text_seen`.
+    """
+    scores = [
+        score
+        for text in (label.text_seen, label.text_expected)
+        if (score := _match_score(finding, text, config)) is not None
+    ]
+    return max(scores) if scores else None
+
+
 def _text_is_present(text: str, screen_texts: Sequence[str], config: MatchingConfig):
     text = normalize_text(text)
     if not text:
@@ -155,7 +169,7 @@ def match_screen(
             repeated = max(occurrences[text], label_occurrences[text]) > 1
             if repeated and finding.region != label.region:
                 continue
-            score = _match_score(finding.text_seen, label.text_seen, config)
+            score = _label_score(finding.text_seen, label, config)
             if score is not None:
                 candidates.append((score, -label_index))
         if candidates:
