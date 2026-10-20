@@ -76,7 +76,7 @@ may leave that lock in place and requires inspection before recovery.
 ## Offline replay
 
 ```sh
-uv run --no-editable l10n-slice replay \
+uv run --offline --no-editable l10n-slice replay \
   --bundle docs/evidence/14/records/bundle.json \
   --output data/issue-14-replay/comparison
 ```

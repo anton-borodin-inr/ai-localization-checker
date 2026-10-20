@@ -1,0 +1,71 @@
+{
+  "detector": "ocr-translation-baseline",
+  "settings": {
+    "version": "baseline-v0.1",
+    "oem": 1,
+    "psm": 11,
+    "languages": {
+      "en": "eng",
+      "de": "deu+eng"
+    },
+    "timeout_s": 30,
+    "exact_match": "NFKC + casefold + whitespace collapse",
+    "prefix_min_letters": 4,
+    "prefix_min_fraction": 0.5,
+    "missing_confidence": 0.5,
+    "missing_text_seen": "expected string",
+    "ocr_confidence_filter": null
+  },
+  "requests_sent": 0,
+  "run_id": "20261020T151513Z-d62dbd",
+  "missing_rule_findings": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14
+  ],
+  "image": {
+    "name": "tech-picker__de__2400x1080__clean__1271001.png",
+    "sha256": "a6a5beb3ef17ce4a640261821ff1bfc02f2dfda0e81c1cfb3aadaa32407f954e",
+    "size": [
+      2400,
+      1080
+    ]
+  },
+  "version_code": 1271001,
+  "fork_commit": "2e4d6af664e204c4ddcc06383a0e2e700a9665c4",
+  "base_commit": "899367522cea36d6063c84b02b41eedfa9a0d0e9",
+  "translations": {
+    "en": {
+      "path": "android/assets/jsons/translations/English.properties",
+      "sha256": "f4bae85883e7430cf01ba257bf924db6aaa6df564c4896ac2d3783ee41216b02"
+    },
+    "de": {
+      "path": "android/assets/jsons/translations/German.properties",
+      "sha256": "e292857ddd35c9cb95a23659829ceac681e6d637c9fd1a1bf37be14d660215bb"
+    }
+  },
+  "manifest_sha256": "7bcda935b9f36cc98fb389d7c7bc34ceac749d3fc757e62dea284a654ada4c28",
+  "inventory_sha256": "60b2c3a39a82cf9f5378f2cf127d7fe51240e12d80a52957102d3b17373e2d64",
+  "language": "de",
+  "ocr": {
+    "engine": "tesseract 5.5.2",
+    "languages": "deu+eng",
+    "traineddata_sha256": {
+      "deu": "19d219bbb6672c869d20a9636c6816a81eb9a71796cb93ebe0cb1530e2cdb22d",
+      "eng": "7d4322bd2a7749724879683fc3912cb542f19906c83bcc1a52132556427170b2"
+    }
+  },
+  "latency_s": 0.825
+}

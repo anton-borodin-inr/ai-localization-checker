@@ -22,6 +22,7 @@ from l10n_checker.vision import (
 )
 
 REFERENCE_SOURCE = "docs/experiments/issue-10/reference-amendment-candidate.json"
+REFERENCE_SHA256 = "bba4e51d48d81bfa836eb80632697069b4e70fd67944a09f93d71aada609dd19"
 MAX_REQUESTS = 10
 MAX_USD = Decimal("0.10")
 # Operational reservation, not a provider-enforced token/billing ceiling.
@@ -96,6 +97,7 @@ def prepare(
         approved.get("status") == "confirmed"
         and approved.get("accepted_by") == "Anton"
         and approved.get("reference_sha256") == digest(reference)
+        and digest(reference) == REFERENCE_SHA256
     ):
         raise ValueError("Reference must have Anton's hash-bound confirmation")
     refs = read(reference)["screens"]
@@ -350,6 +352,8 @@ def replay(bundle_path: Path, output: Path) -> dict:
     approval = read(inputs["approval.json"])
     if approval["reference_sha256"] != digest(inputs["reference.json"]):
         raise ValueError("Reference approval mismatch")
+    if digest(inputs["reference.json"]) != REFERENCE_SHA256:
+        raise ValueError("Reference is not the confirmed issue 10 amendment")
     if approval["status"] != "confirmed" or approval["accepted_by"] != "Anton":
         raise ValueError("Reference not confirmed by Anton")
     captures = read(inputs["pair-manifest.json"])["captures"]

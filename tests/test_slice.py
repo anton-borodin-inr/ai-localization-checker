@@ -296,6 +296,26 @@ def test_reference_preserves_diagnostics_and_never_invents_occurrences():
     assert pipeline.reference_texts(ref)[0].count(ref["rows"][0]["text_seen"]) == 2
 
 
+def test_preflight_rejects_replacement_reference_even_with_matching_approval(
+    tmp_path, prepared
+):
+    reference = tmp_path / "reference.json"
+    reference.write_text(REFERENCE.read_text() + "\n")
+    approval = pipeline.read(APPROVAL)
+    approval["reference_sha256"] = pipeline.digest(reference)
+    pipeline.write(tmp_path / "approval.json", approval)
+    with pytest.raises(ValueError, match="confirmation"):
+        pipeline.prepare(
+            FINAL,
+            FINAL,
+            reference,
+            tmp_path / "approval.json",
+            MANIFEST,
+            INVENTORY,
+            ROOT,
+        )
+
+
 @pytest.mark.parametrize("cause", ["requests", "cost", "pending"])
 def test_persistent_budget_refuses_send(tmp_path, cause):
     path = tmp_path / "budget.json"

@@ -10,6 +10,11 @@ The tool captures screenshots of a mobile game (Unciv, Android emulator) in seve
 
 ## Results
 
+The [Stage 1 vertical slice](docs/vertical-slice.md) runs both detectors and
+replays matching and metrics offline. Its [issue #14 report](docs/evidence/14/report.md)
+records observations on three variants of one screen, with reference gaps and
+draft conclusions for human review; the numbers are not quality estimates.
+
 ## Limitations
 
 ## How this was built
