@@ -69,7 +69,7 @@ Anton writes or edits the definitions/boundaries before acceptance. These are pr
 ## Open questions for Anton
 
 - Edit/accept/reject the three-class proposal and its boundaries; inspect the separate-widget collision before deciding whether it needs a later class.
-- Authorize publication of the prepared checker/fork branches and checker PR. Independent review must inspect screenshots and raw runs before merge; the author does not approve its own PR.
+- Publication was separately authorized and both branches were pushed. [Draft PR #49](https://github.com/anton-borodin-inr/ai-localization-checker/pull/49) contains the Report; no merge was performed. Independent review must inspect screenshots and raw runs before merge; the author does not approve its own PR.
 - Labels, all remaining screen assignments, mutation generation, prompt/schema revisions and OCR comparison remain separate work.
 
 ## Retained support files

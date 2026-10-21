@@ -344,8 +344,8 @@
     },
     {
       "path": "changed-files.txt",
-      "bytes": 23179,
-      "sha256": "b18ad336251ef76f5eb468961ca057b21ee0e346b43f2bb4702795be91e24cdb"
+      "bytes": 23213,
+      "sha256": "d79cb5974a6d3d76cd26345891233e9966d8540715b4940d5b78686c61376d4d"
     },
     {
       "path": "checks.json",
@@ -588,6 +588,11 @@
       "sha256": "26f4b4f9225b5d4744b70525f4011f526efad1375bb2ca9fb1515d803e312231"
     },
     {
+      "path": "publication.json",
+      "bytes": 1045,
+      "sha256": "7d30c27cdd26917b3a12010b515eb41324a56f4f5d99b8efbbf8d0bfa01427d1"
+    },
+    {
       "path": "pytest-checkpoint.txt",
       "bytes": 1713,
       "sha256": "b21c5de9be4667d51a8fddb4825e5695739e6ac12787d1a7c1985391171f0e1a"
@@ -624,8 +629,8 @@
     },
     {
       "path": "recipes/finalize_report.py.txt",
-      "bytes": 25477,
-      "sha256": "edd7cb5078f23028fb7cc4feb0f9580ad76555deb7f61ab4bc683b232442464f"
+      "bytes": 25600,
+      "sha256": "448cd9c6d912f713991329c9e0e82c8720b08ae4ffd3b6f790437141f8f3bd68"
     },
     {
       "path": "recipes/install_probe.py.txt",
@@ -635,7 +640,7 @@
     {
       "path": "recipes/manifest.json",
       "bytes": 1838,
-      "sha256": "f8e5216410cf3714e73a70ff750da8913dd323976ece77643d2eab350b0adff8"
+      "sha256": "47ded63e2b01f007e8eefe7fe7f8a739f3f49bbd660c06c1d9a1801fc6be1e5a"
     },
     {
       "path": "recipes/prepare_design.py.txt",
@@ -649,8 +654,8 @@
     },
     {
       "path": "report.md",
-      "bytes": 25185,
-      "sha256": "c3bd87b00b59da72aeb30cbe03a3a999cb1b79a0b317c8cd340619099b4c575b"
+      "bytes": 25308,
+      "sha256": "d53d782b202dc5894c4dd64b353b8ffc236b118e3b7456c086e4ee834542b2fa"
     },
     {
       "path": "run-records/20261021T185946Z-c21c92/cli.txt",

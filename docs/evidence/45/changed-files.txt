@@ -117,6 +117,7 @@ docs/evidence/45/probe-design.json
 docs/evidence/45/progress.md
 docs/evidence/45/prompt.txt
 docs/evidence/45/prompt_sent.txt
+docs/evidence/45/publication.json
 docs/evidence/45/pytest-checkpoint.txt
 docs/evidence/45/pytest-final.txt
 docs/evidence/45/pytest-hook-device.txt
