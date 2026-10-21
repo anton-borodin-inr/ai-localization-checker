@@ -368,7 +368,8 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 ## D-038 — Deterministic Android screen launch state protocol
 
 - **Date:** 2026-10-21
-- **Status:** Proposed
+- **Status:** Accepted
+- **Accepted by:** Anton
 - **Decision:** The Stage 2 Unciv hook accepts three Android string extras: `l10n_screen`, a unique `l10n_request`, and `l10n_state_b64` (standard padded base64 of UTF-8 JSON). State schema version 1 fixes `save`, `selection`, `tab`, `expanded_sections`, `scroll`, `scroll_to`, `camera` and `new_game`. Source-key anchors are preferred over absolute Scene2D offsets; unavailable, ambiguous or out-of-range state fails explicitly. Every request, including `onNewIntent`, reloads the save and rebuilds the screen. `L10N_SCREEN_READY <id> request=<request>` is emitted only after state application and at least two quiet rendered frames with no pending tracked UI work or actions; failures emit `L10N_SCREEN_ERROR` and leave a blank screen. Language remains the normal Unciv setting.
 - **Why:** The companion capture task [#41](https://github.com/anton-borodin-inr/ai-localization-checker/issues/41) needs a stable contract from [#40](https://github.com/anton-borodin-inr/ai-localization-checker/issues/40). Base64 avoids adb shell quoting failures for names with spaces or Unicode; anchors adapt to English/German layout differences; fresh reconstruction prevents order-dependent captures; frame-based readiness avoids a fixed settle delay. Anton approved these requirements in the issue #40 implementation plan on 2026-10-21.
 - **Alternatives considered:** Raw JSON extras (shell quoting); offsets alone (language-dependent content heights); reusing previous screen state (selection/scroll leakage); readiness at construction or after a fixed delay (unfinished layout or asynchronous previews).
