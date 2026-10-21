@@ -1,0 +1,15 @@
+{
+  "prompt_version": "v1",
+  "schema_version": "v1",
+  "wrapper_version": "deepseek-json-object-v2",
+  "hashes": {
+    "prompt.txt": "4359255e06a6d64bf35be0ee30e635f4f7e3b8b1a909c6736a07030a463779eb",
+    "schema.json": "222d4e709cf16a669020750950b98f004ee1d6b21d39df930676b6a27129bb94",
+    "prompt_sent.txt": "26f4b4f9225b5d4744b70525f4011f526efad1375bb2ca9fb1515d803e312231"
+  },
+  "unchanged_source_files": {
+    "src/l10n_checker/vision.py": "37f2f48209c7959a6ad8a980922d0a9942ba469b9cc0dfbd5516e55ccd20f8f2",
+    "src/l10n_checker/deepseek.py": "91915d2aede0799e4b0cc391b09f9c1483eecd295f3bc18e21d1e2dc865dfd26"
+  },
+  "live_requests_at_freeze": 0
+}

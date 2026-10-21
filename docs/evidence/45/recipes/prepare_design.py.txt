@@ -1,0 +1,168 @@
+"""Write the approved issue-45 design; no device or provider operations."""
+
+import hashlib
+import json
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent
+CHECKER = ROOT / "checker"
+FORK = ROOT / "unciv-probe"
+EVIDENCE = CHECKER / "docs/evidence/45"
+BASE = "877b0dc2ee706dbbdb4a17e14b4522408d197390"
+
+
+def sha(data):
+    return hashlib.sha256(data).hexdigest()
+
+
+def write_json(path, value):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n")
+
+
+def translation(language, key, value):
+    relative = f"android/assets/jsons/translations/{language}.properties"
+    text = (FORK / relative).read_text()
+    matches = [line for line in text.splitlines() if line.startswith(key + " = ")]
+    assert len(matches) <= 1, (language, key)
+    return {
+        "file": relative,
+        "key": key,
+        "original": matches[0].split(" = ", 1)[1] if matches else None,
+        "mutated": value,
+        "operation": "remove" if value is None else "replace" if matches else "add",
+    }
+
+
+def variant(name, screen, candidates, de, en, note):
+    mutations = [translation("German", *de)]
+    if en is not None:
+        mutations.append(translation("English", *en))
+    return {
+        "id": name,
+        "screen": screen,
+        "candidates": candidates,
+        "languages": ["de", "en"] if en is not None else ["de"],
+        "mutations": mutations,
+        "design_note": note,
+        "observed": None,
+    }
+
+
+variants = [
+    variant(
+        "overflow-turns", "tech-picker", ["overflow"],
+        ("⏳", "Runden verbleibend"), ("⏳", "turns remaining"),
+        "Translate the actual hourglass lookup following the number. The plain 14-unit "
+        "Label has a 40-unit cell and right alignment. Added key: no game-code change. "
+        "Distinguish drawing outside the cell from collision with a neighbour.",
+    ),
+    variant(
+        "overflow-worker", "city-production", ["overflow", "unreadably_small_text"],
+        ("Worker", "Arbeiter für Geländeausbau, Straßenbau und die Verbesserung der städtischen Infrastruktur"),
+        ("Worker", "Worker for terrain development, road construction and improvements to city infrastructure"),
+        "The list wraps, while the selected construction's title is a plain Label. "
+        "Panel expansion, wrapping and successful fitting are negative results, not overflow. "
+        "Also inspect whether the actual font shrinks, rather than inferring shrink from length.",
+    ),
+    variant(
+        "wrong-language-fallback", "tech-picker", ["wrong_language"],
+        ("Mining", None), None,
+        "Remove the German entry to exercise source-English fallback. The same mechanism "
+        "cannot create wrong-language text in English UI; no English mutation is claimed.",
+    ),
+    variant(
+        "wrong-language-foreign", "city-production", ["wrong_language"],
+        ("Worker", "Рабочий"), ("Worker", "Arbeiter"),
+        "An unrelated language is inserted into the active translation file. "
+        "It remains a translation-only mutation, distinct from missing-entry fallback.",
+    ),
+    variant(
+        "placeholder-tech", "tech-picker", ["technical_text"],
+        ("Research [technology]", "[amount] erforschen"),
+        ("Research [technology]", "Research [amount]"),
+        "Rename the value's placeholder without changing the source key. The translator "
+        "replaces source placeholder names; retain whatever the device actually displays.",
+    ),
+    variant(
+        "placeholder-city", "city-production", ["technical_text"],
+        ("Worker", "Arbeiter [amount]"), ("Worker", "Worker [amount]"),
+        "Literal technical token in a plain translated title; this is a different path "
+        "from failed template substitution and must be described as such.",
+    ),
+    variant(
+        "truncation-mining", "tech-picker", ["truncated_text"],
+        ("Mining", "Bergbau und Erzgewinnung"), ("Mining", "Mining and ore extraction"),
+        "Repeat the known Mining ellipsis mechanism. Keep Archery selected so the full "
+        "Mining title is absent from the description; verify the entire screenshot (D-023).",
+    ),
+    variant(
+        "small-text-tech", "tech-picker", ["unreadably_small_text"],
+        ("Research [technology]", "Wissenschaftliche Forschung und vollständige Entwicklung der ausgewählten Technologie [technology]"),
+        ("Research [technology]", "Scientific research and complete development of the selected technology [technology]"),
+        "Stress the lower action button without breaking its placeholder. Source inspection "
+        "has not found automatic text-dependent font scaling in TechPickerScreen, TechButton, "
+        "PickerScreen, PickerPane or their ordinary label/button helpers. Capture a negative "
+        "result if layout grows, clips or overflows instead of shrinking.",
+    ),
+]
+for index, item in enumerate(variants, 1):
+    item["version_code"] = str(1271450 + index)
+
+inputs = {}
+for relative in (
+    "states/tech-picker.json", "states/city-production.json",
+    "settings/en.json", "settings/de.json",
+):
+    data = (CHECKER / "fixtures/stage2" / relative).read_bytes()
+    target = EVIDENCE / "inputs" / relative
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_bytes(data)
+    inputs[relative] = {"path": str(target.relative_to(EVIDENCE)), "sha256": sha(data)}
+
+design = {
+    "issue": 45,
+    "status": "approved_design_no_device_results_yet",
+    "checker_base": "63b65347b328363f2fdfd51a345a805a6e8c17f9",
+    "fork_base": BASE,
+    "fork_probe_branch": "probe/45-defect-types",
+    "never_merge_probe_into_clean_base": True,
+    "allowed_screens": ["tech-picker", "city-production"],
+    "exploration_only": True,
+    "labels_or_evaluation": False,
+    "provider": "deepseek-flash",
+    "prompt_version": "v1",
+    "schema_version": "v1",
+    "per_run_max_requests": 1,
+    "total_max_requests": 100,
+    "total_max_usd": "1.00",
+    "minimum_independent_calls_per_png": 2,
+    "primary_clean_controls": 4,
+    "primary_mutated_pngs": sum(len(v["languages"]) for v in variants),
+    "initial_requests": 2 * (4 + sum(len(v["languages"]) for v in variants)),
+    "clean_build": {
+        "version_code": "1271045",
+        "apk_sha256": "16b6e07eaa8f7ca35b71f361f0bdcceb7015987b60e796d15d2f3b53bb61af1a",
+    },
+    "save": {
+        "name": "issue-8-pair",
+        "sha256": "9d2a4cd5e1de2b2ae9102a2e6e6d15210e32ae5188c895f84e8a3a6ce19c3b4e",
+        "provisioning": "none; must already exist and match on the device",
+    },
+    "inputs": inputs,
+    "variants": variants,
+    "limitations": [
+        "No automatic defect metrics: these are exploratory screenshots, never labels.",
+        "Schema classes are truncated_text, overlap, untranslated and other. Report raw classification; do not add candidate names to the schema.",
+        "partial/unreadable/invalid/error remains not_checked; raw findings are diagnostic only.",
+        "No OCR experiment: baseline expectations are qualitative and unmeasured.",
+        "Each valid captured PNG is sent twice, including attempts that fail to reproduce the candidate.",
+        "No result-driven prompt, schema, provider-setting or mutation retuning.",
+    ],
+}
+write_json(EVIDENCE / "probe-design.json", design)
+write_json(EVIDENCE / "api-ledger.json", {
+    "issue": 45, "max_requests": 100, "max_usd": "1.00", "runs": [],
+    "requests_sent": 0, "known_peak_estimate_usd": "0", "unknown_cost_reserve_usd": "0",
+})
+print(f"Prepared {len(variants)} variants, {design['primary_mutated_pngs'] + 4} primary PNGs, {design['initial_requests']} initial requests; no device/provider operation.")

@@ -1,0 +1,23 @@
+{
+  "status": "passed",
+  "screenshots": 19,
+  "runs": 38,
+  "requests": 38,
+  "repetitions_per_png": 2,
+  "checked": 36,
+  "not_checked": 2,
+  "all_png_hashes_match_capture_and_run": true,
+  "all_runs_match_original_local_run_metadata": true,
+  "frozen_prompt_and_sent_hashes_match_every_run": true,
+  "frozen_detector_source_hashes_unchanged": true,
+  "usage_totals": {
+    "prompt_tokens": 69768,
+    "completion_tokens": 3147,
+    "total_tokens": 72915,
+    "prompt_cache_hit_tokens": 31616,
+    "prompt_cache_miss_tokens": 38152
+  },
+  "peak_usd": "0.015411696",
+  "unknown_reserve_usd": "0",
+  "final_restoration_verified": true
+}

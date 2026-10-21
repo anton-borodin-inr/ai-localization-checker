@@ -1,0 +1,2444 @@
+[
+  {
+    "run_id": "20261021T185946Z-c21c92",
+    "image": "city-production__de__2400x1080__probe-clean__1271045.png",
+    "status": "checked",
+    "reason": null,
+    "checked_findings": [
+      {
+        "defect_type": "truncated_text",
+        "text_seen": "Kann Land Verbesserungen auf Feldern bauen",
+        "region": "bottom-right",
+        "confidence": 0.6
+      }
+    ],
+    "raw_model_output_diagnostic_only_if_not_checked": {
+      "readability": "readable",
+      "unreadable_regions": [],
+      "readability_reason": null,
+      "findings": [
+        {
+          "defect_type": "truncated_text",
+          "text_seen": "Kann Land Verbesserungen auf Feldern bauen",
+          "region": "bottom-right",
+          "confidence": 0.6
+        }
+      ]
+    },
+    "readability": "readable",
+    "unreadable_regions": [],
+    "readability_reason": null,
+    "requests_sent": 1,
+    "usage": {
+      "prompt_tokens": 1836,
+      "completion_tokens": 63,
+      "total_tokens": 1899,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "prompt_cache_hit_tokens": 0,
+      "prompt_cache_miss_tokens": 1836
+    },
+    "estimated_cost": {
+      "peak_usd": "0.0006264",
+      "off_peak_usd": "0.00031320",
+      "tariff": {
+        "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "verified_date": "2026-10-20",
+        "model": "deepseek-flash",
+        "currency": "USD",
+        "peak_per_million_tokens": {
+          "input_cache_hit": "0.006",
+          "input_cache_miss": "0.30",
+          "output": "1.20"
+        },
+        "off_peak_multiplier": "0.5"
+      }
+    }
+  },
+  {
+    "run_id": "20261021T185948Z-4ba077",
+    "image": "city-production__de__2400x1080__probe-clean__1271045.png",
+    "status": "checked",
+    "reason": null,
+    "checked_findings": [],
+    "raw_model_output_diagnostic_only_if_not_checked": {
+      "readability": "readable",
+      "unreadable_regions": [],
+      "readability_reason": null,
+      "findings": []
+    },
+    "readability": "readable",
+    "unreadable_regions": [],
+    "readability_reason": null,
+    "requests_sent": 1,
+    "usage": {
+      "prompt_tokens": 1836,
+      "completion_tokens": 30,
+      "total_tokens": 1866,
+      "prompt_tokens_details": {
+        "cached_tokens": 1664
+      },
+      "prompt_cache_hit_tokens": 1664,
+      "prompt_cache_miss_tokens": 172
+    },
+    "estimated_cost": {
+      "peak_usd": "0.000097584",
+      "off_peak_usd": "0.0000487920",
+      "tariff": {
+        "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "verified_date": "2026-10-20",
+        "model": "deepseek-flash",
+        "currency": "USD",
+        "peak_per_million_tokens": {
+          "input_cache_hit": "0.006",
+          "input_cache_miss": "0.30",
+          "output": "1.20"
+        },
+        "off_peak_multiplier": "0.5"
+      }
+    }
+  },
+  {
+    "run_id": "20261021T185950Z-bbbee4",
+    "image": "tech-picker__de__2400x1080__probe-clean__1271045.png",
+    "status": "checked",
+    "reason": null,
+    "checked_findings": [],
+    "raw_model_output_diagnostic_only_if_not_checked": {
+      "readability": "readable",
+      "unreadable_regions": [],
+      "readability_reason": null,
+      "findings": []
+    },
+    "readability": "readable",
+    "unreadable_regions": [],
+    "readability_reason": null,
+    "requests_sent": 1,
+    "usage": {
+      "prompt_tokens": 1836,
+      "completion_tokens": 30,
+      "total_tokens": 1866,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "prompt_cache_hit_tokens": 0,
+      "prompt_cache_miss_tokens": 1836
+    },
+    "estimated_cost": {
+      "peak_usd": "0.0005868",
+      "off_peak_usd": "0.00029340",
+      "tariff": {
+        "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "verified_date": "2026-10-20",
+        "model": "deepseek-flash",
+        "currency": "USD",
+        "peak_per_million_tokens": {
+          "input_cache_hit": "0.006",
+          "input_cache_miss": "0.30",
+          "output": "1.20"
+        },
+        "off_peak_multiplier": "0.5"
+      }
+    }
+  },
+  {
+    "run_id": "20261021T185953Z-6b3140",
+    "image": "tech-picker__de__2400x1080__probe-clean__1271045.png",
+    "status": "checked",
+    "reason": null,
+    "checked_findings": [],
+    "raw_model_output_diagnostic_only_if_not_checked": {
+      "readability": "readable",
+      "unreadable_regions": [],
+      "readability_reason": null,
+      "findings": []
+    },
+    "readability": "readable",
+    "unreadable_regions": [],
+    "readability_reason": null,
+    "requests_sent": 1,
+    "usage": {
+      "prompt_tokens": 1836,
+      "completion_tokens": 30,
+      "total_tokens": 1866,
+      "prompt_tokens_details": {
+        "cached_tokens": 1664
+      },
+      "prompt_cache_hit_tokens": 1664,
+      "prompt_cache_miss_tokens": 172
+    },
+    "estimated_cost": {
+      "peak_usd": "0.000097584",
+      "off_peak_usd": "0.0000487920",
+      "tariff": {
+        "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "verified_date": "2026-10-20",
+        "model": "deepseek-flash",
+        "currency": "USD",
+        "peak_per_million_tokens": {
+          "input_cache_hit": "0.006",
+          "input_cache_miss": "0.30",
+          "output": "1.20"
+        },
+        "off_peak_multiplier": "0.5"
+      }
+    }
+  },
+  {
+    "run_id": "20261021T185955Z-e3cd99",
+    "image": "city-production__en__2400x1080__probe-clean__1271045.png",
+    "status": "checked",
+    "reason": null,
+    "checked_findings": [],
+    "raw_model_output_diagnostic_only_if_not_checked": {
+      "readability": "readable",
+      "unreadable_regions": [],
+      "readability_reason": null,
+      "findings": []
+    },
+    "readability": "readable",
+    "unreadable_regions": [],
+    "readability_reason": null,
+    "requests_sent": 1,
+    "usage": {
+      "prompt_tokens": 1836,
+      "completion_tokens": 30,
+      "total_tokens": 1866,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "prompt_cache_hit_tokens": 0,
+      "prompt_cache_miss_tokens": 1836
+    },
+    "estimated_cost": {
+      "peak_usd": "0.0005868",
+      "off_peak_usd": "0.00029340",
+      "tariff": {
+        "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "verified_date": "2026-10-20",
+        "model": "deepseek-flash",
+        "currency": "USD",
+        "peak_per_million_tokens": {
+          "input_cache_hit": "0.006",
+          "input_cache_miss": "0.30",
+          "output": "1.20"
+        },
+        "off_peak_multiplier": "0.5"
+      }
+    }
+  },
+  {
+    "run_id": "20261021T185957Z-cbf5a7",
+    "image": "city-production__en__2400x1080__probe-clean__1271045.png",
+    "status": "checked",
+    "reason": null,
+    "checked_findings": [],
+    "raw_model_output_diagnostic_only_if_not_checked": {
+      "readability": "readable",
+      "unreadable_regions": [],
+      "readability_reason": null,
+      "findings": []
+    },
+    "readability": "readable",
+    "unreadable_regions": [],
+    "readability_reason": null,
+    "requests_sent": 1,
+    "usage": {
+      "prompt_tokens": 1836,
+      "completion_tokens": 30,
+      "total_tokens": 1866,
+      "prompt_tokens_details": {
+        "cached_tokens": 1664
+      },
+      "prompt_cache_hit_tokens": 1664,
+      "prompt_cache_miss_tokens": 172
+    },
+    "estimated_cost": {
+      "peak_usd": "0.000097584",
+      "off_peak_usd": "0.0000487920",
+      "tariff": {
+        "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "verified_date": "2026-10-20",
+        "model": "deepseek-flash",
+        "currency": "USD",
+        "peak_per_million_tokens": {
+          "input_cache_hit": "0.006",
+          "input_cache_miss": "0.30",
+          "output": "1.20"
+        },
+        "off_peak_multiplier": "0.5"
+      }
+    }
+  },
+  {
+    "run_id": "20261021T190000Z-d845c8",
+    "image": "tech-picker__en__2400x1080__probe-clean__1271045.png",
+    "status": "checked",
+    "reason": null,
+    "checked_findings": [],
+    "raw_model_output_diagnostic_only_if_not_checked": {
+      "readability": "readable",
+      "unreadable_regions": [],
+      "readability_reason": null,
+      "findings": []
+    },
+    "readability": "readable",
+    "unreadable_regions": [],
+    "readability_reason": null,
+    "requests_sent": 1,
+    "usage": {
+      "prompt_tokens": 1836,
+      "completion_tokens": 30,
+      "total_tokens": 1866,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "prompt_cache_hit_tokens": 0,
+      "prompt_cache_miss_tokens": 1836
+    },
+    "estimated_cost": {
+      "peak_usd": "0.0005868",
+      "off_peak_usd": "0.00029340",
+      "tariff": {
+        "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "verified_date": "2026-10-20",
+        "model": "deepseek-flash",
+        "currency": "USD",
+        "peak_per_million_tokens": {
+          "input_cache_hit": "0.006",
+          "input_cache_miss": "0.30",
+          "output": "1.20"
+        },
+        "off_peak_multiplier": "0.5"
+      }
+    }
+  },
+  {
+    "run_id": "20261021T190002Z-c1ff72",
+    "image": "tech-picker__en__2400x1080__probe-clean__1271045.png",
+    "status": "checked",
+    "reason": null,
+    "checked_findings": [],
+    "raw_model_output_diagnostic_only_if_not_checked": {
+      "readability": "readable",
+      "unreadable_regions": [],
+      "readability_reason": null,
+      "findings": []
+    },
+    "readability": "readable",
+    "unreadable_regions": [],
+    "readability_reason": null,
+    "requests_sent": 1,
+    "usage": {
+      "prompt_tokens": 1836,
+      "completion_tokens": 27,
+      "total_tokens": 1863,
+      "prompt_tokens_details": {
+        "cached_tokens": 1664
+      },
+      "prompt_cache_hit_tokens": 1664,
+      "prompt_cache_miss_tokens": 172
+    },
+    "estimated_cost": {
+      "peak_usd": "0.000093984",
+      "off_peak_usd": "0.0000469920",
+      "tariff": {
+        "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "verified_date": "2026-10-20",
+        "model": "deepseek-flash",
+        "currency": "USD",
+        "peak_per_million_tokens": {
+          "input_cache_hit": "0.006",
+          "input_cache_miss": "0.30",
+          "output": "1.20"
+        },
+        "off_peak_multiplier": "0.5"
+      }
+    }
+  },
+  {
+    "run_id": "20261021T191152Z-72ce18",
+    "image": "tech-picker__de__2400x1080__probe-overflow-turns__1271451.png",
+    "status": "checked",
+    "reason": null,
+    "checked_findings": [
+      {
+        "defect_type": "overlap",
+        "text_seen": "Tierhaltung",
+        "region": "left",
+        "confidence": 0.9
+      },
+      {
+        "defect_type": "overlap",
+        "text_seen": "Bogenschießen",
+        "region": "left",
+        "confidence": 0.9
+      },
+      {
+        "defect_type": "overlap",
+        "text_seen": "Bergbau",
+        "region": "left",
+        "confidence": 0.9
+      },
+      {
+        "defect_type": "overlap",
+        "text_seen": "Fallens",
+        "region": "center",
+        "confidence": 0.9
+      },
+      {
+        "defect_type": "overlap",
+        "text_seen": "Das Rad",
+        "region": "center",
+        "confidence": 0.9
+      },
+      {
+        "defect_type": "overlap",
+        "text_seen": "Mauerbau",
+        "region": "center",
+        "confidence": 0.9
+      },
+      {
+        "defect_type": "overlap",
+        "text_seen": "Bronzebearbeitung",
+        "region": "center",
+        "confidence": 0.9
+      },
+      {
+        "defect_type": "overlap",
+        "text_seen": "Reiten",
+        "region": "right",
+        "confidence": 0.9
+      },
+      {
+        "defect_type": "overlap",
+        "text_seen": "Mathematik",
+        "region": "right",
+        "confidence": 0.9
+      },
+      {
+        "defect_type": "overlap",
+        "text_seen": "Baukunst",
+        "region": "right",
+        "confidence": 0.9
+      },
+      {
+        "defect_type": "overlap",
+        "text_seen": "Währung",
+        "region": "right",
+        "confidence": 0.9
+      },
+      {
+        "defect_type": "overlap",
+        "text_seen": "Ingenieurwesen",
+        "region": "right",
+        "confidence": 0.9
+      },
+      {
+        "defect_type": "overlap",
+        "text_seen": "Eisenbearbeitung",
+        "region": "right",
+        "confidence": 0.9
+      },
+      {
+        "defect_type": "overlap",
+        "text_seen": "Drama und",
+        "region": "top-right",
+        "confidence": 0.9
+      },
+      {
+        "defect_type": "overlap",
+        "text_seen": "Schrift",
+        "region": "top",
+        "confidence": 0.9
+      }
+    ],
+    "raw_model_output_diagnostic_only_if_not_checked": {
+      "readability": "readable",
+      "unreadable_regions": [],
+      "readability_reason": null,
+      "findings": [
+        {
+          "defect_type": "overlap",
+          "text_seen": "Tierhaltung",
+          "region": "left",
+          "confidence": 0.9
+        },
+        {
+          "defect_type": "overlap",
+          "text_seen": "Bogenschießen",
+          "region": "left",
+          "confidence": 0.9
+        },
+        {
+          "defect_type": "overlap",
+          "text_seen": "Bergbau",
+          "region": "left",
+          "confidence": 0.9
+        },
+        {
+          "defect_type": "overlap",
+          "text_seen": "Fallens",
+          "region": "center",
+          "confidence": 0.9
+        },
+        {
+          "defect_type": "overlap",
+          "text_seen": "Das Rad",
+          "region": "center",
+          "confidence": 0.9
+        },
+        {
+          "defect_type": "overlap",
+          "text_seen": "Mauerbau",
+          "region": "center",
+          "confidence": 0.9
+        },
+        {
+          "defect_type": "overlap",
+          "text_seen": "Bronzebearbeitung",
+          "region": "center",
+          "confidence": 0.9
+        },
+        {
+          "defect_type": "overlap",
+          "text_seen": "Reiten",
+          "region": "right",
+          "confidence": 0.9
+        },
+        {
+          "defect_type": "overlap",
+          "text_seen": "Mathematik",
+          "region": "right",
+          "confidence": 0.9
+        },
+        {
+          "defect_type": "overlap",
+          "text_seen": "Baukunst",
+          "region": "right",
+          "confidence": 0.9
+        },
+        {
+          "defect_type": "overlap",
+          "text_seen": "Währung",
+          "region": "right",
+          "confidence": 0.9
+        },
+        {
+          "defect_type": "overlap",
+          "text_seen": "Ingenieurwesen",
+          "region": "right",
+          "confidence": 0.9
+        },
+        {
+          "defect_type": "overlap",
+          "text_seen": "Eisenbearbeitung",
+          "region": "right",
+          "confidence": 0.9
+        },
+        {
+          "defect_type": "overlap",
+          "text_seen": "Drama und",
+          "region": "top-right",
+          "confidence": 0.9
+        },
+        {
+          "defect_type": "overlap",
+          "text_seen": "Schrift",
+          "region": "top",
+          "confidence": 0.9
+        }
+      ]
+    },
+    "readability": "readable",
+    "unreadable_regions": [],
+    "readability_reason": null,
+    "requests_sent": 1,
+    "usage": {
+      "prompt_tokens": 1836,
+      "completion_tokens": 406,
+      "total_tokens": 2242,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "prompt_cache_hit_tokens": 0,
+      "prompt_cache_miss_tokens": 1836
+    },
+    "estimated_cost": {
+      "peak_usd": "0.001038",
+      "off_peak_usd": "0.0005190",
+      "tariff": {
+        "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "verified_date": "2026-10-20",
+        "model": "deepseek-flash",
+        "currency": "USD",
+        "peak_per_million_tokens": {
+          "input_cache_hit": "0.006",
+          "input_cache_miss": "0.30",
+          "output": "1.20"
+        },
+        "off_peak_multiplier": "0.5"
+      }
+    }
+  },
+  {
+    "run_id": "20261021T191155Z-17b6ce",
+    "image": "tech-picker__de__2400x1080__probe-overflow-turns__1271451.png",
+    "status": "not_checked",
+    "reason": "unreadable_text: partial, [\"top-left\", \"top\", \"top-right\", \"left\", \"center\", \"right\", \"bottom-left\", \"bottom\", \"bottom-right\"], Several labels are overlapped by the round-count text, making parts of the technology names unreadable.",
+    "checked_findings": [],
+    "raw_model_output_diagnostic_only_if_not_checked": {
+      "readability": "partial",
+      "unreadable_regions": [
+        "top-left",
+        "top",
+        "top-right",
+        "left",
+        "center",
+        "right",
+        "bottom-left",
+        "bottom",
+        "bottom-right"
+      ],
+      "readability_reason": "Several labels are overlapped by the round-count text, making parts of the technology names unreadable.",
+      "findings": [
+        {
+          "defect_type": "overlap",
+          "text_seen": "Tierhaltung",
+          "region": "left",
+          "confidence": 0.9
+        },
+        {
+          "defect_type": "overlap",
+          "text_seen": "Bogenschießen",
+          "region": "left",
+          "confidence": 0.9
+        },
+        {
+          "defect_type": "overlap",
+          "text_seen": "Bergbau",
+          "region": "left",
+          "confidence": 0.9
+        },
+        {
+          "defect_type": "overlap",
+          "text_seen": "Fallens",
+          "region": "center",
+          "confidence": 0.9
+        },
+        {
+          "defect_type": "overlap",
+          "text_seen": "Das Rad",
+          "region": "center",
+          "confidence": 0.9
+        },
+        {
+          "defect_type": "overlap",
+          "text_seen": "Mauerbau",
+          "region": "center",
+          "confidence": 0.9
+        },
+        {
+          "defect_type": "overlap",
+          "text_seen": "Bronzebearbeitung",
+          "region": "center",
+          "confidence": 0.9
+        },
+        {
+          "defect_type": "overlap",
+          "text_seen": "Reiten",
+          "region": "right",
+          "confidence": 0.9
+        },
+        {
+          "defect_type": "overlap",
+          "text_seen": "Mathematik",
+          "region": "right",
+          "confidence": 0.9
+        },
+        {
+          "defect_type": "overlap",
+          "text_seen": "Baukunst",
+          "region": "right",
+          "confidence": 0.9
+        },
+        {
+          "defect_type": "overlap",
+          "text_seen": "Währung",
+          "region": "right",
+          "confidence": 0.9
+        },
+        {
+          "defect_type": "overlap",
+          "text_seen": "Ingenieurwesen",
+          "region": "right",
+          "confidence": 0.9
+        },
+        {
+          "defect_type": "overlap",
+          "text_seen": "Eisenbearbeitung",
+          "region": "right",
+          "confidence": 0.9
+        },
+        {
+          "defect_type": "overlap",
+          "text_seen": "Schrift",
+          "region": "top",
+          "confidence": 0.9
+        },
+        {
+          "defect_type": "overlap",
+          "text_seen": "Drama und",
+          "region": "top-right",
+          "confidence": 0.9
+        }
+      ]
+    },
+    "readability": "partial",
+    "unreadable_regions": [
+      "top-left",
+      "top",
+      "top-right",
+      "left",
+      "center",
+      "right",
+      "bottom-left",
+      "bottom",
+      "bottom-right"
+    ],
+    "readability_reason": "Several labels are overlapped by the round-count text, making parts of the technology names unreadable.",
+    "requests_sent": 1,
+    "usage": {
+      "prompt_tokens": 1836,
+      "completion_tokens": 447,
+      "total_tokens": 2283,
+      "prompt_tokens_details": {
+        "cached_tokens": 1664
+      },
+      "prompt_cache_hit_tokens": 1664,
+      "prompt_cache_miss_tokens": 172
+    },
+    "estimated_cost": {
+      "peak_usd": "0.000597984",
+      "off_peak_usd": "0.0002989920",
+      "tariff": {
+        "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "verified_date": "2026-10-20",
+        "model": "deepseek-flash",
+        "currency": "USD",
+        "peak_per_million_tokens": {
+          "input_cache_hit": "0.006",
+          "input_cache_miss": "0.30",
+          "output": "1.20"
+        },
+        "off_peak_multiplier": "0.5"
+      }
+    }
+  },
+  {
+    "run_id": "20261021T191158Z-913f4c",
+    "image": "tech-picker__en__2400x1080__probe-overflow-turns__1271451.png",
+    "status": "checked",
+    "reason": null,
+    "checked_findings": [
+      {
+        "defect_type": "overlap",
+        "text_seen": "Animal Husbandry",
+        "region": "left",
+        "confidence": 0.9
+      },
+      {
+        "defect_type": "overlap",
+        "text_seen": "Horseback Riding",
+        "region": "right",
+        "confidence": 0.9
+      },
+      {
+        "defect_type": "overlap",
+        "text_seen": "Bronze Working",
+        "region": "center",
+        "confidence": 0.9
+      },
+      {
+        "defect_type": "overlap",
+        "text_seen": "Drama and Poetry",
+        "region": "top-right",
+        "confidence": 0.9
+      }
+    ],
+    "raw_model_output_diagnostic_only_if_not_checked": {
+      "readability": "readable",
+      "unreadable_regions": [],
+      "readability_reason": null,
+      "findings": [
+        {
+          "defect_type": "overlap",
+          "text_seen": "Animal Husbandry",
+          "region": "left",
+          "confidence": 0.9
+        },
+        {
+          "defect_type": "overlap",
+          "text_seen": "Horseback Riding",
+          "region": "right",
+          "confidence": 0.9
+        },
+        {
+          "defect_type": "overlap",
+          "text_seen": "Bronze Working",
+          "region": "center",
+          "confidence": 0.9
+        },
+        {
+          "defect_type": "overlap",
+          "text_seen": "Drama and Poetry",
+          "region": "top-right",
+          "confidence": 0.9
+        }
+      ]
+    },
+    "readability": "readable",
+    "unreadable_regions": [],
+    "readability_reason": null,
+    "requests_sent": 1,
+    "usage": {
+      "prompt_tokens": 1836,
+      "completion_tokens": 165,
+      "total_tokens": 2001,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "prompt_cache_hit_tokens": 0,
+      "prompt_cache_miss_tokens": 1836
+    },
+    "estimated_cost": {
+      "peak_usd": "0.0007488",
+      "off_peak_usd": "0.00037440",
+      "tariff": {
+        "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "verified_date": "2026-10-20",
+        "model": "deepseek-flash",
+        "currency": "USD",
+        "peak_per_million_tokens": {
+          "input_cache_hit": "0.006",
+          "input_cache_miss": "0.30",
+          "output": "1.20"
+        },
+        "off_peak_multiplier": "0.5"
+      }
+    }
+  },
+  {
+    "run_id": "20261021T191204Z-2cd54a",
+    "image": "tech-picker__en__2400x1080__probe-overflow-turns__1271451.png",
+    "status": "not_checked",
+    "reason": "unreadable_text: partial, [\"top-right\"], Several tech tree labels have overlapping text making them partially unreadable.",
+    "checked_findings": [],
+    "raw_model_output_diagnostic_only_if_not_checked": {
+      "readability": "partial",
+      "unreadable_regions": [
+        "top-right"
+      ],
+      "readability_reason": "Several tech tree labels have overlapping text making them partially unreadable.",
+      "findings": [
+        {
+          "defect_type": "overlap",
+          "text_seen": "Animal Husbandry",
+          "region": "left",
+          "confidence": 0.9
+        },
+        {
+          "defect_type": "overlap",
+          "text_seen": "Horseback Riding",
+          "region": "right",
+          "confidence": 0.9
+        },
+        {
+          "defect_type": "overlap",
+          "text_seen": "Drama and Poetry",
+          "region": "top-right",
+          "confidence": 0.9
+        },
+        {
+          "defect_type": "overlap",
+          "text_seen": "Bronze Working",
+          "region": "center",
+          "confidence": 0.9
+        }
+      ]
+    },
+    "readability": "partial",
+    "unreadable_regions": [
+      "top-right"
+    ],
+    "readability_reason": "Several tech tree labels have overlapping text making them partially unreadable.",
+    "requests_sent": 1,
+    "usage": {
+      "prompt_tokens": 1836,
+      "completion_tokens": 145,
+      "total_tokens": 1981,
+      "prompt_tokens_details": {
+        "cached_tokens": 1664
+      },
+      "prompt_cache_hit_tokens": 1664,
+      "prompt_cache_miss_tokens": 172
+    },
+    "estimated_cost": {
+      "peak_usd": "0.000235584",
+      "off_peak_usd": "0.0001177920",
+      "tariff": {
+        "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "verified_date": "2026-10-20",
+        "model": "deepseek-flash",
+        "currency": "USD",
+        "peak_per_million_tokens": {
+          "input_cache_hit": "0.006",
+          "input_cache_miss": "0.30",
+          "output": "1.20"
+        },
+        "off_peak_multiplier": "0.5"
+      }
+    }
+  },
+  {
+    "run_id": "20261021T191708Z-c9f170",
+    "image": "city-production__de__2400x1080__probe-overflow-worker__1271452.png",
+    "status": "checked",
+    "reason": null,
+    "checked_findings": [
+      {
+        "defect_type": "truncated_text",
+        "text_seen": "Arbeiter für Geländeausbau, Straßenbau und die Verbesserung der städtischen Infrastruktur",
+        "region": "bottom",
+        "confidence": 0.9
+      }
+    ],
+    "raw_model_output_diagnostic_only_if_not_checked": {
+      "readability": "readable",
+      "unreadable_regions": [],
+      "readability_reason": null,
+      "findings": [
+        {
+          "defect_type": "truncated_text",
+          "text_seen": "Arbeiter für Geländeausbau, Straßenbau und die Verbesserung der städtischen Infrastruktur",
+          "region": "bottom",
+          "confidence": 0.9
+        }
+      ]
+    },
+    "readability": "readable",
+    "unreadable_regions": [],
+    "readability_reason": null,
+    "requests_sent": 1,
+    "usage": {
+      "prompt_tokens": 1836,
+      "completion_tokens": 77,
+      "total_tokens": 1913,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "prompt_cache_hit_tokens": 0,
+      "prompt_cache_miss_tokens": 1836
+    },
+    "estimated_cost": {
+      "peak_usd": "0.0006432",
+      "off_peak_usd": "0.00032160",
+      "tariff": {
+        "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "verified_date": "2026-10-20",
+        "model": "deepseek-flash",
+        "currency": "USD",
+        "peak_per_million_tokens": {
+          "input_cache_hit": "0.006",
+          "input_cache_miss": "0.30",
+          "output": "1.20"
+        },
+        "off_peak_multiplier": "0.5"
+      }
+    }
+  },
+  {
+    "run_id": "20261021T191710Z-11f2ef",
+    "image": "city-production__de__2400x1080__probe-overflow-worker__1271452.png",
+    "status": "checked",
+    "reason": null,
+    "checked_findings": [
+      {
+        "defect_type": "truncated_text",
+        "text_seen": "Arbeiter für Geländeausbau, Straßenbau und die Verbesserung der städtischen Infrastruktur",
+        "region": "bottom",
+        "confidence": 0.9
+      }
+    ],
+    "raw_model_output_diagnostic_only_if_not_checked": {
+      "readability": "readable",
+      "unreadable_regions": [],
+      "readability_reason": null,
+      "findings": [
+        {
+          "defect_type": "truncated_text",
+          "text_seen": "Arbeiter für Geländeausbau, Straßenbau und die Verbesserung der städtischen Infrastruktur",
+          "region": "bottom",
+          "confidence": 0.9
+        }
+      ]
+    },
+    "readability": "readable",
+    "unreadable_regions": [],
+    "readability_reason": null,
+    "requests_sent": 1,
+    "usage": {
+      "prompt_tokens": 1836,
+      "completion_tokens": 77,
+      "total_tokens": 1913,
+      "prompt_tokens_details": {
+        "cached_tokens": 1664
+      },
+      "prompt_cache_hit_tokens": 1664,
+      "prompt_cache_miss_tokens": 172
+    },
+    "estimated_cost": {
+      "peak_usd": "0.000153984",
+      "off_peak_usd": "0.0000769920",
+      "tariff": {
+        "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "verified_date": "2026-10-20",
+        "model": "deepseek-flash",
+        "currency": "USD",
+        "peak_per_million_tokens": {
+          "input_cache_hit": "0.006",
+          "input_cache_miss": "0.30",
+          "output": "1.20"
+        },
+        "off_peak_multiplier": "0.5"
+      }
+    }
+  },
+  {
+    "run_id": "20261021T191712Z-44af22",
+    "image": "city-production__en__2400x1080__probe-overflow-worker__1271452.png",
+    "status": "checked",
+    "reason": null,
+    "checked_findings": [],
+    "raw_model_output_diagnostic_only_if_not_checked": {
+      "readability": "readable",
+      "unreadable_regions": [],
+      "readability_reason": null,
+      "findings": []
+    },
+    "readability": "readable",
+    "unreadable_regions": [],
+    "readability_reason": null,
+    "requests_sent": 1,
+    "usage": {
+      "prompt_tokens": 1836,
+      "completion_tokens": 30,
+      "total_tokens": 1866,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "prompt_cache_hit_tokens": 0,
+      "prompt_cache_miss_tokens": 1836
+    },
+    "estimated_cost": {
+      "peak_usd": "0.0005868",
+      "off_peak_usd": "0.00029340",
+      "tariff": {
+        "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "verified_date": "2026-10-20",
+        "model": "deepseek-flash",
+        "currency": "USD",
+        "peak_per_million_tokens": {
+          "input_cache_hit": "0.006",
+          "input_cache_miss": "0.30",
+          "output": "1.20"
+        },
+        "off_peak_multiplier": "0.5"
+      }
+    }
+  },
+  {
+    "run_id": "20261021T191714Z-e425ce",
+    "image": "city-production__en__2400x1080__probe-overflow-worker__1271452.png",
+    "status": "checked",
+    "reason": null,
+    "checked_findings": [
+      {
+        "defect_type": "truncated_text",
+        "text_seen": "Worker for terrain development, road construction and improvements to city infrastructure",
+        "region": "bottom",
+        "confidence": 0.9
+      }
+    ],
+    "raw_model_output_diagnostic_only_if_not_checked": {
+      "readability": "readable",
+      "unreadable_regions": [],
+      "readability_reason": null,
+      "findings": [
+        {
+          "defect_type": "truncated_text",
+          "text_seen": "Worker for terrain development, road construction and improvements to city infrastructure",
+          "region": "bottom",
+          "confidence": 0.9
+        }
+      ]
+    },
+    "readability": "readable",
+    "unreadable_regions": [],
+    "readability_reason": null,
+    "requests_sent": 1,
+    "usage": {
+      "prompt_tokens": 1836,
+      "completion_tokens": 63,
+      "total_tokens": 1899,
+      "prompt_tokens_details": {
+        "cached_tokens": 1664
+      },
+      "prompt_cache_hit_tokens": 1664,
+      "prompt_cache_miss_tokens": 172
+    },
+    "estimated_cost": {
+      "peak_usd": "0.000137184",
+      "off_peak_usd": "0.0000685920",
+      "tariff": {
+        "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "verified_date": "2026-10-20",
+        "model": "deepseek-flash",
+        "currency": "USD",
+        "peak_per_million_tokens": {
+          "input_cache_hit": "0.006",
+          "input_cache_miss": "0.30",
+          "output": "1.20"
+        },
+        "off_peak_multiplier": "0.5"
+      }
+    }
+  },
+  {
+    "run_id": "20261021T191932Z-d9ffa2",
+    "image": "tech-picker__de__2400x1080__probe-wrong-language-fallback__1271453.png",
+    "status": "checked",
+    "reason": null,
+    "checked_findings": [],
+    "raw_model_output_diagnostic_only_if_not_checked": {
+      "readability": "readable",
+      "unreadable_regions": [],
+      "readability_reason": null,
+      "findings": []
+    },
+    "readability": "readable",
+    "unreadable_regions": [],
+    "readability_reason": null,
+    "requests_sent": 1,
+    "usage": {
+      "prompt_tokens": 1836,
+      "completion_tokens": 30,
+      "total_tokens": 1866,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "prompt_cache_hit_tokens": 0,
+      "prompt_cache_miss_tokens": 1836
+    },
+    "estimated_cost": {
+      "peak_usd": "0.0005868",
+      "off_peak_usd": "0.00029340",
+      "tariff": {
+        "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "verified_date": "2026-10-20",
+        "model": "deepseek-flash",
+        "currency": "USD",
+        "peak_per_million_tokens": {
+          "input_cache_hit": "0.006",
+          "input_cache_miss": "0.30",
+          "output": "1.20"
+        },
+        "off_peak_multiplier": "0.5"
+      }
+    }
+  },
+  {
+    "run_id": "20261021T191934Z-724fbb",
+    "image": "tech-picker__de__2400x1080__probe-wrong-language-fallback__1271453.png",
+    "status": "checked",
+    "reason": null,
+    "checked_findings": [],
+    "raw_model_output_diagnostic_only_if_not_checked": {
+      "readability": "readable",
+      "unreadable_regions": [],
+      "readability_reason": null,
+      "findings": []
+    },
+    "readability": "readable",
+    "unreadable_regions": [],
+    "readability_reason": null,
+    "requests_sent": 1,
+    "usage": {
+      "prompt_tokens": 1836,
+      "completion_tokens": 27,
+      "total_tokens": 1863,
+      "prompt_tokens_details": {
+        "cached_tokens": 1664
+      },
+      "prompt_cache_hit_tokens": 1664,
+      "prompt_cache_miss_tokens": 172
+    },
+    "estimated_cost": {
+      "peak_usd": "0.000093984",
+      "off_peak_usd": "0.0000469920",
+      "tariff": {
+        "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "verified_date": "2026-10-20",
+        "model": "deepseek-flash",
+        "currency": "USD",
+        "peak_per_million_tokens": {
+          "input_cache_hit": "0.006",
+          "input_cache_miss": "0.30",
+          "output": "1.20"
+        },
+        "off_peak_multiplier": "0.5"
+      }
+    }
+  },
+  {
+    "run_id": "20261021T192106Z-be2cea",
+    "image": "city-production__de__2400x1080__probe-wrong-language-foreign__1271454.png",
+    "status": "checked",
+    "reason": null,
+    "checked_findings": [
+      {
+        "defect_type": "untranslated",
+        "text_seen": "Рабочий",
+        "region": "left",
+        "confidence": 0.95
+      },
+      {
+        "defect_type": "untranslated",
+        "text_seen": "Siedler",
+        "region": "left",
+        "confidence": 0.95
+      },
+      {
+        "defect_type": "untranslated",
+        "text_seen": "Späher",
+        "region": "left",
+        "confidence": 0.95
+      },
+      {
+        "defect_type": "untranslated",
+        "text_seen": "Krieger",
+        "region": "left",
+        "confidence": 0.95
+      },
+      {
+        "defect_type": "untranslated",
+        "text_seen": "Рабочий",
+        "region": "bottom-right",
+        "confidence": 0.95
+      }
+    ],
+    "raw_model_output_diagnostic_only_if_not_checked": {
+      "readability": "readable",
+      "unreadable_regions": [],
+      "readability_reason": null,
+      "findings": [
+        {
+          "defect_type": "untranslated",
+          "text_seen": "Рабочий",
+          "region": "left",
+          "confidence": 0.95
+        },
+        {
+          "defect_type": "untranslated",
+          "text_seen": "Siedler",
+          "region": "left",
+          "confidence": 0.95
+        },
+        {
+          "defect_type": "untranslated",
+          "text_seen": "Späher",
+          "region": "left",
+          "confidence": 0.95
+        },
+        {
+          "defect_type": "untranslated",
+          "text_seen": "Krieger",
+          "region": "left",
+          "confidence": 0.95
+        },
+        {
+          "defect_type": "untranslated",
+          "text_seen": "Рабочий",
+          "region": "bottom-right",
+          "confidence": 0.95
+        }
+      ]
+    },
+    "readability": "readable",
+    "unreadable_regions": [],
+    "readability_reason": null,
+    "requests_sent": 1,
+    "usage": {
+      "prompt_tokens": 1836,
+      "completion_tokens": 160,
+      "total_tokens": 1996,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "prompt_cache_hit_tokens": 0,
+      "prompt_cache_miss_tokens": 1836
+    },
+    "estimated_cost": {
+      "peak_usd": "0.0007428",
+      "off_peak_usd": "0.00037140",
+      "tariff": {
+        "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "verified_date": "2026-10-20",
+        "model": "deepseek-flash",
+        "currency": "USD",
+        "peak_per_million_tokens": {
+          "input_cache_hit": "0.006",
+          "input_cache_miss": "0.30",
+          "output": "1.20"
+        },
+        "off_peak_multiplier": "0.5"
+      }
+    }
+  },
+  {
+    "run_id": "20261021T192108Z-23a082",
+    "image": "city-production__de__2400x1080__probe-wrong-language-foreign__1271454.png",
+    "status": "checked",
+    "reason": null,
+    "checked_findings": [
+      {
+        "defect_type": "untranslated",
+        "text_seen": "Рабочий",
+        "region": "left",
+        "confidence": 0.95
+      },
+      {
+        "defect_type": "untranslated",
+        "text_seen": "Siedler",
+        "region": "left",
+        "confidence": 0.95
+      },
+      {
+        "defect_type": "untranslated",
+        "text_seen": "Späher",
+        "region": "left",
+        "confidence": 0.95
+      },
+      {
+        "defect_type": "untranslated",
+        "text_seen": "Krieger",
+        "region": "left",
+        "confidence": 0.95
+      },
+      {
+        "defect_type": "untranslated",
+        "text_seen": "Рабочий",
+        "region": "bottom-right",
+        "confidence": 0.95
+      }
+    ],
+    "raw_model_output_diagnostic_only_if_not_checked": {
+      "readability": "readable",
+      "unreadable_regions": [],
+      "readability_reason": null,
+      "findings": [
+        {
+          "defect_type": "untranslated",
+          "text_seen": "Рабочий",
+          "region": "left",
+          "confidence": 0.95
+        },
+        {
+          "defect_type": "untranslated",
+          "text_seen": "Siedler",
+          "region": "left",
+          "confidence": 0.95
+        },
+        {
+          "defect_type": "untranslated",
+          "text_seen": "Späher",
+          "region": "left",
+          "confidence": 0.95
+        },
+        {
+          "defect_type": "untranslated",
+          "text_seen": "Krieger",
+          "region": "left",
+          "confidence": 0.95
+        },
+        {
+          "defect_type": "untranslated",
+          "text_seen": "Рабочий",
+          "region": "bottom-right",
+          "confidence": 0.95
+        }
+      ]
+    },
+    "readability": "readable",
+    "unreadable_regions": [],
+    "readability_reason": null,
+    "requests_sent": 1,
+    "usage": {
+      "prompt_tokens": 1836,
+      "completion_tokens": 160,
+      "total_tokens": 1996,
+      "prompt_tokens_details": {
+        "cached_tokens": 1664
+      },
+      "prompt_cache_hit_tokens": 1664,
+      "prompt_cache_miss_tokens": 172
+    },
+    "estimated_cost": {
+      "peak_usd": "0.000253584",
+      "off_peak_usd": "0.0001267920",
+      "tariff": {
+        "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "verified_date": "2026-10-20",
+        "model": "deepseek-flash",
+        "currency": "USD",
+        "peak_per_million_tokens": {
+          "input_cache_hit": "0.006",
+          "input_cache_miss": "0.30",
+          "output": "1.20"
+        },
+        "off_peak_multiplier": "0.5"
+      }
+    }
+  },
+  {
+    "run_id": "20261021T192110Z-eca08b",
+    "image": "city-production__en__2400x1080__probe-wrong-language-foreign__1271454.png",
+    "status": "checked",
+    "reason": null,
+    "checked_findings": [
+      {
+        "defect_type": "untranslated",
+        "text_seen": "Arbeiter",
+        "region": "left",
+        "confidence": 0.95
+      },
+      {
+        "defect_type": "untranslated",
+        "text_seen": "Settler",
+        "region": "left",
+        "confidence": 0.95
+      },
+      {
+        "defect_type": "untranslated",
+        "text_seen": "Scout",
+        "region": "left",
+        "confidence": 0.95
+      },
+      {
+        "defect_type": "untranslated",
+        "text_seen": "Warrior",
+        "region": "left",
+        "confidence": 0.95
+      },
+      {
+        "defect_type": "untranslated",
+        "text_seen": "Arbeiter",
+        "region": "bottom-right",
+        "confidence": 0.95
+      }
+    ],
+    "raw_model_output_diagnostic_only_if_not_checked": {
+      "readability": "readable",
+      "unreadable_regions": [],
+      "readability_reason": null,
+      "findings": [
+        {
+          "defect_type": "untranslated",
+          "text_seen": "Arbeiter",
+          "region": "left",
+          "confidence": 0.95
+        },
+        {
+          "defect_type": "untranslated",
+          "text_seen": "Settler",
+          "region": "left",
+          "confidence": 0.95
+        },
+        {
+          "defect_type": "untranslated",
+          "text_seen": "Scout",
+          "region": "left",
+          "confidence": 0.95
+        },
+        {
+          "defect_type": "untranslated",
+          "text_seen": "Warrior",
+          "region": "left",
+          "confidence": 0.95
+        },
+        {
+          "defect_type": "untranslated",
+          "text_seen": "Arbeiter",
+          "region": "bottom-right",
+          "confidence": 0.95
+        }
+      ]
+    },
+    "readability": "readable",
+    "unreadable_regions": [],
+    "readability_reason": null,
+    "requests_sent": 1,
+    "usage": {
+      "prompt_tokens": 1836,
+      "completion_tokens": 156,
+      "total_tokens": 1992,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "prompt_cache_hit_tokens": 0,
+      "prompt_cache_miss_tokens": 1836
+    },
+    "estimated_cost": {
+      "peak_usd": "0.000738",
+      "off_peak_usd": "0.0003690",
+      "tariff": {
+        "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "verified_date": "2026-10-20",
+        "model": "deepseek-flash",
+        "currency": "USD",
+        "peak_per_million_tokens": {
+          "input_cache_hit": "0.006",
+          "input_cache_miss": "0.30",
+          "output": "1.20"
+        },
+        "off_peak_multiplier": "0.5"
+      }
+    }
+  },
+  {
+    "run_id": "20261021T192113Z-9ed206",
+    "image": "city-production__en__2400x1080__probe-wrong-language-foreign__1271454.png",
+    "status": "checked",
+    "reason": null,
+    "checked_findings": [
+      {
+        "defect_type": "untranslated",
+        "text_seen": "Arbeiter",
+        "region": "left",
+        "confidence": 0.95
+      },
+      {
+        "defect_type": "untranslated",
+        "text_seen": "Settler",
+        "region": "left",
+        "confidence": 0.95
+      },
+      {
+        "defect_type": "untranslated",
+        "text_seen": "Scout",
+        "region": "left",
+        "confidence": 0.95
+      },
+      {
+        "defect_type": "untranslated",
+        "text_seen": "Warrior",
+        "region": "left",
+        "confidence": 0.95
+      },
+      {
+        "defect_type": "untranslated",
+        "text_seen": "Arbeiter",
+        "region": "bottom-right",
+        "confidence": 0.95
+      }
+    ],
+    "raw_model_output_diagnostic_only_if_not_checked": {
+      "readability": "readable",
+      "unreadable_regions": [],
+      "readability_reason": null,
+      "findings": [
+        {
+          "defect_type": "untranslated",
+          "text_seen": "Arbeiter",
+          "region": "left",
+          "confidence": 0.95
+        },
+        {
+          "defect_type": "untranslated",
+          "text_seen": "Settler",
+          "region": "left",
+          "confidence": 0.95
+        },
+        {
+          "defect_type": "untranslated",
+          "text_seen": "Scout",
+          "region": "left",
+          "confidence": 0.95
+        },
+        {
+          "defect_type": "untranslated",
+          "text_seen": "Warrior",
+          "region": "left",
+          "confidence": 0.95
+        },
+        {
+          "defect_type": "untranslated",
+          "text_seen": "Arbeiter",
+          "region": "bottom-right",
+          "confidence": 0.95
+        }
+      ]
+    },
+    "readability": "readable",
+    "unreadable_regions": [],
+    "readability_reason": null,
+    "requests_sent": 1,
+    "usage": {
+      "prompt_tokens": 1836,
+      "completion_tokens": 156,
+      "total_tokens": 1992,
+      "prompt_tokens_details": {
+        "cached_tokens": 1664
+      },
+      "prompt_cache_hit_tokens": 1664,
+      "prompt_cache_miss_tokens": 172
+    },
+    "estimated_cost": {
+      "peak_usd": "0.000248784",
+      "off_peak_usd": "0.0001243920",
+      "tariff": {
+        "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "verified_date": "2026-10-20",
+        "model": "deepseek-flash",
+        "currency": "USD",
+        "peak_per_million_tokens": {
+          "input_cache_hit": "0.006",
+          "input_cache_miss": "0.30",
+          "output": "1.20"
+        },
+        "off_peak_multiplier": "0.5"
+      }
+    }
+  },
+  {
+    "run_id": "20261021T192526Z-a462f9",
+    "image": "tech-picker__de__2400x1080__probe-placeholder-tech__1271455.png",
+    "status": "checked",
+    "reason": null,
+    "checked_findings": [],
+    "raw_model_output_diagnostic_only_if_not_checked": {
+      "readability": "readable",
+      "unreadable_regions": [],
+      "readability_reason": null,
+      "findings": []
+    },
+    "readability": "readable",
+    "unreadable_regions": [],
+    "readability_reason": null,
+    "requests_sent": 1,
+    "usage": {
+      "prompt_tokens": 1836,
+      "completion_tokens": 27,
+      "total_tokens": 1863,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "prompt_cache_hit_tokens": 0,
+      "prompt_cache_miss_tokens": 1836
+    },
+    "estimated_cost": {
+      "peak_usd": "0.0005832",
+      "off_peak_usd": "0.00029160",
+      "tariff": {
+        "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "verified_date": "2026-10-20",
+        "model": "deepseek-flash",
+        "currency": "USD",
+        "peak_per_million_tokens": {
+          "input_cache_hit": "0.006",
+          "input_cache_miss": "0.30",
+          "output": "1.20"
+        },
+        "off_peak_multiplier": "0.5"
+      }
+    }
+  },
+  {
+    "run_id": "20261021T192529Z-130955",
+    "image": "tech-picker__de__2400x1080__probe-placeholder-tech__1271455.png",
+    "status": "checked",
+    "reason": null,
+    "checked_findings": [],
+    "raw_model_output_diagnostic_only_if_not_checked": {
+      "readability": "readable",
+      "unreadable_regions": [],
+      "readability_reason": null,
+      "findings": []
+    },
+    "readability": "readable",
+    "unreadable_regions": [],
+    "readability_reason": null,
+    "requests_sent": 1,
+    "usage": {
+      "prompt_tokens": 1836,
+      "completion_tokens": 27,
+      "total_tokens": 1863,
+      "prompt_tokens_details": {
+        "cached_tokens": 1664
+      },
+      "prompt_cache_hit_tokens": 1664,
+      "prompt_cache_miss_tokens": 172
+    },
+    "estimated_cost": {
+      "peak_usd": "0.000093984",
+      "off_peak_usd": "0.0000469920",
+      "tariff": {
+        "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "verified_date": "2026-10-20",
+        "model": "deepseek-flash",
+        "currency": "USD",
+        "peak_per_million_tokens": {
+          "input_cache_hit": "0.006",
+          "input_cache_miss": "0.30",
+          "output": "1.20"
+        },
+        "off_peak_multiplier": "0.5"
+      }
+    }
+  },
+  {
+    "run_id": "20261021T192531Z-7bb89c",
+    "image": "tech-picker__en__2400x1080__probe-placeholder-tech__1271455.png",
+    "status": "checked",
+    "reason": null,
+    "checked_findings": [],
+    "raw_model_output_diagnostic_only_if_not_checked": {
+      "readability": "readable",
+      "unreadable_regions": [],
+      "readability_reason": null,
+      "findings": []
+    },
+    "readability": "readable",
+    "unreadable_regions": [],
+    "readability_reason": null,
+    "requests_sent": 1,
+    "usage": {
+      "prompt_tokens": 1836,
+      "completion_tokens": 30,
+      "total_tokens": 1866,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "prompt_cache_hit_tokens": 0,
+      "prompt_cache_miss_tokens": 1836
+    },
+    "estimated_cost": {
+      "peak_usd": "0.0005868",
+      "off_peak_usd": "0.00029340",
+      "tariff": {
+        "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "verified_date": "2026-10-20",
+        "model": "deepseek-flash",
+        "currency": "USD",
+        "peak_per_million_tokens": {
+          "input_cache_hit": "0.006",
+          "input_cache_miss": "0.30",
+          "output": "1.20"
+        },
+        "off_peak_multiplier": "0.5"
+      }
+    }
+  },
+  {
+    "run_id": "20261021T192533Z-1179ee",
+    "image": "tech-picker__en__2400x1080__probe-placeholder-tech__1271455.png",
+    "status": "checked",
+    "reason": null,
+    "checked_findings": [],
+    "raw_model_output_diagnostic_only_if_not_checked": {
+      "readability": "readable",
+      "unreadable_regions": [],
+      "readability_reason": null,
+      "findings": []
+    },
+    "readability": "readable",
+    "unreadable_regions": [],
+    "readability_reason": null,
+    "requests_sent": 1,
+    "usage": {
+      "prompt_tokens": 1836,
+      "completion_tokens": 30,
+      "total_tokens": 1866,
+      "prompt_tokens_details": {
+        "cached_tokens": 1664
+      },
+      "prompt_cache_hit_tokens": 1664,
+      "prompt_cache_miss_tokens": 172
+    },
+    "estimated_cost": {
+      "peak_usd": "0.000097584",
+      "off_peak_usd": "0.0000487920",
+      "tariff": {
+        "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "verified_date": "2026-10-20",
+        "model": "deepseek-flash",
+        "currency": "USD",
+        "peak_per_million_tokens": {
+          "input_cache_hit": "0.006",
+          "input_cache_miss": "0.30",
+          "output": "1.20"
+        },
+        "off_peak_multiplier": "0.5"
+      }
+    }
+  },
+  {
+    "run_id": "20261021T193656Z-4395d8",
+    "image": "city-production__de__2400x1080__probe-placeholder-city__1271456.png",
+    "status": "checked",
+    "reason": null,
+    "checked_findings": [
+      {
+        "defect_type": "untranslated",
+        "text_seen": "Arbeiter amount",
+        "region": "left",
+        "confidence": 0.95
+      },
+      {
+        "defect_type": "untranslated",
+        "text_seen": "Arbeiter [amount]",
+        "region": "bottom-right",
+        "confidence": 0.95
+      },
+      {
+        "defect_type": "untranslated",
+        "text_seen": "Kann Land Verbesserungen auf Feldern bauen",
+        "region": "bottom-right",
+        "confidence": 0.9
+      }
+    ],
+    "raw_model_output_diagnostic_only_if_not_checked": {
+      "readability": "readable",
+      "unreadable_regions": [],
+      "readability_reason": null,
+      "findings": [
+        {
+          "defect_type": "untranslated",
+          "text_seen": "Arbeiter amount",
+          "region": "left",
+          "confidence": 0.95
+        },
+        {
+          "defect_type": "untranslated",
+          "text_seen": "Arbeiter [amount]",
+          "region": "bottom-right",
+          "confidence": 0.95
+        },
+        {
+          "defect_type": "untranslated",
+          "text_seen": "Kann Land Verbesserungen auf Feldern bauen",
+          "region": "bottom-right",
+          "confidence": 0.9
+        }
+      ]
+    },
+    "readability": "readable",
+    "unreadable_regions": [],
+    "readability_reason": null,
+    "requests_sent": 1,
+    "usage": {
+      "prompt_tokens": 1836,
+      "completion_tokens": 119,
+      "total_tokens": 1955,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "prompt_cache_hit_tokens": 0,
+      "prompt_cache_miss_tokens": 1836
+    },
+    "estimated_cost": {
+      "peak_usd": "0.0006936",
+      "off_peak_usd": "0.00034680",
+      "tariff": {
+        "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "verified_date": "2026-10-20",
+        "model": "deepseek-flash",
+        "currency": "USD",
+        "peak_per_million_tokens": {
+          "input_cache_hit": "0.006",
+          "input_cache_miss": "0.30",
+          "output": "1.20"
+        },
+        "off_peak_multiplier": "0.5"
+      }
+    }
+  },
+  {
+    "run_id": "20261021T193658Z-52cb3a",
+    "image": "city-production__de__2400x1080__probe-placeholder-city__1271456.png",
+    "status": "checked",
+    "reason": null,
+    "checked_findings": [
+      {
+        "defect_type": "untranslated",
+        "text_seen": "Arbeiter amount",
+        "region": "left",
+        "confidence": 0.95
+      },
+      {
+        "defect_type": "untranslated",
+        "text_seen": "Arbeiter [amount]",
+        "region": "bottom-right",
+        "confidence": 0.95
+      },
+      {
+        "defect_type": "untranslated",
+        "text_seen": "Kann Land Verbesserungen auf Feldern bauen",
+        "region": "bottom-right",
+        "confidence": 0.9
+      }
+    ],
+    "raw_model_output_diagnostic_only_if_not_checked": {
+      "readability": "readable",
+      "unreadable_regions": [],
+      "readability_reason": null,
+      "findings": [
+        {
+          "defect_type": "untranslated",
+          "text_seen": "Arbeiter amount",
+          "region": "left",
+          "confidence": 0.95
+        },
+        {
+          "defect_type": "untranslated",
+          "text_seen": "Arbeiter [amount]",
+          "region": "bottom-right",
+          "confidence": 0.95
+        },
+        {
+          "defect_type": "untranslated",
+          "text_seen": "Kann Land Verbesserungen auf Feldern bauen",
+          "region": "bottom-right",
+          "confidence": 0.9
+        }
+      ]
+    },
+    "readability": "readable",
+    "unreadable_regions": [],
+    "readability_reason": null,
+    "requests_sent": 1,
+    "usage": {
+      "prompt_tokens": 1836,
+      "completion_tokens": 119,
+      "total_tokens": 1955,
+      "prompt_tokens_details": {
+        "cached_tokens": 1664
+      },
+      "prompt_cache_hit_tokens": 1664,
+      "prompt_cache_miss_tokens": 172
+    },
+    "estimated_cost": {
+      "peak_usd": "0.000204384",
+      "off_peak_usd": "0.0001021920",
+      "tariff": {
+        "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "verified_date": "2026-10-20",
+        "model": "deepseek-flash",
+        "currency": "USD",
+        "peak_per_million_tokens": {
+          "input_cache_hit": "0.006",
+          "input_cache_miss": "0.30",
+          "output": "1.20"
+        },
+        "off_peak_multiplier": "0.5"
+      }
+    }
+  },
+  {
+    "run_id": "20261021T193700Z-68873e",
+    "image": "city-production__en__2400x1080__probe-placeholder-city__1271456.png",
+    "status": "checked",
+    "reason": null,
+    "checked_findings": [],
+    "raw_model_output_diagnostic_only_if_not_checked": {
+      "readability": "readable",
+      "unreadable_regions": [],
+      "readability_reason": null,
+      "findings": []
+    },
+    "readability": "readable",
+    "unreadable_regions": [],
+    "readability_reason": null,
+    "requests_sent": 1,
+    "usage": {
+      "prompt_tokens": 1836,
+      "completion_tokens": 30,
+      "total_tokens": 1866,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "prompt_cache_hit_tokens": 0,
+      "prompt_cache_miss_tokens": 1836
+    },
+    "estimated_cost": {
+      "peak_usd": "0.0005868",
+      "off_peak_usd": "0.00029340",
+      "tariff": {
+        "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "verified_date": "2026-10-20",
+        "model": "deepseek-flash",
+        "currency": "USD",
+        "peak_per_million_tokens": {
+          "input_cache_hit": "0.006",
+          "input_cache_miss": "0.30",
+          "output": "1.20"
+        },
+        "off_peak_multiplier": "0.5"
+      }
+    }
+  },
+  {
+    "run_id": "20261021T193702Z-8dbcb6",
+    "image": "city-production__en__2400x1080__probe-placeholder-city__1271456.png",
+    "status": "checked",
+    "reason": null,
+    "checked_findings": [],
+    "raw_model_output_diagnostic_only_if_not_checked": {
+      "readability": "readable",
+      "unreadable_regions": [],
+      "readability_reason": null,
+      "findings": []
+    },
+    "readability": "readable",
+    "unreadable_regions": [],
+    "readability_reason": null,
+    "requests_sent": 1,
+    "usage": {
+      "prompt_tokens": 1836,
+      "completion_tokens": 30,
+      "total_tokens": 1866,
+      "prompt_tokens_details": {
+        "cached_tokens": 1664
+      },
+      "prompt_cache_hit_tokens": 1664,
+      "prompt_cache_miss_tokens": 172
+    },
+    "estimated_cost": {
+      "peak_usd": "0.000097584",
+      "off_peak_usd": "0.0000487920",
+      "tariff": {
+        "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "verified_date": "2026-10-20",
+        "model": "deepseek-flash",
+        "currency": "USD",
+        "peak_per_million_tokens": {
+          "input_cache_hit": "0.006",
+          "input_cache_miss": "0.30",
+          "output": "1.20"
+        },
+        "off_peak_multiplier": "0.5"
+      }
+    }
+  },
+  {
+    "run_id": "20261021T194040Z-e60d0f",
+    "image": "tech-picker__de__2400x1080__probe-truncation-mining__1271457.png",
+    "status": "checked",
+    "reason": null,
+    "checked_findings": [
+      {
+        "defect_type": "truncated_text",
+        "text_seen": "Bergbau und Erzgew...",
+        "region": "left",
+        "confidence": 0.9
+      }
+    ],
+    "raw_model_output_diagnostic_only_if_not_checked": {
+      "readability": "readable",
+      "unreadable_regions": [],
+      "readability_reason": null,
+      "findings": [
+        {
+          "defect_type": "truncated_text",
+          "text_seen": "Bergbau und Erzgew...",
+          "region": "left",
+          "confidence": 0.9
+        }
+      ]
+    },
+    "readability": "readable",
+    "unreadable_regions": [],
+    "readability_reason": null,
+    "requests_sent": 1,
+    "usage": {
+      "prompt_tokens": 1836,
+      "completion_tokens": 58,
+      "total_tokens": 1894,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "prompt_cache_hit_tokens": 0,
+      "prompt_cache_miss_tokens": 1836
+    },
+    "estimated_cost": {
+      "peak_usd": "0.0006204",
+      "off_peak_usd": "0.00031020",
+      "tariff": {
+        "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "verified_date": "2026-10-20",
+        "model": "deepseek-flash",
+        "currency": "USD",
+        "peak_per_million_tokens": {
+          "input_cache_hit": "0.006",
+          "input_cache_miss": "0.30",
+          "output": "1.20"
+        },
+        "off_peak_multiplier": "0.5"
+      }
+    }
+  },
+  {
+    "run_id": "20261021T194043Z-772638",
+    "image": "tech-picker__de__2400x1080__probe-truncation-mining__1271457.png",
+    "status": "checked",
+    "reason": null,
+    "checked_findings": [
+      {
+        "defect_type": "truncated_text",
+        "text_seen": "Bergbau und Erzgew...",
+        "region": "left",
+        "confidence": 0.9
+      }
+    ],
+    "raw_model_output_diagnostic_only_if_not_checked": {
+      "readability": "readable",
+      "unreadable_regions": [],
+      "readability_reason": null,
+      "findings": [
+        {
+          "defect_type": "truncated_text",
+          "text_seen": "Bergbau und Erzgew...",
+          "region": "left",
+          "confidence": 0.9
+        }
+      ]
+    },
+    "readability": "readable",
+    "unreadable_regions": [],
+    "readability_reason": null,
+    "requests_sent": 1,
+    "usage": {
+      "prompt_tokens": 1836,
+      "completion_tokens": 69,
+      "total_tokens": 1905,
+      "prompt_tokens_details": {
+        "cached_tokens": 1664
+      },
+      "prompt_cache_hit_tokens": 1664,
+      "prompt_cache_miss_tokens": 172
+    },
+    "estimated_cost": {
+      "peak_usd": "0.000144384",
+      "off_peak_usd": "0.0000721920",
+      "tariff": {
+        "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "verified_date": "2026-10-20",
+        "model": "deepseek-flash",
+        "currency": "USD",
+        "peak_per_million_tokens": {
+          "input_cache_hit": "0.006",
+          "input_cache_miss": "0.30",
+          "output": "1.20"
+        },
+        "off_peak_multiplier": "0.5"
+      }
+    }
+  },
+  {
+    "run_id": "20261021T194044Z-5800a2",
+    "image": "tech-picker__en__2400x1080__probe-truncation-mining__1271457.png",
+    "status": "checked",
+    "reason": null,
+    "checked_findings": [
+      {
+        "defect_type": "truncated_text",
+        "text_seen": "Mining and ore extra...",
+        "region": "left",
+        "confidence": 0.9
+      }
+    ],
+    "raw_model_output_diagnostic_only_if_not_checked": {
+      "readability": "readable",
+      "unreadable_regions": [],
+      "readability_reason": null,
+      "findings": [
+        {
+          "defect_type": "truncated_text",
+          "text_seen": "Mining and ore extra...",
+          "region": "left",
+          "confidence": 0.9
+        }
+      ]
+    },
+    "readability": "readable",
+    "unreadable_regions": [],
+    "readability_reason": null,
+    "requests_sent": 1,
+    "usage": {
+      "prompt_tokens": 1836,
+      "completion_tokens": 68,
+      "total_tokens": 1904,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "prompt_cache_hit_tokens": 0,
+      "prompt_cache_miss_tokens": 1836
+    },
+    "estimated_cost": {
+      "peak_usd": "0.0006324",
+      "off_peak_usd": "0.00031620",
+      "tariff": {
+        "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "verified_date": "2026-10-20",
+        "model": "deepseek-flash",
+        "currency": "USD",
+        "peak_per_million_tokens": {
+          "input_cache_hit": "0.006",
+          "input_cache_miss": "0.30",
+          "output": "1.20"
+        },
+        "off_peak_multiplier": "0.5"
+      }
+    }
+  },
+  {
+    "run_id": "20261021T194047Z-e39bbe",
+    "image": "tech-picker__en__2400x1080__probe-truncation-mining__1271457.png",
+    "status": "checked",
+    "reason": null,
+    "checked_findings": [
+      {
+        "defect_type": "truncated_text",
+        "text_seen": "Mining and ore extra...",
+        "region": "left",
+        "confidence": 0.9
+      }
+    ],
+    "raw_model_output_diagnostic_only_if_not_checked": {
+      "readability": "readable",
+      "unreadable_regions": [],
+      "readability_reason": null,
+      "findings": [
+        {
+          "defect_type": "truncated_text",
+          "text_seen": "Mining and ore extra...",
+          "region": "left",
+          "confidence": 0.9
+        }
+      ]
+    },
+    "readability": "readable",
+    "unreadable_regions": [],
+    "readability_reason": null,
+    "requests_sent": 1,
+    "usage": {
+      "prompt_tokens": 1836,
+      "completion_tokens": 57,
+      "total_tokens": 1893,
+      "prompt_tokens_details": {
+        "cached_tokens": 1664
+      },
+      "prompt_cache_hit_tokens": 1664,
+      "prompt_cache_miss_tokens": 172
+    },
+    "estimated_cost": {
+      "peak_usd": "0.000129984",
+      "off_peak_usd": "0.0000649920",
+      "tariff": {
+        "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "verified_date": "2026-10-20",
+        "model": "deepseek-flash",
+        "currency": "USD",
+        "peak_per_million_tokens": {
+          "input_cache_hit": "0.006",
+          "input_cache_miss": "0.30",
+          "output": "1.20"
+        },
+        "off_peak_multiplier": "0.5"
+      }
+    }
+  },
+  {
+    "run_id": "20261021T194220Z-cfcd3b",
+    "image": "tech-picker__de__2400x1080__probe-small-text-tech__1271458.png",
+    "status": "checked",
+    "reason": null,
+    "checked_findings": [],
+    "raw_model_output_diagnostic_only_if_not_checked": {
+      "readability": "readable",
+      "unreadable_regions": [],
+      "readability_reason": null,
+      "findings": []
+    },
+    "readability": "readable",
+    "unreadable_regions": [],
+    "readability_reason": null,
+    "requests_sent": 1,
+    "usage": {
+      "prompt_tokens": 1836,
+      "completion_tokens": 27,
+      "total_tokens": 1863,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "prompt_cache_hit_tokens": 0,
+      "prompt_cache_miss_tokens": 1836
+    },
+    "estimated_cost": {
+      "peak_usd": "0.0005832",
+      "off_peak_usd": "0.00029160",
+      "tariff": {
+        "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "verified_date": "2026-10-20",
+        "model": "deepseek-flash",
+        "currency": "USD",
+        "peak_per_million_tokens": {
+          "input_cache_hit": "0.006",
+          "input_cache_miss": "0.30",
+          "output": "1.20"
+        },
+        "off_peak_multiplier": "0.5"
+      }
+    }
+  },
+  {
+    "run_id": "20261021T194222Z-e17536",
+    "image": "tech-picker__de__2400x1080__probe-small-text-tech__1271458.png",
+    "status": "checked",
+    "reason": null,
+    "checked_findings": [],
+    "raw_model_output_diagnostic_only_if_not_checked": {
+      "readability": "readable",
+      "unreadable_regions": [],
+      "readability_reason": null,
+      "findings": []
+    },
+    "readability": "readable",
+    "unreadable_regions": [],
+    "readability_reason": null,
+    "requests_sent": 1,
+    "usage": {
+      "prompt_tokens": 1836,
+      "completion_tokens": 27,
+      "total_tokens": 1863,
+      "prompt_tokens_details": {
+        "cached_tokens": 1664
+      },
+      "prompt_cache_hit_tokens": 1664,
+      "prompt_cache_miss_tokens": 172
+    },
+    "estimated_cost": {
+      "peak_usd": "0.000093984",
+      "off_peak_usd": "0.0000469920",
+      "tariff": {
+        "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "verified_date": "2026-10-20",
+        "model": "deepseek-flash",
+        "currency": "USD",
+        "peak_per_million_tokens": {
+          "input_cache_hit": "0.006",
+          "input_cache_miss": "0.30",
+          "output": "1.20"
+        },
+        "off_peak_multiplier": "0.5"
+      }
+    }
+  },
+  {
+    "run_id": "20261021T194224Z-e02c81",
+    "image": "tech-picker__en__2400x1080__probe-small-text-tech__1271458.png",
+    "status": "checked",
+    "reason": null,
+    "checked_findings": [],
+    "raw_model_output_diagnostic_only_if_not_checked": {
+      "readability": "readable",
+      "unreadable_regions": [],
+      "readability_reason": null,
+      "findings": []
+    },
+    "readability": "readable",
+    "unreadable_regions": [],
+    "readability_reason": null,
+    "requests_sent": 1,
+    "usage": {
+      "prompt_tokens": 1836,
+      "completion_tokens": 30,
+      "total_tokens": 1866,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "prompt_cache_hit_tokens": 0,
+      "prompt_cache_miss_tokens": 1836
+    },
+    "estimated_cost": {
+      "peak_usd": "0.0005868",
+      "off_peak_usd": "0.00029340",
+      "tariff": {
+        "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "verified_date": "2026-10-20",
+        "model": "deepseek-flash",
+        "currency": "USD",
+        "peak_per_million_tokens": {
+          "input_cache_hit": "0.006",
+          "input_cache_miss": "0.30",
+          "output": "1.20"
+        },
+        "off_peak_multiplier": "0.5"
+      }
+    }
+  },
+  {
+    "run_id": "20261021T194226Z-1f0332",
+    "image": "tech-picker__en__2400x1080__probe-small-text-tech__1271458.png",
+    "status": "checked",
+    "reason": null,
+    "checked_findings": [],
+    "raw_model_output_diagnostic_only_if_not_checked": {
+      "readability": "readable",
+      "unreadable_regions": [],
+      "readability_reason": null,
+      "findings": []
+    },
+    "readability": "readable",
+    "unreadable_regions": [],
+    "readability_reason": null,
+    "requests_sent": 1,
+    "usage": {
+      "prompt_tokens": 1836,
+      "completion_tokens": 30,
+      "total_tokens": 1866,
+      "prompt_tokens_details": {
+        "cached_tokens": 1664
+      },
+      "prompt_cache_hit_tokens": 1664,
+      "prompt_cache_miss_tokens": 172
+    },
+    "estimated_cost": {
+      "peak_usd": "0.000097584",
+      "off_peak_usd": "0.0000487920",
+      "tariff": {
+        "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "verified_date": "2026-10-20",
+        "model": "deepseek-flash",
+        "currency": "USD",
+        "peak_per_million_tokens": {
+          "input_cache_hit": "0.006",
+          "input_cache_miss": "0.30",
+          "output": "1.20"
+        },
+        "off_peak_multiplier": "0.5"
+      }
+    }
+  }
+]

@@ -1,0 +1,122 @@
+[
+  {
+    "variant": "overflow-turns",
+    "version_code": "1271451",
+    "fork_commit": "d27db4029662b356edbc781bbdac90d86a31fc7c",
+    "apk_sha256": "3c2fb477958f8ccc96135d2f12966978b105e57e60eef2b6e2da291affd4c19c",
+    "same_certificate_as_original": true,
+    "packaged_translation_sha256": {
+      "German": "c86ebbb845d4b46b8fb17bc67fcb77d46c51e3817bf49c9f95e54a3590f64f42",
+      "English": "0f7587a9feb839e23cec3a8fd8fe047577b73c3b04140609924576cb3f813d06"
+    },
+    "only_translation_source_changes": true,
+    "arm64_and_dex_present": true,
+    "install_plan_sha256": "ababc99e6b4d4762bb05ed2fbb5393ae6e51eefa6dcd8b03e46eb6780f205c77",
+    "capture_plan_sha256": "49774c79655bdb329c9cbe4f46b3c366f11fae1aded8ace8aa0409f83db8998d"
+  },
+  {
+    "variant": "overflow-worker",
+    "version_code": "1271452",
+    "fork_commit": "502b5ef34f725312a00c994dabdb9ad80b287389",
+    "apk_sha256": "72f6577cd598627f781c3baea7717806436529f249d94d346531d766098af8bb",
+    "same_certificate_as_original": true,
+    "packaged_translation_sha256": {
+      "German": "35831d1713b543a0b67bbac8176ac6ff483ebce95ea666affb95902a9113eb98",
+      "English": "1ac337831a03af02029f959c3b98d399deb82504033e667277078b77e446c0b5"
+    },
+    "only_translation_source_changes": true,
+    "arm64_and_dex_present": true,
+    "install_plan_sha256": "ad75ddb3508bdb5a891b6ce977da5d61316e05e687c7bd736dcc09ec187e861c",
+    "capture_plan_sha256": "3675fc4d89a558ad11ff59245422f4926dceecb45d2d006d9cefc6821d12515b"
+  },
+  {
+    "variant": "wrong-language-fallback",
+    "version_code": "1271453",
+    "fork_commit": "5e28526199f0d5f30c1d4316aeaca2b27a19f614",
+    "apk_sha256": "aeb2fd93648ed7d8044b9762153701a5c09cc0e1de188a2090c4034e93410268",
+    "same_certificate_as_original": true,
+    "packaged_translation_sha256": {
+      "German": "6d9a814329f76ab2a8bb11200b41a7eca2f57b0ec95fbe8b747b8a255bdaec9e",
+      "English": "f4bae85883e7430cf01ba257bf924db6aaa6df564c4896ac2d3783ee41216b02"
+    },
+    "only_translation_source_changes": true,
+    "arm64_and_dex_present": true,
+    "install_plan_sha256": "e2cf296af403f6926c0e8c246c4440fbe56de55e4b90bc04e9704a9fca5e1030",
+    "capture_plan_sha256": "c0167200666a7b8efccf26aff56413a3da0637f1e243d2b8e6bdee7c7a3a84cf"
+  },
+  {
+    "variant": "wrong-language-foreign",
+    "version_code": "1271454",
+    "fork_commit": "ca63a442dbcff4ff468ac6efbb376822f623fbd6",
+    "apk_sha256": "fefc72e69244dbed02eb1a43e790f079d58b0b0cd8c901d8b6438dfd80a4f588",
+    "same_certificate_as_original": true,
+    "packaged_translation_sha256": {
+      "German": "dc3174e2646017d2f7baf59f10dda1c4ca15cabe5f7215ede4b4d89bf252e6eb",
+      "English": "2b65ad8b3302b4d66b6a9d187ff45ff8b60efc917d2d4b156e34f4a35ec4abae"
+    },
+    "only_translation_source_changes": true,
+    "arm64_and_dex_present": true,
+    "install_plan_sha256": "1116b8dd0bd5013a88b097d2f607ce0f7db8b1b366107ebda7dfea912de28e35",
+    "capture_plan_sha256": "12a91b92816544765b3963bb36dfbd424be3d1cdb53d17af11bfc1bf5a761177"
+  },
+  {
+    "variant": "placeholder-tech",
+    "version_code": "1271455",
+    "fork_commit": "715a12073fab2fdbbae4dc6ff80adcf8d516033b",
+    "apk_sha256": "20825ff10384326f07a59a41f7ab46deb7368a21d5caf153c6c9d8207f2f8a23",
+    "same_certificate_as_original": true,
+    "packaged_translation_sha256": {
+      "German": "c9831a4a36bd3622a15836c217f3b55e14e9a98ec35b863c1f5ee9c53d4595f2",
+      "English": "9abc8d27f2302b95cca91965159a3ad41860f2ee2a552fe8aa7aa9b3fc4949aa"
+    },
+    "only_translation_source_changes": true,
+    "arm64_and_dex_present": true,
+    "install_plan_sha256": "aa04378eef5d075516b85daefa7dc47bc23352637e367d45efb57c113bb1439b",
+    "capture_plan_sha256": "8eafe463f0d1036a2c1f20c4a01997c609340a1c21872a92641a4ed457e19cd7"
+  },
+  {
+    "variant": "placeholder-city",
+    "version_code": "1271456",
+    "fork_commit": "e6de10b8fd01f9b647ab69b082a133e0b292c4d4",
+    "apk_sha256": "72a40a263c02d4e7c0553080d9f861f24eb7d83373e1403f9166e0adcbe14960",
+    "same_certificate_as_original": true,
+    "packaged_translation_sha256": {
+      "German": "78b72bc0a55cc7938d545aef92d2be40eb80a4a28ac146e59be3d8c8ed4de9a0",
+      "English": "efa4237c13348df29f93a800f7ddfb4d5d05765d03d8f26d1dafd66111f14b8a"
+    },
+    "only_translation_source_changes": true,
+    "arm64_and_dex_present": true,
+    "install_plan_sha256": "57c136d529b4053d30c8b3b1b3cbbfb6a4eca9a1264d5f0aee432d8d165ce93f",
+    "capture_plan_sha256": "7e5129a9b6a99f685115c91d6ea44d5c7ae134bbf6c4fdfb99e4987c6796fb1c"
+  },
+  {
+    "variant": "truncation-mining",
+    "version_code": "1271457",
+    "fork_commit": "925b90965fada4b2b2502865ec94e87d88dc9f5a",
+    "apk_sha256": "58d8a3a8ef7ad3d9811c29f96a74ba69c43ec146c0ed3fea76497d98d2632a71",
+    "same_certificate_as_original": true,
+    "packaged_translation_sha256": {
+      "German": "947b0875cdef628c3e57e773976c3e16f3041924dc3b8880a8eebed023e2caf7",
+      "English": "e44b7c3cbef225752d9e3f1a50937c25915580ab5ee254bb7ca9473fed01dec8"
+    },
+    "only_translation_source_changes": true,
+    "arm64_and_dex_present": true,
+    "install_plan_sha256": "952ef6ed3ba0aa79f73345786b9e365b038705426f5c457725fe38f7f47e8052",
+    "capture_plan_sha256": "bedde740da08405e1438a6e23f5d687344e00f7a38ba754297bb92084d5ba278"
+  },
+  {
+    "variant": "small-text-tech",
+    "version_code": "1271458",
+    "fork_commit": "10d8c5423921fb875fb7c02fd497bf50c5d368de",
+    "apk_sha256": "8b246d762ff1f038b1053495cf5897adae79c61a9acd44a5c106fbe3d8ebac2a",
+    "same_certificate_as_original": true,
+    "packaged_translation_sha256": {
+      "German": "fa90b66b72c48b869ed52d362c5c59b777b9b4eab5b1cca11bcaadae7eedad53",
+      "English": "eaba5b888483ba612a0b0f80cb864c12b0ec8f913c5314f139850a27343394b5"
+    },
+    "only_translation_source_changes": true,
+    "arm64_and_dex_present": true,
+    "install_plan_sha256": "a387fdd03a136e63c54ac8845014fec18f9e0758b52ff66752ca81d0ac27bad0",
+    "capture_plan_sha256": "92d3a8df3258fe5489b5e455aac6b15516d429e21e914028671db7fe094da8ec"
+  }
+]

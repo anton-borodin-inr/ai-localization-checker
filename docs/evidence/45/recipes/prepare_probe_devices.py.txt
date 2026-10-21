@@ -1,0 +1,112 @@
+"""Verify built APKs and prepare exact device gates; no device command."""
+
+import json
+from pathlib import Path
+import re
+import shutil
+import subprocess
+import sys
+import zipfile
+
+ROOT = Path(__file__).resolve().parent
+CHECKER = ROOT / "checker"
+FORK = ROOT / "unciv-probe"
+EVIDENCE = CHECKER / "docs/evidence/45"
+sys.path.insert(0, str(CHECKER / "scripts"))
+sys.path.insert(0, str(CHECKER / "src"))
+from issue45_capture import digest, make_plan, write_json
+
+
+def certificate(text):
+    return re.findall(r"^Signer #1 certificate SHA-256 digest: ([a-f0-9]{64})$", text, re.MULTILINE)
+
+
+design = json.loads((EVIDENCE / "probe-design.json").read_text())
+builds = json.loads((EVIDENCE / "builds.json").read_text())
+original_signature = certificate((EVIDENCE / "original-apk-signature.txt").read_text())
+assert len(original_signature) == 1
+checked = []
+previous = design["clean_build"]
+for variant in design["variants"]:
+    build = next(b for b in builds if b["variant"] == variant["id"])
+    apk = Path(build["apk_local_path"])
+    assert build["exit_code"] == 0 and digest(apk.read_bytes()) == build["apk_sha256"]
+    assert certificate(build["signature"]) == original_signature
+    subprocess.run(["git", "merge-base", "--is-ancestor", design["fork_base"], build["fork_commit"]], cwd=FORK, check=True)
+    changed = subprocess.check_output(["git", "diff", "--name-only", design["fork_base"], build["fork_commit"]], cwd=FORK).decode().splitlines()
+    assert set(changed) == {m["file"] for m in variant["mutations"]}
+    packaged = {}
+    with zipfile.ZipFile(apk) as package:
+        for language in ("German", "English"):
+            path = f"android/assets/jsons/translations/{language}.properties"
+            source = subprocess.check_output(["git", "show", f"{build['fork_commit']}:{path}"], cwd=FORK)
+            contents = package.read(path.removeprefix("android/"))
+            assert contents == source, (variant["id"], language)
+            packaged[language] = digest(contents)
+        assert "lib/arm64-v8a/libgdx.so" in package.namelist()
+        assert "classes.dex" in package.namelist()
+    install_plan = {
+        "issue": 45,
+        "variant": variant["id"],
+        "from_version_code": previous["version_code"],
+        "from_apk_sha256": previous["apk_sha256"],
+        "to_version_code": build["version_code"],
+        "to_apk_sha256": build["apk_sha256"],
+        "target_apk": str(apk),
+        "certificate_sha256": original_signature[0],
+        "command": ["adb", "-s", "emulator-5554", "install", "-r", str(apk)],
+        "no_uninstall_or_clear_data": True,
+        "preconditions": "installed from-build/hash, settings byte equality and complete save inventory must match the pre-task backup",
+        "after_install": "independently verify installed to-build/hash, original settings bytes/metadata and all saves; no app launch",
+        "app_data_overwrites": 0,
+        "capture_is_a_separate_named_block": True,
+    }
+    install_path = EVIDENCE / "device-plans" / f"install-{variant['id']}.json"
+    write_json(install_path, install_plan)
+    capture_plan = make_plan(variant["id"])
+    capture_path = EVIDENCE / "device-plans" / f"{variant['id']}.json"
+    write_json(capture_path, capture_plan)
+    checked.append({
+        "variant": variant["id"], "version_code": build["version_code"],
+        "fork_commit": build["fork_commit"], "apk_sha256": build["apk_sha256"],
+        "same_certificate_as_original": True, "packaged_translation_sha256": packaged,
+        "only_translation_source_changes": True, "arm64_and_dex_present": True,
+        "install_plan_sha256": digest(install_path.read_bytes()),
+        "capture_plan_sha256": digest(capture_path.read_bytes()),
+    })
+    public = EVIDENCE / "build-evidence" / variant["id"]
+    public.mkdir(parents=True, exist_ok=True)
+    for name in ("build.json", "badging.txt", "signature.txt"):
+        shutil.copyfile(apk.parent / name, public / name)
+    for log in apk.parent.glob("build*.txt"):
+        shutil.copyfile(log, public / log.name)
+    previous = build
+write_json(EVIDENCE / "apk-verification.json", checked)
+output = ROOT.parent / "outputs"
+for relative in ("apk-verification.json", "probe-design.json", "builds.json", "api-ledger.json", "clean-runs.json", "report.md"):
+    shutil.copyfile(EVIDENCE / relative, output / ("issue-45-" + relative))
+first = checked[0]
+for kind in ("install-overflow-turns", "overflow-turns"):
+    shutil.copyfile(EVIDENCE / f"device-plans/{kind}.json", output / f"issue-45-{kind}-device-plan.json")
+text = """# Issue 45: first probe device gate
+
+Prepared and verified, not executed.
+
+The first APK changes only the translated hourglass suffix in the technology-turn counter:
+
+- German: added `⏳ = Runden verbleibend`.
+- English: added `⏳ = turns remaining`.
+
+No hook, game logic or tracked build-file edit. Android versionCode is supplied by the recorded external build override. The original and probe APK signing certificate is identical, so this is an in-place debug update; no uninstall or data clearing.
+
+## Separately confirm the exact installation
+
+"""
+text += f"1271045 → {first['version_code']}; target APK SHA-256 `{first['apk_sha256']}`.\n\n"
+text += f"Fork commit `{first['fork_commit']}`. Install-plan SHA-256 `{first['install_plan_sha256']}`.\n\n"
+text += "## Separately confirm the capture block\n\n"
+text += f"Capture-plan SHA-256 `{first['capture_plan_sha256']}`.\n\n"
+text += "After the approved install: apply the exact frozen DE settings, capture tech-picker after matching READY, apply exact EN settings and capture tech-picker, then restore original settings byte for byte. Three settings writes; no save writes. Verify every save against the retained pre-task backup before and after.\n\n"
+text += "This permission covers only the first named install and its named capture block. Other APK replacements and final restoration to the backed-up 1271045 remain separate device gates.\n"
+(output / "issue-45-first-probe-approval.md").write_text(text)
+print(json.dumps({"verified_apks": len(checked), "first_probe": first}, indent=2))

@@ -1,0 +1,19 @@
+{
+  "verified_date": "2026-10-21",
+  "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+  "model": "deepseek-flash",
+  "advertised_model_version": "DeepSeek-V4.1-Flash-1017",
+  "published_context_limit": "1M",
+  "peak_usd_per_million_tokens": {
+    "input_cache_hit": "0.006",
+    "input_cache_miss": "0.30",
+    "output": "1.20"
+  },
+  "provider_max_output_tokens_unchanged": 4096,
+  "conservative_input_token_bound": 1048576,
+  "pre_request_reservation_usd": "0.319488",
+  "max_task_requests": 100,
+  "max_task_usd": "1.00",
+  "failure_policy": "Keep the full reservation if usage is unavailable. Count the attempted request. Refuse another call if its full reservation cannot fit. An interrupted/unreconciled CLI run stops all later calls until reconciled.",
+  "estimate_limit": "Provider peak/off-peak estimates are tariff estimates, not billing receipts. The guard uses peak prices irrespective of clock or caching."
+}

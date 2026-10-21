@@ -1,0 +1,2 @@
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-45-https-github-com/work/checker/data/runs/20261021T191155Z-17b6ce
+not_checked: unreadable_text: partial, ["top-left", "top", "top-right", "left", "center", "right", "bottom-left", "bottom", "bottom-right"], Several labels are overlapped by the round-count text, making parts of the technology names unreadable.

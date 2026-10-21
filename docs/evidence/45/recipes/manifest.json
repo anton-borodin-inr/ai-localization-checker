@@ -1,0 +1,37 @@
+[
+  {
+    "original_task_path": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-45-https-github-com/work/prepare_design.py",
+    "snapshot": "prepare_design.py.txt",
+    "sha256": "d4aac31968873e6ea4d55211aa17425c161cfec696012add2f768f24533ac965"
+  },
+  {
+    "original_task_path": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-45-https-github-com/work/build_probes.py",
+    "snapshot": "build_probes.py.txt",
+    "sha256": "1b088395be3dfceb542f347874fcb3c4055ed52526e72351fb793023bd579dbe"
+  },
+  {
+    "original_task_path": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-45-https-github-com/work/prepare_probe_devices.py",
+    "snapshot": "prepare_probe_devices.py.txt",
+    "sha256": "4af84579a646661ac2ccd88c3c393defc992ed4f34e10959a8eef8ddfb63ac60"
+  },
+  {
+    "original_task_path": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-45-https-github-com/work/install_probe.py",
+    "snapshot": "install_probe.py.txt",
+    "sha256": "585535578693c6ddb4da36e9c1e102a3963cfac70879878f80dab1ae7e1cf77c"
+  },
+  {
+    "original_task_path": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-45-https-github-com/work/export_evidence.py",
+    "snapshot": "export_evidence.py.txt",
+    "sha256": "2a98a3baa3cb4c5a8bc958b7605e248f658e0d8c228f1c3493bc35a5694f5f91"
+  },
+  {
+    "original_task_path": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-45-https-github-com/work/final_verify.py",
+    "snapshot": "final_verify.py.txt",
+    "sha256": "08a37fce47e808598751a2da8adfdf27bacdc5ccbc093a39cd465b6725c2ddff"
+  },
+  {
+    "original_task_path": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-45-https-github-com/work/finalize_report.py",
+    "snapshot": "finalize_report.py.txt",
+    "sha256": "448cd9c6d912f713991329c9e0e82c8720b08ae4ffd3b6f790437141f8f3bd68"
+  }
+]

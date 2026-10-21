@@ -1,0 +1,89 @@
+{
+  "version": 1,
+  "screenSize": "Small",
+  "displayOrientation": "Landscape",
+  "fontFamilyData": {},
+  "fontSizeMultiplier": 1.0,
+  "showTutorials": false,
+  "tutorialsShown": [
+    "Happiness",
+    "Introduction",
+    "CultureAndPolicies",
+    "OtherCivEncountered",
+    "SlowStart"
+  ],
+  "tutorialTasksCompleted": [
+    "See your stats breakdown",
+    "Found city",
+    "Enter city screen",
+    "Open the options table",
+    "Meet another civilization",
+    "Pass a turn",
+    "Create a trade route"
+  ],
+  "isFreshlyCreated": false,
+  "androidCutout": false,
+  "androidHideSystemUi": true,
+  "showMinimap": true,
+  "minimapSize": 6,
+  "notificationScroll": "Visible",
+  "checkForDueUnits": true,
+  "checkForDueUnitsCycles": false,
+  "smallUnitButton": true,
+  "autoUnitCycle": true,
+  "alternateUnitCycleOrder": false,
+  "singleTapMove": false,
+  "longTapMove": true,
+  "orderTradeOffersByAmount": true,
+  "confirmNextTurn": false,
+  "notificationsLogMaxTurns": 5,
+  "showUnitMovements": false,
+  "showSettlersSuggestedCityLocations": true,
+  "showTileYields": false,
+  "showWorkedTiles": false,
+  "showResourcesAndImprovements": true,
+  "showPixelImprovements": true,
+  "unitIconOpacity": 1.0,
+  "unitMovementButtonAnimation": false,
+  "unitActionsTableAnimation": false,
+  "continuousRendering": false,
+  "maxAutosavesStored": 10,
+  "turnsBetweenAutosaves": 1,
+  "showAutosaves": false,
+  "visualMods": [],
+  "consoleCommandHistory": [],
+  "language": "German",
+  "lastGameSetup": {
+    "gameParameters": {
+      "difficulty": "Chieftain",
+      "espionageEnabled": true,
+      "players": [
+        {
+          "playerType": "Human"
+        },
+        {},
+        {},
+        {}
+      ],
+      "victoryTypes": [
+        "Scientific",
+        "Cultural",
+        "Domination",
+        "Diplomatic",
+        "Time"
+      ]
+    },
+    "mapParameters": {
+      "createdWithVersion": "4.22.10 (Build 1271)",
+      "mapSize": {
+        "height": 29,
+        "name": "Medium",
+        "radius": 20,
+        "width": 44
+      },
+      "seed": 1792416007321,
+      "shape": "Rectangular",
+      "worldWrap": true
+    }
+  }
+}

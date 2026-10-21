@@ -1,0 +1,28 @@
+{
+  "id": "8981762b-d10b-4922-9e11-6863d65da320",
+  "object": "chat.completion",
+  "created": 1792609913,
+  "model": "deepseek-flash",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\"readability\":\"readable\",\"unreadable_regions\":[],\"readability_reason\":null,\"findings\":[{\"defect_type\":\"overlap\",\"text_seen\":\"Tierhaltung\",\"region\":\"left\",\"confidence\":0.9},{\"defect_type\":\"overlap\",\"text_seen\":\"Bogenschießen\",\"region\":\"left\",\"confidence\":0.9},{\"defect_type\":\"overlap\",\"text_seen\":\"Bergbau\",\"region\":\"left\",\"confidence\":0.9},{\"defect_type\":\"overlap\",\"text_seen\":\"Fallens\",\"region\":\"center\",\"confidence\":0.9},{\"defect_type\":\"overlap\",\"text_seen\":\"Das Rad\",\"region\":\"center\",\"confidence\":0.9},{\"defect_type\":\"overlap\",\"text_seen\":\"Mauerbau\",\"region\":\"center\",\"confidence\":0.9},{\"defect_type\":\"overlap\",\"text_seen\":\"Bronzebearbeitung\",\"region\":\"center\",\"confidence\":0.9},{\"defect_type\":\"overlap\",\"text_seen\":\"Reiten\",\"region\":\"right\",\"confidence\":0.9},{\"defect_type\":\"overlap\",\"text_seen\":\"Mathematik\",\"region\":\"right\",\"confidence\":0.9},{\"defect_type\":\"overlap\",\"text_seen\":\"Baukunst\",\"region\":\"right\",\"confidence\":0.9},{\"defect_type\":\"overlap\",\"text_seen\":\"Währung\",\"region\":\"right\",\"confidence\":0.9},{\"defect_type\":\"overlap\",\"text_seen\":\"Ingenieurwesen\",\"region\":\"right\",\"confidence\":0.9},{\"defect_type\":\"overlap\",\"text_seen\":\"Eisenbearbeitung\",\"region\":\"right\",\"confidence\":0.9},{\"defect_type\":\"overlap\",\"text_seen\":\"Drama und\",\"region\":\"top-right\",\"confidence\":0.9},{\"defect_type\":\"overlap\",\"text_seen\":\"Schrift\",\"region\":\"top\",\"confidence\":0.9}]}"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1836,
+    "completion_tokens": 406,
+    "total_tokens": 2242,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 1836
+  },
+  "system_fingerprint": "e72d3c7f663d3e1383b00b3884cb4501"
+}

@@ -1,0 +1,28 @@
+{
+  "id": "85eb3143-1200-4c00-982d-5e737bec34f7",
+  "object": "chat.completion",
+  "created": 1792610228,
+  "model": "deepseek-flash",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\"readability\":\"readable\",\"unreadable_regions\":[],\"readability_reason\":null,\"findings\":[{\"defect_type\":\"truncated_text\",\"text_seen\":\"Arbeiter für Geländeausbau, Straßenbau und die Verbesserung der städtischen Infrastruktur\",\"region\":\"bottom\",\"confidence\":0.9}]}"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1836,
+    "completion_tokens": 77,
+    "total_tokens": 1913,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 1836
+  },
+  "system_fingerprint": "e72d3c7f663d3e1383b00b3884cb4501"
+}

@@ -1,0 +1,18 @@
+// External build input for issue 45. No tracked Unciv build file is edited.
+gradle.beforeProject { project ->
+    if (project.path == ':android') {
+        project.pluginManager.withPlugin('com.android.application') {
+            def requested = project.providers.gradleProperty('issue45VersionCode')
+            if (!requested.isPresent()) {
+                throw new GradleException('issue45VersionCode is required')
+            }
+            def code = Integer.parseInt(requested.get())
+            if (code < 1271451 || code > 1271458) {
+                throw new GradleException('versionCode outside the issue 45 probe range')
+            }
+            project.extensions.getByName('androidComponents').finalizeDsl { android ->
+                android.defaultConfig.versionCode = code
+            }
+        }
+    }
+}

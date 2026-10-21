@@ -1,0 +1,28 @@
+{
+  "id": "c11e3b59-e75c-4e4b-8aa9-401e6c7000d4",
+  "object": "chat.completion",
+  "created": 1792611416,
+  "model": "deepseek-flash",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\"readability\":\"readable\",\"unreadable_regions\":[],\"readability_reason\":null,\"findings\":[{\"defect_type\":\"untranslated\",\"text_seen\":\"Arbeiter amount\",\"region\":\"left\",\"confidence\":0.95},{\"defect_type\":\"untranslated\",\"text_seen\":\"Arbeiter [amount]\",\"region\":\"bottom-right\",\"confidence\":0.95},{\"defect_type\":\"untranslated\",\"text_seen\":\"Kann Land Verbesserungen auf Feldern bauen\",\"region\":\"bottom-right\",\"confidence\":0.9}]}"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1836,
+    "completion_tokens": 119,
+    "total_tokens": 1955,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 1836
+  },
+  "system_fingerprint": "e72d3c7f663d3e1383b00b3884cb4501"
+}

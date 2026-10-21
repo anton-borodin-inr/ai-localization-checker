@@ -1,0 +1,294 @@
+{
+  "issue": 45,
+  "status": "approved_design_no_device_results_yet",
+  "checker_base": "63b65347b328363f2fdfd51a345a805a6e8c17f9",
+  "fork_base": "877b0dc2ee706dbbdb4a17e14b4522408d197390",
+  "fork_probe_branch": "probe/45-defect-types",
+  "never_merge_probe_into_clean_base": true,
+  "allowed_screens": [
+    "tech-picker",
+    "city-production"
+  ],
+  "exploration_only": true,
+  "labels_or_evaluation": false,
+  "provider": "deepseek-flash",
+  "prompt_version": "v1",
+  "schema_version": "v1",
+  "per_run_max_requests": 1,
+  "total_max_requests": 100,
+  "total_max_usd": "1.00",
+  "minimum_independent_calls_per_png": 2,
+  "primary_clean_controls": 4,
+  "primary_mutated_pngs": 15,
+  "initial_requests": 38,
+  "clean_build": {
+    "version_code": "1271045",
+    "apk_sha256": "16b6e07eaa8f7ca35b71f361f0bdcceb7015987b60e796d15d2f3b53bb61af1a"
+  },
+  "save": {
+    "name": "issue-8-pair",
+    "sha256": "9d2a4cd5e1de2b2ae9102a2e6e6d15210e32ae5188c895f84e8a3a6ce19c3b4e",
+    "provisioning": "none; must already exist and match on the device"
+  },
+  "inputs": {
+    "states/tech-picker.json": {
+      "path": "inputs/states/tech-picker.json",
+      "sha256": "c6567bc8f3a60c669d551528105f54d7f0372d7f3c0553284777ae4dcf81bb7e"
+    },
+    "states/city-production.json": {
+      "path": "inputs/states/city-production.json",
+      "sha256": "29b7adc75fda2b3db0bbcb72f24753cfa064b4d9c047e34def59acae9e8ec6b3"
+    },
+    "settings/en.json": {
+      "path": "inputs/settings/en.json",
+      "sha256": "853e1a055177314c866ae4427e697adeb6f79cab051d31bff0d6160b149c1776"
+    },
+    "settings/de.json": {
+      "path": "inputs/settings/de.json",
+      "sha256": "397ddd96452874b01d9f096311049c0d076492297d557a9fb7c3d2abf1f3cdea"
+    }
+  },
+  "variants": [
+    {
+      "id": "overflow-turns",
+      "screen": "tech-picker",
+      "candidates": [
+        "overflow"
+      ],
+      "languages": [
+        "de",
+        "en"
+      ],
+      "mutations": [
+        {
+          "file": "android/assets/jsons/translations/German.properties",
+          "key": "⏳",
+          "original": null,
+          "mutated": "Runden verbleibend",
+          "operation": "add"
+        },
+        {
+          "file": "android/assets/jsons/translations/English.properties",
+          "key": "⏳",
+          "original": null,
+          "mutated": "turns remaining",
+          "operation": "add"
+        }
+      ],
+      "design_note": "Translate the actual hourglass lookup following the number. The plain 14-unit Label has a 40-unit cell and right alignment. Added key: no game-code change. Distinguish drawing outside the cell from collision with a neighbour.",
+      "observed": null,
+      "version_code": "1271451"
+    },
+    {
+      "id": "overflow-worker",
+      "screen": "city-production",
+      "candidates": [
+        "overflow",
+        "unreadably_small_text"
+      ],
+      "languages": [
+        "de",
+        "en"
+      ],
+      "mutations": [
+        {
+          "file": "android/assets/jsons/translations/German.properties",
+          "key": "Worker",
+          "original": "Arbeiter",
+          "mutated": "Arbeiter für Geländeausbau, Straßenbau und die Verbesserung der städtischen Infrastruktur",
+          "operation": "replace"
+        },
+        {
+          "file": "android/assets/jsons/translations/English.properties",
+          "key": "Worker",
+          "original": "",
+          "mutated": "Worker for terrain development, road construction and improvements to city infrastructure",
+          "operation": "replace"
+        }
+      ],
+      "design_note": "The list wraps, while the selected construction's title is a plain Label. Panel expansion, wrapping and successful fitting are negative results, not overflow. Also inspect whether the actual font shrinks, rather than inferring shrink from length.",
+      "observed": null,
+      "version_code": "1271452"
+    },
+    {
+      "id": "wrong-language-fallback",
+      "screen": "tech-picker",
+      "candidates": [
+        "wrong_language"
+      ],
+      "languages": [
+        "de"
+      ],
+      "mutations": [
+        {
+          "file": "android/assets/jsons/translations/German.properties",
+          "key": "Mining",
+          "original": "Bergbau",
+          "mutated": null,
+          "operation": "remove"
+        }
+      ],
+      "design_note": "Remove the German entry to exercise source-English fallback. The same mechanism cannot create wrong-language text in English UI; no English mutation is claimed.",
+      "observed": null,
+      "version_code": "1271453"
+    },
+    {
+      "id": "wrong-language-foreign",
+      "screen": "city-production",
+      "candidates": [
+        "wrong_language"
+      ],
+      "languages": [
+        "de",
+        "en"
+      ],
+      "mutations": [
+        {
+          "file": "android/assets/jsons/translations/German.properties",
+          "key": "Worker",
+          "original": "Arbeiter",
+          "mutated": "Рабочий",
+          "operation": "replace"
+        },
+        {
+          "file": "android/assets/jsons/translations/English.properties",
+          "key": "Worker",
+          "original": "",
+          "mutated": "Arbeiter",
+          "operation": "replace"
+        }
+      ],
+      "design_note": "An unrelated language is inserted into the active translation file. It remains a translation-only mutation, distinct from missing-entry fallback.",
+      "observed": null,
+      "version_code": "1271454"
+    },
+    {
+      "id": "placeholder-tech",
+      "screen": "tech-picker",
+      "candidates": [
+        "technical_text"
+      ],
+      "languages": [
+        "de",
+        "en"
+      ],
+      "mutations": [
+        {
+          "file": "android/assets/jsons/translations/German.properties",
+          "key": "Research [technology]",
+          "original": "[technology] erforschen",
+          "mutated": "[amount] erforschen",
+          "operation": "replace"
+        },
+        {
+          "file": "android/assets/jsons/translations/English.properties",
+          "key": "Research [technology]",
+          "original": "",
+          "mutated": "Research [amount]",
+          "operation": "replace"
+        }
+      ],
+      "design_note": "Rename the value's placeholder without changing the source key. The translator replaces source placeholder names; retain whatever the device actually displays.",
+      "observed": null,
+      "version_code": "1271455"
+    },
+    {
+      "id": "placeholder-city",
+      "screen": "city-production",
+      "candidates": [
+        "technical_text"
+      ],
+      "languages": [
+        "de",
+        "en"
+      ],
+      "mutations": [
+        {
+          "file": "android/assets/jsons/translations/German.properties",
+          "key": "Worker",
+          "original": "Arbeiter",
+          "mutated": "Arbeiter [amount]",
+          "operation": "replace"
+        },
+        {
+          "file": "android/assets/jsons/translations/English.properties",
+          "key": "Worker",
+          "original": "",
+          "mutated": "Worker [amount]",
+          "operation": "replace"
+        }
+      ],
+      "design_note": "Literal technical token in a plain translated title; this is a different path from failed template substitution and must be described as such.",
+      "observed": null,
+      "version_code": "1271456"
+    },
+    {
+      "id": "truncation-mining",
+      "screen": "tech-picker",
+      "candidates": [
+        "truncated_text"
+      ],
+      "languages": [
+        "de",
+        "en"
+      ],
+      "mutations": [
+        {
+          "file": "android/assets/jsons/translations/German.properties",
+          "key": "Mining",
+          "original": "Bergbau",
+          "mutated": "Bergbau und Erzgewinnung",
+          "operation": "replace"
+        },
+        {
+          "file": "android/assets/jsons/translations/English.properties",
+          "key": "Mining",
+          "original": "",
+          "mutated": "Mining and ore extraction",
+          "operation": "replace"
+        }
+      ],
+      "design_note": "Repeat the known Mining ellipsis mechanism. Keep Archery selected so the full Mining title is absent from the description; verify the entire screenshot (D-023).",
+      "observed": null,
+      "version_code": "1271457"
+    },
+    {
+      "id": "small-text-tech",
+      "screen": "tech-picker",
+      "candidates": [
+        "unreadably_small_text"
+      ],
+      "languages": [
+        "de",
+        "en"
+      ],
+      "mutations": [
+        {
+          "file": "android/assets/jsons/translations/German.properties",
+          "key": "Research [technology]",
+          "original": "[technology] erforschen",
+          "mutated": "Wissenschaftliche Forschung und vollständige Entwicklung der ausgewählten Technologie [technology]",
+          "operation": "replace"
+        },
+        {
+          "file": "android/assets/jsons/translations/English.properties",
+          "key": "Research [technology]",
+          "original": "",
+          "mutated": "Scientific research and complete development of the selected technology [technology]",
+          "operation": "replace"
+        }
+      ],
+      "design_note": "Stress the lower action button without breaking its placeholder. Source inspection has not found automatic text-dependent font scaling in TechPickerScreen, TechButton, PickerScreen, PickerPane or their ordinary label/button helpers. Capture a negative result if layout grows, clips or overflows instead of shrinking.",
+      "observed": null,
+      "version_code": "1271458"
+    }
+  ],
+  "limitations": [
+    "No automatic defect metrics: these are exploratory screenshots, never labels.",
+    "Schema classes are truncated_text, overlap, untranslated and other. Report raw classification; do not add candidate names to the schema.",
+    "partial/unreadable/invalid/error remains not_checked; raw findings are diagnostic only.",
+    "No OCR experiment: baseline expectations are qualitative and unmeasured.",
+    "Each valid captured PNG is sent twice, including attempts that fail to reproduce the candidate.",
+    "No result-driven prompt, schema, provider-setting or mutation retuning."
+  ]
+}

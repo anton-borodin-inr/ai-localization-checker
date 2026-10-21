@@ -1,0 +1,28 @@
+{
+  "id": "6b3d2689-3690-4e7c-87e4-491bf9080f33",
+  "object": "chat.completion",
+  "created": 1792611647,
+  "model": "deepseek-flash",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\"readability\":\"readable\",\"unreadable_regions\":[],\"readability_reason\":null,\"findings\":[{\"defect_type\":\"truncated_text\",\"text_seen\":\"Mining and ore extra...\",\"region\":\"left\",\"confidence\":0.9}]}"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1836,
+    "completion_tokens": 57,
+    "total_tokens": 1893,
+    "prompt_tokens_details": {
+      "cached_tokens": 1664
+    },
+    "prompt_cache_hit_tokens": 1664,
+    "prompt_cache_miss_tokens": 172
+  },
+  "system_fingerprint": "e72d3c7f663d3e1383b00b3884cb4501"
+}
