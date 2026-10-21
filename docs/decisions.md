@@ -384,3 +384,12 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 - **Why:** Anton approved the #41 plan and both fixture choices on 2026-10-21. The Belgrade save preserves normal first-contact effects (+30 gold), so it must not replace the base economy on other screens. Same-order repeats cannot expose order dependence; Anton requires the second pass in reverse screen order.
 - **Alternatives considered:** Map editor (replaced by World); fabricate notifications or advance/change the base game (unnecessary for the accepted empty list); use the Belgrade save everywhere (changes economy); two same-order passes (weaker verification).
 - **Consequences:** Commit fixtures, provenance and fixed settings with a hash-pinned manifest. Each of two passes keeps languages outside the screen loop and starts a fresh app per language; pass 1 is forward, pass 2 reverse. Compare decoded pixels for each screen/language pair, retaining failures and non-identical results. Use D-038 unchanged. No detector, truncation check, labels or split is performed. D-025's two outstanding human scroll checks remain report items. Number checked against main `eb5616d` before implementation; recheck before merge.
+
+## D-0XX — Issue 45 dev-screen assignment
+
+- **Date:** 2026-10-21
+- **Status:** Proposed
+- **Decision:** Assign `tech-picker` and `city-production` to dev, as Anton decided in issue #45 and its task chat. Issue #45 DeepSeek calls are restricted to screenshots of these two source screens.
+- **Why:** Both screens were already explored in Stage 1; their assignment preserves grouped separation and removes no unused source screen from the future hold-out.
+- **Alternatives considered:** Assign either previously explored screen to hold-out (would not provide independent final evidence).
+- **Consequences:** All issue #45 probe captures remain exploratory under D-024, never labels, ground truth or evaluation data. This entry does not assign the other eight source screens or change D-006/D-020. Any class proposal follows the probe evidence and remains Anton-owned. Number is assigned at merge.
