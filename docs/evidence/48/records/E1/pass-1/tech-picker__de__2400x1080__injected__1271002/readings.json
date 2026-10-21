@@ -1,0 +1,578 @@
+[
+  {
+    "text_seen": "scnritt",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1383,
+      0,
+      1464,
+      19
+    ]
+  },
+  {
+    "text_seen": "Tu 2",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1684,
+      0,
+      1732,
+      18
+    ]
+  },
+  {
+    "text_seen": "Tierhaltung_",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      760,
+      218,
+      897,
+      257
+    ]
+  },
+  {
+    "text_seen": "6 8",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1075,
+      222,
+      1117,
+      250
+    ]
+  },
+  {
+    "text_seen": "Fallenstellen",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1384,
+      223,
+      1529,
+      249
+    ]
+  },
+  {
+    "text_seen": "108",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1683,
+      223,
+      1737,
+      250
+    ]
+  },
+  {
+    "text_seen": "Reiten",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2005,
+      224,
+      2080,
+      249
+    ]
+  },
+  {
+    "text_seen": "198",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2303,
+      222,
+      2359,
+      250
+    ]
+  },
+  {
+    "text_seen": "Landwirtschaft",
+    "region": "top-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      142,
+      338,
+      317,
+      366
+    ]
+  },
+  {
+    "text_seen": "Bogenschießen _",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      762,
+      451,
+      942,
+      486
+    ]
+  },
+  {
+    "text_seen": "6 5",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1075,
+      453,
+      1116,
+      480
+    ]
+  },
+  {
+    "text_seen": "Das Rad",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1383,
+      453,
+      1482,
+      481
+    ]
+  },
+  {
+    "text_seen": "108",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1683,
+      453,
+      1737,
+      480
+    ]
+  },
+  {
+    "text_seen": "Mathematik",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2005,
+      454,
+      2145,
+      480
+    ]
+  },
+  {
+    "text_seen": "19R",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2302,
+      451,
+      2359,
+      482
+    ]
+  },
+  {
+    "text_seen": "E",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1926,
+      473,
+      1984,
+      529
+    ]
+  },
+  {
+    "text_seen": "e",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2163,
+      490,
+      2208,
+      535
+    ]
+  },
+  {
+    "text_seen": "Bergbau und Erzgew",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      762,
+      682,
+      1000,
+      717
+    ]
+  },
+  {
+    "text_seen": "6 5",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1076,
+      684,
+      1115,
+      709
+    ]
+  },
+  {
+    "text_seen": "Mauerarbeiten",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1384,
+      683,
+      1551,
+      711
+    ]
+  },
+  {
+    "text_seen": "108",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1683,
+      684,
+      1737,
+      711
+    ]
+  },
+  {
+    "text_seen": "Baukunst",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2005,
+      684,
+      2116,
+      710
+    ]
+  },
+  {
+    "text_seen": "198",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2304,
+      683,
+      2358,
+      710
+    ]
+  },
+  {
+    "text_seen": "Snn",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2167,
+      737,
+      2207,
+      758
+    ]
+  },
+  {
+    "text_seen": "Bronzebearbeitung",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1383,
+      795,
+      1601,
+      830
+    ]
+  },
+  {
+    "text_seen": "105",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1683,
+      799,
+      1736,
+      825
+    ]
+  },
+  {
+    "text_seen": "Freigeschaltete Einheiten:",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      237,
+      915,
+      617,
+      958
+    ]
+  },
+  {
+    "text_seen": "Bogenschütze (5",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      293,
+      947,
+      547,
+      990
+    ]
+  },
+  {
+    "text_seen": "7",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      581,
+      952,
+      607,
+      983
+    ]
+  },
+  {
+    "text_seen": "Bogenschießen erforschen",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1969,
+      958,
+      2364,
+      1003
+    ]
+  },
+  {
+    "text_seen": "Schließen",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      36,
+      976,
+      185,
+      1012
+    ]
+  },
+  {
+    "text_seen": "(0/24)",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2102,
+      992,
+      2201,
+      1035
+    ]
+  },
+  {
+    "text_seen": "Freigeschaltete Wunder:",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      237,
+      1011,
+      596,
+      1054
+    ]
+  },
+  {
+    "text_seen": "Tempel der Artemis (+1",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      292,
+      1045,
+      636,
+      1080
+    ]
+  },
+  {
+    "text_seen": "Kultur; +10%",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      670,
+      1045,
+      858,
+      1080
+    ]
+  },
+  {
+    "text_seen": "Nahrung in allen Städten; +15% Produktion beim Bau von",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      887,
+      1043,
+      1710,
+      1080
+    ]
+  }
+]

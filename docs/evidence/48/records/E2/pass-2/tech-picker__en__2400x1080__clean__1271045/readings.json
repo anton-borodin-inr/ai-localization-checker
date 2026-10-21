@@ -1,0 +1,738 @@
+[
+  {
+    "text_seen": "Writing",
+    "region": "top-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      730,
+      0,
+      816,
+      33
+    ]
+  },
+  {
+    "text_seen": "108",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1031,
+      0,
+      1083,
+      27
+    ]
+  },
+  {
+    "text_seen": "Drama and Poetry",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1972,
+      0,
+      2181,
+      34
+    ]
+  },
+  {
+    "text_seen": "31",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2271,
+      1,
+      2302,
+      26
+    ]
+  },
+  {
+    "text_seen": "Animal Husbandry",
+    "region": "top-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      109,
+      225,
+      323,
+      263
+    ]
+  },
+  {
+    "text_seen": "63",
+    "region": "top-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      423,
+      230,
+      462,
+      256
+    ]
+  },
+  {
+    "text_seen": "Trapping",
+    "region": "top-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      729,
+      231,
+      835,
+      264
+    ]
+  },
+  {
+    "text_seen": "10",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1031,
+      231,
+      1063,
+      256
+    ]
+  },
+  {
+    "text_seen": "Horseback Riding",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1351,
+      226,
+      1556,
+      264
+    ]
+  },
+  {
+    "text_seen": "19",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1651,
+      231,
+      1684,
+      256
+    ]
+  },
+  {
+    "text_seen": "The Wheel",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      731,
+      461,
+      854,
+      488
+    ]
+  },
+  {
+    "text_seen": "10",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1031,
+      461,
+      1064,
+      487
+    ]
+  },
+  {
+    "text_seen": "Mathematics",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1353,
+      460,
+      1505,
+      488
+    ]
+  },
+  {
+    "text_seen": "19",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1652,
+      461,
+      1685,
+      488
+    ]
+  },
+  {
+    "text_seen": "Currency",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1970,
+      460,
+      2078,
+      492
+    ]
+  },
+  {
+    "text_seen": "31",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2271,
+      462,
+      2302,
+      487
+    ]
+  },
+  {
+    "text_seen": "Ill",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2004,
+      510,
+      2016,
+      519
+    ]
+  },
+  {
+    "text_seen": "Engineering",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1972,
+      575,
+      2110,
+      608
+    ]
+  },
+  {
+    "text_seen": "31",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2271,
+      577,
+      2302,
+      602
+    ]
+  },
+  {
+    "text_seen": "m",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2138,
+      615,
+      2175,
+      654
+    ]
+  },
+  {
+    "text_seen": "Mining",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      106,
+      685,
+      194,
+      726
+    ]
+  },
+  {
+    "text_seen": "Masonry",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      730,
+      690,
+      834,
+      724
+    ]
+  },
+  {
+    "text_seen": "10",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1031,
+      692,
+      1063,
+      717
+    ]
+  },
+  {
+    "text_seen": "Construction",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1351,
+      692,
+      1501,
+      719
+    ]
+  },
+  {
+    "text_seen": "19",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1651,
+      692,
+      1684,
+      717
+    ]
+  },
+  {
+    "text_seen": "Bronze Working",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      730,
+      806,
+      914,
+      839
+    ]
+  },
+  {
+    "text_seen": "10",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1031,
+      807,
+      1063,
+      832
+    ]
+  },
+  {
+    "text_seen": "Iron",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1972,
+      809,
+      2021,
+      833
+    ]
+  },
+  {
+    "text_seen": "Working",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2020,
+      802,
+      2122,
+      840
+    ]
+  },
+  {
+    "text_seen": "31",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2271,
+      807,
+      2302,
+      832
+    ]
+  },
+  {
+    "text_seen": "Units enabled:",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      179,
+      930,
+      391,
+      966
+    ]
+  },
+  {
+    "text_seen": "Close",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      37,
+      978,
+      125,
+      1013
+    ]
+  },
+  {
+    "text_seen": "@Archer (5",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      213,
+      963,
+      373,
+      1003
+    ]
+  },
+  {
+    "text_seen": ",79)",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      392,
+      960,
+      476,
+      1003
+    ]
+  },
+  {
+    "text_seen": "Research OArchery",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2076,
+      957,
+      2365,
+      1003
+    ]
+  },
+  {
+    "text_seen": "(0/24)",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2170,
+      994,
+      2268,
+      1034
+    ]
+  },
+  {
+    "text_seen": "Wonders enabled:",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      181,
+      1026,
+      444,
+      1063
+    ]
+  },
+  {
+    "text_seen": "Tomnlo",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      235,
+      1060,
+      350,
+      1080
+    ]
+  },
+  {
+    "text_seen": "Artomic (1",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      393,
+      1060,
+      559,
+      1080
+    ]
+  },
+  {
+    "text_seen": "TOulturo",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      572,
+      1062,
+      705,
+      1080
+    ]
+  },
+  {
+    "text_seen": "41no",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      715,
+      1060,
+      794,
+      1080
+    ]
+  },
+  {
+    "text_seen": "ACccd inaciicc150",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      804,
+      1060,
+      1159,
+      1080
+    ]
+  },
+  {
+    "text_seen": "Droducticn Wbon conctructina",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1167,
+      1062,
+      1601,
+      1080
+    ]
+  },
+  {
+    "text_seen": "Arcbory Unitc in +hic",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1637,
+      1061,
+      1921,
+      1080
+    ]
+  },
+  {
+    "text_seen": "Citu'",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1927,
+      1064,
+      1987,
+      1080
+    ]
+  },
+  {
+    "text_seen": "^f",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      351,
+      1060,
+      388,
+      1080
+    ]
+  }
+]

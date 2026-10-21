@@ -1,0 +1,594 @@
+[
+  {
+    "text_seen": "318",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2275,
+      3,
+      2322,
+      23
+    ]
+  },
+  {
+    "text_seen": "L @ Writing",
+    "region": "top-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      549,
+      0,
+      811,
+      91
+    ]
+  },
+  {
+    "text_seen": "10% Drama and Poetry",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1034,
+      3,
+      2175,
+      28
+    ]
+  },
+  {
+    "text_seen": "10%",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1034,
+      233,
+      1080,
+      253
+    ]
+  },
+  {
+    "text_seen": "© oe Booe ||",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1245,
+      225,
+      1723,
+      333
+    ]
+  },
+  {
+    "text_seen": "19",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1655,
+      233,
+      1701,
+      253
+    ]
+  },
+  {
+    "text_seen": "(ae Trapping",
+    "region": "top-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      636,
+      224,
+      831,
+      323
+    ]
+  },
+  {
+    "text_seen": "The Wheel",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      733,
+      464,
+      849,
+      483
+    ]
+  },
+  {
+    "text_seen": "108",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1034,
+      463,
+      1080,
+      483
+    ]
+  },
+  {
+    "text_seen": "@ aa",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1259,
+      464,
+      1500,
+      551
+    ]
+  },
+  {
+    "text_seen": "@a00 —",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1248,
+      457,
+      1701,
+      561
+    ]
+  },
+  {
+    "text_seen": "Currency",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1976,
+      465,
+      2074,
+      489
+    ]
+  },
+  {
+    "text_seen": "318",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2275,
+      463,
+      2322,
+      484
+    ]
+  },
+  {
+    "text_seen": "Ooo",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      16,
+      466,
+      463,
+      554
+    ]
+  },
+  {
+    "text_seen": "©",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      638,
+      467,
+      723,
+      552
+    ]
+  },
+  {
+    "text_seen": "680",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      752,
+      495,
+      940,
+      549
+    ]
+  },
+  {
+    "text_seen": "@ese |",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1250,
+      457,
+      1715,
+      570
+    ]
+  },
+  {
+    "text_seen": "o",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1880,
+      467,
+      1964,
+      551
+    ]
+  },
+  {
+    "text_seen": "QGO@o",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1994,
+      495,
+      2182,
+      549
+    ]
+  },
+  {
+    "text_seen": "G) @O",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1259,
+      693,
+      1496,
+      784
+    ]
+  },
+  {
+    "text_seen": "@eoo0o |",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1245,
+      686,
+      1701,
+      794
+    ]
+  },
+  {
+    "text_seen": "@ e000 )",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1259,
+      686,
+      1719,
+      800
+    ]
+  },
+  {
+    "text_seen": "a 2:",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      0,
+      687,
+      799,
+      897
+    ]
+  },
+  {
+    "text_seen": "3",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2275,
+      810,
+      2287,
+      829
+    ]
+  },
+  {
+    "text_seen": "——",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2344,
+      853,
+      2400,
+      857
+    ]
+  },
+  {
+    "text_seen": "Ca lron Working",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1878,
+      805,
+      2115,
+      899
+    ]
+  },
+  {
+    "text_seen": "—",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      77,
+      954,
+      90,
+      955
+    ]
+  },
+  {
+    "text_seen": "Units enabled",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      184,
+      935,
+      376,
+      961
+    ]
+  },
+  {
+    "text_seen": "Close",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      41,
+      981,
+      122,
+      1008
+    ]
+  },
+  {
+    "text_seen": "@Archer (5@, 7@)",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      209,
+      965,
+      471,
+      1000
+    ]
+  },
+  {
+    "text_seen": "Research @Archery",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2081,
+      963,
+      2360,
+      999
+    ]
+  },
+  {
+    "text_seen": "a",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      77,
+      1043,
+      90,
+      1044
+    ]
+  },
+  {
+    "text_seen": "Wonders enabled",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      183,
+      1032,
+      430,
+      1058
+    ]
+  },
+  {
+    "text_seen": "Tam |",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      245,
+      1065,
+      326,
+      1080
+    ]
+  },
+  {
+    "text_seen": "tarmnia (1.1 @Piiltirirans LING FaLCanrd in all nitine .L1cY",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      424,
+      1064,
+      1154,
+      1080
+    ]
+  },
+  {
+    "text_seen": "aA AtTIAN han AANKnaAt Atimnnm Qa raha",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1200,
+      1062,
+      1718,
+      1080
+    ]
+  },
+  {
+    "text_seen": "mite im thie Ait",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1773,
+      1063,
+      1961,
+      1080
+    ]
+  }
+]

@@ -1,0 +1,786 @@
+[
+  {
+    "text_seen": "Writing",
+    "region": "top-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      727,
+      0,
+      818,
+      36
+    ]
+  },
+  {
+    "text_seen": "108",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1030,
+      0,
+      1082,
+      28
+    ]
+  },
+  {
+    "text_seen": "Drama and Poetry",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1971,
+      0,
+      2178,
+      30
+    ]
+  },
+  {
+    "text_seen": "318",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2270,
+      0,
+      2324,
+      26
+    ]
+  },
+  {
+    "text_seen": "Animal Husbandry",
+    "region": "top-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      110,
+      228,
+      320,
+      260
+    ]
+  },
+  {
+    "text_seen": "Trapping",
+    "region": "top-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      728,
+      228,
+      839,
+      266
+    ]
+  },
+  {
+    "text_seen": "108",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1030,
+      230,
+      1082,
+      258
+    ]
+  },
+  {
+    "text_seen": "Horseback Riding",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1351,
+      225,
+      1558,
+      266
+    ]
+  },
+  {
+    "text_seen": "19",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1650,
+      230,
+      1684,
+      256
+    ]
+  },
+  {
+    "text_seen": "Archery",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      107,
+      455,
+      204,
+      495
+    ]
+  },
+  {
+    "text_seen": "The Wheel",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      730,
+      460,
+      854,
+      488
+    ]
+  },
+  {
+    "text_seen": "10=",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1030,
+      460,
+      1066,
+      490
+    ]
+  },
+  {
+    "text_seen": "Mathematics",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1352,
+      460,
+      1506,
+      490
+    ]
+  },
+  {
+    "text_seen": "19",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1650,
+      460,
+      1684,
+      486
+    ]
+  },
+  {
+    "text_seen": "Currency",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1970,
+      459,
+      2078,
+      492
+    ]
+  },
+  {
+    "text_seen": "318",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2270,
+      462,
+      2324,
+      488
+    ]
+  },
+  {
+    "text_seen": "Ilo",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      664,
+      506,
+      706,
+      538
+    ]
+  },
+  {
+    "text_seen": "Engineering",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1971,
+      575,
+      2111,
+      611
+    ]
+  },
+  {
+    "text_seen": "318",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2270,
+      576,
+      2324,
+      602
+    ]
+  },
+  {
+    "text_seen": "Mining",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      105,
+      685,
+      194,
+      726
+    ]
+  },
+  {
+    "text_seen": "63",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      424,
+      692,
+      462,
+      716
+    ]
+  },
+  {
+    "text_seen": "Masonry",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      729,
+      690,
+      832,
+      722
+    ]
+  },
+  {
+    "text_seen": "108",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1030,
+      692,
+      1082,
+      718
+    ]
+  },
+  {
+    "text_seen": "Construction",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1350,
+      692,
+      1500,
+      718
+    ]
+  },
+  {
+    "text_seen": "19",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1650,
+      692,
+      1684,
+      718
+    ]
+  },
+  {
+    "text_seen": "oco",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1512,
+      742,
+      1554,
+      770
+    ]
+  },
+  {
+    "text_seen": "Bronze Working",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      729,
+      801,
+      916,
+      841
+    ]
+  },
+  {
+    "text_seen": "108",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1030,
+      806,
+      1082,
+      834
+    ]
+  },
+  {
+    "text_seen": "Iron",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1970,
+      808,
+      2022,
+      834
+    ]
+  },
+  {
+    "text_seen": "Working",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2019,
+      800,
+      2124,
+      842
+    ]
+  },
+  {
+    "text_seen": "313",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2270,
+      806,
+      2324,
+      832
+    ]
+  },
+  {
+    "text_seen": "Units enabled:",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      179,
+      931,
+      390,
+      967
+    ]
+  },
+  {
+    "text_seen": "Close",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      38,
+      980,
+      126,
+      1012
+    ]
+  },
+  {
+    "text_seen": "Archer (50,7 0)",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      235,
+      961,
+      477,
+      1005
+    ]
+  },
+  {
+    "text_seen": "Research",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2076,
+      960,
+      2217,
+      1000
+    ]
+  },
+  {
+    "text_seen": "Archery",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2246,
+      956,
+      2367,
+      1004
+    ]
+  },
+  {
+    "text_seen": "(0/24)",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2169,
+      993,
+      2269,
+      1035
+    ]
+  },
+  {
+    "text_seen": "Wonders enabled:",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      181,
+      1027,
+      447,
+      1065
+    ]
+  },
+  {
+    "text_seen": "Tonrlc f",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      235,
+      1059,
+      386,
+      1080
+    ]
+  },
+  {
+    "text_seen": "Artonic (11",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      392,
+      1060,
+      560,
+      1080
+    ]
+  },
+  {
+    "text_seen": "Cturo",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      597,
+      1059,
+      711,
+      1080
+    ]
+  },
+  {
+    "text_seen": "0o",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      753,
+      1063,
+      793,
+      1080
+    ]
+  },
+  {
+    "text_seen": "CCCi",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      832,
+      1062,
+      942,
+      1080
+    ]
+  },
+  {
+    "text_seen": "a ticc150",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      948,
+      1062,
+      1158,
+      1080
+    ]
+  },
+  {
+    "text_seen": "Dradticn Akor",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1166,
+      1062,
+      1412,
+      1080
+    ]
+  },
+  {
+    "text_seen": "Cenetr tino",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1418,
+      1062,
+      1600,
+      1080
+    ]
+  },
+  {
+    "text_seen": "Arskornitc i +Kic",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1636,
+      1060,
+      1922,
+      1080
+    ]
+  },
+  {
+    "text_seen": "Gtt",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1929,
+      1065,
+      1985,
+      1080
+    ]
+  },
+  {
+    "text_seen": "11",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      712,
+      1060,
+      755,
+      1080
+    ]
+  }
+]

@@ -1,0 +1,41 @@
+{
+  "image_operations": 84,
+  "allowed_images": 7,
+  "labelled_images": 3,
+  "qualitative_images": 4,
+  "configurations": 6,
+  "repeat_pairs": 42,
+  "repeat_differences": 0,
+  "not_checked": 0,
+  "provider_requests": 0,
+  "api_spend_usd": 0,
+  "protected_sha256_unchanged": {
+    "docs/evidence/12/tech-picker.json": true,
+    "docs/evidence/8/final/tech-picker__de__2400x1080__clean__1271001.labels.json": true,
+    "docs/evidence/8/final/tech-picker__de__2400x1080__injected__1271002.labels.json": true,
+    "docs/evidence/8/final/tech-picker__en__2400x1080__clean__1271001.labels.json": true,
+    "docs/evidence/8/pair-manifest.json": true,
+    "docs/experiments/issue-10/reference-amendment-approval.json": true,
+    "docs/experiments/issue-10/reference-amendment-candidate.json": true,
+    "src/l10n_checker/matching.py": true,
+    "src/l10n_checker/metrics.py": true,
+    "src/l10n_checker/reading_metrics.py": true,
+    "src/l10n_checker/slice.py": true,
+    "src/l10n_checker/unciv_text.py": true,
+    "src/l10n_checker/vision.py": true,
+    "tests/golden/README.md": true,
+    "tests/golden/__init__.py": true,
+    "tests/golden/conftest.py": true,
+    "tests/golden/matching_cases.json": true,
+    "tests/golden/small_text_cases.json": true,
+    "tests/golden/test_golden_matching.py": true,
+    "tests/golden/test_golden_metrics.py": true
+  },
+  "original_experiment_source_unchanged": {
+    "src/l10n_checker/ocr.py": true,
+    "src/l10n_checker/ocr_experiment.py": true,
+    "src/l10n_checker/baseline.py": true,
+    "src/l10n_checker/baseline_cli.py": true
+  },
+  "recheck_helper": "Added after experiment; tested with saved-output replay only; no additional OCR calls."
+}

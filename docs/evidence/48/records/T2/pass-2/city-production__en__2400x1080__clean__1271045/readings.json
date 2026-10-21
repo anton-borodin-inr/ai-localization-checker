@@ -1,0 +1,594 @@
+[
+  {
+    "text_seen": "Current construction",
+    "region": "top-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      22,
+      20,
+      412,
+      53
+    ]
+  },
+  {
+    "text_seen": "Raze city",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1136,
+      67,
+      1264,
+      98
+    ]
+  },
+  {
+    "text_seen": "Pick a construction",
+    "region": "top-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      81,
+      104,
+      354,
+      129
+    ]
+  },
+  {
+    "text_seen": "Queue empty",
+    "region": "top-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      36,
+      209,
+      288,
+      250
+    ]
+  },
+  {
+    "text_seen": "Buy 160.",
+    "region": "top-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      45,
+      342,
+      188,
+      373
+    ]
+  },
+  {
+    "text_seen": ". ©",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1313,
+      373,
+      1449,
+      417
+    ]
+  },
+  {
+    "text_seen": "©",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1243,
+      435,
+      1266,
+      456
+    ]
+  },
+  {
+    "text_seen": "Units",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      33,
+      443,
+      128,
+      475
+    ]
+  },
+  {
+    "text_seen": "t ¥Y",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1405,
+      462,
+      1435,
+      474
+    ]
+  },
+  {
+    "text_seen": "Nom",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1332,
+      490,
+      1383,
+      515
+    ]
+  },
+  {
+    "text_seen": "Worker",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      125,
+      519,
+      228,
+      545
+    ]
+  },
+  {
+    "text_seen": "31",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      125,
+      552,
+      155,
+      578
+    ]
+  },
+  {
+    "text_seen": "8",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      200,
+      551,
+      243,
+      578
+    ]
+  },
+  {
+    "text_seen": "re 4",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1243,
+      526,
+      1299,
+      559
+    ]
+  },
+  {
+    "text_seen": "@",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1123,
+      541,
+      1164,
+      587
+    ]
+  },
+  {
+    "text_seen": "1¥",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1405,
+      587,
+      1435,
+      598
+    ]
+  },
+  {
+    "text_seen": "@e",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1127,
+      614,
+      1162,
+      632
+    ]
+  },
+  {
+    "text_seen": "\\o~",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1332,
+      614,
+      1383,
+      640
+    ]
+  },
+  {
+    "text_seen": "© 0 8x",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      33,
+      613,
+      242,
+      683
+    ]
+  },
+  {
+    "text_seen": "Oo)",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1235,
+      677,
+      1273,
+      704
+    ]
+  },
+  {
+    "text_seen": "eo)",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1235,
+      665,
+      1273,
+      682
+    ]
+  },
+  {
+    "text_seen": "»>",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      586,
+      690,
+      638,
+      730
+    ]
+  },
+  {
+    "text_seen": "Scout",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      125,
+      747,
+      206,
+      772
+    ]
+  },
+  {
+    "text_seen": "11",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      127,
+      780,
+      154,
+      804
+    ]
+  },
+  {
+    "text_seen": "3k",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      200,
+      778,
+      242,
+      804
+    ]
+  },
+  {
+    "text_seen": "Worker",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2062,
+      797,
+      2165,
+      822
+    ]
+  },
+  {
+    "text_seen": "31",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2063,
+      830,
+      2092,
+      855
+    ]
+  },
+  {
+    "text_seen": "8",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2137,
+      828,
+      2180,
+      854
+    ]
+  },
+  {
+    "text_seen": "Warrior",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      125,
+      843,
+      230,
+      867
+    ]
+  },
+  {
+    "text_seen": "©",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1779,
+      785,
+      1869,
+      875
+    ]
+  },
+  {
+    "text_seen": "17° OR",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      127,
+      873,
+      243,
+      899
+    ]
+  },
+  {
+    "text_seen": "Istanbul (1) ®",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1058,
+      881,
+      1389,
+      942
+    ]
+  },
+  {
+    "text_seen": "Can build Land improvements on tiles",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1770,
+      917,
+      2309,
+      949
+    ]
+  },
+  {
+    "text_seen": "Buildings",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      34,
+      940,
+      205,
+      983
+    ]
+  },
+  {
+    "text_seen": "Exit city",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1145,
+      1001,
+      1255,
+      1032
+    ]
+  },
+  {
+    "text_seen": "Buy 160.",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1997,
+      988,
+      2140,
+      1019
+    ]
+  },
+  {
+    "text_seen": "Other",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      33,
+      1021,
+      136,
+      1055
+    ]
+  }
+]

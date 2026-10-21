@@ -1,0 +1,193 @@
+01/84 T0 pass 1 tech-picker__de__2400x1080__clean__1271001.png: checked (0.983s)
+02/84 T0 pass 1 tech-picker__de__2400x1080__injected__1271002.png: checked (0.832s)
+03/84 T0 pass 1 tech-picker__en__2400x1080__clean__1271001.png: checked (0.480s)
+04/84 T0 pass 1 city-production__de__2400x1080__clean__1271045.png: checked (0.639s)
+05/84 T0 pass 1 city-production__en__2400x1080__clean__1271045.png: checked (0.408s)
+06/84 T0 pass 1 tech-picker__de__2400x1080__clean__1271045.png: checked (1.010s)
+07/84 T0 pass 1 tech-picker__en__2400x1080__clean__1271045.png: checked (0.595s)
+08/84 T0 pass 2 tech-picker__de__2400x1080__clean__1271001.png: checked (0.807s)
+09/84 T0 pass 2 tech-picker__de__2400x1080__injected__1271002.png: checked (0.794s)
+10/84 T0 pass 2 tech-picker__en__2400x1080__clean__1271001.png: checked (0.473s)
+11/84 T0 pass 2 city-production__de__2400x1080__clean__1271045.png: checked (0.628s)
+12/84 T0 pass 2 city-production__en__2400x1080__clean__1271045.png: checked (0.409s)
+13/84 T0 pass 2 tech-picker__de__2400x1080__clean__1271045.png: checked (0.961s)
+14/84 T0 pass 2 tech-picker__en__2400x1080__clean__1271045.png: checked (0.598s)
+15/84 T1 pass 1 tech-picker__de__2400x1080__clean__1271001.png: checked (1.582s)
+16/84 T1 pass 1 tech-picker__de__2400x1080__injected__1271002.png: checked (1.492s)
+17/84 T1 pass 1 tech-picker__en__2400x1080__clean__1271001.png: checked (1.103s)
+18/84 T1 pass 1 city-production__de__2400x1080__clean__1271045.png: checked (1.376s)
+19/84 T1 pass 1 city-production__en__2400x1080__clean__1271045.png: checked (1.023s)
+20/84 T1 pass 1 tech-picker__de__2400x1080__clean__1271045.png: checked (1.886s)
+21/84 T1 pass 1 tech-picker__en__2400x1080__clean__1271045.png: checked (1.252s)
+22/84 T1 pass 2 tech-picker__de__2400x1080__clean__1271001.png: checked (1.634s)
+23/84 T1 pass 2 tech-picker__de__2400x1080__injected__1271002.png: checked (1.601s)
+24/84 T1 pass 2 tech-picker__en__2400x1080__clean__1271001.png: checked (1.166s)
+25/84 T1 pass 2 city-production__de__2400x1080__clean__1271045.png: checked (1.403s)
+26/84 T1 pass 2 city-production__en__2400x1080__clean__1271045.png: checked (1.033s)
+27/84 T1 pass 2 tech-picker__de__2400x1080__clean__1271045.png: checked (1.809s)
+28/84 T1 pass 2 tech-picker__en__2400x1080__clean__1271045.png: checked (1.220s)
+29/84 T2 pass 1 tech-picker__de__2400x1080__clean__1271001.png: checked (1.229s)
+30/84 T2 pass 1 tech-picker__de__2400x1080__injected__1271002.png: checked (1.095s)
+31/84 T2 pass 1 tech-picker__en__2400x1080__clean__1271001.png: checked (0.791s)
+32/84 T2 pass 1 city-production__de__2400x1080__clean__1271045.png: checked (0.870s)
+33/84 T2 pass 1 city-production__en__2400x1080__clean__1271045.png: checked (0.632s)
+34/84 T2 pass 1 tech-picker__de__2400x1080__clean__1271045.png: checked (1.350s)
+35/84 T2 pass 1 tech-picker__en__2400x1080__clean__1271045.png: checked (1.360s)
+36/84 T2 pass 2 tech-picker__de__2400x1080__clean__1271001.png: checked (1.271s)
+37/84 T2 pass 2 tech-picker__de__2400x1080__injected__1271002.png: checked (1.153s)
+38/84 T2 pass 2 tech-picker__en__2400x1080__clean__1271001.png: checked (0.819s)
+39/84 T2 pass 2 city-production__de__2400x1080__clean__1271045.png: checked (0.874s)
+40/84 T2 pass 2 city-production__en__2400x1080__clean__1271045.png: checked (0.636s)
+41/84 T2 pass 2 tech-picker__de__2400x1080__clean__1271045.png: checked (1.365s)
+42/84 T2 pass 2 tech-picker__en__2400x1080__clean__1271045.png: checked (0.990s)
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/ao/nn/quantized/dynamic/modules/rnn.py:162: UserWarning: torch.quantize_per_tensor, torch.quantize_per_channel and other quantized tensor creation functions that produce tensors with dtype torch.quint8, torch.qint8, and torch.qint32 are deprecated and will be removed in a future PyTorch release. Please see https://github.com/pytorch/pytorch/issues/184982 for more information. (Triggered internally at /Users/runner/work/pytorch/pytorch/aten/src/ATen/quantized/Quantizer.cpp:116.)
+  w_ih = torch.quantize_per_tensor(
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/utils/data/dataloader.py:759: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+  super().__init__(loader)
+43/84 E0 pass 1 tech-picker__de__2400x1080__clean__1271001.png: checked (8.555s)
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/utils/data/dataloader.py:759: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+  super().__init__(loader)
+44/84 E0 pass 1 tech-picker__de__2400x1080__injected__1271002.png: checked (6.828s)
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/ao/nn/quantized/dynamic/modules/rnn.py:162: UserWarning: torch.quantize_per_tensor, torch.quantize_per_channel and other quantized tensor creation functions that produce tensors with dtype torch.quint8, torch.qint8, and torch.qint32 are deprecated and will be removed in a future PyTorch release. Please see https://github.com/pytorch/pytorch/issues/184982 for more information. (Triggered internally at /Users/runner/work/pytorch/pytorch/aten/src/ATen/quantized/Quantizer.cpp:116.)
+  w_ih = torch.quantize_per_tensor(
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/utils/data/dataloader.py:759: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+  super().__init__(loader)
+45/84 E0 pass 1 tech-picker__en__2400x1080__clean__1271001.png: checked (7.327s)
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/utils/data/dataloader.py:759: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+  super().__init__(loader)
+46/84 E0 pass 1 city-production__de__2400x1080__clean__1271045.png: checked (6.522s)
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/utils/data/dataloader.py:759: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+  super().__init__(loader)
+47/84 E0 pass 1 city-production__en__2400x1080__clean__1271045.png: checked (6.262s)
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/utils/data/dataloader.py:759: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+  super().__init__(loader)
+48/84 E0 pass 1 tech-picker__de__2400x1080__clean__1271045.png: checked (6.288s)
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/utils/data/dataloader.py:759: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+  super().__init__(loader)
+49/84 E0 pass 1 tech-picker__en__2400x1080__clean__1271045.png: checked (9.224s)
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/ao/nn/quantized/dynamic/modules/rnn.py:162: UserWarning: torch.quantize_per_tensor, torch.quantize_per_channel and other quantized tensor creation functions that produce tensors with dtype torch.quint8, torch.qint8, and torch.qint32 are deprecated and will be removed in a future PyTorch release. Please see https://github.com/pytorch/pytorch/issues/184982 for more information. (Triggered internally at /Users/runner/work/pytorch/pytorch/aten/src/ATen/quantized/Quantizer.cpp:116.)
+  w_ih = torch.quantize_per_tensor(
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/utils/data/dataloader.py:759: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+  super().__init__(loader)
+50/84 E0 pass 2 tech-picker__de__2400x1080__clean__1271001.png: checked (5.994s)
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/utils/data/dataloader.py:759: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+  super().__init__(loader)
+51/84 E0 pass 2 tech-picker__de__2400x1080__injected__1271002.png: checked (6.957s)
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/ao/nn/quantized/dynamic/modules/rnn.py:162: UserWarning: torch.quantize_per_tensor, torch.quantize_per_channel and other quantized tensor creation functions that produce tensors with dtype torch.quint8, torch.qint8, and torch.qint32 are deprecated and will be removed in a future PyTorch release. Please see https://github.com/pytorch/pytorch/issues/184982 for more information. (Triggered internally at /Users/runner/work/pytorch/pytorch/aten/src/ATen/quantized/Quantizer.cpp:116.)
+  w_ih = torch.quantize_per_tensor(
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/utils/data/dataloader.py:759: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+  super().__init__(loader)
+52/84 E0 pass 2 tech-picker__en__2400x1080__clean__1271001.png: checked (12.007s)
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/utils/data/dataloader.py:759: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+  super().__init__(loader)
+53/84 E0 pass 2 city-production__de__2400x1080__clean__1271045.png: checked (9.895s)
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/utils/data/dataloader.py:759: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+  super().__init__(loader)
+54/84 E0 pass 2 city-production__en__2400x1080__clean__1271045.png: checked (9.121s)
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/utils/data/dataloader.py:759: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+  super().__init__(loader)
+55/84 E0 pass 2 tech-picker__de__2400x1080__clean__1271045.png: checked (8.401s)
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/utils/data/dataloader.py:759: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+  super().__init__(loader)
+56/84 E0 pass 2 tech-picker__en__2400x1080__clean__1271045.png: checked (9.336s)
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/ao/nn/quantized/dynamic/modules/rnn.py:162: UserWarning: torch.quantize_per_tensor, torch.quantize_per_channel and other quantized tensor creation functions that produce tensors with dtype torch.quint8, torch.qint8, and torch.qint32 are deprecated and will be removed in a future PyTorch release. Please see https://github.com/pytorch/pytorch/issues/184982 for more information. (Triggered internally at /Users/runner/work/pytorch/pytorch/aten/src/ATen/quantized/Quantizer.cpp:116.)
+  w_ih = torch.quantize_per_tensor(
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/utils/data/dataloader.py:759: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+  super().__init__(loader)
+57/84 E1 pass 1 tech-picker__de__2400x1080__clean__1271001.png: checked (41.783s)
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/utils/data/dataloader.py:759: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+  super().__init__(loader)
+58/84 E1 pass 1 tech-picker__de__2400x1080__injected__1271002.png: checked (38.988s)
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/ao/nn/quantized/dynamic/modules/rnn.py:162: UserWarning: torch.quantize_per_tensor, torch.quantize_per_channel and other quantized tensor creation functions that produce tensors with dtype torch.quint8, torch.qint8, and torch.qint32 are deprecated and will be removed in a future PyTorch release. Please see https://github.com/pytorch/pytorch/issues/184982 for more information. (Triggered internally at /Users/runner/work/pytorch/pytorch/aten/src/ATen/quantized/Quantizer.cpp:116.)
+  w_ih = torch.quantize_per_tensor(
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/utils/data/dataloader.py:759: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+  super().__init__(loader)
+59/84 E1 pass 1 tech-picker__en__2400x1080__clean__1271001.png: checked (37.752s)
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/utils/data/dataloader.py:759: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+  super().__init__(loader)
+60/84 E1 pass 1 city-production__de__2400x1080__clean__1271045.png: checked (33.228s)
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/utils/data/dataloader.py:759: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+  super().__init__(loader)
+61/84 E1 pass 1 city-production__en__2400x1080__clean__1271045.png: checked (33.946s)
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/utils/data/dataloader.py:759: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+  super().__init__(loader)
+62/84 E1 pass 1 tech-picker__de__2400x1080__clean__1271045.png: checked (35.108s)
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/utils/data/dataloader.py:759: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+  super().__init__(loader)
+63/84 E1 pass 1 tech-picker__en__2400x1080__clean__1271045.png: checked (36.114s)
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/ao/nn/quantized/dynamic/modules/rnn.py:162: UserWarning: torch.quantize_per_tensor, torch.quantize_per_channel and other quantized tensor creation functions that produce tensors with dtype torch.quint8, torch.qint8, and torch.qint32 are deprecated and will be removed in a future PyTorch release. Please see https://github.com/pytorch/pytorch/issues/184982 for more information. (Triggered internally at /Users/runner/work/pytorch/pytorch/aten/src/ATen/quantized/Quantizer.cpp:116.)
+  w_ih = torch.quantize_per_tensor(
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/utils/data/dataloader.py:759: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+  super().__init__(loader)
+64/84 E1 pass 2 tech-picker__de__2400x1080__clean__1271001.png: checked (32.201s)
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/utils/data/dataloader.py:759: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+  super().__init__(loader)
+65/84 E1 pass 2 tech-picker__de__2400x1080__injected__1271002.png: checked (34.197s)
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/ao/nn/quantized/dynamic/modules/rnn.py:162: UserWarning: torch.quantize_per_tensor, torch.quantize_per_channel and other quantized tensor creation functions that produce tensors with dtype torch.quint8, torch.qint8, and torch.qint32 are deprecated and will be removed in a future PyTorch release. Please see https://github.com/pytorch/pytorch/issues/184982 for more information. (Triggered internally at /Users/runner/work/pytorch/pytorch/aten/src/ATen/quantized/Quantizer.cpp:116.)
+  w_ih = torch.quantize_per_tensor(
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/utils/data/dataloader.py:759: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+  super().__init__(loader)
+66/84 E1 pass 2 tech-picker__en__2400x1080__clean__1271001.png: checked (33.879s)
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/utils/data/dataloader.py:759: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+  super().__init__(loader)
+67/84 E1 pass 2 city-production__de__2400x1080__clean__1271045.png: checked (38.029s)
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/utils/data/dataloader.py:759: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+  super().__init__(loader)
+68/84 E1 pass 2 city-production__en__2400x1080__clean__1271045.png: checked (42.084s)
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/utils/data/dataloader.py:759: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+  super().__init__(loader)
+69/84 E1 pass 2 tech-picker__de__2400x1080__clean__1271045.png: checked (39.375s)
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/utils/data/dataloader.py:759: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+  super().__init__(loader)
+70/84 E1 pass 2 tech-picker__en__2400x1080__clean__1271045.png: checked (40.370s)
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/ao/nn/quantized/dynamic/modules/rnn.py:162: UserWarning: torch.quantize_per_tensor, torch.quantize_per_channel and other quantized tensor creation functions that produce tensors with dtype torch.quint8, torch.qint8, and torch.qint32 are deprecated and will be removed in a future PyTorch release. Please see https://github.com/pytorch/pytorch/issues/184982 for more information. (Triggered internally at /Users/runner/work/pytorch/pytorch/aten/src/ATen/quantized/Quantizer.cpp:116.)
+  w_ih = torch.quantize_per_tensor(
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/utils/data/dataloader.py:759: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+  super().__init__(loader)
+71/84 E2 pass 1 tech-picker__de__2400x1080__clean__1271001.png: checked (37.322s)
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/utils/data/dataloader.py:759: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+  super().__init__(loader)
+72/84 E2 pass 1 tech-picker__de__2400x1080__injected__1271002.png: checked (32.070s)
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/ao/nn/quantized/dynamic/modules/rnn.py:162: UserWarning: torch.quantize_per_tensor, torch.quantize_per_channel and other quantized tensor creation functions that produce tensors with dtype torch.quint8, torch.qint8, and torch.qint32 are deprecated and will be removed in a future PyTorch release. Please see https://github.com/pytorch/pytorch/issues/184982 for more information. (Triggered internally at /Users/runner/work/pytorch/pytorch/aten/src/ATen/quantized/Quantizer.cpp:116.)
+  w_ih = torch.quantize_per_tensor(
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/utils/data/dataloader.py:759: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+  super().__init__(loader)
+73/84 E2 pass 1 tech-picker__en__2400x1080__clean__1271001.png: checked (35.238s)
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/utils/data/dataloader.py:759: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+  super().__init__(loader)
+74/84 E2 pass 1 city-production__de__2400x1080__clean__1271045.png: checked (33.147s)
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/utils/data/dataloader.py:759: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+  super().__init__(loader)
+75/84 E2 pass 1 city-production__en__2400x1080__clean__1271045.png: checked (31.367s)
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/utils/data/dataloader.py:759: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+  super().__init__(loader)
+76/84 E2 pass 1 tech-picker__de__2400x1080__clean__1271045.png: checked (32.322s)
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/utils/data/dataloader.py:759: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+  super().__init__(loader)
+77/84 E2 pass 1 tech-picker__en__2400x1080__clean__1271045.png: checked (32.960s)
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/ao/nn/quantized/dynamic/modules/rnn.py:162: UserWarning: torch.quantize_per_tensor, torch.quantize_per_channel and other quantized tensor creation functions that produce tensors with dtype torch.quint8, torch.qint8, and torch.qint32 are deprecated and will be removed in a future PyTorch release. Please see https://github.com/pytorch/pytorch/issues/184982 for more information. (Triggered internally at /Users/runner/work/pytorch/pytorch/aten/src/ATen/quantized/Quantizer.cpp:116.)
+  w_ih = torch.quantize_per_tensor(
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/utils/data/dataloader.py:759: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+  super().__init__(loader)
+78/84 E2 pass 2 tech-picker__de__2400x1080__clean__1271001.png: checked (36.613s)
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/utils/data/dataloader.py:759: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+  super().__init__(loader)
+79/84 E2 pass 2 tech-picker__de__2400x1080__injected__1271002.png: checked (33.931s)
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/ao/nn/quantized/dynamic/modules/rnn.py:162: UserWarning: torch.quantize_per_tensor, torch.quantize_per_channel and other quantized tensor creation functions that produce tensors with dtype torch.quint8, torch.qint8, and torch.qint32 are deprecated and will be removed in a future PyTorch release. Please see https://github.com/pytorch/pytorch/issues/184982 for more information. (Triggered internally at /Users/runner/work/pytorch/pytorch/aten/src/ATen/quantized/Quantizer.cpp:116.)
+  w_ih = torch.quantize_per_tensor(
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/utils/data/dataloader.py:759: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+  super().__init__(loader)
+80/84 E2 pass 2 tech-picker__en__2400x1080__clean__1271001.png: checked (34.222s)
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/utils/data/dataloader.py:759: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+  super().__init__(loader)
+81/84 E2 pass 2 city-production__de__2400x1080__clean__1271045.png: checked (34.843s)
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/utils/data/dataloader.py:759: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+  super().__init__(loader)
+82/84 E2 pass 2 city-production__en__2400x1080__clean__1271045.png: checked (33.251s)
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/utils/data/dataloader.py:759: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+  super().__init__(loader)
+83/84 E2 pass 2 tech-picker__de__2400x1080__clean__1271045.png: checked (34.803s)
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/utils/data/dataloader.py:759: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+  super().__init__(loader)
+84/84 E2 pass 2 tech-picker__en__2400x1080__clean__1271045.png: checked (34.866s)
+Offline summary written; no OCR executed by summarize.

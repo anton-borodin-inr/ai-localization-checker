@@ -1,0 +1,594 @@
+[
+  {
+    "text_seen": "Aktuelle Produktion",
+    "region": "top-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      80,
+      12,
+      464,
+      60
+    ]
+  },
+  {
+    "text_seen": "4",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1786,
+      30,
+      1812,
+      60
+    ]
+  },
+  {
+    "text_seen": "2",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1868,
+      30,
+      1894,
+      60
+    ]
+  },
+  {
+    "text_seen": "5",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1952,
+      30,
+      1980,
+      62
+    ]
+  },
+  {
+    "text_seen": "4",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2034,
+      30,
+      2068,
+      62
+    ]
+  },
+  {
+    "text_seen": "1 02",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2117,
+      29,
+      2235,
+      69
+    ]
+  },
+  {
+    "text_seen": "Stadt niederreißen",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1062,
+      59,
+      1337,
+      100
+    ]
+  },
+  {
+    "text_seen": "Wähle ein Bauwerk",
+    "region": "top-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      129,
+      97,
+      410,
+      137
+    ]
+  },
+  {
+    "text_seen": "Warteschlange leer",
+    "region": "top-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      31,
+      199,
+      409,
+      259
+    ]
+  },
+  {
+    "text_seen": "Kaufen 160-",
+    "region": "top-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      17,
+      337,
+      189,
+      373
+    ]
+  },
+  {
+    "text_seen": "34",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1461,
+      395,
+      1483,
+      411
+    ]
+  },
+  {
+    "text_seen": "Einheiten",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      26,
+      436,
+      212,
+      484
+    ]
+  },
+  {
+    "text_seen": "34",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1027,
+      519,
+      1049,
+      535
+    ]
+  },
+  {
+    "text_seen": "Arbeiter",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      121,
+      515,
+      245,
+      553
+    ]
+  },
+  {
+    "text_seen": "31",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      121,
+      547,
+      161,
+      583
+    ]
+  },
+  {
+    "text_seen": "8 8",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      196,
+      550,
+      244,
+      580
+    ]
+  },
+  {
+    "text_seen": "Siedler",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      121,
+      609,
+      229,
+      647
+    ]
+  },
+  {
+    "text_seen": "47",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      122,
+      644,
+      162,
+      676
+    ]
+  },
+  {
+    "text_seen": "8",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      196,
+      644,
+      220,
+      676
+    ]
+  },
+  {
+    "text_seen": "Benötigt mindestens 2 Bevölkerung",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      18,
+      680,
+      538,
+      728
+    ]
+  },
+  {
+    "text_seen": "Späher",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      121,
+      743,
+      231,
+      783
+    ]
+  },
+  {
+    "text_seen": "Arbeiter",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2061,
+      759,
+      2181,
+      797
+    ]
+  },
+  {
+    "text_seen": "11",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      122,
+      776,
+      162,
+      808
+    ]
+  },
+  {
+    "text_seen": "38",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      195,
+      775,
+      249,
+      811
+    ]
+  },
+  {
+    "text_seen": "31",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2059,
+      793,
+      2099,
+      829
+    ]
+  },
+  {
+    "text_seen": "83",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2133,
+      793,
+      2185,
+      829
+    ]
+  },
+  {
+    "text_seen": "Krieger",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      118,
+      831,
+      235,
+      883
+    ]
+  },
+  {
+    "text_seen": "2+",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1768,
+      850,
+      1818,
+      882
+    ]
+  },
+  {
+    "text_seen": "17",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      122,
+      872,
+      164,
+      904
+    ]
+  },
+  {
+    "text_seen": "58",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      195,
+      869,
+      249,
+      905
+    ]
+  },
+  {
+    "text_seen": "Istanbul (1)",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1046,
+      876,
+      1336,
+      948
+    ]
+  },
+  {
+    "text_seen": "Kann Land Verbesserungen auf Feldern",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1766,
+      876,
+      2340,
+      925
+    ]
+  },
+  {
+    "text_seen": "bauen",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1765,
+      913,
+      1863,
+      949
+    ]
+  },
+  {
+    "text_seen": "Gebäude",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      26,
+      932,
+      208,
+      982
+    ]
+  },
+  {
+    "text_seen": "Stadt verlassen",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1084,
+      994,
+      1315,
+      1034
+    ]
+  },
+  {
+    "text_seen": "Kaufen 160-",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1967,
+      983,
+      2141,
+      1019
+    ]
+  },
+  {
+    "text_seen": "Andere",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      30,
+      1014,
+      174,
+      1062
+    ]
+  }
+]

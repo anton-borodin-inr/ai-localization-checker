@@ -1,0 +1,466 @@
+[
+  {
+    "text_seen": "SCHAFT",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1387,
+      0,
+      1459,
+      15
+    ]
+  },
+  {
+    "text_seen": "BAS",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1406,
+      27,
+      1593,
+      81
+    ]
+  },
+  {
+    "text_seen": "@",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1280,
+      0,
+      1375,
+      93
+    ]
+  },
+  {
+    "text_seen": "=)/GOY- ED",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      670,
+      225,
+      1121,
+      330
+    ]
+  },
+  {
+    "text_seen": "Fallenstellen",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1388,
+      226,
+      1525,
+      246
+    ]
+  },
+  {
+    "text_seen": "©öc«",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1901,
+      222,
+      2200,
+      324
+    ]
+  },
+  {
+    "text_seen": "790000",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      62,
+      345,
+      484,
+      429
+    ]
+  },
+  {
+    "text_seen": "Das Rad",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1388,
+      457,
+      1477,
+      476
+    ]
+  },
+  {
+    "text_seen": "Osco |",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      670,
+      455,
+      1121,
+      560
+    ]
+  },
+  {
+    "text_seen": "©",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1280,
+      450,
+      1375,
+      554
+    ]
+  },
+  {
+    "text_seen": "680",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1406,
+      488,
+      1593,
+      542
+    ]
+  },
+  {
+    "text_seen": "(=) Mathematik",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1897,
+      445,
+      2141,
+      556
+    ]
+  },
+  {
+    "text_seen": "5:",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2308,
+      450,
+      2397,
+      552
+    ]
+  },
+  {
+    "text_seen": "Baukunst",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2009,
+      687,
+      2111,
+      707
+    ]
+  },
+  {
+    "text_seen": "EXLLITI",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1280,
+      687,
+      1753,
+      774
+    ]
+  },
+  {
+    "text_seen": "@",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1913,
+      691,
+      1996,
+      774
+    ]
+  },
+  {
+    "text_seen": "8000.",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2027,
+      688,
+      2333,
+      772
+    ]
+  },
+  {
+    "text_seen": "ee 8",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      659,
+      681,
+      1374,
+      900
+    ]
+  },
+  {
+    "text_seen": "020 10 )",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1388,
+      796,
+      1752,
+      900
+    ]
+  },
+  {
+    "text_seen": "Freigeschaltete Einheiten:",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      244,
+      932,
+      609,
+      988
+    ]
+  },
+  {
+    "text_seen": "Schließen",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      41,
+      982,
+      179,
+      1007
+    ]
+  },
+  {
+    "text_seen": "* @Bogenschütze (59, 7%)",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      251,
+      965,
+      642,
+      1000
+    ]
+  },
+  {
+    "text_seen": "©Bogenschießen erforschen",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1944,
+      963,
+      2358,
+      998
+    ]
+  },
+  {
+    "text_seen": "Freigeschaltete Wunder:",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      244,
+      1029,
+      599,
+      1080
+    ]
+  },
+  {
+    "text_seen": "aArmmmnal dar",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      318,
+      1072,
+      459,
+      1080
+    ]
+  },
+  {
+    "text_seen": "rarnina",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      491,
+      1066,
+      579,
+      1080
+    ]
+  },
+  {
+    "text_seen": "14 MD lıılt",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      601,
+      1061,
+      730,
+      1080
+    ]
+  },
+  {
+    "text_seen": "ı1n% Aallakrıınn im allan C+HSAtan: L1EY Drarııltinn haim Da",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      776,
+      1065,
+      1625,
+      1080
+    ]
+  },
+  {
+    "text_seen": "m",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1671,
+      1072,
+      1703,
+      1080
+    ]
+  }
+]

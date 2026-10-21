@@ -1,0 +1,1 @@
+git diff --check 63b6534: exit 0

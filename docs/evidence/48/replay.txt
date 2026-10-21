@@ -1,0 +1,5 @@
+   Building ai-localization-checker @ file:///Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository
+      Built ai-localization-checker @ file:///Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository
+Uninstalled 1 package in 2ms
+Installed 1 package in 349ms
+Offline summary written; no OCR executed by summarize.

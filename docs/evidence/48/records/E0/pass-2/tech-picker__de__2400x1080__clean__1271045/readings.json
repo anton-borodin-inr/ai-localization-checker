@@ -1,0 +1,674 @@
+[
+  {
+    "text_seen": "Schrift",
+    "region": "top-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      730,
+      0,
+      812,
+      28
+    ]
+  },
+  {
+    "text_seen": "103",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1030,
+      0,
+      1084,
+      28
+    ]
+  },
+  {
+    "text_seen": "Drama und Lyrik",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1971,
+      0,
+      2162,
+      32
+    ]
+  },
+  {
+    "text_seen": "318",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2270,
+      0,
+      2324,
+      26
+    ]
+  },
+  {
+    "text_seen": "Tierhaltung<",
+    "region": "top-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      105,
+      224,
+      243,
+      263
+    ]
+  },
+  {
+    "text_seen": "Fallenstellen",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      728,
+      230,
+      878,
+      260
+    ]
+  },
+  {
+    "text_seen": "103",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1030,
+      230,
+      1082,
+      258
+    ]
+  },
+  {
+    "text_seen": "Reiten",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1350,
+      230,
+      1428,
+      258
+    ]
+  },
+  {
+    "text_seen": "19",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1650,
+      230,
+      1686,
+      258
+    ]
+  },
+  {
+    "text_seen": "Bogenschießen",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      106,
+      457,
+      291,
+      495
+    ]
+  },
+  {
+    "text_seen": "Das Rad",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      730,
+      460,
+      830,
+      490
+    ]
+  },
+  {
+    "text_seen": "10 ",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1030,
+      460,
+      1066,
+      490
+    ]
+  },
+  {
+    "text_seen": "Mathematik",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1352,
+      460,
+      1494,
+      490
+    ]
+  },
+  {
+    "text_seen": "19",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1650,
+      460,
+      1684,
+      488
+    ]
+  },
+  {
+    "text_seen": "Währung",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1969,
+      456,
+      2082,
+      495
+    ]
+  },
+  {
+    "text_seen": "313",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2270,
+      462,
+      2324,
+      488
+    ]
+  },
+  {
+    "text_seen": "I@",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      664,
+      506,
+      706,
+      536
+    ]
+  },
+  {
+    "text_seen": "Ingenieurswesen",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1972,
+      576,
+      2166,
+      608
+    ]
+  },
+  {
+    "text_seen": "318",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2270,
+      576,
+      2324,
+      602
+    ]
+  },
+  {
+    "text_seen": "Bergbau _",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      108,
+      692,
+      210,
+      724
+    ]
+  },
+  {
+    "text_seen": "6 x",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      424,
+      692,
+      462,
+      716
+    ]
+  },
+  {
+    "text_seen": "Mauerarbeiten",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      730,
+      690,
+      898,
+      718
+    ]
+  },
+  {
+    "text_seen": "103",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1030,
+      692,
+      1084,
+      718
+    ]
+  },
+  {
+    "text_seen": "Baukunst",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1350,
+      692,
+      1462,
+      718
+    ]
+  },
+  {
+    "text_seen": "19",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1650,
+      692,
+      1684,
+      718
+    ]
+  },
+  {
+    "text_seen": "947",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1512,
+      742,
+      1554,
+      770
+    ]
+  },
+  {
+    "text_seen": "Bronzebearbeitung",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      728,
+      801,
+      949,
+      841
+    ]
+  },
+  {
+    "text_seen": "103",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1030,
+      806,
+      1082,
+      834
+    ]
+  },
+  {
+    "text_seen": "Eisenbearbeitung",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1970,
+      801,
+      2175,
+      841
+    ]
+  },
+  {
+    "text_seen": "31",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2270,
+      806,
+      2302,
+      832
+    ]
+  },
+  {
+    "text_seen": "Freigeschaltete Einheiten:",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      238,
+      929,
+      617,
+      974
+    ]
+  },
+  {
+    "text_seen": "Schließen",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      37,
+      977,
+      185,
+      1015
+    ]
+  },
+  {
+    "text_seen": "Bogenschütze (5",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      295,
+      961,
+      547,
+      1005
+    ]
+  },
+  {
+    "text_seen": ", 7",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      567,
+      963,
+      607,
+      1001
+    ]
+  },
+  {
+    "text_seen": "Bogenschießen erforschen",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1969,
+      956,
+      2366,
+      1005
+    ]
+  },
+  {
+    "text_seen": "(0/24)",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2100,
+      993,
+      2200,
+      1035
+    ]
+  },
+  {
+    "text_seen": "Freigeschaltete Wunder:",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      235,
+      1022,
+      598,
+      1075
+    ]
+  },
+  {
+    "text_seen": "omngdar Artaric ( 1",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      313,
+      1060,
+      636,
+      1080
+    ]
+  },
+  {
+    "text_seen": "V,ltiar , 100/",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      673,
+      1062,
+      854,
+      1080
+    ]
+  },
+  {
+    "text_seen": "Alabruna in allon Ctsdtor: , 1 5o/",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      890,
+      1058,
+      1336,
+      1080
+    ]
+  },
+  {
+    "text_seen": "Drad Ltian hoi",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1344,
+      1060,
+      1582,
+      1080
+    ]
+  },
+  {
+    "text_seen": "DaaaHc",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1591,
+      1065,
+      1705,
+      1080
+    ]
+  }
+]

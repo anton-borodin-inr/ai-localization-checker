@@ -201,3 +201,16 @@ word boxes; Tesseract retains native words. Upscaled coordinates map back to
 the original screen. Native output is retained in OCR metadata for non-default
 variants; default records stay unchanged. Missing models, engine failures,
 timeouts and invalid/empty OCR produce `not_checked`.
+
+To rerun only the recommended E2 on the three labelled dev images and print
+fresh matching/coverage numbers with the unchanged scorers:
+
+```bash
+uv run --no-editable python -m l10n_checker.ocr_recheck \
+  --unciv-fork /path/to/Unciv
+```
+
+This explicit command performs three new OCR operations and writes a fresh
+bundle under `data/issue-48-rechecks/`; it does not overwrite experiment records
+or change the baseline default. It was tested with saved-output replay only
+in issue 48; no additional live OCR was added beyond the fixed 84 operations.

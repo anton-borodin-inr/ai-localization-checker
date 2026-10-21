@@ -1,0 +1,6 @@
+Downloading detection model, please wait. This may take several minutes depending upon your network connection.
+Downloading recognition model, please wait. This may take several minutes depending upon your network connection.
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository/.venv/lib/python3.13/site-packages/torch/ao/nn/quantized/dynamic/modules/rnn.py:162: UserWarning: torch.quantize_per_tensor, torch.quantize_per_channel and other quantized tensor creation functions that produce tensors with dtype torch.quint8, torch.qint8, and torch.qint32 are deprecated and will be removed in a future PyTorch release. Please see https://github.com/pytorch/pytorch/issues/184982 for more information. (Triggered internally at /Users/runner/work/pytorch/pytorch/aten/src/ATen/quantized/Quantizer.cpp:116.)
+  w_ih = torch.quantize_per_tensor(
+Downloading recognition model, please wait. This may take several minutes depending upon your network connection.
+Models and environment frozen; no OCR images processed.

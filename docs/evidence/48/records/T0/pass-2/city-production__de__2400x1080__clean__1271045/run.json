@@ -1,0 +1,15 @@
+{
+  "image": {
+    "name": "city-production__de__2400x1080__clean__1271045.png",
+    "sha256": "b26abc6f7646666460edb51309a220a1d3dd8fdd01476d103bda2bb8929cb368"
+  },
+  "requests_sent": 0,
+  "ocr": {
+    "engine": "tesseract 5.5.2",
+    "languages": "deu+eng",
+    "traineddata_sha256": {
+      "deu": "19d219bbb6672c869d20a9636c6816a81eb9a71796cb93ebe0cb1530e2cdb22d",
+      "eng": "7d4322bd2a7749724879683fc3912cb542f19906c83bcc1a52132556427170b2"
+    }
+  }
+}

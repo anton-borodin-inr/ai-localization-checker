@@ -6,6 +6,7 @@ import importlib.util
 import json
 import sys
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 from test_baseline import FakeOcr
@@ -64,12 +65,12 @@ def test_default_matches_frozen_v0(
         assert path.read_bytes() == (expected_dir / path.name).read_bytes()
 
 
-def test_slice_replay_matches_oracle_when_evidence_exists():
+def test_slice_replay_matches_oracle_when_evidence_exists(tmp_path, monkeypatch):
     """Replay real T0 TSV without loading an OCR model or requiring the fork."""
-    summary = ROOT / "docs/evidence/48/summary.json"
-    if not summary.exists():
+    ledger = ROOT / "docs/evidence/48/operations.json"
+    if not ledger.exists():
         pytest.skip("real slice evidence is added after the fixed experiment")
-    rows = json.loads(summary.read_text())["rows"]
+    rows = json.loads(ledger.read_text())
     selected = [
         r for r in rows if r["configuration"] == "T0" and r["scope"] == "labelled"
     ]
@@ -109,3 +110,63 @@ def test_slice_replay_matches_oracle_when_evidence_exists():
             outputs[0][0]
             == json.loads((record / "result.json").read_text())["findings"]
         )
+        metadata = json.loads((record / "run.json").read_text())
+        provenance = {
+            key: metadata[key]
+            for key in (
+                "image",
+                "version_code",
+                "fork_commit",
+                "base_commit",
+                "translations",
+                "manifest_sha256",
+                "inventory_sha256",
+                "language",
+            )
+        }
+
+        def source(
+            *_,
+            language=row["language"],
+            slots=inventory,
+            frozen_tables=tables,
+            source_metadata=provenance,
+        ):
+            return (
+                (2400, 1080),
+                language,
+                slots,
+                copy.deepcopy(frozen_tables),
+                source_metadata,
+            )
+
+        for module in (baseline, oracle):
+            monkeypatch.setattr(module, "resolve_inputs", source)
+            monkeypatch.setattr(
+                module, "new_run_id", lambda run_id=metadata["run_id"]: run_id
+            )
+            monkeypatch.setattr(
+                module,
+                "time",
+                SimpleNamespace(monotonic=iter([0.0, metadata["latency_s"]]).__next__),
+            )
+            frozen_output = baseline.OcrOutput(raw, metadata["ocr"])
+            engine = SimpleNamespace(recognize=lambda *_, output=frozen_output: output)
+            monkeypatch.setattr(module, "Tesseract", lambda engine=engine: engine)
+            _, directory = module.run_baseline(
+                ROOT / row["image"],
+                Path("unused"),
+                Path("unused"),
+                Path("unused"),
+                tmp_path / str(index) / module.__name__,
+            )
+            for name in (
+                "result.json",
+                "run.json",
+                "diagnostics.json",
+                "source-entries.json",
+                "ocr.tsv",
+            ):
+                assert (directory / name).read_bytes() == (
+                    record / name
+                ).read_bytes(), name

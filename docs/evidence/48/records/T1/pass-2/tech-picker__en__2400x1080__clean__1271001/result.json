@@ -1,0 +1,174 @@
+{
+  "status": "checked",
+  "findings": [
+    {
+      "defect_type": "truncated_text",
+      "text_seen": "Writing",
+      "region": "top",
+      "confidence": 0.5
+    },
+    {
+      "defect_type": "truncated_text",
+      "text_seen": "Agriculture",
+      "region": "top-left",
+      "confidence": 0.5
+    },
+    {
+      "defect_type": "truncated_text",
+      "text_seen": "Animal Husbandry",
+      "region": "top",
+      "confidence": 0.5
+    },
+    {
+      "defect_type": "truncated_text",
+      "text_seen": "Archery",
+      "region": "center",
+      "confidence": 0.5
+    },
+    {
+      "defect_type": "truncated_text",
+      "text_seen": "Mining",
+      "region": "center",
+      "confidence": 0.5
+    },
+    {
+      "defect_type": "truncated_text",
+      "text_seen": "Trapping",
+      "region": "top",
+      "confidence": 0.5
+    },
+    {
+      "defect_type": "truncated_text",
+      "text_seen": "Research",
+      "region": "bottom-right",
+      "confidence": 0.93303009
+    },
+    {
+      "defect_type": "truncated_text",
+      "text_seen": "Units enabled",
+      "region": "bottom-left",
+      "confidence": 0.962716215
+    },
+    {
+      "defect_type": "truncated_text",
+      "text_seen": "Archer",
+      "region": "bottom",
+      "confidence": 0.5
+    },
+    {
+      "defect_type": "truncated_text",
+      "text_seen": "Wonders enabled",
+      "region": "bottom-left",
+      "confidence": 0.96705288
+    },
+    {
+      "defect_type": "truncated_text",
+      "text_seen": "Temple of Artemis",
+      "region": "bottom",
+      "confidence": 0.5
+    },
+    {
+      "defect_type": "truncated_text",
+      "text_seen": "Culture",
+      "region": "bottom",
+      "confidence": 0.5
+    },
+    {
+      "defect_type": "truncated_text",
+      "text_seen": "+10% Food in all cities",
+      "region": "bottom",
+      "confidence": 0.5
+    },
+    {
+      "defect_type": "truncated_text",
+      "text_seen": "+15% Production when constructing",
+      "region": "bottom",
+      "confidence": 0.94349577
+    },
+    {
+      "defect_type": "truncated_text",
+      "text_seen": "+15% Production when constructing Ranged Gunpowder units in this city",
+      "region": "bottom",
+      "confidence": 0.5
+    }
+  ],
+  "reason": null,
+  "metadata": {
+    "detector": "ocr-translation-baseline",
+    "settings": {
+      "version": "baseline-v0.1",
+      "oem": 1,
+      "psm": 11,
+      "languages": {
+        "en": "eng",
+        "de": "deu+eng"
+      },
+      "timeout_s": 30,
+      "exact_match": "NFKC + casefold + whitespace collapse",
+      "prefix_min_letters": 4,
+      "prefix_min_fraction": 0.5,
+      "missing_confidence": 0.5,
+      "missing_text_seen": "expected string",
+      "ocr_confidence_filter": null
+    },
+    "requests_sent": 0,
+    "run_id": "20261021T185854Z-84f04a",
+    "missing_rule_findings": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      8,
+      10,
+      11,
+      12,
+      14
+    ],
+    "image": {
+      "name": "tech-picker__en__2400x1080__clean__1271001.png",
+      "sha256": "88ff1c55aef33cc9ff0fd89cd5912384b7a1017d8d9ca2d88965ec39389b9f47",
+      "size": [
+        2400,
+        1080
+      ]
+    },
+    "version_code": 1271001,
+    "fork_commit": "2e4d6af664e204c4ddcc06383a0e2e700a9665c4",
+    "base_commit": "899367522cea36d6063c84b02b41eedfa9a0d0e9",
+    "translations": {
+      "en": {
+        "path": "android/assets/jsons/translations/English.properties",
+        "sha256": "f4bae85883e7430cf01ba257bf924db6aaa6df564c4896ac2d3783ee41216b02"
+      },
+      "de": {
+        "path": "android/assets/jsons/translations/German.properties",
+        "sha256": "e292857ddd35c9cb95a23659829ceac681e6d637c9fd1a1bf37be14d660215bb"
+      }
+    },
+    "manifest_sha256": "7bcda935b9f36cc98fb389d7c7bc34ceac749d3fc757e62dea284a654ada4c28",
+    "inventory_sha256": "60b2c3a39a82cf9f5378f2cf127d7fe51240e12d80a52957102d3b17373e2d64",
+    "language": "en",
+    "ocr": {
+      "engine": "tesseract 5.5.2",
+      "languages": "eng",
+      "traineddata_sha256": {
+        "eng": "7d4322bd2a7749724879683fc3912cb542f19906c83bcc1a52132556427170b2"
+      },
+      "preprocessing": {
+        "variant": "upscale2x",
+        "scale": 2,
+        "source_size": [
+          2400,
+          1080
+        ],
+        "source_sha256": "88ff1c55aef33cc9ff0fd89cd5912384b7a1017d8d9ca2d88965ec39389b9f47",
+        "prepared_sha256": "7a21591f0d6cf171e5c300b606b0565366c90d89c91f9af62ff718c7c72af3ad",
+        "otsu_threshold": null
+      },
+      "native_tsv": "level\tpage_num\tblock_num\tpar_num\tline_num\tword_num\tleft\ttop\twidth\theight\tconf\ttext\n1\t1\t0\t0\t0\t0\t0\t0\t4800\t2160\t-1\t\n2\t1\t1\t0\t0\t0\t2408\t0\t1098\t162\t-1\t\n3\t1\t1\t1\t0\t0\t2408\t0\t1098\t162\t-1\t\n4\t1\t1\t1\t1\t0\t2408\t0\t1098\t162\t-1\t\n5\t1\t1\t1\t1\t1\t2408\t0\t1098\t162\t0.000000\t9900\n5\t1\t1\t1\t1\t2\t3361\t0\t148\t221\t17.325163\tJ\n2\t1\t2\t0\t0\t0\t3374\t428\t92\t40\t-1\t\n3\t1\t2\t1\t0\t0\t3374\t428\t92\t40\t-1\t\n4\t1\t2\t1\t1\t0\t3374\t428\t92\t40\t-1\t\n5\t1\t2\t1\t1\t1\t3374\t428\t92\t40\t57.587170\t108\n2\t1\t3\t0\t0\t0\t4018\t430\t387\t48\t-1\t\n3\t1\t3\t1\t0\t0\t4018\t430\t387\t48\t-1\t\n4\t1\t3\t1\t1\t0\t4018\t430\t387\t48\t-1\t\n5\t1\t3\t1\t1\t1\t4018\t430\t237\t38\t96.789238\tHorseback\n5\t1\t3\t1\t1\t2\t4272\t430\t133\t48\t96.535965\tRiding\n2\t1\t4\t0\t0\t0\t4616\t428\t92\t40\t-1\t\n3\t1\t4\t1\t0\t0\t4616\t428\t92\t40\t-1\t\n4\t1\t4\t1\t1\t0\t4616\t428\t92\t40\t-1\t\n5\t1\t4\t1\t1\t1\t4616\t428\t92\t40\t34.666817\t198\n2\t1\t5\t0\t0\t0\t3826\t442\t167\t167\t-1\t\n3\t1\t5\t1\t0\t0\t3826\t442\t167\t167\t-1\t\n4\t1\t5\t1\t1\t0\t3826\t442\t167\t167\t-1\t\n5\t1\t5\t1\t1\t1\t3826\t442\t167\t167\t27.741962\tsr\n2\t1\t6\t0\t0\t0\t4054\t496\t374\t108\t-1\t\n3\t1\t6\t1\t0\t0\t4054\t496\t374\t108\t-1\t\n4\t1\t6\t1\t1\t0\t4054\t496\t374\t108\t-1\t\n5\t1\t6\t1\t1\t1\t4054\t496\t374\t108\t36.595768\tO88\n2\t1\t7\t0\t0\t0\t102\t699\t63\t41\t-1\t\n3\t1\t7\t1\t0\t0\t102\t699\t63\t41\t-1\t\n4\t1\t7\t1\t1\t0\t102\t699\t63\t41\t-1\t\n5\t1\t7\t1\t1\t1\t102\t699\t63\t41\t15.361547\tke\n2\t1\t8\t0\t0\t0\t100\t735\t66\t24\t-1\t\n3\t1\t8\t1\t0\t0\t100\t735\t66\t24\t-1\t\n4\t1\t8\t1\t1\t0\t100\t735\t66\t24\t-1\t\n5\t1\t8\t1\t1\t1\t100\t735\t3\t14\t77.566002\t|\n5\t1\t8\t1\t1\t2\t124\t735\t42\t24\t37.513447\twe\n2\t1\t9\t0\t0\t0\t100\t753\t131\t68\t-1\t\n3\t1\t9\t1\t0\t0\t100\t753\t131\t68\t-1\t\n4\t1\t9\t1\t1\t0\t100\t753\t131\t68\t-1\t\n5\t1\t9\t1\t1\t1\t100\t753\t131\t68\t0.000000\t\\870F\n2\t1\t10\t0\t0\t0\t138\t678\t24\t11\t-1\t\n3\t1\t10\t1\t0\t0\t138\t678\t92\t85\t-1\t\n4\t1\t10\t1\t1\t0\t138\t678\t24\t11\t-1\t\n5\t1\t10\t1\t1\t1\t138\t678\t24\t11\t38.440437\tY\n2\t1\t11\t0\t0\t0\t152\t728\t815\t112\t-1\t\n3\t1\t11\t1\t0\t0\t152\t728\t815\t112\t-1\t\n4\t1\t11\t1\t1\t0\t152\t728\t815\t112\t-1\t\n5\t1\t11\t1\t1\t1\t152\t724\t116\t121\t58.775867\ti\n5\t1\t11\t1\t1\t2\t328\t730\t639\t108\t0.000000\tOOO9™\n2\t1\t12\t0\t0\t0\t2773\t898\t231\t38\t-1\t\n3\t1\t12\t1\t0\t0\t2773\t898\t231\t38\t-1\t\n4\t1\t12\t1\t1\t0\t2773\t898\t231\t38\t-1\t\n5\t1\t12\t1\t1\t1\t2773\t898\t82\t38\t96.874115\tThe\n5\t1\t12\t1\t1\t2\t2871\t898\t133\t38\t96.477936\tWheel\n2\t1\t13\t0\t0\t0\t3374\t896\t92\t40\t-1\t\n3\t1\t13\t1\t0\t0\t3374\t896\t92\t40\t-1\t\n4\t1\t13\t1\t1\t0\t3374\t896\t92\t40\t-1\t\n5\t1\t13\t1\t1\t1\t3374\t896\t92\t40\t57.587170\t108\n2\t1\t14\t0\t0\t0\t4018\t898\t288\t38\t-1\t\n3\t1\t14\t1\t0\t0\t4018\t898\t288\t38\t-1\t\n4\t1\t14\t1\t1\t0\t4018\t898\t288\t38\t-1\t\n5\t1\t14\t1\t1\t1\t4018\t898\t288\t38\t96.350243\tMathematics\n2\t1\t15\t0\t0\t0\t4616\t896\t92\t40\t-1\t\n3\t1\t15\t1\t0\t0\t4616\t896\t92\t40\t-1\t\n4\t1\t15\t1\t1\t0\t4616\t896\t92\t40\t-1\t\n5\t1\t15\t1\t1\t1\t4616\t896\t92\t40\t34.666817\t198\n2\t1\t16\t0\t0\t0\t1340\t908\t892\t176\t-1\t\n3\t1\t16\t1\t0\t0\t1340\t908\t892\t176\t-1\t\n4\t1\t16\t1\t1\t0\t1340\t908\t892\t176\t-1\t\n5\t1\t16\t1\t1\t1\t1340\t908\t892\t176\t30.176134\tGeo\n2\t1\t17\t0\t0\t0\t2812\t964\t374\t108\t-1\t\n3\t1\t17\t1\t0\t0\t2812\t964\t374\t108\t-1\t\n4\t1\t17\t1\t1\t0\t2812\t964\t374\t108\t-1\t\n5\t1\t17\t1\t1\t1\t2812\t964\t374\t108\t75.436241\t680\n2\t1\t18\t0\t0\t0\t4054\t964\t374\t108\t-1\t\n3\t1\t18\t1\t0\t0\t4054\t964\t374\t108\t-1\t\n4\t1\t18\t1\t1\t0\t4054\t964\t374\t108\t-1\t\n5\t1\t18\t1\t1\t1\t4054\t964\t374\t108\t36.880142\teee\n2\t1\t19\t0\t0\t0\t2776\t1367\t190\t47\t-1\t\n3\t1\t19\t1\t0\t0\t2776\t1367\t190\t47\t-1\t\n4\t1\t19\t1\t1\t0\t2776\t1367\t190\t47\t-1\t\n5\t1\t19\t1\t1\t1\t2776\t1367\t190\t47\t96.489914\tMasonry\n2\t1\t20\t0\t0\t0\t3374\t1364\t92\t40\t-1\t\n3\t1\t20\t1\t0\t0\t3374\t1364\t92\t40\t-1\t\n4\t1\t20\t1\t1\t0\t3374\t1364\t92\t40\t-1\t\n5\t1\t20\t1\t1\t1\t3374\t1364\t92\t40\t57.587170\t108\n2\t1\t21\t0\t0\t0\t4017\t1367\t282\t37\t-1\t\n3\t1\t21\t1\t0\t0\t4017\t1367\t282\t37\t-1\t\n4\t1\t21\t1\t1\t0\t4017\t1367\t282\t37\t-1\t\n5\t1\t21\t1\t1\t1\t4017\t1367\t282\t37\t96.611465\tConstruction\n2\t1\t22\t0\t0\t0\t4616\t1364\t92\t40\t-1\t\n3\t1\t22\t1\t0\t0\t4616\t1364\t92\t40\t-1\t\n4\t1\t22\t1\t1\t0\t4616\t1364\t92\t40\t-1\t\n5\t1\t22\t1\t1\t1\t4616\t1364\t92\t40\t34.666817\t198\n2\t1\t23\t0\t0\t0\t2812\t1432\t640\t108\t-1\t\n3\t1\t23\t1\t0\t0\t2812\t1432\t640\t108\t-1\t\n4\t1\t23\t1\t1\t0\t2812\t1432\t640\t108\t-1\t\n5\t1\t23\t1\t1\t1\t2812\t1432\t640\t108\t0.000000\t80O08G\n2\t1\t24\t0\t0\t0\t3826\t1378\t167\t167\t-1\t\n3\t1\t24\t1\t0\t0\t3826\t1378\t167\t167\t-1\t\n4\t1\t24\t1\t1\t0\t3826\t1378\t167\t167\t-1\t\n5\t1\t24\t1\t1\t1\t3826\t1378\t167\t167\t0.000000\t@)\n2\t1\t25\t0\t0\t0\t4054\t1432\t507\t108\t-1\t\n3\t1\t25\t1\t0\t0\t4054\t1432\t507\t108\t-1\t\n4\t1\t25\t1\t1\t0\t4054\t1432\t507\t108\t-1\t\n5\t1\t25\t1\t1\t1\t4054\t1432\t507\t108\t0.000000\tGBOoOo\n2\t1\t26\t0\t0\t0\t2776\t1600\t346\t48\t-1\t\n3\t1\t26\t1\t0\t0\t2776\t1600\t346\t48\t-1\t\n4\t1\t26\t1\t1\t0\t2776\t1600\t346\t48\t-1\t\n5\t1\t26\t1\t1\t1\t2776\t1601\t151\t37\t95.731415\tBronze\n5\t1\t26\t1\t1\t2\t2943\t1600\t179\t48\t95.731415\tWorking\n2\t1\t27\t0\t0\t0\t3374\t1598\t92\t40\t-1\t\n3\t1\t27\t1\t0\t0\t3374\t1598\t92\t40\t-1\t\n4\t1\t27\t1\t1\t0\t3374\t1598\t92\t40\t-1\t\n5\t1\t27\t1\t1\t1\t3374\t1598\t92\t40\t57.587170\t108\n2\t1\t28\t0\t0\t0\t1318\t1354\t1238\t344\t-1\t\n3\t1\t28\t1\t0\t0\t1318\t1354\t1238\t344\t-1\t\n4\t1\t28\t1\t1\t0\t1318\t1354\t1238\t344\t-1\t\n5\t1\t28\t1\t1\t1\t1318\t1354\t1238\t344\t43.257828\tOo\n2\t1\t29\t0\t0\t0\t2812\t1666\t508\t108\t-1\t\n3\t1\t29\t1\t0\t0\t2812\t1666\t508\t108\t-1\t\n4\t1\t29\t1\t1\t0\t2812\t1666\t508\t108\t-1\t\n5\t1\t29\t1\t1\t1\t2812\t1666\t508\t108\t0.000000\t3200\n2\t1\t30\t0\t0\t0\t150\t1909\t32\t1\t-1\t\n3\t1\t30\t1\t0\t0\t150\t1909\t32\t1\t-1\t\n4\t1\t30\t1\t1\t0\t150\t1909\t32\t1\t-1\t\n5\t1\t30\t1\t1\t1\t150\t1909\t32\t1\t71.747009\t—\n2\t1\t31\t0\t0\t0\t368\t1844\t384\t50\t-1\t\n3\t1\t31\t1\t0\t0\t368\t1844\t384\t50\t-1\t\n4\t1\t31\t1\t1\t0\t368\t1844\t384\t50\t-1\t\n5\t1\t31\t1\t1\t1\t368\t1846\t141\t48\t96.603859\tUnits\n5\t1\t31\t1\t1\t2\t531\t1844\t221\t50\t95.939384\tenabled\n2\t1\t32\t0\t0\t0\t419\t1904\t523\t68\t-1\t\n3\t1\t32\t1\t0\t0\t419\t1904\t523\t68\t-1\t\n4\t1\t32\t1\t1\t0\t419\t1904\t523\t68\t-1\t\n5\t1\t32\t1\t1\t1\t419\t1904\t243\t54\t85.573654\t@Archer\n5\t1\t32\t1\t1\t2\t683\t1906\t106\t66\t83.668381\t(5@,\n5\t1\t32\t1\t1\t3\t829\t1906\t113\t66\t61.897209\t7@)\n2\t1\t33\t0\t0\t0\t4163\t1928\t557\t71\t-1\t\n3\t1\t33\t1\t0\t0\t4163\t1928\t557\t71\t-1\t\n4\t1\t33\t1\t1\t0\t4163\t1928\t557\t71\t-1\t\n5\t1\t33\t1\t1\t1\t4163\t1933\t262\t52\t93.303009\tResearch\n5\t1\t33\t1\t1\t2\t4443\t1928\t277\t71\t74.285706\t@Archery\n2\t1\t34\t0\t0\t0\t83\t1963\t160\t52\t-1\t\n3\t1\t34\t1\t0\t0\t83\t1963\t160\t52\t-1\t\n4\t1\t34\t1\t1\t0\t83\t1963\t160\t52\t-1\t\n5\t1\t34\t1\t1\t1\t83\t1963\t160\t52\t96.275360\tClose\n2\t1\t35\t0\t0\t0\t150\t2086\t32\t1\t-1\t\n3\t1\t35\t1\t0\t0\t150\t2086\t32\t1\t-1\t\n4\t1\t35\t1\t1\t0\t150\t2086\t32\t1\t-1\t\n5\t1\t35\t1\t1\t1\t150\t2086\t32\t1\t19.562321\ta\n2\t1\t36\t0\t0\t0\t366\t2038\t494\t50\t-1\t\n3\t1\t36\t1\t0\t0\t366\t2038\t494\t50\t-1\t\n4\t1\t36\t1\t1\t0\t366\t2038\t494\t50\t-1\t\n5\t1\t36\t1\t1\t1\t366\t2038\t251\t50\t96.591820\tWonders\n5\t1\t36\t1\t1\t2\t639\t2038\t221\t50\t96.818756\tenabled\n2\t1\t37\t0\t0\t0\t419\t2098\t3536\t62\t-1\t\n3\t1\t37\t1\t0\t0\t419\t2098\t3536\t62\t-1\t\n4\t1\t37\t1\t1\t0\t419\t2098\t3536\t62\t-1\t\n5\t1\t37\t1\t1\t1\t419\t2098\t270\t62\t88.681969\t@Temple\n5\t1\t37\t1\t1\t2\t710\t2103\t56\t50\t95.519829\tof\n5\t1\t37\t1\t1\t3\t784\t2106\t222\t47\t96.795364\tArtemis\n5\t1\t37\t1\t1\t4\t1029\t2100\t79\t60\t92.988121\t(+1\n5\t1\t37\t1\t1\t5\t1144\t2103\t258\t50\t37.464058\t®Culture:\n5\t1\t37\t1\t1\t6\t1436\t2105\t152\t48\t92.555946\t+10%\n5\t1\t37\t1\t1\t7\t1614\t2103\t194\t50\t38.233192\t@Food\n5\t1\t37\t1\t1\t8\t1833\t2117\t43\t35\t96.293587\tin\n5\t1\t37\t1\t1\t9\t1899\t2103\t59\t50\t96.309914\tall\n5\t1\t37\t1\t1\t10\t1981\t2109\t149\t44\t91.142105\tcities:\n5\t1\t37\t1\t1\t11\t2164\t2105\t153\t48\t92.695602\t+15%\n5\t1\t37\t1\t1\t12\t2340\t2103\t306\t50\t96.556145\tProduction\n5\t1\t37\t1\t1\t13\t2668\t2103\t149\t50\t96.279778\twhen\n5\t1\t37\t1\t1\t14\t2840\t2109\t354\t51\t91.866783\tconstructing\n5\t1\t37\t1\t1\t15\t3215\t2098\t274\t62\t64.866364\t@Archery\n5\t1\t37\t1\t1\t16\t3510\t2109\t135\t44\t94.789558\tunits\n5\t1\t37\t1\t1\t17\t3669\t2117\t43\t35\t94.789558\tin\n5\t1\t37\t1\t1\t18\t3732\t2103\t103\t50\t96.369804\tthis\n5\t1\t37\t1\t1\t19\t3857\t2109\t98\t51\t96.471428\tcity\n2\t1\t38\t0\t0\t0\t4388\t2090\t144\t1\t-1\t\n3\t1\t38\t1\t0\t0\t4388\t2090\t144\t1\t-1\t\n4\t1\t38\t1\t1\t0\t4388\t2090\t144\t1\t-1\t\n5\t1\t38\t1\t1\t1\t4388\t2090\t144\t1\t0.000000\t—EE\n"
+    },
+    "latency_s": 1.219
+  }
+}
