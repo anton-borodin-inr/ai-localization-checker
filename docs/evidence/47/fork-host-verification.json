@@ -1,0 +1,70 @@
+{
+  "all_tests": {
+    "tests": 949,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 20
+  },
+  "l10n_tests": {
+    "tests": 41,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "skipped_tests": [
+    "com.unciv.logic.TranslationTests.measureTranslateCivilopedia",
+    "com.unciv.logic.TranslationTests.translateAndHashCivilopedia",
+    "com.unciv.logic.TranslationTests.listTranslatedNames",
+    "com.unciv.logic.map.PathfindingTests.shortestPathEvenWhenItsWayMoreTiles[ClassicPathfinding]",
+    "com.unciv.logic.map.PathfindingTests.canPauseBeforeMountainsToCrossWithoutDamage[ClassicPathfinding]",
+    "com.unciv.logic.map.PathfindingTests.getMovementToTilesAtPosition_withNegativeMovement_ReturnsOrigin[ClassicPathfinding]",
+    "com.unciv.logic.map.PathfindingTests.getMovementToTilesAtPosition_mountains_movesTo[AStarPathfinding]",
+    "com.unciv.logic.map.PathfindingTests.getMovementToTilesAtPosition_ocean_movesTo[AStarPathfinding]",
+    "com.unciv.logic.map.PathfindingTests.getMovementToTilesAtPosition_withVirtuallyNoMovement_ReturnsNeighbors[AStarPathfinding]",
+    "com.unciv.view.ViewPurityTest.non-Readonly functions in owned Views always return Boolean",
+    "com.unciv.logic.LoadGameTest.updateVanillaGameString",
+    "com.unciv.logic.LoadGameTest.updateReligionGameString",
+    "com.unciv.logic.LoadGameTest.updateScreenshotGame",
+    "com.unciv.logic.map.ResourceDiversityTest.resourceDiversityAcrossMapSizesAndTypes",
+    "com.unciv.logic.automation.unit.WorkerAutomationTest.should connect small cities with roads despite competing farm tiles",
+    "com.unciv.ui.components.tilegroups.EditorMapHolderMemoryTest.tileGroupMemoryBreakdown",
+    "com.unciv.testing.BasicTests.statMathStressTest",
+    "com.unciv.logic.MediaFinderTests.Sound listing does not include bullshit",
+    "com.unciv.ui.screens.devconsole.DevConsoleTests.listAllCommands",
+    "com.unciv.logic.NextTurnLatencyTest.classMethod"
+  ],
+  "lint_severities": {
+    "Warning": 36
+  },
+  "provider_requests": 0,
+  "provider_cost_usd": 0,
+  "device_commands": 0,
+  "device_verification": "not_run",
+  "lint_ids": {
+    "OldTargetApi": 1,
+    "UnusedAttribute": 4,
+    "AndroidGradlePluginVersion": 1,
+    "GradleDependency": 3,
+    "NewerVersionAvailable": 16,
+    "UnusedResources": 2,
+    "TypographyEllipsis": 1,
+    "MonochromeLauncherIcon": 2,
+    "IconDensities": 3,
+    "UseKtx": 3
+  },
+  "base_commit": "877b0dc2ee706dbbdb4a17e14b4522408d197390",
+  "branch": "feat/47-engine-text-dump",
+  "version_code": 1271047,
+  "version_name": "4.22.10",
+  "apk_path": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/Unciv/build/issue47-evidence/Unciv-1271047-debug.apk",
+  "apk_sha256": "ecd8c424dc09500f32edd075df71903ab64f6ba9c7ba985bc536e80f21e2c438",
+  "build_command": "./gradlew :tests:test :android:assembleDebug :android:lintDebug --no-daemon",
+  "build_exit_code": 0,
+  "build_log": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/Unciv/build/issue47-evidence/host-checks-release-candidate.log",
+  "diff_check_exit_code": 0,
+  "signer_certificate_sha256": "b4752f8cee80842f55883ca2a9b62ca75c898df5a1b7cefd63959ba1b8fecb99",
+  "sample_dump": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/Unciv/build/issue47-evidence/host-draw-sample.texts.json",
+  "sample_sha256": "dc4269e8827703c5f9e443c6e52d222a165618413a0acc6b039bb972589f2c80",
+  "commit": "df59cf982e3035f7733d4ffd58e3a56325eb4c82",
+  "worktree_clean": true
+}

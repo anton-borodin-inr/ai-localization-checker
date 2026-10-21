@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "protocol_version": 2,
+  "build": {
+    "version_code": "1271047",
+    "apk_sha256": "ecd8c424dc09500f32edd075df71903ab64f6ba9c7ba985bc536e80f21e2c438",
+    "fork_commit": "df59cf982e3035f7733d4ffd58e3a56325eb4c82",
+    "implementation_commit": "df59cf982e3035f7733d4ffd58e3a56325eb4c82"
+  },
+  "resolution": [
+    2400,
+    1080
+  ],
+  "density_dpi": 420,
+  "languages": [
+    {
+      "code": "en",
+      "game_language": "English",
+      "settings": "settings/en.json",
+      "sha256": "853e1a055177314c866ae4427e697adeb6f79cab051d31bff0d6160b149c1776"
+    },
+    {
+      "code": "de",
+      "game_language": "German",
+      "settings": "settings/de.json",
+      "sha256": "397ddd96452874b01d9f096311049c0d076492297d557a9fb7c3d2abf1f3cdea"
+    }
+  ],
+  "fixtures": [
+    {
+      "name": "issue-8-pair",
+      "path": "saves/issue-8-pair",
+      "sha256": "9d2a4cd5e1de2b2ae9102a2e6e6d15210e32ae5188c895f84e8a3a6ce19c3b4e"
+    },
+    {
+      "name": "issue-40-belgrade-metissue-8-pair",
+      "path": "saves/issue-40-belgrade-metissue-8-pair",
+      "sha256": "2cf381aa7bf544961a302989c027045572b8d7036ab1840b01bc3ee4409c551e"
+    }
+  ],
+  "screens": [
+    {
+      "id": "options-gameplay",
+      "route": "Main menu > Options > Gameplay; tab row and content at start; fixed toggles and history slider.",
+      "state": "states/options-gameplay.json",
+      "sha256": "9fd7cb6cfde13aed3e2baaf4120aa07c0f80f8a14cc36ed5facbc1d553e8205f",
+      "languages": null,
+      "language_states": {},
+      "notes": []
+    },
+    {
+      "id": "new-game",
+      "route": "Main menu > New Game; four random players (one human, three AI), Chieftain, Quick, Ancient era, 500 turns, six city-states, Pangaea Medium; closed dropdowns; all panes at start.",
+      "state": "states/new-game.json",
+      "sha256": "72b95927042892b69c9693646c449a1c5b8e945b33c585cdd862c330be83886a",
+      "languages": null,
+      "language_states": {},
+      "notes": [
+        "Hook v1 pins the displayed preview/background to seed 40. new_game.seed=0 describes the unstarted setup only; no claim that starting that game would reproduce its map."
+      ]
+    },
+    {
+      "id": "tech-picker",
+      "route": "Fixture game > Technology picker; Archery selected without confirming, Mining visible; description at start.",
+      "state": "states/tech-picker.json",
+      "sha256": "c6567bc8f3a60c669d551528105f54d7f0372d7f3c0553284777ae4dcf81bb7e",
+      "languages": null,
+      "language_states": {},
+      "notes": []
+    },
+    {
+      "id": "city-production",
+      "route": "Fixture game > Istanbul > Production; turn 1, population 1, empty queue; Units expanded, Worker selected without queuing or purchasing.",
+      "state": "states/city-production.json",
+      "sha256": "29b7adc75fda2b3db0bbcb72f24753cfa064b4d9c047e34def59acae9e8ec6b3",
+      "languages": null,
+      "language_states": {},
+      "notes": []
+    },
+    {
+      "id": "empire-stats",
+      "route": "Fixture game > Overview > Statistics; fixed turn and economy from issue-8-pair.",
+      "state": "states/empire-stats.json",
+      "sha256": "564605bc936466fe4e2aff4e3f6cf4e2fb29f3af58b13148e684477e7c770353",
+      "languages": null,
+      "language_states": {},
+      "notes": []
+    },
+    {
+      "id": "policy-picker",
+      "route": "Fixture game > Social policies; Tradition, Liberty, Honor, Piety and Patronage expanded, other branches collapsed; no policy adopted.",
+      "state": "states/policy-picker.json",
+      "sha256": "95c1c7bf2aeeb2cf687060455293e738c7da8b192a1960a07bf2d70d025e0802",
+      "languages": null,
+      "language_states": {},
+      "notes": []
+    },
+    {
+      "id": "victory-status",
+      "route": "Fixture game > Victory status > Our status; all panes at start; columns beyond viewport stay outside (D-025).",
+      "state": "states/victory-status.json",
+      "sha256": "028260bc06afb8d71df090a491e04930391f286f52cfad7136960c65fc0d5adc",
+      "languages": null,
+      "language_states": {},
+      "notes": []
+    },
+    {
+      "id": "civilopedia",
+      "route": "Fixture game > Civilopedia > Tutorials > Differences from Civilization V; category ribbon, entry list and article at start.",
+      "state": "states/civilopedia.json",
+      "sha256": "f1fc9ac2f47523e8276a9bad19e1a1b1bce0b5dc99ab943b90c2f89d23a9d773",
+      "languages": null,
+      "language_states": {},
+      "notes": []
+    },
+    {
+      "id": "world",
+      "route": "Fixture game > World; turn 1, Warrior selected at [-7, 11], capital-centred camera at zoom 1; resource bar and minimap visible; empty notification list accepted by Anton; no transient UI.",
+      "state": "states/world.json",
+      "sha256": "6c739c5c7e6c5cebb31f1617c656260c91916077f1c99f3d1b7bda277dca3b14",
+      "languages": null,
+      "language_states": {},
+      "notes": [
+        "Notifications: empty on turn 1 in issue-8-pair; explicitly accepted by Anton for screen 09. No notifications are fabricated."
+      ]
+    },
+    {
+      "id": "city-state-diplomacy",
+      "route": "Separate Belgrade-met fixture > Diplomacy > Belgrade; relationship panel at start, no hint popup; ordinary +30 gold first-contact effects retained.",
+      "state": "states/city-state-diplomacy.json",
+      "sha256": "ec4461d880df67235db31cd75f3845bad7663b4d06f0da6550a489dda4bf565b",
+      "languages": null,
+      "language_states": {},
+      "notes": []
+    }
+  ]
+}

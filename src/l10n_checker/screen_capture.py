@@ -27,6 +27,11 @@ from l10n_checker.screen_manifest import Inputs, digest
 from l10n_checker.text_dump import canonical_bytes, read_dump, rgba_digest
 
 SAVES_PATH = f"/sdcard/Android/data/{PACKAGE}/files/SaveFiles"
+HOOK_DIRECTORY_OPERATION = {
+    "operation": "ensure_hook_output_directory",
+    "path": "files/l10n-hook",
+    "condition": "created by the hook if absent before dump publication",
+}
 
 
 def write_json(path: Path, value):
@@ -234,6 +239,7 @@ def prepare_device(
         result.update(
             serial=device.serial,
             request_namespace=namespace,
+            planned_hook_directory_operation=HOOK_DIRECTORY_OPERATION,
             planned_hook_output_operations=planned_hook_outputs(
                 inputs, languages, namespace
             ),
@@ -324,7 +330,11 @@ def capture_manifest(
         outputs = planned_hook_outputs(
             inputs, languages, approved.get("request_namespace", "")
         )
-        if approved.get("planned_hook_output_operations") != outputs:
+        if (
+            approved.get("planned_hook_output_operations") != outputs
+            or approved.get("planned_hook_directory_operation")
+            != HOOK_DIRECTORY_OPERATION
+        ):
             raise CaptureError(
                 "Prepared hook output operations changed; no device access"
             )
@@ -350,6 +360,7 @@ def capture_manifest(
 
     checkpoint()
     snapshot = None
+    directory_record = None
     output_map = (
         {(r["screen"], r["language"], r["pass"]): r for r in outputs} if v2 else {}
     )
@@ -429,6 +440,14 @@ def capture_manifest(
                             checkpoint()
                             try:
                                 if v2:
+                                    if directory_record is None:
+                                        directory_record = {
+                                            **HOOK_DIRECTORY_OPERATION,
+                                            "status": "attempted_or_already_present",
+                                        }
+                                        summary["app_data_operations"].append(
+                                            directory_record
+                                        )
                                     operation = {
                                         "operation": "hook_output",
                                         **output,
@@ -496,6 +515,7 @@ def capture_manifest(
                                     operation.update(
                                         status="verified", sha256=digest(dump)
                                     )
+                                    directory_record["status"] = "verified_present"
                                 if device.read_file(SETTINGS_PATH) != payload:
                                     raise CaptureError(
                                         "Settings changed while capturing; no PNG saved"

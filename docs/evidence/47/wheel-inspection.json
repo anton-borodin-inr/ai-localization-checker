@@ -1,0 +1,8 @@
+{
+  "wheel": "ai_localization_checker-0.1.0-py3-none-any.whl",
+  "sha256": "7bb89f1d817d34b70ce963656ca6c2fff50643d33af14d4e70728575c855954b",
+  "packaged_script_matches_source": true,
+  "reference_cli_entrypoint": true,
+  "live_provider_requests": 0,
+  "device_commands": 0
+}

@@ -160,7 +160,8 @@ def candidate_for(pair_path: Path) -> dict:
                 element.visibility == "full"
                 and element.bounds is not None
                 and any(c.isalpha() for c in text)
-                and not warning
+                # An absent English key does not make observed glyph text uncertain.
+                and not [w for w in warning if w != "source_unavailable"]
             )
             rows.append(
                 {

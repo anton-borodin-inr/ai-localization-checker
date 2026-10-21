@@ -52,6 +52,13 @@ byte-identical as well as PNGs being pixel-identical. Dump differences remain
 in the summary and make the run unsuccessful; request IDs are not stripped
 from files to manufacture equality.
 
+`fixtures/stage2/screens-v2.json` pins the host-built APK 1271047 (fork commit
+`df59cf982e3035f7733d4ffd58e3a56325eb4c82`, APK SHA-256
+`ecd8c424dc09500f32edd075df71903ab64f6ba9c7ba985bc536e80f21e2c438`).
+It reuses every v1 screen/state/settings/save byte and route. It is a prepared
+input, not evidence of installation or device acceptance. A changed build
+requires a new manifest pin and exact-write approval.
+
 After capture, compare all 40 new PNGs against the original 1271045 run:
 
 ```sh
@@ -75,7 +82,8 @@ operation approval/backups. The v2 manifest must name the actual new APK and
 fork hashes; keep 1271045's manifest intact. Then a fresh `--prepare-only`
 creates the #41 settings/save backup and a device plan. In v2 this includes
 the serial, a fresh request namespace and every exact temporary/final hook
-output path in `planned_hook_output_operations`. Capture requires this plan
+output path in `planned_hook_output_operations`, plus conditional creation of
+`files/l10n-hook` in `planned_hook_directory_operation`. Capture requires this plan
 and checks it before settings writes. A repeated capture needs a fresh plan
 and approval: do not reuse request IDs or delete existing device outputs.
 The hook-output journal records attempted and verified writes separately
@@ -124,7 +132,9 @@ Rules fixed before device results:
   boundaries belong to the cell on the right/below; screen-edge cases clamp
   to the grid. Hidden ellipsis suffixes do not enlarge the display box.
 - Unknown owner/other uncertainty is visible to Anton and defaults to
-  diagnostic. Draw/scissor visibility does not prove that a later opaque
+  diagnostic. A known absence of an English source key (`source_unavailable`)
+  is provenance information, so fully visible established text can still be
+  a primary candidate. Draw/scissor visibility does not prove that a later opaque
   widget did not cover text. Resolve missing draw coverage before acceptance.
 
 These rules do not modify the #10 approved reference, D-037 replay, matching,

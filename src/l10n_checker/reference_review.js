@@ -52,11 +52,11 @@
   function renderRows() {
     $("rows").replaceChildren();
     $("counts").textContent = `${candidate.rows.length} units · ${candidate.rows.filter(r => r.primary_denominator).length} primary · all pending confirmation`;
-    candidate.rows.forEach(row => {
+    candidate.rows.forEach((row, rowIndex) => {
       const card = document.createElement("article");
       card.className = `row${row.primary_denominator ? "" : " diagnostic"}${row.id === selected ? " selected" : ""}`;
       card.addEventListener("click", () => { selected = row.id; drawBoxes(); });
-      const label = document.createElement("strong"); label.textContent = row.id; card.append(label);
+      const label = document.createElement("strong"); label.textContent = `Unit ${rowIndex + 1}`; label.title = row.id; card.append(label);
       const text = document.createElement("textarea"); text.value = row.text_seen;
       text.setAttribute("aria-label", "Visible text for " + row.id);
       text.addEventListener("input", () => { row.text_seen = text.value; row.human_edited = true; });
@@ -79,7 +79,7 @@
         warning.textContent=row.warnings.join("; "); card.append(warning); }
       const details=document.createElement("details"), summary=document.createElement("summary"), pre=document.createElement("pre");
       summary.textContent="Source and hidden input — never copied into visible text";
-      pre.textContent=JSON.stringify({source_keys:row.source_keys, input_text:row.input_text, element_ids:row.element_ids},null,2);
+      pre.textContent=JSON.stringify({id:row.id,source_keys:row.source_keys,input_text:row.input_text,element_ids:row.element_ids},null,2);
       details.append(summary,pre); card.append(details); $("rows").append(card);
     }); drawBoxes();
   }

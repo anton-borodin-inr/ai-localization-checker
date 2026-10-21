@@ -104,7 +104,7 @@ def write_pair(root, dump):
         "protocol_version": 2,
         "screen": dump["screen"],
         "language": dump["language"],
-        "build": {"version_code": "1271045"},
+        "build": {"version_code": str(dump["build_version_code"])},
         "state_sha256": dump["state_sha256"],
         "png": "screen.png",
         "png_sha256": digest(png),
@@ -131,6 +131,47 @@ def test_strict_dump_validation_and_original_rendered_text():
         load_dump(
             raw.replace(b'"dump_version":1', b'"dump_version":1,"dump_version":1')
         )
+
+
+@pytest.mark.parametrize(
+    ("sample", "display", "hidden_input"),
+    [
+        ("fork-synthetic-sample.texts.json", "ü", "ü hidden suffix"),
+        ("fork-host-draw-sample.texts.json", "üЖ...", "[RED]üЖ[] long suffix"),
+    ],
+)
+def test_kotlin_generated_dump_is_consumed_verbatim_without_hidden_input(
+    tmp_path, sample, display, hidden_input
+):
+    source = Path(__file__).resolve().parents[1] / "docs/evidence/47" / sample
+    raw = source.read_bytes()
+    dump = load_dump(raw)
+    with pytest.raises(CaptureError, match="build_version_code mismatch"):
+        load_dump(raw, expected={"build_version_code": 1271045})
+    pair = write_pair(tmp_path, json.loads(raw))
+    (tmp_path / "screen.texts.json").write_bytes(raw)
+    metadata = json.loads(pair.read_bytes())
+    metadata["dump_sha256"] = digest(raw)
+    pair.write_bytes(canonical_bytes(metadata))
+    candidate = candidate_for(pair)
+    assert candidate["dump"]["sha256"] == digest(raw)
+    assert candidate["rows"][0]["text_seen"] == dump.elements[0].display_text == display
+    assert candidate["rows"][0]["input_text"] == hidden_input
+    assert "suffix" not in candidate["rows"][0]["text_seen"]
+
+
+def test_build_pinned_v2_manifest_reuses_all_v1_screen_inputs():
+    v1 = Inputs(FIXTURES / "screens.json")
+    v2 = Inputs(FIXTURES / "screens-v2.json")
+    assert v1.manifest.protocol_version == 1
+    assert v2.manifest.protocol_version == 2
+    assert v2.manifest.build.version_code == "1271047"
+    assert v2.manifest.model_dump(exclude={"build", "protocol_version"}) == (
+        v1.manifest.model_dump(exclude={"build", "protocol_version"})
+    )
+    assert v2.states == v1.states
+    assert v2.settings == v1.settings
+    assert v2.fixtures == v1.fixtures
 
 
 def test_projection_coordinates_and_grid_edges():
@@ -198,12 +239,17 @@ def test_zero_alpha_unmapped_and_composed_text(tmp_path):
     unmapped = element(
         "Review", "root/2", bounds=None, actor_path=None, warnings=["unknown_owner"]
     )
+    no_key = element(
+        "Drawn text", "root/3", source_key=None, warnings=["source_unavailable"]
+    )
     rows = candidate_for(
-        write_pair(tmp_path, dump_for(elements=[invisible, composed, unmapped]))
+        write_pair(tmp_path, dump_for(elements=[invisible, composed, unmapped, no_key]))
     )["rows"]
-    assert [r["text_seen"] for r in rows] == ["4 turns", "Review"]
+    assert [r["text_seen"] for r in rows] == ["4 turns", "Review", "Drawn text"]
     assert rows[0]["source_keys"] == ["[amount] turns"]
     assert rows[1]["primary_denominator"] is False
+    assert rows[2]["primary_denominator"] is True
+    assert rows[2]["source_keys"] == []
 
 
 @pytest.mark.parametrize(
@@ -295,6 +341,30 @@ def test_v2_missing_device_plan_has_no_device_access(tmp_path, monkeypatch):
     device = DumpDevice(inputs)
     with pytest.raises(CaptureError, match="exact device plan"):
         capture_manifest(device, inputs, tmp_path / "data/run")
+    assert device.calls == []
+
+
+@pytest.mark.parametrize("change", ["missing_directory", "directory", "temporary"])
+def test_v2_changed_output_write_plan_is_rejected_before_device_access(
+    tmp_path, monkeypatch, change
+):
+    monkeypatch.setattr(legacy, "REPO_ROOT", tmp_path)
+    inputs = Inputs(FIXTURES / "screens.json")
+    inputs.manifest = inputs.manifest.model_copy(update={"protocol_version": 2})
+    device = DumpDevice(inputs)
+    prepare = tmp_path / "data/prepare"
+    plan = prepare_device(device, inputs, prepare)
+    device.calls.clear()
+    if change == "missing_directory":
+        del plan["planned_hook_directory_operation"]
+    elif change == "directory":
+        plan["planned_hook_directory_operation"] = {"path": "files/another"}
+    else:
+        plan["planned_hook_output_operations"][0]["temporary"] += ".changed"
+    path = prepare / "device-plan.json"
+    path.write_bytes(canonical_bytes(plan))
+    with pytest.raises(CaptureError, match="output operations changed"):
+        capture_manifest(device, inputs, tmp_path / "data/run", device_plan=path)
     assert device.calls == []
 
 
