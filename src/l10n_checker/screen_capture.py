@@ -24,6 +24,7 @@ from l10n_checker.capture import (
 )
 from l10n_checker.hook import HookFailure, request_screen
 from l10n_checker.screen_manifest import Inputs, digest
+from l10n_checker.text_dump import canonical_bytes, read_dump, rgba_digest
 
 SAVES_PATH = f"/sdcard/Android/data/{PACKAGE}/files/SaveFiles"
 
@@ -179,6 +180,27 @@ def planned_operations(
     return operations
 
 
+def planned_hook_outputs(
+    inputs: Inputs, languages: list[str], namespace: str
+) -> list[dict]:
+    """Preallocate every v2 request/output so device approval names exact paths."""
+    if re.fullmatch(r"[a-f0-9]{32}", namespace) is None:
+        raise CaptureError("Invalid hook-output namespace")
+    return [
+        {
+            "pass": n,
+            "language": language,
+            "screen": screen.id,
+            "request": f"i47-{namespace}-{n}-{li}-{si}",
+            "temporary": f"files/l10n-hook/i47-{namespace}-{n}-{li}-{si}.json.tmp",
+            "file": f"files/l10n-hook/i47-{namespace}-{n}-{li}-{si}.json",
+        }
+        for n in (1, 2)
+        for li, language in enumerate(languages)
+        for si, screen in enumerate(inputs.screens(language, n == 2))
+    ]
+
+
 def prepare_device(
     device: Device, inputs: Inputs, folder: Path, languages=None
 ) -> dict:
@@ -207,6 +229,15 @@ def prepare_device(
             "unique Android logcat barrier per request (Android logs only)",
         ],
     }
+    if inputs.manifest.protocol_version == 2:
+        namespace = uuid.uuid4().hex
+        result.update(
+            serial=device.serial,
+            request_namespace=namespace,
+            planned_hook_output_operations=planned_hook_outputs(
+                inputs, languages, namespace
+            ),
+        )
     write_json(folder / "device-plan.json", result)
     return result
 
@@ -284,6 +315,19 @@ def capture_manifest(
     device_plan: Path | None = None,
 ) -> dict:
     languages = inputs.languages(languages)
+    v2 = inputs.manifest.protocol_version == 2
+    approved = None
+    if v2:
+        if device_plan is None:
+            raise CaptureError("Protocol v2 requires a prepared exact device plan")
+        approved = json.loads(device_plan.read_bytes())
+        outputs = planned_hook_outputs(
+            inputs, languages, approved.get("request_namespace", "")
+        )
+        if approved.get("planned_hook_output_operations") != outputs:
+            raise CaptureError(
+                "Prepared hook output operations changed; no device access"
+            )
     if timeout_s <= 60 or not timeout_s < float("inf"):
         raise CaptureError("Hook deadline must be finite and greater than 60 seconds")
     folder = new_folder(folder, overwrite)
@@ -306,6 +350,9 @@ def capture_manifest(
 
     checkpoint()
     snapshot = None
+    output_map = (
+        {(r["screen"], r["language"], r["pass"]): r for r in outputs} if v2 else {}
+    )
 
     def write_settings(data: bytes, operation: str, **details):
         entry = {
@@ -347,6 +394,7 @@ def capture_manifest(
                     or approved.get("planned_app_data_operations")
                     != summary["planned_app_data_operations"]
                     or approved.get("backup", {}).get("saves") != snapshot["saves"]
+                    or (v2 and approved.get("serial") != device.serial)
                 ):
                     raise CaptureError(
                         "Device inputs changed since the prepared plan; no app data written"
@@ -364,7 +412,10 @@ def capture_manifest(
                             pass_number=pass_number,
                         )
                         for screen in inputs.screens(language, pass_number == 2):
-                            token = "i41-" + uuid.uuid4().hex
+                            output = output_map.get((screen.id, language, pass_number))
+                            token = (
+                                output["request"] if v2 else "i41-" + uuid.uuid4().hex
+                            )
                             state = inputs.states[screen.id, language]
                             record = {
                                 "pass": pass_number,
@@ -377,8 +428,21 @@ def capture_manifest(
                             summary["records"].append(record)
                             checkpoint()
                             try:
+                                if v2:
+                                    operation = {
+                                        "operation": "hook_output",
+                                        **output,
+                                        "status": "attempted",
+                                    }
+                                    summary["app_data_operations"].append(operation)
+                                    checkpoint()
                                 record["readiness"] = request(
-                                    device, screen.id, token, state, timeout_s
+                                    device,
+                                    screen.id,
+                                    token,
+                                    state,
+                                    timeout_s,
+                                    **({"protocol_version": 2} if v2 else {}),
                                 )
                                 unciv_in_foreground(device)
                                 device.check_cutout()
@@ -400,6 +464,38 @@ def capture_manifest(
                                     )
                                 with Image.open(io.BytesIO(png)) as image:
                                     image.load()
+                                if v2:
+                                    game_language = next(
+                                        l.game_language
+                                        for l in inputs.manifest.languages
+                                        if l.code == language
+                                    )
+                                    dump_event = record["readiness"].get("dump")
+                                    if (
+                                        not dump_event
+                                        or dump_event["file"] != output["file"]
+                                    ):
+                                        raise CaptureError(
+                                            "Missing or mismatched prepared dump output"
+                                        )
+                                    dump = read_dump(
+                                        device,
+                                        dump_event,
+                                        {
+                                            "screen": screen.id,
+                                            "language": game_language,
+                                            "build_version_code": int(
+                                                inputs.manifest.build.version_code
+                                            ),
+                                            "state_sha256": digest(
+                                                canonical_bytes(state)
+                                            ),
+                                            "image_size": list(size),
+                                        },
+                                    )
+                                    operation.update(
+                                        status="verified", sha256=digest(dump)
+                                    )
                                 if device.read_file(SETTINGS_PATH) != payload:
                                     raise CaptureError(
                                         "Settings changed while capturing; no PNG saved"
@@ -416,6 +512,37 @@ def capture_manifest(
                                 with temporary.open("xb") as stream:
                                     stream.write(png)
                                 temporary.rename(folder / target)
+                                if v2:
+                                    dump_target = target.with_suffix(".texts.json")
+                                    pair_target = target.with_suffix(".pair.json")
+                                    dump_temporary = (folder / dump_target).with_suffix(
+                                        ".tmp"
+                                    )
+                                    with dump_temporary.open("xb") as stream:
+                                        stream.write(dump)
+                                    dump_temporary.rename(folder / dump_target)
+                                    pair = {
+                                        "pair_version": 1,
+                                        "protocol_version": 2,
+                                        "screen": screen.id,
+                                        "language": game_language,
+                                        "build": inputs.manifest.build.model_dump(),
+                                        "state_sha256": digest(canonical_bytes(state)),
+                                        "png": target.name,
+                                        "png_sha256": digest(png),
+                                        "rgba_sha256": rgba_digest(png),
+                                        "dump": dump_target.name,
+                                        "dump_sha256": digest(dump),
+                                    }
+                                    # The sidecar is the final commit marker. A PNG alone
+                                    # never establishes a successful v2 pair.
+                                    write_json(folder / pair_target, pair)
+                                    record.update(
+                                        dump=str(dump_target),
+                                        dump_sha256=digest(dump),
+                                        pair=str(pair_target),
+                                        rgba_sha256=pair["rgba_sha256"],
+                                    )
                                 record.update(
                                     status="captured",
                                     png=str(target),
@@ -470,9 +597,18 @@ def capture_manifest(
                     comparison.update(
                         compare_pixels(*(folder / r["png"] for r in pair))
                     )
+                    if v2:
+                        equal = (folder / pair[0]["dump"]).read_bytes() == (
+                            folder / pair[1]["dump"]
+                        ).read_bytes()
+                        comparison["dump_status"] = (
+                            "identical" if equal else "different"
+                        )
                 summary["comparisons"].append(comparison)
         success = not summary.get("fatal_error") and all(
-            c["status"] == "identical" for c in summary["comparisons"]
+            c["status"] == "identical"
+            and (not v2 or c.get("dump_status") == "identical")
+            for c in summary["comparisons"]
         )
         summary["status"] = "complete" if success else "failed"
         checkpoint()

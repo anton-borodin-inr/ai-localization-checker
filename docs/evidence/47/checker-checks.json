@@ -1,0 +1,58 @@
+{
+  "checks": [
+    {
+      "command": [
+        "uv",
+        "run",
+        "--offline",
+        "--cache-dir",
+        "/private/tmp/issue47-uv-cache",
+        "pytest",
+        "-q",
+        "-rs"
+      ],
+      "exit_code": 0,
+      "output": "checker-pytest.txt"
+    },
+    {
+      "command": [
+        "uv",
+        "run",
+        "--offline",
+        "--cache-dir",
+        "/private/tmp/issue47-uv-cache",
+        "ruff",
+        "check",
+        "."
+      ],
+      "exit_code": 0,
+      "output": "checker-ruff.txt"
+    },
+    {
+      "command": [
+        "uv",
+        "run",
+        "--offline",
+        "--cache-dir",
+        "/private/tmp/issue47-uv-cache",
+        "ruff",
+        "format",
+        "--check",
+        "."
+      ],
+      "exit_code": 0,
+      "output": "checker-format.txt"
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "output": "checker-diff-check.txt"
+    }
+  ],
+  "live_provider_requests": 0,
+  "api_spend_usd": 0
+}

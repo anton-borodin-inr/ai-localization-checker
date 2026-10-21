@@ -384,3 +384,21 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 - **Why:** Anton approved the #41 plan and both fixture choices on 2026-10-21. The Belgrade save preserves normal first-contact effects (+30 gold), so it must not replace the base economy on other screens. Same-order repeats cannot expose order dependence; Anton requires the second pass in reverse screen order.
 - **Alternatives considered:** Map editor (replaced by World); fabricate notifications or advance/change the base game (unnecessary for the accepted empty list); use the Belgrade save everywhere (changes economy); two same-order passes (weaker verification).
 - **Consequences:** Commit fixtures, provenance and fixed settings with a hash-pinned manifest. Each of two passes keeps languages outside the screen loop and starts a fresh app per language; pass 1 is forward, pass 2 reverse. Compare decoded pixels for each screen/language pair, retaining failures and non-identical results. Use D-038 unchanged. No detector, truncation check, labels or split is performed. D-025's two outstanding human scroll checks remain report items. Number checked against main `eb5616d` before implementation; recheck before merge.
+
+## D-0XX — Additive hook protocol v2 and rendered text outputs
+
+- **Date:** 2026-10-21
+- **Status:** Proposed
+- **Decision:** Keep D-038 Accepted for v1 and opt into protocol v2 with `l10n_protocol=2`, retaining state schema v1 and existing events. V2 additionally publishes a deterministic engine text dump and a hash-bearing DUMP event before READY. Bind dump and PNG hashes in capture sidecars; list every temporary/final dump path as a hook output in the separately approved device plan.
+- **Why:** Issue #47 needs build-pinned rendered strings and clipping geometry without deriving references from OCR/model output. A file avoids logcat line-size limits. Request IDs and timing belong to transport provenance, outside deterministic dump bytes. Anton approved the implementation plan on 2026-10-21.
+- **Alternatives considered:** Replace v1 or change D-038 in place (breaks the Accepted contract); log the entire dump (size limits); traverse label strings only (includes undrawn text and hidden ellipsis suffixes).
+- **Consequences:** Actual draw/cache observation and the four #44 robustness fixes live only in the separate fork. The checker supports v1 and v2, retains D-039 fixtures/order, checks dump identity and repeated bytes, and records outputs separately from settings/saves. Device work waits for emulator release and exact-operation confirmation. See [engine-text-reference.md](engine-text-reference.md). This entry remains D-0XX until rebasing before merge alongside #45/#48.
+
+## D-0XX — Engine candidates, occurrence units and hash-bound human review
+
+- **Date:** 2026-10-21
+- **Status:** Proposed
+- **Decision:** Generate unconfirmed D-033-compatible rows from rendered engine draws: preserve occurrences, group only explicit decorative duplicates, retain wrapped/composed logical units, and put partially clipped/uncertain/numeric-only units in diagnostics. Never complete a hidden span from source input. Anton edits/adds/removes units and confirms exact candidate, PNG and dump hashes; record active/elapsed review time per screen.
+- **Why:** Engine source scales reference preparation without inheriting OCR/model omissions, but visibility and unit choices still require human QA ownership. Separating source input from rendered/visible text prevents invisible content from inflating the reference. Anton approved these rules before device results.
+- **Alternatives considered:** Deduplicate strings (loses occurrences); infer composed text from nearby boxes (invents units); use full input for clipped rows (introduces hidden text); automatically accept engine output (removes human confirmation).
+- **Consequences:** Local review pages and `l10n-reference` generate candidates and validate explicit human export separately. Confirmed projection preserves order/repeats and primary versus clipped diagnostics. D-033 remains Proposed; the approved #10 reference and D-037 replay are unchanged. No detector, baseline, matching, metric, golden, label or split changes. See [engine-text-reference.md](engine-text-reference.md). Assign the next free number only when rebasing before merge.
