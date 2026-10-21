@@ -113,14 +113,3 @@ def coverage(rows: list[dict], readings: list[dict]) -> dict:
         "diagnostic_clipped": aggregate([m for m in matches if not m["primary"]]),
         "matches": matches,
     }
-
-
-def image_tokens(usage: dict | None) -> int | None:
-    if not usage or not usage.get("prompt_tokens_details"):
-        return None
-    counts = [
-        part["token_count"]
-        for part in usage["prompt_tokens_details"]
-        if part.get("modality", "").upper() == "IMAGE" and "token_count" in part
-    ]
-    return sum(counts) if counts else None

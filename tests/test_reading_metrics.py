@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pytest
 
-from l10n_checker.reading_metrics import coverage, image_tokens, span_score
+from l10n_checker.reading_metrics import coverage, span_score
 
 GOLDEN = json.loads(
     (Path(__file__).parent / "golden/small_text_cases.json").read_text()
@@ -49,20 +49,4 @@ def test_overlap_does_not_inflate_coverage_or_cover_another_location():
     assert (
         coverage(rows, [{**reading, "region": "top-right"}])["primary"]["exact_count"]
         == 1
-    )
-
-
-def test_absent_image_token_breakdown_is_unavailable():
-    assert image_tokens(None) is None
-    assert image_tokens({"prompt_token_count": 1000}) is None
-    assert (
-        image_tokens(
-            {
-                "prompt_tokens_details": [
-                    {"modality": "IMAGE", "token_count": 1120},
-                    {"modality": "TEXT", "token_count": 100},
-                ]
-            }
-        )
-        == 1120
     )

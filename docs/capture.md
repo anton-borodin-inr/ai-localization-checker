@@ -153,17 +153,16 @@ no PNG. A failure after the language was written, such as a failed
 unsupported language, unknown cutout, absent Unciv, language that was not
 applied, failed restart or mismatched PNG size is also an error.
 
-## Informational timing
+## Historical timing
 
-```bash
-uv run python scripts/benchmark_capture.py --output-dir data/timing
-```
+The one-off capture benchmark was retired in issue #39 after the transport
+choice was settled (D-022). Its measurements and conditions are retained below.
 
-With Unciv already in the foreground, this performs 10 captures with SDK
-`adb exec-out screencap -p`. Each sample sums PNG retrieval and file-write wall
-time (`perf_counter`). Validation is outside the timed intervals and runs before
-each file is saved. There is no warmup or `fsync`; filesystem cache can affect
-results. This is not an end-to-end CLI timing.
+With Unciv already in the foreground, the issue #22 benchmark performed 10
+captures with SDK `adb exec-out screencap -p`. Each sample summed PNG retrieval
+and file-write wall time (`perf_counter`). Validation was outside the timed
+intervals and ran before each file was saved. There was no warmup or `fsync`;
+filesystem cache could affect results. This was not an end-to-end CLI timing.
 
 Observed on 2026-10-19 (issue #22), MacBook Pro M3 Pro, API 34 AVD, Unciv
 4.22.10 (versionCode 1271), English main menu at 2400 x 1080:
