@@ -1,0 +1,2459 @@
+{
+  "schema_version": 1,
+  "status": "complete",
+  "manifest_sha256": "ca5cbd960f50ca4b63a40c501198b05e9767f4313f6b3e4882d477b536daf895",
+  "languages": [
+    "en",
+    "de"
+  ],
+  "passes": [
+    "forward",
+    "reverse"
+  ],
+  "records": [
+    {
+      "pass": 1,
+      "language": "en",
+      "screen": "options-gameplay",
+      "request": "i41-dbb944f335ac45869fbe49a8c291bf3d",
+      "state": {
+        "schema_version": 1,
+        "save": null,
+        "selection": {},
+        "tab": "gameplay",
+        "expanded_sections": [],
+        "scroll": {},
+        "scroll_to": {
+          "menu-map": {
+            "edge": "center",
+            "align": "visible"
+          },
+          "pane-1": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "tabs-header": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "tabs-fixed": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "tabs-content": {
+            "edge": "start",
+            "align": "visible"
+          }
+        },
+        "camera": null,
+        "new_game": null
+      },
+      "status": "captured",
+      "readiness": {
+        "events": [
+          "[GLThread 54] L10N_SCREEN_PANES options-gameplay request=i41-dbb944f335ac45869fbe49a8c291bf3d panes=menu-map,pane-1,tabs-header,tabs-fixed,tabs-content",
+          "[GLThread 54] L10N_SCREEN_READY options-gameplay request=i41-dbb944f335ac45869fbe49a8c291bf3d frames=2"
+        ],
+        "panes": [
+          "menu-map",
+          "pane-1",
+          "tabs-header",
+          "tabs-fixed",
+          "tabs-content"
+        ],
+        "frames": 2,
+        "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\nStatus: ok\nLaunchState: COLD\nActivity: com.unciv.app/.AndroidLauncher\nTotalTime: 2885\nWaitTime: 2895\nComplete\n"
+      },
+      "png": "pass-1/options-gameplay__en__2400x1080__clean__1271045.png",
+      "png_sha256": "8255ac40689ba0fbbc7823995a291ab37f0c73a3faf8cbe688f30122306e1e8a"
+    },
+    {
+      "pass": 1,
+      "language": "en",
+      "screen": "new-game",
+      "request": "i41-a9332309bddd420c94d8a18ffe668c7b",
+      "state": {
+        "schema_version": 1,
+        "save": null,
+        "selection": {},
+        "tab": null,
+        "expanded_sections": [],
+        "scroll": {},
+        "scroll_to": {
+          "pane-0": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "pane-1": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "pane-2": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "pane-3": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "pane-4": {
+            "edge": "start",
+            "align": "visible"
+          }
+        },
+        "camera": null,
+        "new_game": {
+          "ruleset": "Civ V - Gods & Kings",
+          "difficulty": "Chieftain",
+          "speed": "Quick",
+          "era": "Ancient era",
+          "max_turns": 500,
+          "city_states": 6,
+          "map_type": "Pangaea",
+          "map_size": "Medium",
+          "seed": 0,
+          "players": [
+            {
+              "type": "Human",
+              "civilization": "Random"
+            },
+            {
+              "type": "AI",
+              "civilization": "Random"
+            },
+            {
+              "type": "AI",
+              "civilization": "Random"
+            },
+            {
+              "type": "AI",
+              "civilization": "Random"
+            }
+          ]
+        }
+      },
+      "status": "captured",
+      "readiness": {
+        "events": [
+          "[GLThread 54] L10N_SCREEN_PANES new-game request=i41-a9332309bddd420c94d8a18ffe668c7b panes=pane-0,pane-1,pane-2,pane-3,pane-4",
+          "[GLThread 54] L10N_SCREEN_READY new-game request=i41-a9332309bddd420c94d8a18ffe668c7b frames=2"
+        ],
+        "panes": [
+          "pane-0",
+          "pane-1",
+          "pane-2",
+          "pane-3",
+          "pane-4"
+        ],
+        "frames": 2,
+        "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\nWarning: Activity not started, intent has been delivered to currently running top-most instance.\nStatus: ok\nLaunchState: UNKNOWN (0)\nActivity: com.unciv.app/.AndroidLauncher\nTotalTime: 0\nWaitTime: 9\nComplete\n"
+      },
+      "png": "pass-1/new-game__en__2400x1080__clean__1271045.png",
+      "png_sha256": "f9ddfac6191051f5094db300b41ea690911b0e1fcb7dad40bf0f4386917aeac0"
+    },
+    {
+      "pass": 1,
+      "language": "en",
+      "screen": "tech-picker",
+      "request": "i41-632cee0b19fd4f2ba6a2cfd196395693",
+      "state": {
+        "schema_version": 1,
+        "save": "issue-8-pair",
+        "selection": {
+          "technology": "Archery"
+        },
+        "tab": null,
+        "expanded_sections": [],
+        "scroll": {},
+        "scroll_to": {
+          "tech-tree": {
+            "technology": "Mining",
+            "align": "visible"
+          },
+          "description": {
+            "edge": "start",
+            "align": "visible"
+          }
+        },
+        "camera": null,
+        "new_game": null
+      },
+      "status": "captured",
+      "readiness": {
+        "events": [
+          "[GLThread 54] L10N_SCREEN_PANES tech-picker request=i41-632cee0b19fd4f2ba6a2cfd196395693 panes=tech-tree,description",
+          "[GLThread 54] L10N_SCREEN_READY tech-picker request=i41-632cee0b19fd4f2ba6a2cfd196395693 frames=2"
+        ],
+        "panes": [
+          "tech-tree",
+          "description"
+        ],
+        "frames": 2,
+        "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\nWarning: Activity not started, intent has been delivered to currently running top-most instance.\nStatus: ok\nLaunchState: UNKNOWN (0)\nActivity: com.unciv.app/.AndroidLauncher\nTotalTime: 0\nWaitTime: 25\nComplete\n"
+      },
+      "png": "pass-1/tech-picker__en__2400x1080__clean__1271045.png",
+      "png_sha256": "d225bc7d71de675dd621a5e6cdfb6bd2e7e92c383c16bcd2ccdfa000190b2c56"
+    },
+    {
+      "pass": 1,
+      "language": "en",
+      "screen": "city-production",
+      "request": "i41-e73876fcd6f24033af3a31ac6d094e79",
+      "state": {
+        "schema_version": 1,
+        "save": "issue-8-pair",
+        "selection": {
+          "city": {
+            "owner": "The Ottomans",
+            "name": "Istanbul"
+          },
+          "construction": "Worker"
+        },
+        "tab": null,
+        "expanded_sections": [
+          "Units"
+        ],
+        "scroll": {},
+        "scroll_to": {
+          "pane-0": {
+            "edge": "center",
+            "align": "visible"
+          },
+          "production-queue": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "constructions": {
+            "construction": "Worker",
+            "align": "visible"
+          }
+        },
+        "camera": null,
+        "new_game": null
+      },
+      "status": "captured",
+      "readiness": {
+        "events": [
+          "[GLThread 54] L10N_SCREEN_PANES city-production request=i41-e73876fcd6f24033af3a31ac6d094e79 panes=pane-0,production-queue,constructions",
+          "[GLThread 54] L10N_SCREEN_READY city-production request=i41-e73876fcd6f24033af3a31ac6d094e79 frames=2"
+        ],
+        "panes": [
+          "pane-0",
+          "production-queue",
+          "constructions"
+        ],
+        "frames": 2,
+        "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\nWarning: Activity not started, intent has been delivered to currently running top-most instance.\nStatus: ok\nLaunchState: UNKNOWN (0)\nActivity: com.unciv.app/.AndroidLauncher\nTotalTime: 0\nWaitTime: 9\nComplete\n"
+      },
+      "png": "pass-1/city-production__en__2400x1080__clean__1271045.png",
+      "png_sha256": "afc99e09d8d7d955b8acd7ad1ef74bd26710a8b60bd6e0b233b66b60493045fb"
+    },
+    {
+      "pass": 1,
+      "language": "en",
+      "screen": "empire-stats",
+      "request": "i41-238d7c64e48948a0b81cff6035c82aa0",
+      "state": {
+        "schema_version": 1,
+        "save": "issue-8-pair",
+        "selection": {},
+        "tab": "statistics",
+        "expanded_sections": [],
+        "scroll": {},
+        "scroll_to": {
+          "tabs-header": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "tabs-fixed": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "tabs-content": {
+            "edge": "start",
+            "align": "visible"
+          }
+        },
+        "camera": null,
+        "new_game": null
+      },
+      "status": "captured",
+      "readiness": {
+        "events": [
+          "[GLThread 54] L10N_SCREEN_PANES empire-stats request=i41-238d7c64e48948a0b81cff6035c82aa0 panes=tabs-header,tabs-fixed,tabs-content",
+          "[GLThread 54] L10N_SCREEN_READY empire-stats request=i41-238d7c64e48948a0b81cff6035c82aa0 frames=2"
+        ],
+        "panes": [
+          "tabs-header",
+          "tabs-fixed",
+          "tabs-content"
+        ],
+        "frames": 2,
+        "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\nWarning: Activity not started, intent has been delivered to currently running top-most instance.\nStatus: ok\nLaunchState: UNKNOWN (0)\nActivity: com.unciv.app/.AndroidLauncher\nTotalTime: 0\nWaitTime: 11\nComplete\n"
+      },
+      "png": "pass-1/empire-stats__en__2400x1080__clean__1271045.png",
+      "png_sha256": "9e4215a1378bec57ee40e678777a6c1877ca2260005168443ea453cc8235dbc5"
+    },
+    {
+      "pass": 1,
+      "language": "en",
+      "screen": "policy-picker",
+      "request": "i41-581e1fe2a80b4056946f118badeb9017",
+      "state": {
+        "schema_version": 1,
+        "save": "issue-8-pair",
+        "selection": {},
+        "tab": null,
+        "expanded_sections": [
+          "Tradition",
+          "Liberty",
+          "Honor",
+          "Piety",
+          "Patronage"
+        ],
+        "scroll": {},
+        "scroll_to": {
+          "policy-tree": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "description": {
+            "edge": "start",
+            "align": "visible"
+          }
+        },
+        "camera": null,
+        "new_game": null
+      },
+      "status": "captured",
+      "readiness": {
+        "events": [
+          "[GLThread 54] L10N_SCREEN_PANES policy-picker request=i41-581e1fe2a80b4056946f118badeb9017 panes=policy-tree,description",
+          "[GLThread 54] L10N_SCREEN_READY policy-picker request=i41-581e1fe2a80b4056946f118badeb9017 frames=2"
+        ],
+        "panes": [
+          "policy-tree",
+          "description"
+        ],
+        "frames": 2,
+        "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\nWarning: Activity not started, intent has been delivered to currently running top-most instance.\nStatus: ok\nLaunchState: UNKNOWN (0)\nActivity: com.unciv.app/.AndroidLauncher\nTotalTime: 0\nWaitTime: 9\nComplete\n"
+      },
+      "png": "pass-1/policy-picker__en__2400x1080__clean__1271045.png",
+      "png_sha256": "7551814b03971a7f9b6fc2a5c4ab4778cbd1e1806da13181fce275cc06e02dcd"
+    },
+    {
+      "pass": 1,
+      "language": "en",
+      "screen": "victory-status",
+      "request": "i41-50a74ef46ce14edb8b016442957a2de4",
+      "state": {
+        "schema_version": 1,
+        "save": "issue-8-pair",
+        "selection": {},
+        "tab": "our-status",
+        "expanded_sections": [],
+        "scroll": {},
+        "scroll_to": {
+          "description": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "tabs-header": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "tabs-fixed": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "tabs-content": {
+            "edge": "start",
+            "align": "visible"
+          }
+        },
+        "camera": null,
+        "new_game": null
+      },
+      "status": "captured",
+      "readiness": {
+        "events": [
+          "[GLThread 54] L10N_SCREEN_PANES victory-status request=i41-50a74ef46ce14edb8b016442957a2de4 panes=description,tabs-header,tabs-fixed,tabs-content",
+          "[GLThread 54] L10N_SCREEN_READY victory-status request=i41-50a74ef46ce14edb8b016442957a2de4 frames=2"
+        ],
+        "panes": [
+          "description",
+          "tabs-header",
+          "tabs-fixed",
+          "tabs-content"
+        ],
+        "frames": 2,
+        "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\nWarning: Activity not started, intent has been delivered to currently running top-most instance.\nStatus: ok\nLaunchState: UNKNOWN (0)\nActivity: com.unciv.app/.AndroidLauncher\nTotalTime: 0\nWaitTime: 11\nComplete\n"
+      },
+      "png": "pass-1/victory-status__en__2400x1080__clean__1271045.png",
+      "png_sha256": "2e3a22bf157109cb2bfeb6d9664caf7492a4a3a49a0d2029d1ca0a06bc8eb56b"
+    },
+    {
+      "pass": 1,
+      "language": "en",
+      "screen": "civilopedia",
+      "request": "i41-1bab10dae01c42e5b29cbd9de87ecc42",
+      "state": {
+        "schema_version": 1,
+        "save": "issue-8-pair",
+        "selection": {
+          "category": "Tutorial",
+          "article": "Differences from Civilization V"
+        },
+        "tab": null,
+        "expanded_sections": [],
+        "scroll": {},
+        "scroll_to": {
+          "categories": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "entries": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "article": {
+            "edge": "start",
+            "align": "visible"
+          }
+        },
+        "camera": null,
+        "new_game": null
+      },
+      "status": "captured",
+      "readiness": {
+        "events": [
+          "[GLThread 54] L10N_SCREEN_PANES civilopedia request=i41-1bab10dae01c42e5b29cbd9de87ecc42 panes=categories,entries,article",
+          "[GLThread 54] L10N_SCREEN_READY civilopedia request=i41-1bab10dae01c42e5b29cbd9de87ecc42 frames=2"
+        ],
+        "panes": [
+          "categories",
+          "entries",
+          "article"
+        ],
+        "frames": 2,
+        "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\nWarning: Activity not started, intent has been delivered to currently running top-most instance.\nStatus: ok\nLaunchState: UNKNOWN (0)\nActivity: com.unciv.app/.AndroidLauncher\nTotalTime: 0\nWaitTime: 9\nComplete\n"
+      },
+      "png": "pass-1/civilopedia__en__2400x1080__clean__1271045.png",
+      "png_sha256": "ed4ba52be448edd2344a724a8994e7095d066013a7bb64772829bac49af6b161"
+    },
+    {
+      "pass": 1,
+      "language": "en",
+      "screen": "world",
+      "request": "i41-b1635a639e1048b095142bcbde56040b",
+      "state": {
+        "schema_version": 1,
+        "save": "issue-8-pair",
+        "selection": {
+          "unit": {
+            "owner": "The Ottomans",
+            "name": "Warrior",
+            "tile": [
+              -7,
+              11
+            ]
+          }
+        },
+        "tab": null,
+        "expanded_sections": [],
+        "scroll": {},
+        "scroll_to": {
+          "pane-0": {
+            "edge": "start",
+            "align": "visible"
+          }
+        },
+        "camera": {
+          "center_tile": [
+            -7,
+            11
+          ],
+          "zoom": 1.0
+        },
+        "new_game": null
+      },
+      "status": "captured",
+      "readiness": {
+        "events": [
+          "[GLThread 54] L10N_SCREEN_PANES world request=i41-b1635a639e1048b095142bcbde56040b panes=pane-0",
+          "[GLThread 54] L10N_SCREEN_READY world request=i41-b1635a639e1048b095142bcbde56040b frames=2"
+        ],
+        "panes": [
+          "pane-0"
+        ],
+        "frames": 2,
+        "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\nWarning: Activity not started, intent has been delivered to currently running top-most instance.\nStatus: ok\nLaunchState: UNKNOWN (0)\nActivity: com.unciv.app/.AndroidLauncher\nTotalTime: 0\nWaitTime: 13\nComplete\n"
+      },
+      "png": "pass-1/world__en__2400x1080__clean__1271045.png",
+      "png_sha256": "64b25e121904ba6e253e88bf3cf7ea8fa6664001bd4d86773a45ba981d9a6aaf"
+    },
+    {
+      "pass": 1,
+      "language": "en",
+      "screen": "city-state-diplomacy",
+      "request": "i41-56849055f5524a64b072bd4a0febe47b",
+      "state": {
+        "schema_version": 1,
+        "save": "issue-40-belgrade-metissue-8-pair",
+        "selection": {
+          "city_state": "Belgrade"
+        },
+        "tab": null,
+        "expanded_sections": [],
+        "scroll": {},
+        "scroll_to": {
+          "pane-0": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "pane-1": {
+            "edge": "start",
+            "align": "visible"
+          }
+        },
+        "camera": null,
+        "new_game": null
+      },
+      "status": "captured",
+      "readiness": {
+        "events": [
+          "[GLThread 54] L10N_SCREEN_PANES city-state-diplomacy request=i41-56849055f5524a64b072bd4a0febe47b panes=pane-0,pane-1",
+          "[GLThread 54] L10N_SCREEN_READY city-state-diplomacy request=i41-56849055f5524a64b072bd4a0febe47b frames=2"
+        ],
+        "panes": [
+          "pane-0",
+          "pane-1"
+        ],
+        "frames": 2,
+        "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\nWarning: Activity not started, intent has been delivered to currently running top-most instance.\nStatus: ok\nLaunchState: UNKNOWN (0)\nActivity: com.unciv.app/.AndroidLauncher\nTotalTime: 0\nWaitTime: 8\nComplete\n"
+      },
+      "png": "pass-1/city-state-diplomacy__en__2400x1080__clean__1271045.png",
+      "png_sha256": "946c15f6041cbfc4c62ad9820ca25e487461208defdb88194489863e4ec27e68"
+    },
+    {
+      "pass": 1,
+      "language": "de",
+      "screen": "options-gameplay",
+      "request": "i41-ef449870926e4d4fba57bc519fda7025",
+      "state": {
+        "schema_version": 1,
+        "save": null,
+        "selection": {},
+        "tab": "gameplay",
+        "expanded_sections": [],
+        "scroll": {},
+        "scroll_to": {
+          "menu-map": {
+            "edge": "center",
+            "align": "visible"
+          },
+          "pane-1": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "tabs-header": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "tabs-fixed": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "tabs-content": {
+            "edge": "start",
+            "align": "visible"
+          }
+        },
+        "camera": null,
+        "new_game": null
+      },
+      "status": "captured",
+      "readiness": {
+        "events": [
+          "[GLThread 53] L10N_SCREEN_PANES options-gameplay request=i41-ef449870926e4d4fba57bc519fda7025 panes=menu-map,pane-1,tabs-header,tabs-fixed,tabs-content",
+          "[GLThread 53] L10N_SCREEN_READY options-gameplay request=i41-ef449870926e4d4fba57bc519fda7025 frames=2"
+        ],
+        "panes": [
+          "menu-map",
+          "pane-1",
+          "tabs-header",
+          "tabs-fixed",
+          "tabs-content"
+        ],
+        "frames": 2,
+        "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\nStatus: ok\nLaunchState: COLD\nActivity: com.unciv.app/.AndroidLauncher\nTotalTime: 2709\nWaitTime: 2726\nComplete\n"
+      },
+      "png": "pass-1/options-gameplay__de__2400x1080__clean__1271045.png",
+      "png_sha256": "d450820a8c242e593f635065ace2c1933290ae58dc1480a5f9901304fcdf2e9c"
+    },
+    {
+      "pass": 1,
+      "language": "de",
+      "screen": "new-game",
+      "request": "i41-13492127dc534fd5b0eab6c65de5449d",
+      "state": {
+        "schema_version": 1,
+        "save": null,
+        "selection": {},
+        "tab": null,
+        "expanded_sections": [],
+        "scroll": {},
+        "scroll_to": {
+          "pane-0": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "pane-1": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "pane-2": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "pane-3": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "pane-4": {
+            "edge": "start",
+            "align": "visible"
+          }
+        },
+        "camera": null,
+        "new_game": {
+          "ruleset": "Civ V - Gods & Kings",
+          "difficulty": "Chieftain",
+          "speed": "Quick",
+          "era": "Ancient era",
+          "max_turns": 500,
+          "city_states": 6,
+          "map_type": "Pangaea",
+          "map_size": "Medium",
+          "seed": 0,
+          "players": [
+            {
+              "type": "Human",
+              "civilization": "Random"
+            },
+            {
+              "type": "AI",
+              "civilization": "Random"
+            },
+            {
+              "type": "AI",
+              "civilization": "Random"
+            },
+            {
+              "type": "AI",
+              "civilization": "Random"
+            }
+          ]
+        }
+      },
+      "status": "captured",
+      "readiness": {
+        "events": [
+          "[GLThread 53] L10N_SCREEN_PANES new-game request=i41-13492127dc534fd5b0eab6c65de5449d panes=pane-0,pane-1,pane-2,pane-3,pane-4",
+          "[GLThread 53] L10N_SCREEN_READY new-game request=i41-13492127dc534fd5b0eab6c65de5449d frames=2"
+        ],
+        "panes": [
+          "pane-0",
+          "pane-1",
+          "pane-2",
+          "pane-3",
+          "pane-4"
+        ],
+        "frames": 2,
+        "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\nWarning: Activity not started, intent has been delivered to currently running top-most instance.\nStatus: ok\nLaunchState: UNKNOWN (0)\nActivity: com.unciv.app/.AndroidLauncher\nTotalTime: 0\nWaitTime: 16\nComplete\n"
+      },
+      "png": "pass-1/new-game__de__2400x1080__clean__1271045.png",
+      "png_sha256": "542415b85cb2b66ad4f32c1c9fb06c4560896f37b072767d656a75761211ac25"
+    },
+    {
+      "pass": 1,
+      "language": "de",
+      "screen": "tech-picker",
+      "request": "i41-3cdda11959d04e57a5d6ebcaf1e18079",
+      "state": {
+        "schema_version": 1,
+        "save": "issue-8-pair",
+        "selection": {
+          "technology": "Archery"
+        },
+        "tab": null,
+        "expanded_sections": [],
+        "scroll": {},
+        "scroll_to": {
+          "tech-tree": {
+            "technology": "Mining",
+            "align": "visible"
+          },
+          "description": {
+            "edge": "start",
+            "align": "visible"
+          }
+        },
+        "camera": null,
+        "new_game": null
+      },
+      "status": "captured",
+      "readiness": {
+        "events": [
+          "[GLThread 53] L10N_SCREEN_PANES tech-picker request=i41-3cdda11959d04e57a5d6ebcaf1e18079 panes=tech-tree,description",
+          "[GLThread 53] L10N_SCREEN_READY tech-picker request=i41-3cdda11959d04e57a5d6ebcaf1e18079 frames=2"
+        ],
+        "panes": [
+          "tech-tree",
+          "description"
+        ],
+        "frames": 2,
+        "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\nWarning: Activity not started, intent has been delivered to currently running top-most instance.\nStatus: ok\nLaunchState: UNKNOWN (0)\nActivity: com.unciv.app/.AndroidLauncher\nTotalTime: 0\nWaitTime: 7\nComplete\n"
+      },
+      "png": "pass-1/tech-picker__de__2400x1080__clean__1271045.png",
+      "png_sha256": "37789ea25484d22c3b14f97dba3520c3fbd5dd87667ba5db9e1ba3daaf6ee4f0"
+    },
+    {
+      "pass": 1,
+      "language": "de",
+      "screen": "city-production",
+      "request": "i41-7c36e288211d45b9b249eca59e1f0956",
+      "state": {
+        "schema_version": 1,
+        "save": "issue-8-pair",
+        "selection": {
+          "city": {
+            "owner": "The Ottomans",
+            "name": "Istanbul"
+          },
+          "construction": "Worker"
+        },
+        "tab": null,
+        "expanded_sections": [
+          "Units"
+        ],
+        "scroll": {},
+        "scroll_to": {
+          "pane-0": {
+            "edge": "center",
+            "align": "visible"
+          },
+          "production-queue": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "constructions": {
+            "construction": "Worker",
+            "align": "visible"
+          }
+        },
+        "camera": null,
+        "new_game": null
+      },
+      "status": "captured",
+      "readiness": {
+        "events": [
+          "[GLThread 53] L10N_SCREEN_PANES city-production request=i41-7c36e288211d45b9b249eca59e1f0956 panes=pane-0,production-queue,constructions",
+          "[GLThread 53] L10N_SCREEN_READY city-production request=i41-7c36e288211d45b9b249eca59e1f0956 frames=2"
+        ],
+        "panes": [
+          "pane-0",
+          "production-queue",
+          "constructions"
+        ],
+        "frames": 2,
+        "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\nWarning: Activity not started, intent has been delivered to currently running top-most instance.\nStatus: ok\nLaunchState: UNKNOWN (0)\nActivity: com.unciv.app/.AndroidLauncher\nTotalTime: 0\nWaitTime: 12\nComplete\n"
+      },
+      "png": "pass-1/city-production__de__2400x1080__clean__1271045.png",
+      "png_sha256": "b26abc6f7646666460edb51309a220a1d3dd8fdd01476d103bda2bb8929cb368"
+    },
+    {
+      "pass": 1,
+      "language": "de",
+      "screen": "empire-stats",
+      "request": "i41-3904457862554f2588508387cbadc7f4",
+      "state": {
+        "schema_version": 1,
+        "save": "issue-8-pair",
+        "selection": {},
+        "tab": "statistics",
+        "expanded_sections": [],
+        "scroll": {},
+        "scroll_to": {
+          "tabs-header": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "tabs-fixed": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "tabs-content": {
+            "edge": "start",
+            "align": "visible"
+          }
+        },
+        "camera": null,
+        "new_game": null
+      },
+      "status": "captured",
+      "readiness": {
+        "events": [
+          "[GLThread 53] L10N_SCREEN_PANES empire-stats request=i41-3904457862554f2588508387cbadc7f4 panes=tabs-header,tabs-fixed,tabs-content",
+          "[GLThread 53] L10N_SCREEN_READY empire-stats request=i41-3904457862554f2588508387cbadc7f4 frames=2"
+        ],
+        "panes": [
+          "tabs-header",
+          "tabs-fixed",
+          "tabs-content"
+        ],
+        "frames": 2,
+        "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\nWarning: Activity not started, intent has been delivered to currently running top-most instance.\nStatus: ok\nLaunchState: UNKNOWN (0)\nActivity: com.unciv.app/.AndroidLauncher\nTotalTime: 0\nWaitTime: 9\nComplete\n"
+      },
+      "png": "pass-1/empire-stats__de__2400x1080__clean__1271045.png",
+      "png_sha256": "3eb05667d92d8c68d272ac962de80d328de9b6ac9e724d59a7dddbcc29bad16e"
+    },
+    {
+      "pass": 1,
+      "language": "de",
+      "screen": "policy-picker",
+      "request": "i41-4214219324e34f63a753daf5a2fbf4df",
+      "state": {
+        "schema_version": 1,
+        "save": "issue-8-pair",
+        "selection": {},
+        "tab": null,
+        "expanded_sections": [
+          "Tradition",
+          "Liberty",
+          "Honor",
+          "Piety",
+          "Patronage"
+        ],
+        "scroll": {},
+        "scroll_to": {
+          "policy-tree": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "description": {
+            "edge": "start",
+            "align": "visible"
+          }
+        },
+        "camera": null,
+        "new_game": null
+      },
+      "status": "captured",
+      "readiness": {
+        "events": [
+          "[GLThread 53] L10N_SCREEN_PANES policy-picker request=i41-4214219324e34f63a753daf5a2fbf4df panes=policy-tree,description",
+          "[GLThread 53] L10N_SCREEN_READY policy-picker request=i41-4214219324e34f63a753daf5a2fbf4df frames=2"
+        ],
+        "panes": [
+          "policy-tree",
+          "description"
+        ],
+        "frames": 2,
+        "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\nWarning: Activity not started, intent has been delivered to currently running top-most instance.\nStatus: ok\nLaunchState: UNKNOWN (0)\nActivity: com.unciv.app/.AndroidLauncher\nTotalTime: 0\nWaitTime: 8\nComplete\n"
+      },
+      "png": "pass-1/policy-picker__de__2400x1080__clean__1271045.png",
+      "png_sha256": "804a22f377db22f096240bb4d6c6ce74e98d3791c82193b616e39a36a4143d07"
+    },
+    {
+      "pass": 1,
+      "language": "de",
+      "screen": "victory-status",
+      "request": "i41-262111ca6bf641c09caed092252b8461",
+      "state": {
+        "schema_version": 1,
+        "save": "issue-8-pair",
+        "selection": {},
+        "tab": "our-status",
+        "expanded_sections": [],
+        "scroll": {},
+        "scroll_to": {
+          "description": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "tabs-header": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "tabs-fixed": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "tabs-content": {
+            "edge": "start",
+            "align": "visible"
+          }
+        },
+        "camera": null,
+        "new_game": null
+      },
+      "status": "captured",
+      "readiness": {
+        "events": [
+          "[GLThread 53] L10N_SCREEN_PANES victory-status request=i41-262111ca6bf641c09caed092252b8461 panes=description,tabs-header,tabs-fixed,tabs-content",
+          "[GLThread 53] L10N_SCREEN_READY victory-status request=i41-262111ca6bf641c09caed092252b8461 frames=2"
+        ],
+        "panes": [
+          "description",
+          "tabs-header",
+          "tabs-fixed",
+          "tabs-content"
+        ],
+        "frames": 2,
+        "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\nWarning: Activity not started, intent has been delivered to currently running top-most instance.\nStatus: ok\nLaunchState: UNKNOWN (0)\nActivity: com.unciv.app/.AndroidLauncher\nTotalTime: 0\nWaitTime: 7\nComplete\n"
+      },
+      "png": "pass-1/victory-status__de__2400x1080__clean__1271045.png",
+      "png_sha256": "ab6181caaddc1c250d26629601760ed4058d4b8fd280ff8f02bae2cd096c3083"
+    },
+    {
+      "pass": 1,
+      "language": "de",
+      "screen": "civilopedia",
+      "request": "i41-7c80442ea45d4fa786b2e41fde8c2df3",
+      "state": {
+        "schema_version": 1,
+        "save": "issue-8-pair",
+        "selection": {
+          "category": "Tutorial",
+          "article": "Differences from Civilization V"
+        },
+        "tab": null,
+        "expanded_sections": [],
+        "scroll": {},
+        "scroll_to": {
+          "categories": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "entries": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "article": {
+            "edge": "start",
+            "align": "visible"
+          }
+        },
+        "camera": null,
+        "new_game": null
+      },
+      "status": "captured",
+      "readiness": {
+        "events": [
+          "[GLThread 53] L10N_SCREEN_PANES civilopedia request=i41-7c80442ea45d4fa786b2e41fde8c2df3 panes=categories,entries,article",
+          "[GLThread 53] L10N_SCREEN_READY civilopedia request=i41-7c80442ea45d4fa786b2e41fde8c2df3 frames=2"
+        ],
+        "panes": [
+          "categories",
+          "entries",
+          "article"
+        ],
+        "frames": 2,
+        "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\nWarning: Activity not started, intent has been delivered to currently running top-most instance.\nStatus: ok\nLaunchState: UNKNOWN (0)\nActivity: com.unciv.app/.AndroidLauncher\nTotalTime: 0\nWaitTime: 12\nComplete\n"
+      },
+      "png": "pass-1/civilopedia__de__2400x1080__clean__1271045.png",
+      "png_sha256": "abd8aa1a8aa64cfd1445089bf34007aedb601e767fc3dca3c5b9e12c32dc1660"
+    },
+    {
+      "pass": 1,
+      "language": "de",
+      "screen": "world",
+      "request": "i41-bcb7cb4f3e1e460f989583f968545f40",
+      "state": {
+        "schema_version": 1,
+        "save": "issue-8-pair",
+        "selection": {
+          "unit": {
+            "owner": "The Ottomans",
+            "name": "Warrior",
+            "tile": [
+              -7,
+              11
+            ]
+          }
+        },
+        "tab": null,
+        "expanded_sections": [],
+        "scroll": {},
+        "scroll_to": {
+          "pane-0": {
+            "edge": "start",
+            "align": "visible"
+          }
+        },
+        "camera": {
+          "center_tile": [
+            -7,
+            11
+          ],
+          "zoom": 1.0
+        },
+        "new_game": null
+      },
+      "status": "captured",
+      "readiness": {
+        "events": [
+          "[GLThread 53] L10N_SCREEN_PANES world request=i41-bcb7cb4f3e1e460f989583f968545f40 panes=pane-0",
+          "[GLThread 53] L10N_SCREEN_READY world request=i41-bcb7cb4f3e1e460f989583f968545f40 frames=2"
+        ],
+        "panes": [
+          "pane-0"
+        ],
+        "frames": 2,
+        "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\nWarning: Activity not started, intent has been delivered to currently running top-most instance.\nStatus: ok\nLaunchState: UNKNOWN (0)\nActivity: com.unciv.app/.AndroidLauncher\nTotalTime: 0\nWaitTime: 31\nComplete\n"
+      },
+      "png": "pass-1/world__de__2400x1080__clean__1271045.png",
+      "png_sha256": "d8b3235d8dec373f284215fa54bc3477b83581607ef75e003806cb6ac3b90acc"
+    },
+    {
+      "pass": 1,
+      "language": "de",
+      "screen": "city-state-diplomacy",
+      "request": "i41-02f1ce4edd294f0a96494ee68e1ed98b",
+      "state": {
+        "schema_version": 1,
+        "save": "issue-40-belgrade-metissue-8-pair",
+        "selection": {
+          "city_state": "Belgrade"
+        },
+        "tab": null,
+        "expanded_sections": [],
+        "scroll": {},
+        "scroll_to": {
+          "pane-0": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "pane-1": {
+            "edge": "start",
+            "align": "visible"
+          }
+        },
+        "camera": null,
+        "new_game": null
+      },
+      "status": "captured",
+      "readiness": {
+        "events": [
+          "[GLThread 53] L10N_SCREEN_PANES city-state-diplomacy request=i41-02f1ce4edd294f0a96494ee68e1ed98b panes=pane-0,pane-1",
+          "[GLThread 53] L10N_SCREEN_READY city-state-diplomacy request=i41-02f1ce4edd294f0a96494ee68e1ed98b frames=2"
+        ],
+        "panes": [
+          "pane-0",
+          "pane-1"
+        ],
+        "frames": 2,
+        "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\nWarning: Activity not started, intent has been delivered to currently running top-most instance.\nStatus: ok\nLaunchState: UNKNOWN (0)\nActivity: com.unciv.app/.AndroidLauncher\nTotalTime: 0\nWaitTime: 10\nComplete\n"
+      },
+      "png": "pass-1/city-state-diplomacy__de__2400x1080__clean__1271045.png",
+      "png_sha256": "e4aa3e37a866fa380083f1c4f8a050f2ba1299c028fe2de882730dedeb96ff39"
+    },
+    {
+      "pass": 2,
+      "language": "en",
+      "screen": "city-state-diplomacy",
+      "request": "i41-f9f4a5804d494116b2cc812a9d2881d0",
+      "state": {
+        "schema_version": 1,
+        "save": "issue-40-belgrade-metissue-8-pair",
+        "selection": {
+          "city_state": "Belgrade"
+        },
+        "tab": null,
+        "expanded_sections": [],
+        "scroll": {},
+        "scroll_to": {
+          "pane-0": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "pane-1": {
+            "edge": "start",
+            "align": "visible"
+          }
+        },
+        "camera": null,
+        "new_game": null
+      },
+      "status": "captured",
+      "readiness": {
+        "events": [
+          "[GLThread 53] L10N_SCREEN_PANES city-state-diplomacy request=i41-f9f4a5804d494116b2cc812a9d2881d0 panes=pane-0,pane-1",
+          "[GLThread 53] L10N_SCREEN_READY city-state-diplomacy request=i41-f9f4a5804d494116b2cc812a9d2881d0 frames=2"
+        ],
+        "panes": [
+          "pane-0",
+          "pane-1"
+        ],
+        "frames": 2,
+        "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\nStatus: ok\nLaunchState: COLD\nActivity: com.unciv.app/.AndroidLauncher\nTotalTime: 2319\nWaitTime: 2366\nComplete\n"
+      },
+      "png": "pass-2/city-state-diplomacy__en__2400x1080__clean__1271045.png",
+      "png_sha256": "946c15f6041cbfc4c62ad9820ca25e487461208defdb88194489863e4ec27e68"
+    },
+    {
+      "pass": 2,
+      "language": "en",
+      "screen": "world",
+      "request": "i41-2d7b0287142348cb98325387f8e121ed",
+      "state": {
+        "schema_version": 1,
+        "save": "issue-8-pair",
+        "selection": {
+          "unit": {
+            "owner": "The Ottomans",
+            "name": "Warrior",
+            "tile": [
+              -7,
+              11
+            ]
+          }
+        },
+        "tab": null,
+        "expanded_sections": [],
+        "scroll": {},
+        "scroll_to": {
+          "pane-0": {
+            "edge": "start",
+            "align": "visible"
+          }
+        },
+        "camera": {
+          "center_tile": [
+            -7,
+            11
+          ],
+          "zoom": 1.0
+        },
+        "new_game": null
+      },
+      "status": "captured",
+      "readiness": {
+        "events": [
+          "[GLThread 53] L10N_SCREEN_PANES world request=i41-2d7b0287142348cb98325387f8e121ed panes=pane-0",
+          "[GLThread 53] L10N_SCREEN_READY world request=i41-2d7b0287142348cb98325387f8e121ed frames=2"
+        ],
+        "panes": [
+          "pane-0"
+        ],
+        "frames": 2,
+        "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\nWarning: Activity not started, intent has been delivered to currently running top-most instance.\nStatus: ok\nLaunchState: UNKNOWN (0)\nActivity: com.unciv.app/.AndroidLauncher\nTotalTime: 0\nWaitTime: 18\nComplete\n"
+      },
+      "png": "pass-2/world__en__2400x1080__clean__1271045.png",
+      "png_sha256": "64b25e121904ba6e253e88bf3cf7ea8fa6664001bd4d86773a45ba981d9a6aaf"
+    },
+    {
+      "pass": 2,
+      "language": "en",
+      "screen": "civilopedia",
+      "request": "i41-8dd3117c2ab14afdb9e3e9e01d462f35",
+      "state": {
+        "schema_version": 1,
+        "save": "issue-8-pair",
+        "selection": {
+          "category": "Tutorial",
+          "article": "Differences from Civilization V"
+        },
+        "tab": null,
+        "expanded_sections": [],
+        "scroll": {},
+        "scroll_to": {
+          "categories": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "entries": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "article": {
+            "edge": "start",
+            "align": "visible"
+          }
+        },
+        "camera": null,
+        "new_game": null
+      },
+      "status": "captured",
+      "readiness": {
+        "events": [
+          "[GLThread 53] L10N_SCREEN_PANES civilopedia request=i41-8dd3117c2ab14afdb9e3e9e01d462f35 panes=categories,entries,article",
+          "[GLThread 53] L10N_SCREEN_READY civilopedia request=i41-8dd3117c2ab14afdb9e3e9e01d462f35 frames=2"
+        ],
+        "panes": [
+          "categories",
+          "entries",
+          "article"
+        ],
+        "frames": 2,
+        "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\nWarning: Activity not started, intent has been delivered to currently running top-most instance.\nStatus: ok\nLaunchState: UNKNOWN (0)\nActivity: com.unciv.app/.AndroidLauncher\nTotalTime: 0\nWaitTime: 8\nComplete\n"
+      },
+      "png": "pass-2/civilopedia__en__2400x1080__clean__1271045.png",
+      "png_sha256": "ed4ba52be448edd2344a724a8994e7095d066013a7bb64772829bac49af6b161"
+    },
+    {
+      "pass": 2,
+      "language": "en",
+      "screen": "victory-status",
+      "request": "i41-fbc86fb09cb84d54a97801a24f813b74",
+      "state": {
+        "schema_version": 1,
+        "save": "issue-8-pair",
+        "selection": {},
+        "tab": "our-status",
+        "expanded_sections": [],
+        "scroll": {},
+        "scroll_to": {
+          "description": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "tabs-header": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "tabs-fixed": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "tabs-content": {
+            "edge": "start",
+            "align": "visible"
+          }
+        },
+        "camera": null,
+        "new_game": null
+      },
+      "status": "captured",
+      "readiness": {
+        "events": [
+          "[GLThread 53] L10N_SCREEN_PANES victory-status request=i41-fbc86fb09cb84d54a97801a24f813b74 panes=description,tabs-header,tabs-fixed,tabs-content",
+          "[GLThread 53] L10N_SCREEN_READY victory-status request=i41-fbc86fb09cb84d54a97801a24f813b74 frames=2"
+        ],
+        "panes": [
+          "description",
+          "tabs-header",
+          "tabs-fixed",
+          "tabs-content"
+        ],
+        "frames": 2,
+        "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\nWarning: Activity not started, intent has been delivered to currently running top-most instance.\nStatus: ok\nLaunchState: UNKNOWN (0)\nActivity: com.unciv.app/.AndroidLauncher\nTotalTime: 0\nWaitTime: 12\nComplete\n"
+      },
+      "png": "pass-2/victory-status__en__2400x1080__clean__1271045.png",
+      "png_sha256": "2e3a22bf157109cb2bfeb6d9664caf7492a4a3a49a0d2029d1ca0a06bc8eb56b"
+    },
+    {
+      "pass": 2,
+      "language": "en",
+      "screen": "policy-picker",
+      "request": "i41-d3c555695ecc4f8fb38faf2cfb44653b",
+      "state": {
+        "schema_version": 1,
+        "save": "issue-8-pair",
+        "selection": {},
+        "tab": null,
+        "expanded_sections": [
+          "Tradition",
+          "Liberty",
+          "Honor",
+          "Piety",
+          "Patronage"
+        ],
+        "scroll": {},
+        "scroll_to": {
+          "policy-tree": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "description": {
+            "edge": "start",
+            "align": "visible"
+          }
+        },
+        "camera": null,
+        "new_game": null
+      },
+      "status": "captured",
+      "readiness": {
+        "events": [
+          "[GLThread 53] L10N_SCREEN_PANES policy-picker request=i41-d3c555695ecc4f8fb38faf2cfb44653b panes=policy-tree,description",
+          "[GLThread 53] L10N_SCREEN_READY policy-picker request=i41-d3c555695ecc4f8fb38faf2cfb44653b frames=2"
+        ],
+        "panes": [
+          "policy-tree",
+          "description"
+        ],
+        "frames": 2,
+        "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\nWarning: Activity not started, intent has been delivered to currently running top-most instance.\nStatus: ok\nLaunchState: UNKNOWN (0)\nActivity: com.unciv.app/.AndroidLauncher\nTotalTime: 0\nWaitTime: 6\nComplete\n"
+      },
+      "png": "pass-2/policy-picker__en__2400x1080__clean__1271045.png",
+      "png_sha256": "7551814b03971a7f9b6fc2a5c4ab4778cbd1e1806da13181fce275cc06e02dcd"
+    },
+    {
+      "pass": 2,
+      "language": "en",
+      "screen": "empire-stats",
+      "request": "i41-c28c3122c6ba4dcfa232e6c266423db9",
+      "state": {
+        "schema_version": 1,
+        "save": "issue-8-pair",
+        "selection": {},
+        "tab": "statistics",
+        "expanded_sections": [],
+        "scroll": {},
+        "scroll_to": {
+          "tabs-header": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "tabs-fixed": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "tabs-content": {
+            "edge": "start",
+            "align": "visible"
+          }
+        },
+        "camera": null,
+        "new_game": null
+      },
+      "status": "captured",
+      "readiness": {
+        "events": [
+          "[GLThread 53] L10N_SCREEN_PANES empire-stats request=i41-c28c3122c6ba4dcfa232e6c266423db9 panes=tabs-header,tabs-fixed,tabs-content",
+          "[GLThread 53] L10N_SCREEN_READY empire-stats request=i41-c28c3122c6ba4dcfa232e6c266423db9 frames=2"
+        ],
+        "panes": [
+          "tabs-header",
+          "tabs-fixed",
+          "tabs-content"
+        ],
+        "frames": 2,
+        "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\nWarning: Activity not started, intent has been delivered to currently running top-most instance.\nStatus: ok\nLaunchState: UNKNOWN (0)\nActivity: com.unciv.app/.AndroidLauncher\nTotalTime: 0\nWaitTime: 11\nComplete\n"
+      },
+      "png": "pass-2/empire-stats__en__2400x1080__clean__1271045.png",
+      "png_sha256": "9e4215a1378bec57ee40e678777a6c1877ca2260005168443ea453cc8235dbc5"
+    },
+    {
+      "pass": 2,
+      "language": "en",
+      "screen": "city-production",
+      "request": "i41-ec4d7ccd93c14d36a068959892b32a2f",
+      "state": {
+        "schema_version": 1,
+        "save": "issue-8-pair",
+        "selection": {
+          "city": {
+            "owner": "The Ottomans",
+            "name": "Istanbul"
+          },
+          "construction": "Worker"
+        },
+        "tab": null,
+        "expanded_sections": [
+          "Units"
+        ],
+        "scroll": {},
+        "scroll_to": {
+          "pane-0": {
+            "edge": "center",
+            "align": "visible"
+          },
+          "production-queue": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "constructions": {
+            "construction": "Worker",
+            "align": "visible"
+          }
+        },
+        "camera": null,
+        "new_game": null
+      },
+      "status": "captured",
+      "readiness": {
+        "events": [
+          "[GLThread 53] L10N_SCREEN_PANES city-production request=i41-ec4d7ccd93c14d36a068959892b32a2f panes=pane-0,production-queue,constructions",
+          "[GLThread 53] L10N_SCREEN_READY city-production request=i41-ec4d7ccd93c14d36a068959892b32a2f frames=2"
+        ],
+        "panes": [
+          "pane-0",
+          "production-queue",
+          "constructions"
+        ],
+        "frames": 2,
+        "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\nWarning: Activity not started, intent has been delivered to currently running top-most instance.\nStatus: ok\nLaunchState: UNKNOWN (0)\nActivity: com.unciv.app/.AndroidLauncher\nTotalTime: 0\nWaitTime: 12\nComplete\n"
+      },
+      "png": "pass-2/city-production__en__2400x1080__clean__1271045.png",
+      "png_sha256": "afc99e09d8d7d955b8acd7ad1ef74bd26710a8b60bd6e0b233b66b60493045fb"
+    },
+    {
+      "pass": 2,
+      "language": "en",
+      "screen": "tech-picker",
+      "request": "i41-f30756df310d4ac1aa0d32d447210419",
+      "state": {
+        "schema_version": 1,
+        "save": "issue-8-pair",
+        "selection": {
+          "technology": "Archery"
+        },
+        "tab": null,
+        "expanded_sections": [],
+        "scroll": {},
+        "scroll_to": {
+          "tech-tree": {
+            "technology": "Mining",
+            "align": "visible"
+          },
+          "description": {
+            "edge": "start",
+            "align": "visible"
+          }
+        },
+        "camera": null,
+        "new_game": null
+      },
+      "status": "captured",
+      "readiness": {
+        "events": [
+          "[GLThread 53] L10N_SCREEN_PANES tech-picker request=i41-f30756df310d4ac1aa0d32d447210419 panes=tech-tree,description",
+          "[GLThread 53] L10N_SCREEN_READY tech-picker request=i41-f30756df310d4ac1aa0d32d447210419 frames=2"
+        ],
+        "panes": [
+          "tech-tree",
+          "description"
+        ],
+        "frames": 2,
+        "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\nWarning: Activity not started, intent has been delivered to currently running top-most instance.\nStatus: ok\nLaunchState: UNKNOWN (0)\nActivity: com.unciv.app/.AndroidLauncher\nTotalTime: 0\nWaitTime: 9\nComplete\n"
+      },
+      "png": "pass-2/tech-picker__en__2400x1080__clean__1271045.png",
+      "png_sha256": "d225bc7d71de675dd621a5e6cdfb6bd2e7e92c383c16bcd2ccdfa000190b2c56"
+    },
+    {
+      "pass": 2,
+      "language": "en",
+      "screen": "new-game",
+      "request": "i41-75a19a5a6c204cfe802e8f98083cb834",
+      "state": {
+        "schema_version": 1,
+        "save": null,
+        "selection": {},
+        "tab": null,
+        "expanded_sections": [],
+        "scroll": {},
+        "scroll_to": {
+          "pane-0": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "pane-1": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "pane-2": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "pane-3": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "pane-4": {
+            "edge": "start",
+            "align": "visible"
+          }
+        },
+        "camera": null,
+        "new_game": {
+          "ruleset": "Civ V - Gods & Kings",
+          "difficulty": "Chieftain",
+          "speed": "Quick",
+          "era": "Ancient era",
+          "max_turns": 500,
+          "city_states": 6,
+          "map_type": "Pangaea",
+          "map_size": "Medium",
+          "seed": 0,
+          "players": [
+            {
+              "type": "Human",
+              "civilization": "Random"
+            },
+            {
+              "type": "AI",
+              "civilization": "Random"
+            },
+            {
+              "type": "AI",
+              "civilization": "Random"
+            },
+            {
+              "type": "AI",
+              "civilization": "Random"
+            }
+          ]
+        }
+      },
+      "status": "captured",
+      "readiness": {
+        "events": [
+          "[GLThread 53] L10N_SCREEN_PANES new-game request=i41-75a19a5a6c204cfe802e8f98083cb834 panes=pane-0,pane-1,pane-2,pane-3,pane-4",
+          "[GLThread 53] L10N_SCREEN_READY new-game request=i41-75a19a5a6c204cfe802e8f98083cb834 frames=2"
+        ],
+        "panes": [
+          "pane-0",
+          "pane-1",
+          "pane-2",
+          "pane-3",
+          "pane-4"
+        ],
+        "frames": 2,
+        "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\nWarning: Activity not started, intent has been delivered to currently running top-most instance.\nStatus: ok\nLaunchState: UNKNOWN (0)\nActivity: com.unciv.app/.AndroidLauncher\nTotalTime: 0\nWaitTime: 17\nComplete\n"
+      },
+      "png": "pass-2/new-game__en__2400x1080__clean__1271045.png",
+      "png_sha256": "f9ddfac6191051f5094db300b41ea690911b0e1fcb7dad40bf0f4386917aeac0"
+    },
+    {
+      "pass": 2,
+      "language": "en",
+      "screen": "options-gameplay",
+      "request": "i41-3bc0cd9bbd874e91934c0925a01c2bfa",
+      "state": {
+        "schema_version": 1,
+        "save": null,
+        "selection": {},
+        "tab": "gameplay",
+        "expanded_sections": [],
+        "scroll": {},
+        "scroll_to": {
+          "menu-map": {
+            "edge": "center",
+            "align": "visible"
+          },
+          "pane-1": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "tabs-header": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "tabs-fixed": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "tabs-content": {
+            "edge": "start",
+            "align": "visible"
+          }
+        },
+        "camera": null,
+        "new_game": null
+      },
+      "status": "captured",
+      "readiness": {
+        "events": [
+          "[GLThread 53] L10N_SCREEN_PANES options-gameplay request=i41-3bc0cd9bbd874e91934c0925a01c2bfa panes=menu-map,pane-1,tabs-header,tabs-fixed,tabs-content",
+          "[GLThread 53] L10N_SCREEN_READY options-gameplay request=i41-3bc0cd9bbd874e91934c0925a01c2bfa frames=2"
+        ],
+        "panes": [
+          "menu-map",
+          "pane-1",
+          "tabs-header",
+          "tabs-fixed",
+          "tabs-content"
+        ],
+        "frames": 2,
+        "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\nWarning: Activity not started, intent has been delivered to currently running top-most instance.\nStatus: ok\nLaunchState: UNKNOWN (0)\nActivity: com.unciv.app/.AndroidLauncher\nTotalTime: 0\nWaitTime: 9\nComplete\n"
+      },
+      "png": "pass-2/options-gameplay__en__2400x1080__clean__1271045.png",
+      "png_sha256": "8255ac40689ba0fbbc7823995a291ab37f0c73a3faf8cbe688f30122306e1e8a"
+    },
+    {
+      "pass": 2,
+      "language": "de",
+      "screen": "city-state-diplomacy",
+      "request": "i41-933782c069884db9a80195978ece6096",
+      "state": {
+        "schema_version": 1,
+        "save": "issue-40-belgrade-metissue-8-pair",
+        "selection": {
+          "city_state": "Belgrade"
+        },
+        "tab": null,
+        "expanded_sections": [],
+        "scroll": {},
+        "scroll_to": {
+          "pane-0": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "pane-1": {
+            "edge": "start",
+            "align": "visible"
+          }
+        },
+        "camera": null,
+        "new_game": null
+      },
+      "status": "captured",
+      "readiness": {
+        "events": [
+          "[GLThread 53] L10N_SCREEN_PANES city-state-diplomacy request=i41-933782c069884db9a80195978ece6096 panes=pane-0,pane-1",
+          "[GLThread 53] L10N_SCREEN_READY city-state-diplomacy request=i41-933782c069884db9a80195978ece6096 frames=2"
+        ],
+        "panes": [
+          "pane-0",
+          "pane-1"
+        ],
+        "frames": 2,
+        "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\nStatus: ok\nLaunchState: COLD\nActivity: com.unciv.app/.AndroidLauncher\nTotalTime: 2411\nWaitTime: 2521\nComplete\n"
+      },
+      "png": "pass-2/city-state-diplomacy__de__2400x1080__clean__1271045.png",
+      "png_sha256": "e4aa3e37a866fa380083f1c4f8a050f2ba1299c028fe2de882730dedeb96ff39"
+    },
+    {
+      "pass": 2,
+      "language": "de",
+      "screen": "world",
+      "request": "i41-3094b5fdb31c4c21892680c6003624a8",
+      "state": {
+        "schema_version": 1,
+        "save": "issue-8-pair",
+        "selection": {
+          "unit": {
+            "owner": "The Ottomans",
+            "name": "Warrior",
+            "tile": [
+              -7,
+              11
+            ]
+          }
+        },
+        "tab": null,
+        "expanded_sections": [],
+        "scroll": {},
+        "scroll_to": {
+          "pane-0": {
+            "edge": "start",
+            "align": "visible"
+          }
+        },
+        "camera": {
+          "center_tile": [
+            -7,
+            11
+          ],
+          "zoom": 1.0
+        },
+        "new_game": null
+      },
+      "status": "captured",
+      "readiness": {
+        "events": [
+          "[GLThread 53] L10N_SCREEN_PANES world request=i41-3094b5fdb31c4c21892680c6003624a8 panes=pane-0",
+          "[GLThread 53] L10N_SCREEN_READY world request=i41-3094b5fdb31c4c21892680c6003624a8 frames=2"
+        ],
+        "panes": [
+          "pane-0"
+        ],
+        "frames": 2,
+        "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\nWarning: Activity not started, intent has been delivered to currently running top-most instance.\nStatus: ok\nLaunchState: UNKNOWN (0)\nActivity: com.unciv.app/.AndroidLauncher\nTotalTime: 0\nWaitTime: 12\nComplete\n"
+      },
+      "png": "pass-2/world__de__2400x1080__clean__1271045.png",
+      "png_sha256": "d8b3235d8dec373f284215fa54bc3477b83581607ef75e003806cb6ac3b90acc"
+    },
+    {
+      "pass": 2,
+      "language": "de",
+      "screen": "civilopedia",
+      "request": "i41-d4dfc5fd113b4be3a46df55563835e9b",
+      "state": {
+        "schema_version": 1,
+        "save": "issue-8-pair",
+        "selection": {
+          "category": "Tutorial",
+          "article": "Differences from Civilization V"
+        },
+        "tab": null,
+        "expanded_sections": [],
+        "scroll": {},
+        "scroll_to": {
+          "categories": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "entries": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "article": {
+            "edge": "start",
+            "align": "visible"
+          }
+        },
+        "camera": null,
+        "new_game": null
+      },
+      "status": "captured",
+      "readiness": {
+        "events": [
+          "[GLThread 53] L10N_SCREEN_PANES civilopedia request=i41-d4dfc5fd113b4be3a46df55563835e9b panes=categories,entries,article",
+          "[GLThread 53] L10N_SCREEN_READY civilopedia request=i41-d4dfc5fd113b4be3a46df55563835e9b frames=2"
+        ],
+        "panes": [
+          "categories",
+          "entries",
+          "article"
+        ],
+        "frames": 2,
+        "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\nWarning: Activity not started, intent has been delivered to currently running top-most instance.\nStatus: ok\nLaunchState: UNKNOWN (0)\nActivity: com.unciv.app/.AndroidLauncher\nTotalTime: 0\nWaitTime: 19\nComplete\n"
+      },
+      "png": "pass-2/civilopedia__de__2400x1080__clean__1271045.png",
+      "png_sha256": "abd8aa1a8aa64cfd1445089bf34007aedb601e767fc3dca3c5b9e12c32dc1660"
+    },
+    {
+      "pass": 2,
+      "language": "de",
+      "screen": "victory-status",
+      "request": "i41-14dc889a895a410ba7127dbd38e354a2",
+      "state": {
+        "schema_version": 1,
+        "save": "issue-8-pair",
+        "selection": {},
+        "tab": "our-status",
+        "expanded_sections": [],
+        "scroll": {},
+        "scroll_to": {
+          "description": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "tabs-header": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "tabs-fixed": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "tabs-content": {
+            "edge": "start",
+            "align": "visible"
+          }
+        },
+        "camera": null,
+        "new_game": null
+      },
+      "status": "captured",
+      "readiness": {
+        "events": [
+          "[GLThread 53] L10N_SCREEN_PANES victory-status request=i41-14dc889a895a410ba7127dbd38e354a2 panes=description,tabs-header,tabs-fixed,tabs-content",
+          "[GLThread 53] L10N_SCREEN_READY victory-status request=i41-14dc889a895a410ba7127dbd38e354a2 frames=2"
+        ],
+        "panes": [
+          "description",
+          "tabs-header",
+          "tabs-fixed",
+          "tabs-content"
+        ],
+        "frames": 2,
+        "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\nWarning: Activity not started, intent has been delivered to currently running top-most instance.\nStatus: ok\nLaunchState: UNKNOWN (0)\nActivity: com.unciv.app/.AndroidLauncher\nTotalTime: 0\nWaitTime: 6\nComplete\n"
+      },
+      "png": "pass-2/victory-status__de__2400x1080__clean__1271045.png",
+      "png_sha256": "ab6181caaddc1c250d26629601760ed4058d4b8fd280ff8f02bae2cd096c3083"
+    },
+    {
+      "pass": 2,
+      "language": "de",
+      "screen": "policy-picker",
+      "request": "i41-1cb1fa78872042d1b78cb3ed604352a4",
+      "state": {
+        "schema_version": 1,
+        "save": "issue-8-pair",
+        "selection": {},
+        "tab": null,
+        "expanded_sections": [
+          "Tradition",
+          "Liberty",
+          "Honor",
+          "Piety",
+          "Patronage"
+        ],
+        "scroll": {},
+        "scroll_to": {
+          "policy-tree": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "description": {
+            "edge": "start",
+            "align": "visible"
+          }
+        },
+        "camera": null,
+        "new_game": null
+      },
+      "status": "captured",
+      "readiness": {
+        "events": [
+          "[GLThread 53] L10N_SCREEN_PANES policy-picker request=i41-1cb1fa78872042d1b78cb3ed604352a4 panes=policy-tree,description",
+          "[GLThread 53] L10N_SCREEN_READY policy-picker request=i41-1cb1fa78872042d1b78cb3ed604352a4 frames=2"
+        ],
+        "panes": [
+          "policy-tree",
+          "description"
+        ],
+        "frames": 2,
+        "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\nWarning: Activity not started, intent has been delivered to currently running top-most instance.\nStatus: ok\nLaunchState: UNKNOWN (0)\nActivity: com.unciv.app/.AndroidLauncher\nTotalTime: 0\nWaitTime: 6\nComplete\n"
+      },
+      "png": "pass-2/policy-picker__de__2400x1080__clean__1271045.png",
+      "png_sha256": "804a22f377db22f096240bb4d6c6ce74e98d3791c82193b616e39a36a4143d07"
+    },
+    {
+      "pass": 2,
+      "language": "de",
+      "screen": "empire-stats",
+      "request": "i41-d3b8e7013b724923b2d4d121deca6e93",
+      "state": {
+        "schema_version": 1,
+        "save": "issue-8-pair",
+        "selection": {},
+        "tab": "statistics",
+        "expanded_sections": [],
+        "scroll": {},
+        "scroll_to": {
+          "tabs-header": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "tabs-fixed": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "tabs-content": {
+            "edge": "start",
+            "align": "visible"
+          }
+        },
+        "camera": null,
+        "new_game": null
+      },
+      "status": "captured",
+      "readiness": {
+        "events": [
+          "[GLThread 53] L10N_SCREEN_PANES empire-stats request=i41-d3b8e7013b724923b2d4d121deca6e93 panes=tabs-header,tabs-fixed,tabs-content",
+          "[GLThread 53] L10N_SCREEN_READY empire-stats request=i41-d3b8e7013b724923b2d4d121deca6e93 frames=2"
+        ],
+        "panes": [
+          "tabs-header",
+          "tabs-fixed",
+          "tabs-content"
+        ],
+        "frames": 2,
+        "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\nWarning: Activity not started, intent has been delivered to currently running top-most instance.\nStatus: ok\nLaunchState: UNKNOWN (0)\nActivity: com.unciv.app/.AndroidLauncher\nTotalTime: 0\nWaitTime: 15\nComplete\n"
+      },
+      "png": "pass-2/empire-stats__de__2400x1080__clean__1271045.png",
+      "png_sha256": "3eb05667d92d8c68d272ac962de80d328de9b6ac9e724d59a7dddbcc29bad16e"
+    },
+    {
+      "pass": 2,
+      "language": "de",
+      "screen": "city-production",
+      "request": "i41-879080154c7d49cbb233a6b15951880f",
+      "state": {
+        "schema_version": 1,
+        "save": "issue-8-pair",
+        "selection": {
+          "city": {
+            "owner": "The Ottomans",
+            "name": "Istanbul"
+          },
+          "construction": "Worker"
+        },
+        "tab": null,
+        "expanded_sections": [
+          "Units"
+        ],
+        "scroll": {},
+        "scroll_to": {
+          "pane-0": {
+            "edge": "center",
+            "align": "visible"
+          },
+          "production-queue": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "constructions": {
+            "construction": "Worker",
+            "align": "visible"
+          }
+        },
+        "camera": null,
+        "new_game": null
+      },
+      "status": "captured",
+      "readiness": {
+        "events": [
+          "[GLThread 53] L10N_SCREEN_PANES city-production request=i41-879080154c7d49cbb233a6b15951880f panes=pane-0,production-queue,constructions",
+          "[GLThread 53] L10N_SCREEN_READY city-production request=i41-879080154c7d49cbb233a6b15951880f frames=2"
+        ],
+        "panes": [
+          "pane-0",
+          "production-queue",
+          "constructions"
+        ],
+        "frames": 2,
+        "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\nWarning: Activity not started, intent has been delivered to currently running top-most instance.\nStatus: ok\nLaunchState: UNKNOWN (0)\nActivity: com.unciv.app/.AndroidLauncher\nTotalTime: 0\nWaitTime: 25\nComplete\n"
+      },
+      "png": "pass-2/city-production__de__2400x1080__clean__1271045.png",
+      "png_sha256": "b26abc6f7646666460edb51309a220a1d3dd8fdd01476d103bda2bb8929cb368"
+    },
+    {
+      "pass": 2,
+      "language": "de",
+      "screen": "tech-picker",
+      "request": "i41-ad16c13918fe43b88945ff8343670379",
+      "state": {
+        "schema_version": 1,
+        "save": "issue-8-pair",
+        "selection": {
+          "technology": "Archery"
+        },
+        "tab": null,
+        "expanded_sections": [],
+        "scroll": {},
+        "scroll_to": {
+          "tech-tree": {
+            "technology": "Mining",
+            "align": "visible"
+          },
+          "description": {
+            "edge": "start",
+            "align": "visible"
+          }
+        },
+        "camera": null,
+        "new_game": null
+      },
+      "status": "captured",
+      "readiness": {
+        "events": [
+          "[GLThread 53] L10N_SCREEN_PANES tech-picker request=i41-ad16c13918fe43b88945ff8343670379 panes=tech-tree,description",
+          "[GLThread 53] L10N_SCREEN_READY tech-picker request=i41-ad16c13918fe43b88945ff8343670379 frames=2"
+        ],
+        "panes": [
+          "tech-tree",
+          "description"
+        ],
+        "frames": 2,
+        "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\nWarning: Activity not started, intent has been delivered to currently running top-most instance.\nStatus: ok\nLaunchState: UNKNOWN (0)\nActivity: com.unciv.app/.AndroidLauncher\nTotalTime: 0\nWaitTime: 14\nComplete\n"
+      },
+      "png": "pass-2/tech-picker__de__2400x1080__clean__1271045.png",
+      "png_sha256": "37789ea25484d22c3b14f97dba3520c3fbd5dd87667ba5db9e1ba3daaf6ee4f0"
+    },
+    {
+      "pass": 2,
+      "language": "de",
+      "screen": "new-game",
+      "request": "i41-bc0e4b41716e4943bc71851f563367e5",
+      "state": {
+        "schema_version": 1,
+        "save": null,
+        "selection": {},
+        "tab": null,
+        "expanded_sections": [],
+        "scroll": {},
+        "scroll_to": {
+          "pane-0": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "pane-1": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "pane-2": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "pane-3": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "pane-4": {
+            "edge": "start",
+            "align": "visible"
+          }
+        },
+        "camera": null,
+        "new_game": {
+          "ruleset": "Civ V - Gods & Kings",
+          "difficulty": "Chieftain",
+          "speed": "Quick",
+          "era": "Ancient era",
+          "max_turns": 500,
+          "city_states": 6,
+          "map_type": "Pangaea",
+          "map_size": "Medium",
+          "seed": 0,
+          "players": [
+            {
+              "type": "Human",
+              "civilization": "Random"
+            },
+            {
+              "type": "AI",
+              "civilization": "Random"
+            },
+            {
+              "type": "AI",
+              "civilization": "Random"
+            },
+            {
+              "type": "AI",
+              "civilization": "Random"
+            }
+          ]
+        }
+      },
+      "status": "captured",
+      "readiness": {
+        "events": [
+          "[GLThread 53] L10N_SCREEN_PANES new-game request=i41-bc0e4b41716e4943bc71851f563367e5 panes=pane-0,pane-1,pane-2,pane-3,pane-4",
+          "[GLThread 53] L10N_SCREEN_READY new-game request=i41-bc0e4b41716e4943bc71851f563367e5 frames=2"
+        ],
+        "panes": [
+          "pane-0",
+          "pane-1",
+          "pane-2",
+          "pane-3",
+          "pane-4"
+        ],
+        "frames": 2,
+        "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\nWarning: Activity not started, intent has been delivered to currently running top-most instance.\nStatus: ok\nLaunchState: UNKNOWN (0)\nActivity: com.unciv.app/.AndroidLauncher\nTotalTime: 0\nWaitTime: 8\nComplete\n"
+      },
+      "png": "pass-2/new-game__de__2400x1080__clean__1271045.png",
+      "png_sha256": "542415b85cb2b66ad4f32c1c9fb06c4560896f37b072767d656a75761211ac25"
+    },
+    {
+      "pass": 2,
+      "language": "de",
+      "screen": "options-gameplay",
+      "request": "i41-6c945f484805422185879a3284cf14a9",
+      "state": {
+        "schema_version": 1,
+        "save": null,
+        "selection": {},
+        "tab": "gameplay",
+        "expanded_sections": [],
+        "scroll": {},
+        "scroll_to": {
+          "menu-map": {
+            "edge": "center",
+            "align": "visible"
+          },
+          "pane-1": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "tabs-header": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "tabs-fixed": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "tabs-content": {
+            "edge": "start",
+            "align": "visible"
+          }
+        },
+        "camera": null,
+        "new_game": null
+      },
+      "status": "captured",
+      "readiness": {
+        "events": [
+          "[GLThread 53] L10N_SCREEN_PANES options-gameplay request=i41-6c945f484805422185879a3284cf14a9 panes=menu-map,pane-1,tabs-header,tabs-fixed,tabs-content",
+          "[GLThread 53] L10N_SCREEN_READY options-gameplay request=i41-6c945f484805422185879a3284cf14a9 frames=2"
+        ],
+        "panes": [
+          "menu-map",
+          "pane-1",
+          "tabs-header",
+          "tabs-fixed",
+          "tabs-content"
+        ],
+        "frames": 2,
+        "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\nWarning: Activity not started, intent has been delivered to currently running top-most instance.\nStatus: ok\nLaunchState: UNKNOWN (0)\nActivity: com.unciv.app/.AndroidLauncher\nTotalTime: 0\nWaitTime: 10\nComplete\n"
+      },
+      "png": "pass-2/options-gameplay__de__2400x1080__clean__1271045.png",
+      "png_sha256": "d450820a8c242e593f635065ace2c1933290ae58dc1480a5f9901304fcdf2e9c"
+    }
+  ],
+  "comparisons": [
+    {
+      "screen": "options-gameplay",
+      "language": "en",
+      "status": "identical",
+      "total_pixels": 2592000,
+      "different_pixels": 0,
+      "different_share": 0.0,
+      "bounding_box": null,
+      "bounding_box_convention": "[left, top, right-exclusive, bottom-exclusive] or null"
+    },
+    {
+      "screen": "new-game",
+      "language": "en",
+      "status": "identical",
+      "total_pixels": 2592000,
+      "different_pixels": 0,
+      "different_share": 0.0,
+      "bounding_box": null,
+      "bounding_box_convention": "[left, top, right-exclusive, bottom-exclusive] or null"
+    },
+    {
+      "screen": "tech-picker",
+      "language": "en",
+      "status": "identical",
+      "total_pixels": 2592000,
+      "different_pixels": 0,
+      "different_share": 0.0,
+      "bounding_box": null,
+      "bounding_box_convention": "[left, top, right-exclusive, bottom-exclusive] or null"
+    },
+    {
+      "screen": "city-production",
+      "language": "en",
+      "status": "identical",
+      "total_pixels": 2592000,
+      "different_pixels": 0,
+      "different_share": 0.0,
+      "bounding_box": null,
+      "bounding_box_convention": "[left, top, right-exclusive, bottom-exclusive] or null"
+    },
+    {
+      "screen": "empire-stats",
+      "language": "en",
+      "status": "identical",
+      "total_pixels": 2592000,
+      "different_pixels": 0,
+      "different_share": 0.0,
+      "bounding_box": null,
+      "bounding_box_convention": "[left, top, right-exclusive, bottom-exclusive] or null"
+    },
+    {
+      "screen": "policy-picker",
+      "language": "en",
+      "status": "identical",
+      "total_pixels": 2592000,
+      "different_pixels": 0,
+      "different_share": 0.0,
+      "bounding_box": null,
+      "bounding_box_convention": "[left, top, right-exclusive, bottom-exclusive] or null"
+    },
+    {
+      "screen": "victory-status",
+      "language": "en",
+      "status": "identical",
+      "total_pixels": 2592000,
+      "different_pixels": 0,
+      "different_share": 0.0,
+      "bounding_box": null,
+      "bounding_box_convention": "[left, top, right-exclusive, bottom-exclusive] or null"
+    },
+    {
+      "screen": "civilopedia",
+      "language": "en",
+      "status": "identical",
+      "total_pixels": 2592000,
+      "different_pixels": 0,
+      "different_share": 0.0,
+      "bounding_box": null,
+      "bounding_box_convention": "[left, top, right-exclusive, bottom-exclusive] or null"
+    },
+    {
+      "screen": "world",
+      "language": "en",
+      "status": "identical",
+      "total_pixels": 2592000,
+      "different_pixels": 0,
+      "different_share": 0.0,
+      "bounding_box": null,
+      "bounding_box_convention": "[left, top, right-exclusive, bottom-exclusive] or null"
+    },
+    {
+      "screen": "city-state-diplomacy",
+      "language": "en",
+      "status": "identical",
+      "total_pixels": 2592000,
+      "different_pixels": 0,
+      "different_share": 0.0,
+      "bounding_box": null,
+      "bounding_box_convention": "[left, top, right-exclusive, bottom-exclusive] or null"
+    },
+    {
+      "screen": "options-gameplay",
+      "language": "de",
+      "status": "identical",
+      "total_pixels": 2592000,
+      "different_pixels": 0,
+      "different_share": 0.0,
+      "bounding_box": null,
+      "bounding_box_convention": "[left, top, right-exclusive, bottom-exclusive] or null"
+    },
+    {
+      "screen": "new-game",
+      "language": "de",
+      "status": "identical",
+      "total_pixels": 2592000,
+      "different_pixels": 0,
+      "different_share": 0.0,
+      "bounding_box": null,
+      "bounding_box_convention": "[left, top, right-exclusive, bottom-exclusive] or null"
+    },
+    {
+      "screen": "tech-picker",
+      "language": "de",
+      "status": "identical",
+      "total_pixels": 2592000,
+      "different_pixels": 0,
+      "different_share": 0.0,
+      "bounding_box": null,
+      "bounding_box_convention": "[left, top, right-exclusive, bottom-exclusive] or null"
+    },
+    {
+      "screen": "city-production",
+      "language": "de",
+      "status": "identical",
+      "total_pixels": 2592000,
+      "different_pixels": 0,
+      "different_share": 0.0,
+      "bounding_box": null,
+      "bounding_box_convention": "[left, top, right-exclusive, bottom-exclusive] or null"
+    },
+    {
+      "screen": "empire-stats",
+      "language": "de",
+      "status": "identical",
+      "total_pixels": 2592000,
+      "different_pixels": 0,
+      "different_share": 0.0,
+      "bounding_box": null,
+      "bounding_box_convention": "[left, top, right-exclusive, bottom-exclusive] or null"
+    },
+    {
+      "screen": "policy-picker",
+      "language": "de",
+      "status": "identical",
+      "total_pixels": 2592000,
+      "different_pixels": 0,
+      "different_share": 0.0,
+      "bounding_box": null,
+      "bounding_box_convention": "[left, top, right-exclusive, bottom-exclusive] or null"
+    },
+    {
+      "screen": "victory-status",
+      "language": "de",
+      "status": "identical",
+      "total_pixels": 2592000,
+      "different_pixels": 0,
+      "different_share": 0.0,
+      "bounding_box": null,
+      "bounding_box_convention": "[left, top, right-exclusive, bottom-exclusive] or null"
+    },
+    {
+      "screen": "civilopedia",
+      "language": "de",
+      "status": "identical",
+      "total_pixels": 2592000,
+      "different_pixels": 0,
+      "different_share": 0.0,
+      "bounding_box": null,
+      "bounding_box_convention": "[left, top, right-exclusive, bottom-exclusive] or null"
+    },
+    {
+      "screen": "world",
+      "language": "de",
+      "status": "identical",
+      "total_pixels": 2592000,
+      "different_pixels": 0,
+      "different_share": 0.0,
+      "bounding_box": null,
+      "bounding_box_convention": "[left, top, right-exclusive, bottom-exclusive] or null"
+    },
+    {
+      "screen": "city-state-diplomacy",
+      "language": "de",
+      "status": "identical",
+      "total_pixels": 2592000,
+      "different_pixels": 0,
+      "different_share": 0.0,
+      "bounding_box": null,
+      "bounding_box_convention": "[left, top, right-exclusive, bottom-exclusive] or null"
+    }
+  ],
+  "app_data_operations": [
+    {
+      "operation": "replace_settings",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "008046f1fb619410aa930a68ff2bbb8f8ee20f5a90d3da463130fabaf98c675c",
+      "status": "verified",
+      "language": "en",
+      "pass_number": 1
+    },
+    {
+      "operation": "replace_settings",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "28d1b5df2733f372e466402981b8e6997093fb21a6d7760cd5090fbab4e8ec87",
+      "status": "verified",
+      "language": "de",
+      "pass_number": 1
+    },
+    {
+      "operation": "replace_settings",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "008046f1fb619410aa930a68ff2bbb8f8ee20f5a90d3da463130fabaf98c675c",
+      "status": "verified",
+      "language": "en",
+      "pass_number": 2
+    },
+    {
+      "operation": "replace_settings",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "28d1b5df2733f372e466402981b8e6997093fb21a6d7760cd5090fbab4e8ec87",
+      "status": "verified",
+      "language": "de",
+      "pass_number": 2
+    },
+    {
+      "operation": "restore_original_settings",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7",
+      "status": "verified"
+    }
+  ],
+  "live_provider_requests": 0,
+  "api_spend_usd": 0,
+  "observed_build": {
+    "version_code": "1271045",
+    "apk_sha256": "16b6e07eaa8f7ca35b71f361f0bdcceb7015987b60e796d15d2f3b53bb61af1a",
+    "density_dpi": 420
+  },
+  "backup": {
+    "settings_sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7",
+    "settings_stat": "10196 10196 600 873",
+    "settings_backup": "private/GameSettings.json",
+    "saves_backup": "private/SaveFiles.tar",
+    "saves": {
+      "./Autosave": "9d2a4cd5e1de2b2ae9102a2e6e6d15210e32ae5188c895f84e8a3a6ce19c3b4e",
+      "./Autosave-The Ottomans-1": "62c62dcefb9065850dea34293a8a644a5ccea5397aa5bd5b1a12620a220e9e13",
+      "./issue-8-pair": "9d2a4cd5e1de2b2ae9102a2e6e6d15210e32ae5188c895f84e8a3a6ce19c3b4e",
+      "./issue-40-belgrade-metissue-8-pair": "2cf381aa7bf544961a302989c027045572b8d7036ab1840b01bc3ee4409c551e"
+    },
+    "save_copies_needed": []
+  },
+  "planned_app_data_operations": [
+    {
+      "operation": "replace_settings",
+      "pass": 1,
+      "language": "en",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "008046f1fb619410aa930a68ff2bbb8f8ee20f5a90d3da463130fabaf98c675c",
+      "screen_order": [
+        "options-gameplay",
+        "new-game",
+        "tech-picker",
+        "city-production",
+        "empire-stats",
+        "policy-picker",
+        "victory-status",
+        "civilopedia",
+        "world",
+        "city-state-diplomacy"
+      ]
+    },
+    {
+      "operation": "replace_settings",
+      "pass": 1,
+      "language": "de",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "28d1b5df2733f372e466402981b8e6997093fb21a6d7760cd5090fbab4e8ec87",
+      "screen_order": [
+        "options-gameplay",
+        "new-game",
+        "tech-picker",
+        "city-production",
+        "empire-stats",
+        "policy-picker",
+        "victory-status",
+        "civilopedia",
+        "world",
+        "city-state-diplomacy"
+      ]
+    },
+    {
+      "operation": "replace_settings",
+      "pass": 2,
+      "language": "en",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "008046f1fb619410aa930a68ff2bbb8f8ee20f5a90d3da463130fabaf98c675c",
+      "screen_order": [
+        "city-state-diplomacy",
+        "world",
+        "civilopedia",
+        "victory-status",
+        "policy-picker",
+        "empire-stats",
+        "city-production",
+        "tech-picker",
+        "new-game",
+        "options-gameplay"
+      ]
+    },
+    {
+      "operation": "replace_settings",
+      "pass": 2,
+      "language": "de",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "28d1b5df2733f372e466402981b8e6997093fb21a6d7760cd5090fbab4e8ec87",
+      "screen_order": [
+        "city-state-diplomacy",
+        "world",
+        "civilopedia",
+        "victory-status",
+        "policy-picker",
+        "empire-stats",
+        "city-production",
+        "tech-picker",
+        "new-game",
+        "options-gameplay"
+      ]
+    },
+    {
+      "operation": "restore_original_settings",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7"
+    }
+  ],
+  "device_plan_sha256": "b36a98500b4dd2e99d9f6854cd76c18359a85b335b0fb9e5db4e7721ed108ad6",
+  "saves_unchanged": true,
+  "settings_restored": true
+}

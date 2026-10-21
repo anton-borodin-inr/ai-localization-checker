@@ -22,8 +22,10 @@ Owned by issue #41 and Proposed D-039. Anton approved these fixtures on
   The console command is **not** part of capture.
 
 `states/` starts byte-for-byte from the ten `verification-states/*.json` in
-`issue-40-evidence-1271045.zip`. English has not yet been verified. Language
-overrides are complete, separately hash-pinned state files, never hidden merges.
+`issue-40-evidence-1271045.zip`. Both English and German were verified in issue #41: every screen reached
+READY and repeated identically in reverse order. No language override was
+needed. Overrides, if added later, are complete, separately hash-pinned state
+files, never hidden merges.
 Every visible ScrollPane, including zero-range panes, needs one instruction;
 camera is the protocol's world-map exception. The runner checks fresh PANES
 events and never silently edits states in response to an error.

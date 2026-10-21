@@ -1,0 +1,67 @@
+{
+  "approved_by": "Anton explicitly confirmed seven settings writes in chat",
+  "actual_operations": [
+    {
+      "index": 1,
+      "operation": "replace_settings",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "008046f1fb619410aa930a68ff2bbb8f8ee20f5a90d3da463130fabaf98c675c",
+      "status": "verified",
+      "language": "en",
+      "pass_number": 1
+    },
+    {
+      "index": 2,
+      "operation": "replace_settings",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "28d1b5df2733f372e466402981b8e6997093fb21a6d7760cd5090fbab4e8ec87",
+      "status": "verified",
+      "language": "de",
+      "pass_number": 1
+    },
+    {
+      "index": 3,
+      "operation": "replace_settings",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "008046f1fb619410aa930a68ff2bbb8f8ee20f5a90d3da463130fabaf98c675c",
+      "status": "verified",
+      "language": "en",
+      "pass_number": 2
+    },
+    {
+      "index": 4,
+      "operation": "replace_settings",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "28d1b5df2733f372e466402981b8e6997093fb21a6d7760cd5090fbab4e8ec87",
+      "status": "verified",
+      "language": "de",
+      "pass_number": 2
+    },
+    {
+      "index": 5,
+      "operation": "restore_original_settings",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7",
+      "status": "verified"
+    },
+    {
+      "index": 6,
+      "operation": "legacy_device_test_apply_english",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "99f9b6b293c1e6268d6d18891805872e1546c177775680f2718e8c206dcb4b23",
+      "status": "verified_by_passing_device_test_and_final_readback",
+      "verification": "unciv_language verifies payload bytes/metadata then restores original; test_real_capture passed; after-tests readback matches baseline"
+    },
+    {
+      "index": 7,
+      "operation": "legacy_device_test_restore_original",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7",
+      "status": "verified_by_passing_device_test_and_final_readback",
+      "verification": "unciv_language verifies payload bytes/metadata then restores original; test_real_capture passed; after-tests readback matches baseline"
+    }
+  ],
+  "save_copies": 0,
+  "app_installs_or_deletions": 0,
+  "additional_capture_runs": 0
+}

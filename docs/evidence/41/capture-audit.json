@@ -1,0 +1,798 @@
+{
+  "implementation_commit": "e0d28885a741bbc734d1b7dcf60a2cded3b2a7ba",
+  "manifest_sha256": "ca5cbd960f50ca4b63a40c501198b05e9767f4313f6b3e4882d477b536daf895",
+  "summary_sha256": "450082325c429e52f2383a4634f1a54442fa748bb2349e5e557e7b0575b98809",
+  "status": "independently_recomputed_identical",
+  "request_count": 40,
+  "pass_orders": [
+    "forward",
+    "reverse"
+  ],
+  "languages_outer_loop": true,
+  "english_state_overrides_needed": [],
+  "records": [
+    {
+      "pass": 1,
+      "language": "en",
+      "screen": "options-gameplay",
+      "request": "i41-dbb944f335ac45869fbe49a8c291bf3d",
+      "file": "pass-1/options-gameplay__en__2400x1080__clean__1271045.png",
+      "bytes": 606292,
+      "png_sha256": "8255ac40689ba0fbbc7823995a291ab37f0c73a3faf8cbe688f30122306e1e8a",
+      "rgba_sha256": "beca9a334a951f57eb4b5a5c305ebdde73e83ea136c07d489b64b5ee08398f7e",
+      "panes": [
+        "menu-map",
+        "pane-1",
+        "tabs-header",
+        "tabs-fixed",
+        "tabs-content"
+      ]
+    },
+    {
+      "pass": 1,
+      "language": "en",
+      "screen": "new-game",
+      "request": "i41-a9332309bddd420c94d8a18ffe668c7b",
+      "file": "pass-1/new-game__en__2400x1080__clean__1271045.png",
+      "bytes": 545054,
+      "png_sha256": "f9ddfac6191051f5094db300b41ea690911b0e1fcb7dad40bf0f4386917aeac0",
+      "rgba_sha256": "f96c00f4a8a15572cd90175f67116745eaf2b9a4814de4a897ae5cdeff319910",
+      "panes": [
+        "pane-0",
+        "pane-1",
+        "pane-2",
+        "pane-3",
+        "pane-4"
+      ]
+    },
+    {
+      "pass": 1,
+      "language": "en",
+      "screen": "tech-picker",
+      "request": "i41-632cee0b19fd4f2ba6a2cfd196395693",
+      "file": "pass-1/tech-picker__en__2400x1080__clean__1271045.png",
+      "bytes": 498695,
+      "png_sha256": "d225bc7d71de675dd621a5e6cdfb6bd2e7e92c383c16bcd2ccdfa000190b2c56",
+      "rgba_sha256": "8ef5ae77969054dbadf4f495d88614165608e57b90324ccbf72b8c058191cc8e",
+      "panes": [
+        "tech-tree",
+        "description"
+      ]
+    },
+    {
+      "pass": 1,
+      "language": "en",
+      "screen": "city-production",
+      "request": "i41-e73876fcd6f24033af3a31ac6d094e79",
+      "file": "pass-1/city-production__en__2400x1080__clean__1271045.png",
+      "bytes": 418213,
+      "png_sha256": "afc99e09d8d7d955b8acd7ad1ef74bd26710a8b60bd6e0b233b66b60493045fb",
+      "rgba_sha256": "9867fdcf301ab6bf2a38cef195a9b1e8209599247d92fd514490660bb9687fd5",
+      "panes": [
+        "pane-0",
+        "production-queue",
+        "constructions"
+      ]
+    },
+    {
+      "pass": 1,
+      "language": "en",
+      "screen": "empire-stats",
+      "request": "i41-238d7c64e48948a0b81cff6035c82aa0",
+      "file": "pass-1/empire-stats__en__2400x1080__clean__1271045.png",
+      "bytes": 241598,
+      "png_sha256": "9e4215a1378bec57ee40e678777a6c1877ca2260005168443ea453cc8235dbc5",
+      "rgba_sha256": "4f3934a8a48a3c0f421385f958e24519522da27eeb410513f64cff24abc89fad",
+      "panes": [
+        "tabs-header",
+        "tabs-fixed",
+        "tabs-content"
+      ]
+    },
+    {
+      "pass": 1,
+      "language": "en",
+      "screen": "policy-picker",
+      "request": "i41-581e1fe2a80b4056946f118badeb9017",
+      "file": "pass-1/policy-picker__en__2400x1080__clean__1271045.png",
+      "bytes": 463269,
+      "png_sha256": "7551814b03971a7f9b6fc2a5c4ab4778cbd1e1806da13181fce275cc06e02dcd",
+      "rgba_sha256": "3ed259d146b26f245bc62e59226c7ddd349e89593502208747aa09868a4822d3",
+      "panes": [
+        "policy-tree",
+        "description"
+      ]
+    },
+    {
+      "pass": 1,
+      "language": "en",
+      "screen": "victory-status",
+      "request": "i41-50a74ef46ce14edb8b016442957a2de4",
+      "file": "pass-1/victory-status__en__2400x1080__clean__1271045.png",
+      "bytes": 304672,
+      "png_sha256": "2e3a22bf157109cb2bfeb6d9664caf7492a4a3a49a0d2029d1ca0a06bc8eb56b",
+      "rgba_sha256": "3146555fc90c46604ea820499d9d6ec8841cf62143060292469eaeec843a663e",
+      "panes": [
+        "description",
+        "tabs-header",
+        "tabs-fixed",
+        "tabs-content"
+      ]
+    },
+    {
+      "pass": 1,
+      "language": "en",
+      "screen": "civilopedia",
+      "request": "i41-1bab10dae01c42e5b29cbd9de87ecc42",
+      "file": "pass-1/civilopedia__en__2400x1080__clean__1271045.png",
+      "bytes": 777813,
+      "png_sha256": "ed4ba52be448edd2344a724a8994e7095d066013a7bb64772829bac49af6b161",
+      "rgba_sha256": "977b3eab967bf5d52509a518eae321663b3da73ffd676636f24cb24a926cf596",
+      "panes": [
+        "categories",
+        "entries",
+        "article"
+      ]
+    },
+    {
+      "pass": 1,
+      "language": "en",
+      "screen": "world",
+      "request": "i41-b1635a639e1048b095142bcbde56040b",
+      "file": "pass-1/world__en__2400x1080__clean__1271045.png",
+      "bytes": 394132,
+      "png_sha256": "64b25e121904ba6e253e88bf3cf7ea8fa6664001bd4d86773a45ba981d9a6aaf",
+      "rgba_sha256": "a08e828ff2c6508654bda2da66173f3c824c59b83d490dadf448a8ca10fd16dc",
+      "panes": [
+        "pane-0"
+      ]
+    },
+    {
+      "pass": 1,
+      "language": "en",
+      "screen": "city-state-diplomacy",
+      "request": "i41-56849055f5524a64b072bd4a0febe47b",
+      "file": "pass-1/city-state-diplomacy__en__2400x1080__clean__1271045.png",
+      "bytes": 232891,
+      "png_sha256": "946c15f6041cbfc4c62ad9820ca25e487461208defdb88194489863e4ec27e68",
+      "rgba_sha256": "17c4da87b3951072ddcdb8ef5c8dfc87fef07a1e86744346a570fc1f05acb6fd",
+      "panes": [
+        "pane-0",
+        "pane-1"
+      ]
+    },
+    {
+      "pass": 1,
+      "language": "de",
+      "screen": "options-gameplay",
+      "request": "i41-ef449870926e4d4fba57bc519fda7025",
+      "file": "pass-1/options-gameplay__de__2400x1080__clean__1271045.png",
+      "bytes": 675848,
+      "png_sha256": "d450820a8c242e593f635065ace2c1933290ae58dc1480a5f9901304fcdf2e9c",
+      "rgba_sha256": "9d63b190b96dc01d18308301ffba13f7a29dfc473ae1c30842e3f88ac33b622d",
+      "panes": [
+        "menu-map",
+        "pane-1",
+        "tabs-header",
+        "tabs-fixed",
+        "tabs-content"
+      ]
+    },
+    {
+      "pass": 1,
+      "language": "de",
+      "screen": "new-game",
+      "request": "i41-13492127dc534fd5b0eab6c65de5449d",
+      "file": "pass-1/new-game__de__2400x1080__clean__1271045.png",
+      "bytes": 579627,
+      "png_sha256": "542415b85cb2b66ad4f32c1c9fb06c4560896f37b072767d656a75761211ac25",
+      "rgba_sha256": "cfe34ab84efd60976f09d9fc06298626e050821f9109bda7e44e632a54a00eaf",
+      "panes": [
+        "pane-0",
+        "pane-1",
+        "pane-2",
+        "pane-3",
+        "pane-4"
+      ]
+    },
+    {
+      "pass": 1,
+      "language": "de",
+      "screen": "tech-picker",
+      "request": "i41-3cdda11959d04e57a5d6ebcaf1e18079",
+      "file": "pass-1/tech-picker__de__2400x1080__clean__1271045.png",
+      "bytes": 512721,
+      "png_sha256": "37789ea25484d22c3b14f97dba3520c3fbd5dd87667ba5db9e1ba3daaf6ee4f0",
+      "rgba_sha256": "1cb4db62b170fd01e5f80c31589335e215ce69651237effc6ba0e1749544fefa",
+      "panes": [
+        "tech-tree",
+        "description"
+      ]
+    },
+    {
+      "pass": 1,
+      "language": "de",
+      "screen": "city-production",
+      "request": "i41-7c36e288211d45b9b249eca59e1f0956",
+      "file": "pass-1/city-production__de__2400x1080__clean__1271045.png",
+      "bytes": 446923,
+      "png_sha256": "b26abc6f7646666460edb51309a220a1d3dd8fdd01476d103bda2bb8929cb368",
+      "rgba_sha256": "47b75c1770c9ee01418d02805143a85248adfe2ffaf861729b9e0d9b450e1142",
+      "panes": [
+        "pane-0",
+        "production-queue",
+        "constructions"
+      ]
+    },
+    {
+      "pass": 1,
+      "language": "de",
+      "screen": "empire-stats",
+      "request": "i41-3904457862554f2588508387cbadc7f4",
+      "file": "pass-1/empire-stats__de__2400x1080__clean__1271045.png",
+      "bytes": 282399,
+      "png_sha256": "3eb05667d92d8c68d272ac962de80d328de9b6ac9e724d59a7dddbcc29bad16e",
+      "rgba_sha256": "8a13a91190888079dd596f0c15bdb71d111576400b663db11d944227e81a6820",
+      "panes": [
+        "tabs-header",
+        "tabs-fixed",
+        "tabs-content"
+      ]
+    },
+    {
+      "pass": 1,
+      "language": "de",
+      "screen": "policy-picker",
+      "request": "i41-4214219324e34f63a753daf5a2fbf4df",
+      "file": "pass-1/policy-picker__de__2400x1080__clean__1271045.png",
+      "bytes": 572277,
+      "png_sha256": "804a22f377db22f096240bb4d6c6ce74e98d3791c82193b616e39a36a4143d07",
+      "rgba_sha256": "107bd3019ef4f7b80ad15c620a57a000d90b3c57b6eaacc9f5a2a2b9aa11995d",
+      "panes": [
+        "policy-tree",
+        "description"
+      ]
+    },
+    {
+      "pass": 1,
+      "language": "de",
+      "screen": "victory-status",
+      "request": "i41-262111ca6bf641c09caed092252b8461",
+      "file": "pass-1/victory-status__de__2400x1080__clean__1271045.png",
+      "bytes": 337866,
+      "png_sha256": "ab6181caaddc1c250d26629601760ed4058d4b8fd280ff8f02bae2cd096c3083",
+      "rgba_sha256": "cc43e18200d0020d73c8320b1c173204f56c1e891dcf47b62e6ff6a31b6dd80e",
+      "panes": [
+        "description",
+        "tabs-header",
+        "tabs-fixed",
+        "tabs-content"
+      ]
+    },
+    {
+      "pass": 1,
+      "language": "de",
+      "screen": "civilopedia",
+      "request": "i41-7c80442ea45d4fa786b2e41fde8c2df3",
+      "file": "pass-1/civilopedia__de__2400x1080__clean__1271045.png",
+      "bytes": 835355,
+      "png_sha256": "abd8aa1a8aa64cfd1445089bf34007aedb601e767fc3dca3c5b9e12c32dc1660",
+      "rgba_sha256": "19b084338df1e2737011f5db16cf53fdfae9924a2a5880fada823a52843a5174",
+      "panes": [
+        "categories",
+        "entries",
+        "article"
+      ]
+    },
+    {
+      "pass": 1,
+      "language": "de",
+      "screen": "world",
+      "request": "i41-bcb7cb4f3e1e460f989583f968545f40",
+      "file": "pass-1/world__de__2400x1080__clean__1271045.png",
+      "bytes": 422227,
+      "png_sha256": "d8b3235d8dec373f284215fa54bc3477b83581607ef75e003806cb6ac3b90acc",
+      "rgba_sha256": "c5ebfe54e78de858e8729e746dda418d0c87368eb716f48548abe13b2ceb3e42",
+      "panes": [
+        "pane-0"
+      ]
+    },
+    {
+      "pass": 1,
+      "language": "de",
+      "screen": "city-state-diplomacy",
+      "request": "i41-02f1ce4edd294f0a96494ee68e1ed98b",
+      "file": "pass-1/city-state-diplomacy__de__2400x1080__clean__1271045.png",
+      "bytes": 262318,
+      "png_sha256": "e4aa3e37a866fa380083f1c4f8a050f2ba1299c028fe2de882730dedeb96ff39",
+      "rgba_sha256": "0177c05c0816278f83fda35208711c5d9ba63233c43e36c13370624623cd13c5",
+      "panes": [
+        "pane-0",
+        "pane-1"
+      ]
+    },
+    {
+      "pass": 2,
+      "language": "en",
+      "screen": "city-state-diplomacy",
+      "request": "i41-f9f4a5804d494116b2cc812a9d2881d0",
+      "file": "pass-2/city-state-diplomacy__en__2400x1080__clean__1271045.png",
+      "bytes": 232891,
+      "png_sha256": "946c15f6041cbfc4c62ad9820ca25e487461208defdb88194489863e4ec27e68",
+      "rgba_sha256": "17c4da87b3951072ddcdb8ef5c8dfc87fef07a1e86744346a570fc1f05acb6fd",
+      "panes": [
+        "pane-0",
+        "pane-1"
+      ]
+    },
+    {
+      "pass": 2,
+      "language": "en",
+      "screen": "world",
+      "request": "i41-2d7b0287142348cb98325387f8e121ed",
+      "file": "pass-2/world__en__2400x1080__clean__1271045.png",
+      "bytes": 394132,
+      "png_sha256": "64b25e121904ba6e253e88bf3cf7ea8fa6664001bd4d86773a45ba981d9a6aaf",
+      "rgba_sha256": "a08e828ff2c6508654bda2da66173f3c824c59b83d490dadf448a8ca10fd16dc",
+      "panes": [
+        "pane-0"
+      ]
+    },
+    {
+      "pass": 2,
+      "language": "en",
+      "screen": "civilopedia",
+      "request": "i41-8dd3117c2ab14afdb9e3e9e01d462f35",
+      "file": "pass-2/civilopedia__en__2400x1080__clean__1271045.png",
+      "bytes": 777813,
+      "png_sha256": "ed4ba52be448edd2344a724a8994e7095d066013a7bb64772829bac49af6b161",
+      "rgba_sha256": "977b3eab967bf5d52509a518eae321663b3da73ffd676636f24cb24a926cf596",
+      "panes": [
+        "categories",
+        "entries",
+        "article"
+      ]
+    },
+    {
+      "pass": 2,
+      "language": "en",
+      "screen": "victory-status",
+      "request": "i41-fbc86fb09cb84d54a97801a24f813b74",
+      "file": "pass-2/victory-status__en__2400x1080__clean__1271045.png",
+      "bytes": 304672,
+      "png_sha256": "2e3a22bf157109cb2bfeb6d9664caf7492a4a3a49a0d2029d1ca0a06bc8eb56b",
+      "rgba_sha256": "3146555fc90c46604ea820499d9d6ec8841cf62143060292469eaeec843a663e",
+      "panes": [
+        "description",
+        "tabs-header",
+        "tabs-fixed",
+        "tabs-content"
+      ]
+    },
+    {
+      "pass": 2,
+      "language": "en",
+      "screen": "policy-picker",
+      "request": "i41-d3c555695ecc4f8fb38faf2cfb44653b",
+      "file": "pass-2/policy-picker__en__2400x1080__clean__1271045.png",
+      "bytes": 463269,
+      "png_sha256": "7551814b03971a7f9b6fc2a5c4ab4778cbd1e1806da13181fce275cc06e02dcd",
+      "rgba_sha256": "3ed259d146b26f245bc62e59226c7ddd349e89593502208747aa09868a4822d3",
+      "panes": [
+        "policy-tree",
+        "description"
+      ]
+    },
+    {
+      "pass": 2,
+      "language": "en",
+      "screen": "empire-stats",
+      "request": "i41-c28c3122c6ba4dcfa232e6c266423db9",
+      "file": "pass-2/empire-stats__en__2400x1080__clean__1271045.png",
+      "bytes": 241598,
+      "png_sha256": "9e4215a1378bec57ee40e678777a6c1877ca2260005168443ea453cc8235dbc5",
+      "rgba_sha256": "4f3934a8a48a3c0f421385f958e24519522da27eeb410513f64cff24abc89fad",
+      "panes": [
+        "tabs-header",
+        "tabs-fixed",
+        "tabs-content"
+      ]
+    },
+    {
+      "pass": 2,
+      "language": "en",
+      "screen": "city-production",
+      "request": "i41-ec4d7ccd93c14d36a068959892b32a2f",
+      "file": "pass-2/city-production__en__2400x1080__clean__1271045.png",
+      "bytes": 418213,
+      "png_sha256": "afc99e09d8d7d955b8acd7ad1ef74bd26710a8b60bd6e0b233b66b60493045fb",
+      "rgba_sha256": "9867fdcf301ab6bf2a38cef195a9b1e8209599247d92fd514490660bb9687fd5",
+      "panes": [
+        "pane-0",
+        "production-queue",
+        "constructions"
+      ]
+    },
+    {
+      "pass": 2,
+      "language": "en",
+      "screen": "tech-picker",
+      "request": "i41-f30756df310d4ac1aa0d32d447210419",
+      "file": "pass-2/tech-picker__en__2400x1080__clean__1271045.png",
+      "bytes": 498695,
+      "png_sha256": "d225bc7d71de675dd621a5e6cdfb6bd2e7e92c383c16bcd2ccdfa000190b2c56",
+      "rgba_sha256": "8ef5ae77969054dbadf4f495d88614165608e57b90324ccbf72b8c058191cc8e",
+      "panes": [
+        "tech-tree",
+        "description"
+      ]
+    },
+    {
+      "pass": 2,
+      "language": "en",
+      "screen": "new-game",
+      "request": "i41-75a19a5a6c204cfe802e8f98083cb834",
+      "file": "pass-2/new-game__en__2400x1080__clean__1271045.png",
+      "bytes": 545054,
+      "png_sha256": "f9ddfac6191051f5094db300b41ea690911b0e1fcb7dad40bf0f4386917aeac0",
+      "rgba_sha256": "f96c00f4a8a15572cd90175f67116745eaf2b9a4814de4a897ae5cdeff319910",
+      "panes": [
+        "pane-0",
+        "pane-1",
+        "pane-2",
+        "pane-3",
+        "pane-4"
+      ]
+    },
+    {
+      "pass": 2,
+      "language": "en",
+      "screen": "options-gameplay",
+      "request": "i41-3bc0cd9bbd874e91934c0925a01c2bfa",
+      "file": "pass-2/options-gameplay__en__2400x1080__clean__1271045.png",
+      "bytes": 606292,
+      "png_sha256": "8255ac40689ba0fbbc7823995a291ab37f0c73a3faf8cbe688f30122306e1e8a",
+      "rgba_sha256": "beca9a334a951f57eb4b5a5c305ebdde73e83ea136c07d489b64b5ee08398f7e",
+      "panes": [
+        "menu-map",
+        "pane-1",
+        "tabs-header",
+        "tabs-fixed",
+        "tabs-content"
+      ]
+    },
+    {
+      "pass": 2,
+      "language": "de",
+      "screen": "city-state-diplomacy",
+      "request": "i41-933782c069884db9a80195978ece6096",
+      "file": "pass-2/city-state-diplomacy__de__2400x1080__clean__1271045.png",
+      "bytes": 262318,
+      "png_sha256": "e4aa3e37a866fa380083f1c4f8a050f2ba1299c028fe2de882730dedeb96ff39",
+      "rgba_sha256": "0177c05c0816278f83fda35208711c5d9ba63233c43e36c13370624623cd13c5",
+      "panes": [
+        "pane-0",
+        "pane-1"
+      ]
+    },
+    {
+      "pass": 2,
+      "language": "de",
+      "screen": "world",
+      "request": "i41-3094b5fdb31c4c21892680c6003624a8",
+      "file": "pass-2/world__de__2400x1080__clean__1271045.png",
+      "bytes": 422227,
+      "png_sha256": "d8b3235d8dec373f284215fa54bc3477b83581607ef75e003806cb6ac3b90acc",
+      "rgba_sha256": "c5ebfe54e78de858e8729e746dda418d0c87368eb716f48548abe13b2ceb3e42",
+      "panes": [
+        "pane-0"
+      ]
+    },
+    {
+      "pass": 2,
+      "language": "de",
+      "screen": "civilopedia",
+      "request": "i41-d4dfc5fd113b4be3a46df55563835e9b",
+      "file": "pass-2/civilopedia__de__2400x1080__clean__1271045.png",
+      "bytes": 835355,
+      "png_sha256": "abd8aa1a8aa64cfd1445089bf34007aedb601e767fc3dca3c5b9e12c32dc1660",
+      "rgba_sha256": "19b084338df1e2737011f5db16cf53fdfae9924a2a5880fada823a52843a5174",
+      "panes": [
+        "categories",
+        "entries",
+        "article"
+      ]
+    },
+    {
+      "pass": 2,
+      "language": "de",
+      "screen": "victory-status",
+      "request": "i41-14dc889a895a410ba7127dbd38e354a2",
+      "file": "pass-2/victory-status__de__2400x1080__clean__1271045.png",
+      "bytes": 337866,
+      "png_sha256": "ab6181caaddc1c250d26629601760ed4058d4b8fd280ff8f02bae2cd096c3083",
+      "rgba_sha256": "cc43e18200d0020d73c8320b1c173204f56c1e891dcf47b62e6ff6a31b6dd80e",
+      "panes": [
+        "description",
+        "tabs-header",
+        "tabs-fixed",
+        "tabs-content"
+      ]
+    },
+    {
+      "pass": 2,
+      "language": "de",
+      "screen": "policy-picker",
+      "request": "i41-1cb1fa78872042d1b78cb3ed604352a4",
+      "file": "pass-2/policy-picker__de__2400x1080__clean__1271045.png",
+      "bytes": 572277,
+      "png_sha256": "804a22f377db22f096240bb4d6c6ce74e98d3791c82193b616e39a36a4143d07",
+      "rgba_sha256": "107bd3019ef4f7b80ad15c620a57a000d90b3c57b6eaacc9f5a2a2b9aa11995d",
+      "panes": [
+        "policy-tree",
+        "description"
+      ]
+    },
+    {
+      "pass": 2,
+      "language": "de",
+      "screen": "empire-stats",
+      "request": "i41-d3b8e7013b724923b2d4d121deca6e93",
+      "file": "pass-2/empire-stats__de__2400x1080__clean__1271045.png",
+      "bytes": 282399,
+      "png_sha256": "3eb05667d92d8c68d272ac962de80d328de9b6ac9e724d59a7dddbcc29bad16e",
+      "rgba_sha256": "8a13a91190888079dd596f0c15bdb71d111576400b663db11d944227e81a6820",
+      "panes": [
+        "tabs-header",
+        "tabs-fixed",
+        "tabs-content"
+      ]
+    },
+    {
+      "pass": 2,
+      "language": "de",
+      "screen": "city-production",
+      "request": "i41-879080154c7d49cbb233a6b15951880f",
+      "file": "pass-2/city-production__de__2400x1080__clean__1271045.png",
+      "bytes": 446923,
+      "png_sha256": "b26abc6f7646666460edb51309a220a1d3dd8fdd01476d103bda2bb8929cb368",
+      "rgba_sha256": "47b75c1770c9ee01418d02805143a85248adfe2ffaf861729b9e0d9b450e1142",
+      "panes": [
+        "pane-0",
+        "production-queue",
+        "constructions"
+      ]
+    },
+    {
+      "pass": 2,
+      "language": "de",
+      "screen": "tech-picker",
+      "request": "i41-ad16c13918fe43b88945ff8343670379",
+      "file": "pass-2/tech-picker__de__2400x1080__clean__1271045.png",
+      "bytes": 512721,
+      "png_sha256": "37789ea25484d22c3b14f97dba3520c3fbd5dd87667ba5db9e1ba3daaf6ee4f0",
+      "rgba_sha256": "1cb4db62b170fd01e5f80c31589335e215ce69651237effc6ba0e1749544fefa",
+      "panes": [
+        "tech-tree",
+        "description"
+      ]
+    },
+    {
+      "pass": 2,
+      "language": "de",
+      "screen": "new-game",
+      "request": "i41-bc0e4b41716e4943bc71851f563367e5",
+      "file": "pass-2/new-game__de__2400x1080__clean__1271045.png",
+      "bytes": 579627,
+      "png_sha256": "542415b85cb2b66ad4f32c1c9fb06c4560896f37b072767d656a75761211ac25",
+      "rgba_sha256": "cfe34ab84efd60976f09d9fc06298626e050821f9109bda7e44e632a54a00eaf",
+      "panes": [
+        "pane-0",
+        "pane-1",
+        "pane-2",
+        "pane-3",
+        "pane-4"
+      ]
+    },
+    {
+      "pass": 2,
+      "language": "de",
+      "screen": "options-gameplay",
+      "request": "i41-6c945f484805422185879a3284cf14a9",
+      "file": "pass-2/options-gameplay__de__2400x1080__clean__1271045.png",
+      "bytes": 675848,
+      "png_sha256": "d450820a8c242e593f635065ace2c1933290ae58dc1480a5f9901304fcdf2e9c",
+      "rgba_sha256": "9d63b190b96dc01d18308301ffba13f7a29dfc473ae1c30842e3f88ac33b622d",
+      "panes": [
+        "menu-map",
+        "pane-1",
+        "tabs-header",
+        "tabs-fixed",
+        "tabs-content"
+      ]
+    }
+  ],
+  "comparisons": [
+    {
+      "screen": "options-gameplay",
+      "language": "en",
+      "total_pixels": 2592000,
+      "different_pixels": 0,
+      "different_share": 0,
+      "bounding_box": null,
+      "rgba_sha256": "beca9a334a951f57eb4b5a5c305ebdde73e83ea136c07d489b64b5ee08398f7e"
+    },
+    {
+      "screen": "options-gameplay",
+      "language": "de",
+      "total_pixels": 2592000,
+      "different_pixels": 0,
+      "different_share": 0,
+      "bounding_box": null,
+      "rgba_sha256": "9d63b190b96dc01d18308301ffba13f7a29dfc473ae1c30842e3f88ac33b622d"
+    },
+    {
+      "screen": "new-game",
+      "language": "en",
+      "total_pixels": 2592000,
+      "different_pixels": 0,
+      "different_share": 0,
+      "bounding_box": null,
+      "rgba_sha256": "f96c00f4a8a15572cd90175f67116745eaf2b9a4814de4a897ae5cdeff319910"
+    },
+    {
+      "screen": "new-game",
+      "language": "de",
+      "total_pixels": 2592000,
+      "different_pixels": 0,
+      "different_share": 0,
+      "bounding_box": null,
+      "rgba_sha256": "cfe34ab84efd60976f09d9fc06298626e050821f9109bda7e44e632a54a00eaf"
+    },
+    {
+      "screen": "tech-picker",
+      "language": "en",
+      "total_pixels": 2592000,
+      "different_pixels": 0,
+      "different_share": 0,
+      "bounding_box": null,
+      "rgba_sha256": "8ef5ae77969054dbadf4f495d88614165608e57b90324ccbf72b8c058191cc8e"
+    },
+    {
+      "screen": "tech-picker",
+      "language": "de",
+      "total_pixels": 2592000,
+      "different_pixels": 0,
+      "different_share": 0,
+      "bounding_box": null,
+      "rgba_sha256": "1cb4db62b170fd01e5f80c31589335e215ce69651237effc6ba0e1749544fefa"
+    },
+    {
+      "screen": "city-production",
+      "language": "en",
+      "total_pixels": 2592000,
+      "different_pixels": 0,
+      "different_share": 0,
+      "bounding_box": null,
+      "rgba_sha256": "9867fdcf301ab6bf2a38cef195a9b1e8209599247d92fd514490660bb9687fd5"
+    },
+    {
+      "screen": "city-production",
+      "language": "de",
+      "total_pixels": 2592000,
+      "different_pixels": 0,
+      "different_share": 0,
+      "bounding_box": null,
+      "rgba_sha256": "47b75c1770c9ee01418d02805143a85248adfe2ffaf861729b9e0d9b450e1142"
+    },
+    {
+      "screen": "empire-stats",
+      "language": "en",
+      "total_pixels": 2592000,
+      "different_pixels": 0,
+      "different_share": 0,
+      "bounding_box": null,
+      "rgba_sha256": "4f3934a8a48a3c0f421385f958e24519522da27eeb410513f64cff24abc89fad"
+    },
+    {
+      "screen": "empire-stats",
+      "language": "de",
+      "total_pixels": 2592000,
+      "different_pixels": 0,
+      "different_share": 0,
+      "bounding_box": null,
+      "rgba_sha256": "8a13a91190888079dd596f0c15bdb71d111576400b663db11d944227e81a6820"
+    },
+    {
+      "screen": "policy-picker",
+      "language": "en",
+      "total_pixels": 2592000,
+      "different_pixels": 0,
+      "different_share": 0,
+      "bounding_box": null,
+      "rgba_sha256": "3ed259d146b26f245bc62e59226c7ddd349e89593502208747aa09868a4822d3"
+    },
+    {
+      "screen": "policy-picker",
+      "language": "de",
+      "total_pixels": 2592000,
+      "different_pixels": 0,
+      "different_share": 0,
+      "bounding_box": null,
+      "rgba_sha256": "107bd3019ef4f7b80ad15c620a57a000d90b3c57b6eaacc9f5a2a2b9aa11995d"
+    },
+    {
+      "screen": "victory-status",
+      "language": "en",
+      "total_pixels": 2592000,
+      "different_pixels": 0,
+      "different_share": 0,
+      "bounding_box": null,
+      "rgba_sha256": "3146555fc90c46604ea820499d9d6ec8841cf62143060292469eaeec843a663e"
+    },
+    {
+      "screen": "victory-status",
+      "language": "de",
+      "total_pixels": 2592000,
+      "different_pixels": 0,
+      "different_share": 0,
+      "bounding_box": null,
+      "rgba_sha256": "cc43e18200d0020d73c8320b1c173204f56c1e891dcf47b62e6ff6a31b6dd80e"
+    },
+    {
+      "screen": "civilopedia",
+      "language": "en",
+      "total_pixels": 2592000,
+      "different_pixels": 0,
+      "different_share": 0,
+      "bounding_box": null,
+      "rgba_sha256": "977b3eab967bf5d52509a518eae321663b3da73ffd676636f24cb24a926cf596"
+    },
+    {
+      "screen": "civilopedia",
+      "language": "de",
+      "total_pixels": 2592000,
+      "different_pixels": 0,
+      "different_share": 0,
+      "bounding_box": null,
+      "rgba_sha256": "19b084338df1e2737011f5db16cf53fdfae9924a2a5880fada823a52843a5174"
+    },
+    {
+      "screen": "world",
+      "language": "en",
+      "total_pixels": 2592000,
+      "different_pixels": 0,
+      "different_share": 0,
+      "bounding_box": null,
+      "rgba_sha256": "a08e828ff2c6508654bda2da66173f3c824c59b83d490dadf448a8ca10fd16dc"
+    },
+    {
+      "screen": "world",
+      "language": "de",
+      "total_pixels": 2592000,
+      "different_pixels": 0,
+      "different_share": 0,
+      "bounding_box": null,
+      "rgba_sha256": "c5ebfe54e78de858e8729e746dda418d0c87368eb716f48548abe13b2ceb3e42"
+    },
+    {
+      "screen": "city-state-diplomacy",
+      "language": "en",
+      "total_pixels": 2592000,
+      "different_pixels": 0,
+      "different_share": 0,
+      "bounding_box": null,
+      "rgba_sha256": "17c4da87b3951072ddcdb8ef5c8dfc87fef07a1e86744346a570fc1f05acb6fd"
+    },
+    {
+      "screen": "city-state-diplomacy",
+      "language": "de",
+      "total_pixels": 2592000,
+      "different_pixels": 0,
+      "different_share": 0,
+      "bounding_box": null,
+      "rgba_sha256": "0177c05c0816278f83fda35208711c5d9ba63233c43e36c13370624623cd13c5"
+    }
+  ],
+  "scope": "Capture states and decoded pixels only; no localization labels or detector evaluation."
+}
