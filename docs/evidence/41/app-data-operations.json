@@ -1,5 +1,5 @@
 {
-  "approved_by": "Anton explicitly confirmed seven settings writes in chat",
+  "approved_by": "Anton separately confirmed original seven-write batch, then exact five-write New Game correction batch with unchanged payload hashes.",
   "actual_operations": [
     {
       "index": 1,
@@ -59,9 +59,69 @@
       "sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7",
       "status": "verified_by_passing_device_test_and_final_readback",
       "verification": "unciv_language verifies payload bytes/metadata then restores original; test_real_capture passed; after-tests readback matches baseline"
+    },
+    {
+      "index": 8,
+      "operation": "replace_settings",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "853e1a055177314c866ae4427e697adeb6f79cab051d31bff0d6160b149c1776",
+      "status": "verified",
+      "language": "en",
+      "pass_number": 1
+    },
+    {
+      "index": 9,
+      "operation": "replace_settings",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "397ddd96452874b01d9f096311049c0d076492297d557a9fb7c3d2abf1f3cdea",
+      "status": "verified",
+      "language": "de",
+      "pass_number": 1
+    },
+    {
+      "index": 10,
+      "operation": "replace_settings",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "853e1a055177314c866ae4427e697adeb6f79cab051d31bff0d6160b149c1776",
+      "status": "verified",
+      "language": "en",
+      "pass_number": 2
+    },
+    {
+      "index": 11,
+      "operation": "replace_settings",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "397ddd96452874b01d9f096311049c0d076492297d557a9fb7c3d2abf1f3cdea",
+      "status": "verified",
+      "language": "de",
+      "pass_number": 2
+    },
+    {
+      "index": 12,
+      "operation": "restore_original_settings",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7",
+      "status": "verified"
     }
   ],
   "save_copies": 0,
   "app_installs_or_deletions": 0,
-  "additional_capture_runs": 0
+  "additional_capture_runs": 1,
+  "total_settings_writes": 12,
+  "approval_batches": [
+    {
+      "indices": [
+        1,
+        7
+      ],
+      "settings_writes": 7
+    },
+    {
+      "indices": [
+        8,
+        12
+      ],
+      "settings_writes": 5
+    }
+  ]
 }

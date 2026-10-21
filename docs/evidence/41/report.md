@@ -1,15 +1,16 @@
 # Issue #41 Report
 
-**New Game correction in progress: the original German capture differs from
-#40 by 44,997 pixels because the reset button is missing. Fixed templates and
-offline checks are ready; four replacement captures await separate device-write
-approval. Push and draft PR are approved. Gallery review, the two D-025 on-device
-checks and independent code review remain pending. D-039 remains Proposed.**
+**Capture implementation and New Game correction verified. Pending: Anton's
+gallery review, the two D-025 on-device checks and independent code review.
+D-039 remains Proposed. The review set explicitly combines 18 original pairs
+with two corrected New Game pairs; a new full ten-screen run after the template
+fix was not performed.**
 The installed CLI still needs this Mac's existing hidden-`.pth` workaround
 (`PYTHONPATH=src`); this task does not fix packaging or the filesystem flag setter.
 
 Branch `feat/41-screen-capture`, based on checker main `eb5616d`.
 Implementation under test: `e0d2888`; fixtures/decision commit: `05fa997`.
+New Game fixture/test correction under test: `383a13f`.
 
 ## New Game correction before review
 
@@ -30,6 +31,11 @@ unchanged D-038 `new_game` state (SHA-256
 `72b95927042892b69c9693646c449a1c5b8e945b33c585cdd862c330be83886a`).
 No hook, protocol, runner or CLI change was needed. The fixture contract test
 now checks the fixed setup in both languages and the distinct D-038 setup seed.
+Before the correction writes, checked the complete setup structure and all
+string values: `players` contains only `{"playerType":"Human"}` and three
+empty objects. There is no `playerId`, multiplayer user id, UUID, email or other
+personal identifier. Both templates remained unchanged after approval;
+`settings-privacy-check.json` records their unchanged approved payload hashes.
 
 Updated settings SHA-256: EN
 `853e1a055177314c866ae4427e697adeb6f79cab051d31bff0d6160b149c1776`, DE
@@ -40,18 +46,55 @@ For this targeted correction, a frozen copy under
 `data/issue-41/new-game-fix-inputs/` retains only the `new-game` screen entry;
 all remaining fields and referenced bytes are unchanged. Its manifest SHA-256
 is `442813d4b81cca8ce7434c9d731e1a85049ce82b28b33b25c2e488ebf6a5e06f`
-(`new-game-fix-inputs.json`). The planned loop is pass 1 EN/DE, then pass 2
+(`new-game-fix-inputs.json`). The executed loop was pass 1 EN/DE, then pass 2
 EN/DE, with one screen each: four cold launches and four captures. A single
 screen cannot itself test order dependence; the original ten-screen reverse
 pass remains the evidence for that check. The other nine screens are not
 recaptured in this correction. Old raw summaries, PNGs and audit are retained.
 
+After Anton confirmed exactly the five settings writes, ran:
+
+```sh
+PYTHONPATH=src uv run l10n-capture \
+  --manifest data/issue-41/new-game-fix-inputs/screens.json \
+  --lang en --lang de --repeat 2 --timeout 90 \
+  --device-plan data/issue-41/new-game-fix-preflight-20261021/device-plan.json \
+  --output-dir data/issue-41/new-game-fix-capture-20261021
+```
+
+Exit **0**, **4/4 READY/captured**, five matching panes per request, no ERROR,
+timeout or recovery restart. Independently decoded/hashed all four PNGs and
+recomputed comparisons without the runner's comparison helper:
+
+| Comparison | Differing pixels | Share | Bounding box |
+|---|---:|---:|---|
+| Corrected EN pass 1 vs pass 2 | 0 | 0.0 | null |
+| Corrected DE pass 1 vs pass 2 | 0 | 0.0 | null |
+| Corrected DE pass 1 vs #40 | 0 | 0.0 | null |
+| Corrected DE pass 2 vs #40 | 0 | 0.0 | null |
+
+Visually inspected both corrected primary images: the reset button is visible
+in both languages. Preview, player list and requested fields remain fixed; no
+English-specific state override was required. All comparisons contain
+2,592,000 pixels. `new-game-fix-audit.json` records the independent audit;
+`new-game-fix-summary.json` preserves raw run output (SHA-256
+`e077a8c04e81063dd9ff5405a1bd5608943c58c473d9136aa1cf8d182a586364`).
+`reference-comparison-after-fix.json` also compares the other nine German
+screens from the original run with #40 in both passes: all 20 effective German
+comparisons differ by zero pixels. Per-image manifest, settings, state, source
+run and PNG hashes are explicit in `review-set-provenance.json`.
+
 Checks after the template/test change: `uv run pytest -q` **1448 passed,
-2 skipped**, 9.32 s; both skips are device opt-in tests. `uv run ruff check .`
-passed; `uv run ruff format --check .` passed, 74 files formatted. The prior
-full `--run-device` result below predates this correction. It is not claimed
-as a rerun of the corrected templates; the four targeted live captures and
-their pixel/reference comparisons are pending separate device approval.
+2 skipped**, 9.32 s; both skips are device opt-in tests. Final offline rerun
+`uv run pytest -q --junitxml=data/issue-41/pytest-offline-final.xml`: **1448
+passed, 2 skipped**, 7.89 s, exit 0 (`pytest-offline-final.txt`). Final
+`uv run ruff check .` and `uv run ruff format --check .` both passed (74 files).
+`git diff --check` also passed. The prior full `--run-device` result
+predates this correction; it is not claimed as a rerun of the corrected
+templates. Runtime capture/device code did not change. The correction was
+verified by four live captures instead; the approved correction batch permits
+five settings writes only, so a full device-suite rerun (two additional legacy
+test writes) was not performed.
 
 ## What changed
 
@@ -88,11 +131,19 @@ their pixel/reference comparisons are pending separate device approval.
 - `docs/evidence/41/capture-audit.json`
 - `docs/evidence/41/capture-summary.json`
 - `docs/evidence/41/data-preservation.json`
+- `docs/evidence/41/new-game-fix-audit.json`
+- `docs/evidence/41/new-game-fix-data-preservation.json`
+- `docs/evidence/41/new-game-fix-device-plan.json`
 - `docs/evidence/41/new-game-fix-inputs.json`
+- `docs/evidence/41/new-game-fix-summary.json`
 - `docs/evidence/41/pytest-device.txt`
 - `docs/evidence/41/pytest-device.xml`
+- `docs/evidence/41/pytest-offline-final.txt`
+- `docs/evidence/41/reference-comparison-after-fix.json`
 - `docs/evidence/41/reference-comparison-before-fix.json`
 - `docs/evidence/41/report.md`
+- `docs/evidence/41/review-set-provenance.json`
+- `docs/evidence/41/settings-privacy-check.json`
 - `docs/stage2-capture.md`
 - `fixtures/stage2/README.md`
 - `fixtures/stage2/provenance.json`
@@ -183,9 +234,11 @@ Python change; the correction leaves runtime code unchanged.
 
 ### Repeatability by source screen
 
-For the original run, each comparison has 2,592,000 pixels, differing share **0.0**, and bounding box
-**null**. The first pass is 01 to 10 for EN then DE; the second is 10 to 01 for
-EN then DE. All 40 requests used their exact source states and reached READY.
+Each effective pair has 2,592,000 pixels, differing share **0.0**, and bounding
+box **null**. The original pass is 01 to 10 for EN then DE; its second pass is
+10 to 01 for EN then DE. All 40 original requests reached READY. The New Game
+row below uses its four corrected captures instead; the other nine rows retain
+the original run. This composition is explicit in the gallery and provenance.
 
 | Screen | EN differing pixels | DE differing pixels | EN state override |
 |---|---:|---:|---|
@@ -205,18 +258,22 @@ EN then DE. All 40 requests used their exact source states and reached READY.
 - 20-image gallery: `/Users/antonborodin/Documents/Codex/2026-10-21/next-task-issue-41-https-github/outputs/issue-41-gallery/gallery.html`.
 - Contact sheet: `/Users/antonborodin/Documents/Codex/2026-10-21/next-task-issue-41-https-github/outputs/issue-41-gallery/contact-sheet.png`.
 - Review ZIP: `/Users/antonborodin/Documents/Codex/2026-10-21/next-task-issue-41-https-github/outputs/issue-41-screenshots-1271045.zip`.
-- Full 40-image/evidence ZIP: `/Users/antonborodin/Documents/Codex/2026-10-21/next-task-issue-41-https-github/outputs/issue-41-evidence-1271045.zip`.
+- Full 44-image/evidence ZIP: `/Users/antonborodin/Documents/Codex/2026-10-21/next-task-issue-41-https-github/outputs/issue-41-evidence-1271045.zip`.
 
-These currently retain the original captures, including the New Game button
-omission. They will be superseded explicitly after the four correction captures.
-The gallery contains the primary pass only; every PNG retains its D-003/D-016
-name and original 2400 x 1080 pixels. The evidence ZIP includes both passes and
-public verification records, never private settings/save backups.
+The gallery and review ZIP contain the effective 20 primary images: 18 from the
+original run plus corrected EN/DE New Game. Every PNG retains its D-003/D-016
+name and original 2400 x 1080 pixels. The evidence ZIP retains all 40 original
+PNGs and four correction PNGs under distinct run folders, both input versions,
+and public verification records. Private settings/save backups are excluded.
+The previous public gallery/ZIPs/index were preserved under
+`outputs/issue-41-before-new-game-fix/`; no run record was deleted.
 
 ## Emulator app-data operations
 
-Anton explicitly confirmed this batch before any app-data write. **Exactly
-seven agent-initiated settings writes were executed**, all targeting
+Anton explicitly confirmed each batch before its app-data writes. **Exactly
+twelve agent-initiated settings writes were executed across the whole task**:
+seven in the original capture/device-test batch and five in the correction.
+All target
 `/data/user/0/com.unciv.app/files/GameSettings.json`:
 
 | # | Operation | Payload SHA-256 |
@@ -242,10 +299,10 @@ original and final uid/gid/mode/size: `10196 10196 600 873`.
 All four saves stayed byte-identical by SHA-256. **Save copies/replacements/
 deletions, app installs/uninstalls, data clears and translation changes: zero.**
 
-Other device operations: root/unroot and force-stop; four capture cold starts;
+Original-batch device operations: root/unroot and force-stop; four capture cold starts;
 40 sequential hook requests; one ordinary startup and one hook request in device
 tests; SDK screencaps; unique diagnostic markers in Android logs. No timeout
-recovery or extra capture run occurred. The test's ordinary main-menu PNG is
+recovery occurred in that batch. The test's ordinary main-menu PNG is
 under `data/device-tests/`; the hook smoke validates PNG bytes without saving a
 Stage 2 image. Private preflight, capture and final-verification backups remain
 under `data/issue-41/`, outside Git and public exports.
@@ -258,10 +315,10 @@ Fresh settings/all-save backups were read back and verified. APK, original
 settings bytes/metadata and all four saves still match the original baseline;
 no save copies are needed. The app is stopped and adbd was unrooted on exit.
 
-The following **five additional writes are planned, not yet executed**, all to
-the same `GameSettings.json` path. Separate approval is required before capture:
+The following **five additional writes were separately confirmed and executed**,
+all to the same `GameSettings.json` path and with unchanged approved hashes:
 
-| Planned # | Operation | Payload SHA-256 |
+| # | Operation | Payload SHA-256 |
 |---:|---|---|
 | 8 | pass 1 / en, capture new-game | `853e1a055177314c866ae4427e697adeb6f79cab051d31bff0d6160b149c1776` |
 | 9 | pass 1 / de, capture new-game | `397ddd96452874b01d9f096311049c0d076492297d557a9fb7c3d2abf1f3cdea` |
@@ -269,11 +326,15 @@ the same `GameSettings.json` path. Separate approval is required before capture:
 | 11 | pass 2 / de, capture new-game | `397ddd96452874b01d9f096311049c0d076492297d557a9fb7c3d2abf1f3cdea` |
 | 12 | restore original bytes/uid/gid/mode | `7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7` |
 
-Other planned operations: temporary adb root/unroot, force-stop, four cold hook
+Other correction operations: temporary adb root/unroot, force-stop, four cold hook
 launches/unique sequential requests, fresh-log matching waits, SDK screencaps,
-and final read-only settings/save/build verification. No full device-suite rerun
-is included in this batch, so its two legacy-test settings writes are not added.
-The original seven writes above remain the complete executed app-data ledger.
+and final read-only settings/save/build verification. All five write/readbacks
+were verified against the approved plan. A final successful prepare-only run
+into `data/issue-41/new-game-fix-after-20261021` independently confirmed original
+settings SHA-256 `7fc6dff5…`, uid/gid/mode/size `10196 10196 600 873`, all four
+save hashes and installed APK unchanged. App stopped; adbd unrooted. Portable
+evidence: `new-game-fix-data-preservation.json`; private backups retained.
+There were no additional writes beyond these twelve and no save copies.
 
 ## Deviations from the task
 
@@ -296,8 +357,9 @@ loop. D-038 remains Accepted and unchanged, pinned to fork merge `877b0dc`.
 - Two on-device checks under Accepted D-025 remain exactly as requested:
   horizontal clipping on victory-status; whether Civilopedia's category bar
   actually scrolls. No rule change or label is inferred from those screenshots.
-- Push and draft PR are approved. The four New Game correction captures await
-  separate approval of the five additional settings writes listed above.
+- Push and draft PR are approved. Independent review and Anton's acceptance /
+  merge remain separate from that authorization; the author has not approved
+  its own changes.
 
 ## API usage
 

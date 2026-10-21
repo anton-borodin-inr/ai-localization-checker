@@ -1,0 +1,28 @@
+{
+  "status": "verified_after_exactly_five_approved_writes",
+  "installed_build": {
+    "version_code": "1271045",
+    "apk_sha256": "16b6e07eaa8f7ca35b71f361f0bdcceb7015987b60e796d15d2f3b53bb61af1a",
+    "density_dpi": 420
+  },
+  "settings_before_sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7",
+  "settings_after_sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7",
+  "settings_before_stat": "10196 10196 600 873",
+  "settings_after_stat": "10196 10196 600 873",
+  "saves": {
+    "./Autosave": "9d2a4cd5e1de2b2ae9102a2e6e6d15210e32ae5188c895f84e8a3a6ce19c3b4e",
+    "./Autosave-The Ottomans-1": "62c62dcefb9065850dea34293a8a644a5ccea5397aa5bd5b1a12620a220e9e13",
+    "./issue-8-pair": "9d2a4cd5e1de2b2ae9102a2e6e6d15210e32ae5188c895f84e8a3a6ce19c3b4e",
+    "./issue-40-belgrade-metissue-8-pair": "2cf381aa7bf544961a302989c027045572b8d7036ab1840b01bc3ee4409c551e"
+  },
+  "all_four_saves_unchanged": true,
+  "app_left_stopped": true,
+  "adbd_final_user": "shell",
+  "save_copies": 0,
+  "app_installs_or_deletions": 0,
+  "private_backups_retained": [
+    "data/issue-41/new-game-fix-preflight-20261021/private",
+    "data/issue-41/new-game-fix-capture-20261021/private",
+    "data/issue-41/new-game-fix-after-20261021/private"
+  ]
+}

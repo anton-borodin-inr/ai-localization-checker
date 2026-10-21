@@ -45,6 +45,11 @@ non-null presence controls the visible "Reset to defaults" button. The first
 #41 capture omitted it and was repeatable but differed from #40 on New Game.
 The hook's D-038 `new_game` state still supplies the displayed setup fields;
 the archived seed in `lastGameSetup` does not replace that state or start a game.
+After the fix, four new EN/DE captures repeated with zero changed pixels, and
+both German captures matched #40 pixel for pixel. The review gallery records
+this correction's provenance separately from the original ten-screen run.
+`lastGameSetup` contains no personal identifiers: its players are one
+`{"playerType":"Human"}` object and three empty objects.
 
 World explicitly has **empty notifications on turn 1**, accepted by Anton.
 New Game is never started: the hook pins the displayed preview to seed 40;
