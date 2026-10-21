@@ -139,3 +139,65 @@ slice runs and every clean-screen finding are recorded in
 quality of an unimplemented evaluator.
 
 [CLI documentation]: https://tesseract-ocr.github.io/tessdoc/Command-Line-Usage.html
+
+## Optional OCR configurations (issue 48)
+
+The command still defaults to the exact Tesseract baseline-v0.1 path above.
+Only the OCR stage is selectable. `--ocr-engine` accepts `tesseract` and
+`easyocr`; `--ocr-preprocess` accepts `none`, `upscale2x` and `upscale2x-otsu`.
+The downstream inventory, translation rendering, comparisons and output schema
+do not change. The six combinations are experimental, not six new defaults.
+
+**Approved dependency:** EasyOCR 1.7.2 and its transitive dependencies (including
+PyTorch) provide a second local OCR engine. `uv.lock` records exact package
+versions; the default command imports neither EasyOCR nor PyTorch and never
+downloads models. No other direct dependency was added.
+
+Download the three fixed models once, without processing any screenshot:
+
+```bash
+uv sync --locked
+uv run --no-editable python -m l10n_checker.ocr_experiment prepare-models
+```
+
+Weights and `models.json` stay in gitignored `data/ocr-models/`; supply another
+location with `--model-dir` during setup and `--ocr-model-dir` during baseline
+runs. Inference requires the local manifest and matching SHA-256 and has
+downloads disabled. Original experiment versions, URLs, model hashes and
+hardware are in `docs/evidence/48/environment.json`. Setup preserves that
+committed environment record when preparing identical weights on another host.
+
+For example, select a configuration explicitly on one labelled dev image:
+
+```bash
+uv run --no-editable l10n-baseline \
+  --image docs/evidence/8/final/tech-picker__de__2400x1080__injected__1271002.png \
+  --manifest docs/evidence/8/pair-manifest.json \
+  --inventory docs/evidence/12/tech-picker.json \
+  --unciv-fork /path/to/Unciv \
+  --ocr-engine easyocr --ocr-preprocess none
+```
+
+The pre-registered experiment uses only seven explicit hash-validated inputs;
+its four Stage 2 images run through OCR only, without inventing inventories,
+labels or references. The initial full experiment is an exclusive operation:
+
+```bash
+uv run --no-editable python -m l10n_checker.ocr_experiment run \
+  --unciv-fork /path/to/Unciv
+```
+
+It refuses existing records. To reproduce the table from committed raw OCR
+without another OCR call, model load, device or network:
+
+```bash
+uv run --no-editable python -m l10n_checker.ocr_experiment summarize
+```
+
+See `docs/evidence/48/protocol.md`, `comparison.md` and `report.md` for settings,
+runtime definitions, every clean false positive, reference limitations and the
+preliminary recommendation. EasyOCR retains native segments without invented
+word boxes; Tesseract retains native words. Upscaled coordinates map back to
+the original screen. Native output is retained in OCR metadata for non-default
+variants; default records stay unchanged. Missing models, engine failures,
+timeouts and invalid/empty OCR produce `not_checked`.
