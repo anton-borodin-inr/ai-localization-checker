@@ -1,0 +1,19 @@
+[
+  {
+    "variant": "overflow-turns",
+    "screens": [
+      "tech-picker"
+    ],
+    "languages": [
+      "de",
+      "en"
+    ],
+    "observation_source": "source inspection and human-visible PNG inspection before the mutation model calls",
+    "reproduced": "yes",
+    "visible_behavior": "The expanded turn suffix paints left of the fixed 40-unit counter cell. In DE it collides with Tierhaltung, Bogenschießen and several other technology titles; EN collisions include Animal Husbandry, Horseback Riding and Bronze Working. The numeric value and words retain the base font size.",
+    "collision": true,
+    "full_text_visible_elsewhere": "The repeated suffix is fully visible in multiple unobstructed counters on the same screenshot. This is an overflow/collision probe, not a truncation claim.",
+    "scroll_clipping": "Unrelated partial rows at the technology tree viewport edges remain D-025 diagnostics; collisions are visible on fully displayed interior rows.",
+    "confound": "The source concatenates number and icon without a separator; expanding the icon lookup to words also produces number-word adjacency (e.g. 6Runden). Preserve this additional formatting effect; do not retune the frozen mutation after model results."
+  }
+]

@@ -196,7 +196,7 @@ def execute(image, checksum, repetition, ledger, ledger_path):
         entry["unknown_cost_reserve_usd"] = "0"
     elif record["requests_sent"] == 0:
         entry["unknown_cost_reserve_usd"] = "0"
-    destination = EVIDENCE / "runs" / folder.name
+    destination = EVIDENCE / "run-records" / folder.name
     destination.mkdir(parents=True, exist_ok=False)
     for name in (
         "run.json",

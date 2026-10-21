@@ -26,7 +26,7 @@ The [gallery](gallery.html) contains unchanged original PNGs. â€œClean controlâ€
 
 Each of the four controls was sent twice with the frozen v1 contract and `--max-requests 1`. All eight runs were checked/readable. One of two German city-production runs returned `truncated_text` for `Kann Land Verbesserungen auf Feldern bauen` at bottom-right, confidence 0.6; the second returned no findings. Visual inspection shows the complete string wrapped in that panel. Preserve this discrepancy without retuning, rerunning it away or turning observations into labels. The other six runs returned no findings. These are stability observations on controls, not precision/recall or a general quality claim.
 
-Each run's raw response, result, prompt, sent wrapper, metadata and CLI output are committed in `runs/<run-id>/`. [clean-runs.json](clean-runs.json) lists every returned finding and readability field alongside usage/cost.
+Each run's raw response, result, prompt, sent wrapper, metadata and CLI output are committed in `run-records/<run-id>/`. [clean-runs.json](clean-runs.json) lists every returned finding and readability field alongside usage/cost.
 
 ## Deviations from the task
 
