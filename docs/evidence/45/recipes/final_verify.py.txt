@@ -1,0 +1,59 @@
+"""Verify original issue-45 data before/after the existing read-only hook smoke."""
+
+import json
+from pathlib import Path
+import subprocess
+import sys
+
+ROOT = Path(__file__).resolve().parent
+CHECKER = ROOT / "checker"
+sys.path.insert(0, str(CHECKER / "scripts"))
+sys.path.insert(0, str(CHECKER / "src"))
+from issue45_capture import BACKUP, Device, digest, saves, settings, settings_stat, write_json
+
+private = BACKUP / "private"
+backup = json.loads((private / "backup-manifest.json").read_text())
+original = (private / "GameSettings.json").read_bytes()
+device = Device(Path("/Users/antonborodin/Library/Android/sdk/platform-tools/adb"), "emulator-5554")
+audit_path = CHECKER / "docs/evidence/45/final-device-verification.json"
+assert not audit_path.exists(), "Never overwrite final verification evidence"
+audit = {"status": "started", "explicit_settings_writes": 0, "save_writes": 0}
+
+
+def verify_data():
+    paths = device.shell("pm", "path", "com.unciv.app").strip().splitlines()
+    assert len(paths) == 1 and paths[0].startswith("package:/data/app/")
+    apk_hash = device.shell("sha256sum", paths[0].removeprefix("package:")).split()[0]
+    assert device.build() == "1271045"
+    assert apk_hash == backup["apk_sha256"]
+    current_settings = settings(device)
+    assert current_settings == original
+    assert settings_stat(device) == backup["settings_stat"]
+    current_saves = saves(device)
+    assert current_saves == backup["archives"]["external"]["files"]
+    return {"version_code": "1271045", "apk_sha256": apk_hash,
+            "settings_sha256": digest(current_settings), "settings_stat": settings_stat(device),
+            "settings_byte_identical": True, "all_saves_unchanged": True,
+            "external_file_count": len(current_saves)}
+
+
+device.connect()
+device.force_stop()
+audit["before"] = verify_data()
+write_json(audit_path, audit)
+command = [str(CHECKER / ".venv/bin/python"), "-m", "pytest", "--run-device",
+           "tests/test_hook_device.py", "-q"]
+audit["command"] = command
+try:
+    result = subprocess.run(command, cwd=CHECKER, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    (audit_path.parent / "pytest-hook-device.txt").write_bytes(result.stdout)
+    audit["pytest_exit_code"] = result.returncode
+    assert result.returncode == 0, "Existing hook device smoke failed; inspect retained output"
+    audit["status"] = "hook_smoke_passed"
+finally:
+    device.force_stop()
+    audit["after"] = verify_data()
+    audit["app_left_stopped"] = True
+    audit["emulator_free"] = audit["status"] == "hook_smoke_passed"
+    write_json(audit_path, audit)
+print(json.dumps(audit, indent=2))

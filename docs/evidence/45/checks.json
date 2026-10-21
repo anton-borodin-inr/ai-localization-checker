@@ -1,0 +1,28 @@
+{
+  "offline_tests": {
+    "command": "PYTHONPATH=src .venv/bin/python -m pytest -q",
+    "exit_code": 0,
+    "passed": 1455,
+    "skipped": 2,
+    "skip_reason": "Generic device tests require --run-device; main-menu test writes settings outside approved blocks. Existing hook test is deferred to the original-build restoration gate.",
+    "output": "pytest-final.txt"
+  },
+  "ruff_check": {
+    "command": ".venv/bin/ruff check .",
+    "exit_code": 0,
+    "output": "All checks passed!"
+  },
+  "ruff_format": {
+    "command": ".venv/bin/ruff format --check .",
+    "exit_code": 0,
+    "output": "84 files already formatted"
+  },
+  "staged_whitespace": {
+    "command": "git diff --cached --check",
+    "exit_code": 0
+  },
+  "scope_audit": {
+    "checker_protected_areas_unchanged": true,
+    "all_eight_fork_commits_translation_only_against_base": true
+  }
+}

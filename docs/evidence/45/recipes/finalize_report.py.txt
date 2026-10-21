@@ -1,0 +1,185 @@
+"""Assemble issue-45 evidence and report without device or provider operations."""
+
+from collections import Counter
+from decimal import Decimal
+import hashlib
+import json
+from pathlib import Path
+import shutil
+import subprocess
+
+ROOT = Path(__file__).resolve().parent
+CHECKER = ROOT / 'checker'
+E = CHECKER / 'docs/evidence/45'
+OUT = ROOT.parent / 'outputs/issue-45-final'
+BASE = '63b65347b328363f2fdfd51a345a805a6e8c17f9'
+
+def read(name):
+    return json.loads((E / name).read_text())
+
+def write(name, data):
+    (E / name).write_text(json.dumps(data, indent=2, ensure_ascii=False) + '\n')
+
+def sha(data):
+    return hashlib.sha256(data).hexdigest()
+
+ledger = read('api-ledger.json')
+summary = read('run-summary.json')
+design = read('probe-design.json')
+builds = read('apk-verification.json')
+frozen = read('frozen-contract.json')
+restored = (E / 'final-device-verification.json').exists() and read('final-device-verification.json').get('emulator_free') is True
+assert ledger['requests_sent'] == 38 and len(ledger['runs']) == 38
+assert all(x['status'] == 'recorded' for x in ledger['runs'])
+assert Decimal(ledger['unknown_cost_reserve_usd']) == 0
+assert Decimal(ledger['known_peak_estimate_usd']) <= 1
+usage = Counter()
+for row in ledger['runs']:
+    folder = E / 'run-records' / row['run_id']
+    metadata = json.loads((folder / 'run.json').read_text())
+    assert metadata['image']['sha256'] == row['image_sha256']
+    assert metadata['max_requests'] == metadata['requests_sent'] == row['requests_sent'] == 1
+    assert metadata['usage'] == row['usage']
+    assert metadata['estimated_cost'] == row['estimated_cost']
+    assert metadata['prompt_version'] == metadata['schema_version'] == 'v1'
+    assert metadata['prompt_sha256'] == frozen['hashes']['prompt.txt']
+    assert metadata['sent_prompt_sha256'] == frozen['hashes']['prompt_sent.txt']
+    for name in ('prompt.txt', 'prompt_sent.txt'):
+        assert sha((folder / name).read_bytes()) == frozen['hashes'][name]
+    assert (CHECKER / 'data/runs' / row['run_id'] / 'run.json').read_bytes() == (folder / 'run.json').read_bytes()
+    for key, value in row['usage'].items():
+        if isinstance(value, int):
+            usage[key] += value
+for path, expected in frozen['unchanged_source_files'].items():
+    assert sha((CHECKER / path).read_bytes()) == expected
+assert sum(Decimal(x['peak_usd']) for x in ledger['runs']) == Decimal(ledger['known_peak_estimate_usd'])
+
+captures = []
+operations = []
+for path in sorted((E / 'captures').glob('*/capture-audit.json')):
+    audit = json.loads(path.read_text())
+    assert audit['settings_restored_byte_identical'] and audit['all_saves_unchanged']
+    operations.append({'block': path.parent.name, 'status': audit['status'], 'settings_write_attempts': len(audit['app_data_operations']), 'settings_operations': audit['app_data_operations'], 'all_saves_unchanged': True})
+    for c in audit['captures']:
+        image = path.parent / c['png']
+        assert c['status'] == 'captured'
+        assert c['screen'] in ('tech-picker', 'city-production')
+        assert sha(image.read_bytes()) == c['sha256']
+        assert c['hook']['frames'] >= 2
+        assert any('L10N_SCREEN_READY ' + c['screen'] + ' request=' + c['request_id'] in event for event in c['hook']['events'])
+        matching = [x for x in ledger['runs'] if x['image_sha256'] == c['sha256']]
+        assert sorted(x['repetition'] for x in matching) == [1, 2]
+        captures.append({'variant': audit['plan']['variant'], 'image': str(image.relative_to(E)), 'sha256': c['sha256'], 'screen': c['screen'], 'language': c['language'], 'version_code': audit['plan']['version_code'], 'request_id': c['request_id'], 'ready_frames': c['hook']['frames'], 'runs': [x['run_id'] for x in matching]})
+assert len(captures) == 19 and len({x['sha256'] for x in captures}) == 19
+assert sum(x['settings_write_attempts'] for x in operations) == 28
+write('capture-index.json', captures)
+install_audits = [json.loads(p.read_text()) for p in sorted((E / 'install-audits').glob('*.json'))]
+write('device-operation-summary.json', {'capture_blocks': operations, 'settings_write_attempts': 28, 'save_writes': 0, 'uninstall_or_clear_data': 0, 'app_replacements': [{'variant': x['plan']['variant'], 'from': x['plan']['from_version_code'], 'to': x['plan']['to_version_code'], 'status': x['status'], 'plan_sha256': x['plan_sha256']} for x in install_audits], 'final_restoration_verified': restored})
+write('evidence-reconciliation.json', {'status': 'passed', 'screenshots': 19, 'runs': 38, 'requests': 38, 'repetitions_per_png': 2, 'checked': sum(x['status'] == 'checked' for x in summary), 'not_checked': sum(x['status'] == 'not_checked' for x in summary), 'all_png_hashes_match_capture_and_run': True, 'all_runs_match_original_local_run_metadata': True, 'frozen_prompt_and_sent_hashes_match_every_run': True, 'frozen_detector_source_hashes_unchanged': True, 'usage_totals': dict(usage), 'peak_usd': ledger['known_peak_estimate_usd'], 'unknown_reserve_usd': '0', 'final_restoration_verified': restored})
+
+api = ['## API usage', '', f"38 / 100 requests; peak estimate **USD {ledger['known_peak_estimate_usd']}**; off-peak estimate USD {sum(Decimal(x['estimated_cost']['off_peak_usd']) for x in ledger['runs'])}; unknown reserve USD 0; limit USD 1.00. All 38 attempts returned validated responses; two are not_checked due to partial readability. No API error, transport retry or invalid response occurred. No further calls are needed.", '', f"Usage totals: `{json.dumps(dict(usage))}`.", '', 'Every invocation used `uv run --env-file .env --no-sync l10n-check --image <PNG> --runs-dir data/runs --max-requests 1`. The task wrapper verifies screen/capture provenance and frozen hashes, reserves worst-case request cost before the call, locks/reconciles the ledger and records unknown/failure outcomes without treating them as clean. Only the project provider module contacts DeepSeek. The agent never reads, prints or copies .env or the key. The ignored .env path is a symlink to the existing project key file, not a copy.', '', 'The unchanged provider uses deepseek-flash, non-thinking, temperature 0, original PNG detail, JSON object mode, max_tokens 4096, 120 s timeout and no transport retries. The API reports only a model alias plus system_fingerprint, not an immutable revision. Tariff verification and conservative USD 0.319488 per-request reserve are in [budget-policy.json](budget-policy.json); the provider tariff snapshot is retained per run. These are estimates, not billing receipts. [Official pricing](https://api-docs.deepseek.com/quick_start/pricing/).', '', '| Run id | Screenshot | Requests | Prompt | Cache hit | Cache miss | Completion | Total | Peak USD | Off-peak USD |', '|---|---|---:|---:|---:|---:|---:|---:|---:|---:|']
+for x in summary:
+    u=x['usage']; c=x['estimated_cost']
+    api.append(f"| [{x['run_id']}](run-records/{x['run_id']}/run.json) | {x['image']} | {x['requests_sent']} | {u['prompt_tokens']} | {u['prompt_cache_hit_tokens']} | {u['prompt_cache_miss_tokens']} | {u['completion_tokens']} | {u['total_tokens']} | {c['peak_usd']} | {c['off_peak_usd']} |")
+(E / 'api-usage.md').write_text('# Issue 45 API accounting\n\n' + '\n'.join(api[2:]) + '\n')
+
+report = '''# Issue 45 Report
+
+**Limitations and outstanding work:** this is exploration on two dev screens, not a labeled evaluation or a detector-quality/baseline comparison. Two counter-overflow runs are `not_checked` because the model reports partial readability. The model also returns findings for visibly complete/native text and misses other reproduced mechanisms. No prompt/schema or mutation was retuned after the results. The class definitions below need Anton's edits/acceptance and independent review; no Accepted decision is changed.
+
+'''
+report += ('**Device restored and free:** original hook APK 1271045 is installed and independently hash-verified. The existing D-038 hook device test passed. Original settings bytes/stat and all saves match the pre-task backup before and after the test. The app is stopped and the same AVD remains running. See [final verification](final-device-verification.json).\n\n' if restored else '**Device restoration pending:** 1271458 is installed, original settings are restored, and all saves are verified unchanged. The emulator is still occupied by #45. Separate restoration/smoke approval is pending.\n\n')
+report += '''## What changed
+
+- Checker branch `feat/45-defect-type-probes` from `63b65347b328363f2fdfd51a345a805a6e8c17f9`: task-specific guarded backup/capture/check helpers, focused tests, evidence and two Proposed D-0XX entries. [Exact changed-file list](changed-files.txt).
+- Separate fork folder/branch `probe/45-defect-types` from `l10n-base-4.22.10` at `877b0dc2ee706dbbdb4a17e14b4522408d197390`. Only English/German translation files changed in its eight commits. **Never merge this probe branch into the clean base.** APKs use new versionCodes 1271451–1271458 via an external [Gradle init script](version-code.init.gradle); tracked Kotlin/Gradle metadata and the hook are unchanged.
+- [Exact frozen mutations](probe-design.json) record every file, key, original/mutated value and operation relative to the clean base. Every variant replaces the previous variant's translation changes rather than accumulating them. [Build evidence](builds.json) and [APK verification](apk-verification.json) establish exact packaged translation bytes, identical signing certificate, arm64/DEX presence and source-only translation diffs.
+- 19 unchanged original PNGs: 4 clean controls and 15 mutation images. [Gallery](gallery.html), [capture/READY/hash/run index](capture-index.json), [source/PNG observations made before each mutation's model calls](observations.json). The removed German Mining entry applies only to DE: source-English fallback cannot be wrong-language text in EN UI.
+- Each image was sent twice through the unchanged v1 contract: 38 independent requests, 36 checked/readable and 2 not_checked/partial. [Every returned finding, status and readability](run-summary.md); [machine-readable diagnostics including reasons/regions](run-summary.json); raw response/result/run/prompt/sent-wrapper/CLI evidence under `run-records/<run-id>/`.
+- No change to hook, l10n-capture, baseline/OCR, provider/detector implementation, prompt/schema v1, matching, metrics, labels, goldens or dependencies. Exploratory images never enter labels/evaluation. No other source screen was sent to DeepSeek.
+
+## Per-candidate result
+
+“Seen” below is a descriptive count of checked runs whose returned text refers to the injected target/mechanism; it is not a matching result, ground truth, precision or recall. A raw diagnostic finding from not_checked never counts as a checked detection. Baseline expectations are source-based and unmeasured; no OCR run was performed.
+
+| Candidate | Reproduced in these widgets | What the frozen model returned | Obvious OCR + table expectation |
+|---|---|---|---|
+| Own-field overflow | Yes: turn label escapes its 40-unit cell in DE/EN and collides with technology titles. Worker: own-label overflow not demonstrated; wrapping/panel growth causes a separate-widget collision. | Turn probe: 2/4 runs checked/readable report `overlap`; other 2/4 partial/not_checked retain overlap only as diagnostics. Worker: 0/4 reports collision/overflow; 3/4 call the complete title `truncated_text`, 1/4 empty. There is no `overflow` schema class. Collision-free overflow detection was not tested. | No own-label/container geometry or overflow rule in the current baseline. OCR failures may trigger a missing/prefix rule, which does not establish overflow. |
+| Wrong language | Yes: DE Mining fallback and foreign Worker in DE/EN. | 4/6 target-reporting checked runs: all foreign Worker runs use `untranslated`, both fallback runs empty. All foreign runs also flag three native-language unit names. There is no `wrong_language` schema class. | Can use missing-entry provenance and known EN/DE alternatives when expectations are independent. It cannot infer arbitrary foreign text from a polluted active table; Russian OCR is outside its EN/DE language setup. |
+| Technical text / broken placeholder | Yes: failed template-name substitution on Research and literal token in Worker title. | 2/8 runs report target text: both DE Worker runs use `untranslated`, also flagging the native description. EN Worker 0/2 and Research DE/EN 0/4 are empty. No dedicated schema class; D-027 prescribes `other`, but the model did not use it here. All 8 checked/readable. | Existing `literal_placeholder` rule can emit `other` if OCR preserves brackets. It need not recognize a bracket-free `amount` as technical text, and cannot validate arbitrary substitutions just from text equality. |
+| Truncated text | Yes: Mining ellipsis in DE/EN, no full title elsewhere. | 4/4 checked/readable runs use `truncated_text` for the ellipsized target, stable within these two repetitions. | Expected prefix/missing comparison against independent full text can catch this; D-023 full-text-elsewhere and D-025 viewport boundaries still need correct inventory/context. |
+| Unreadably small text | No: long Research action and long Worker title retain ordinary font size and grow/wrap. | 0/8 explicit small-text reports across those two probes (all checked/readable). Research 4/4 empty; Worker 3/4 truncation reports concern a complete title. No dedicated schema class, no reproduced positive example. | No font-size/readability threshold. Missing OCR text cannot distinguish tiny text from occlusion or OCR failure. |
+
+### Visible boundaries
+
+- Turn overflow retains font size 14. The suffix is fully visible in unobstructed counters elsewhere; this is own-cell overflow/collision, not a truncation claim. Source concatenates number and hourglass without a separator, so replacing the icon also introduces number-word adjacency, e.g. `6Runden`; this confound is retained.
+- Worker wraps to four lines in the list; the complete title fits the selected-construction panel after it grows. The city-name control occludes part of the grown description panel. This is a collision between widgets, not proof of text escaping its own label. The complete title is visible twice, so its model truncation findings conflict with the observed title and D-023 boundary.
+- German fallback shows complete `Mining` among German technology names; no target clipping/collision. Foreign Worker is complete in list and panel. The Worker literal-token path strips brackets in the list (`Arbeiter amount` / `Worker amount`) while preserving `[amount]` in the selected panel. Research preserves the literal token in both languages.
+- Mining shows `Bergbau und Erzgew...` / `Mining and ore extra...` within a fully displayed button; Archery is selected, so neither description nor Research action exposes the full Mining title. Unrelated clipping at tree/description scroll edges remains excluded under D-025.
+- The long Research action fits by growing left and narrowing the description scroll viewport. It does not visibly shrink or lose the target text. [Pinned source inspection](source-inspection.json) covers TechButton, TechPickerScreen, PickerScreen/PickerPane, city construction labels and ordinary label/button helpers. Fixed `setFontScale` from a requested font size is not length-dependent fitting. No such fitting was found in this scope; this does not establish absence across all Unciv widgets. No additional device scrolling was performed to create new label decisions.
+
+### Clean controls and stability
+
+“Clean control” means no injected translation change, not an agent-created clean label. Of eight checked/readable control runs, one DE city-production run reports `truncated_text` for complete wrapped `Kann Land Verbesserungen auf Feldern bauen`, bottom-right, confidence 0.6; its repeat is empty. The other six runs are empty. Foreign-language probes flag native `Siedler`/`Späher`/`Krieger` in DE and `Settler`/`Scout`/`Warrior` in EN in all four runs, alongside the injected token. Preserve these discrepancies and both partial responses; do not rerun them away or derive labels from them. Two calls per image are a small stability probe, not a reliability estimate.
+
+## How it was verified
+
+- Original hook APK 1271045, settings and complete internal/external file archives were backed up before writes via `run-as`, without root. Independent readbacks and per-file hashes/metadata verified them; private backups are retained outside committed evidence. [Backup summary](pre-task-backup-summary.json).
+- Every exact install/capture plan was separately approved in the task chat. Each in-place install checks source/target versionCode and APK SHA-256 plus original settings bytes/stat and all external saves before/after. No uninstall/clear data or save provisioning/writes. [Install audits](install-audits/) and [all app replacements/data-write attempts](device-operation-summary.json).
+- Captures use the unchanged D-038 client, frozen state/templates, unique requests/log barriers and matching READY after >=2 quiet frames. Foreground, cutout, 420 dpi, build/hash, full PNG decode and 2400x1080 dimensions are checked; each block restores original settings in finally and verifies all saves. Frozen states select Archery/anchor Mining and Istanbul/Worker with an empty queue. English/German screen overrides are empty for these two screens.
+- Total explicit settings-write attempts: 28, including 2 in the failed initial clean block and 26 in completed capture blocks. Exact operations/hashes/readbacks are retained. The failed first transfer stopped before hook/screenshot and still restored original bytes. No save files were written.
+- Clean controls and probes belong to the same task session, with a documented emulator restart between controls and probes. Anton approved restarting the existing AVD without wipe, snapshot load/save or reset, plus standard cutout preparation. APK/settings/saves were verified against backup after reboot before the first successful probe install.
+- [Evidence reconciliation](evidence-reconciliation.json) independently checks 19 PNG hashes against capture/run metadata, matching READY, exactly two runs per PNG, original local run metadata versus committed copies, every frozen prompt/sent hash and exact ledger usage/cost totals. No live provider call is made by this check.
+- Final offline suite after task helper changes: `PYTHONPATH=src .venv/bin/python -m pytest -q`: **1455 passed, 2 skipped**, exit 0 ([output](pytest-final.txt)). The two default skips require --run-device. Ruff check and format check: exit 0, 84 files already formatted. The existing main-menu device test changes settings outside the approved blocks and was not run; task-specific captures provide direct device evidence.
+'''
+report += ('- After restoration, `tests/test_hook_device.py` with `--run-device` passed: **1 passed**, exit 0 ([output](pytest-hook-device.txt)). It launches only tech-picker through D-038 under original settings, then stops the app. Before/after verification confirms original APK hash, byte-identical settings/stat and all four save files unchanged. Original APK SHA-256 `16b6e07eaa8f7ca35b71f361f0bdcceb7015987b60e796d15d2f3b53bb61af1a`; settings SHA-256 `7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7`, stat `10196:10196:600:873`.\n' if restored else '- Final original-build install and read-only hook smoke remain pending the separate device gate.\n')
+report += '''
+## Deviations from the task
+
+No scope deviation. The initial clean settings transfer failed readback before a hook request, was restored and corrected to `adb shell -T run-as tee`; failure evidence is retained. The first install preflight stopped while the emulator process was absent, then succeeded after the separately approved reboot/original-data checks. A cutout preflight stopped once and standard approved preparation was reapplied. Initial Gradle wrapper/cache attempts failed; copying an old cache was stopped and a fresh task-local cache downloaded the same pinned dependencies. All failure/build attempts remain in evidence. Committed build-log copies remove trailing whitespace only, with raw hashes in [log-normalization.json](log-normalization.json); local raw logs remain retained.
+
+The original metadata is preserved except fields inherently updated by reads/install operations (for example access timestamps are not asserted); settings uid/gid/mode/size, save metadata captured by the inventory, and every required file byte/hash are checked. No data repair or rollback of saves was needed. No general claim about font scaling outside the inspected widgets is made.
+
+## Decisions proposed
+
+Two D-0XX entries in docs/decisions.md; numbers assigned at merge:
+
+1. Record Anton's assignment of tech-picker and city-production to dev; assign no other screens.
+2. Propose three primary semantic classes, superseding only D-006's type count and D-020's class list/overlap deferral if Anton accepts:
+   - `overflow`: text renders outside its own assigned label/field bounds, with or without collision. Wrapping/container growth with fitting text is excluded; separate-widget collision is distinguished.
+   - `wrong_language`: user-facing text is in another language than the intended screen, including source fallback or foreign content in the active file. Proper names/shared words/symbols/numbers require context.
+   - `truncated_text`: some user-facing text is unavailable because its label clips/shortens it, retaining D-023's full-text-elsewhere exception for ellipsis and D-025's scroll exclusion.
+
+Anton writes or edits the definitions/boundaries before acceptance. These are proposed semantic names, not a schema change: frozen wire classes remain overlap/untranslated/truncated_text/other. Naming/compatibility implementation needs a later scoped task after acceptance. D-027 stays binding: raw keys are untranslated with notes; broken placeholders are other with notes. Technical text has evidence but no new primary class here; unreadably small text lacks a positive example. The proposal is based on reproduced UI mechanisms, not a claim that the current model detects them reliably.
+
+## Open questions for Anton
+
+- Edit/accept/reject the three-class proposal and its boundaries; inspect the separate-widget collision before deciding whether it needs a later class.
+- Authorize publication of the prepared checker/fork branches and checker PR. Independent review must inspect screenshots and raw runs before merge; the author does not approve its own PR.
+- Labels, all remaining screen assignments, mutation generation, prompt/schema revisions and OCR comparison remain separate work.
+
+## Retained support files
+
+Task scripts and focused tests are retained to reproduce guarded capture/accounting and failure-restoration behavior. [Operational recipe snapshots](recipes/README.md) preserve exact build/install/export/verification sources as non-executable audit text; they are not new installed commands. The design initializer must never be rerun over the ledger. APK binaries, full original settings/saves, Gradle caches and raw build logs remain local and uncommitted. No temporary work product is added to production modules. The final original-build test reuses an existing test without modifying hook or capture code.
+
+'''
+report += '\n'.join(api) + '\n'
+(E / 'report.md').write_text(report)
+(E / 'progress.md').write_text('# Issue 45 checkpoint\n\nAll eight variants and 19 screenshots are complete; 38 requests, 36 checked and 2 not_checked, peak estimate USD 0.015411696. No more live calls are planned. See [Report](report.md), [gallery](gallery.html) and [raw run diagnostics](run-summary.md).\n\n' + ('The original hook build 1271045 is restored and the emulator is free; final verification is retained.\n' if restored else 'The emulator remains occupied on 1271458 pending separately approved restoration/smoke. Original settings are restored and all saves match the pre-task backup.\n'))
+# Exact operational sources remain auditable; these are snapshots, not executable commands.
+recipe_manifest = []
+for name in ('prepare_design.py', 'build_probes.py', 'prepare_probe_devices.py', 'install_probe.py', 'export_evidence.py', 'final_verify.py', 'finalize_report.py'):
+    shutil.copyfile(ROOT/name, E/'recipes'/(name+'.txt'))
+    recipe_manifest.append({'original_task_path': str(ROOT/name), 'snapshot': name+'.txt', 'sha256': sha((ROOT/name).read_bytes())})
+write('recipes/manifest.json', recipe_manifest)
+changed = set(subprocess.check_output(['git','diff','--name-only',BASE],cwd=CHECKER,text=True).splitlines())
+changed.update(subprocess.check_output(['git','ls-files','--others','--exclude-standard'],cwd=CHECKER,text=True).splitlines())
+changed.update(['docs/evidence/45/changed-files.txt','docs/evidence/45/evidence-sha256.json'])
+(E / 'changed-files.txt').write_text('\n'.join(sorted(changed))+'\n')
+files=[]
+for p in sorted(E.rglob('*')):
+    if p.is_file() and p.name != 'evidence-sha256.json':
+        files.append({'path':str(p.relative_to(E)),'bytes':p.stat().st_size,'sha256':sha(p.read_bytes())})
+write('evidence-sha256.json', {'algorithm':'sha256','excludes_self':True,'files':files})
+shutil.copytree(E,OUT,dirs_exist_ok=True)
+print(json.dumps({'report':str(OUT/'report.md'),'screenshots':len(captures),'runs':len(summary),'restored':restored,'changed_files':len(changed),'peak_usd':ledger['known_peak_estimate_usd']}))

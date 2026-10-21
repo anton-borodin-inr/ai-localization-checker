@@ -15,5 +15,100 @@
     "full_text_visible_elsewhere": "The repeated suffix is fully visible in multiple unobstructed counters on the same screenshot. This is an overflow/collision probe, not a truncation claim.",
     "scroll_clipping": "Unrelated partial rows at the technology tree viewport edges remain D-025 diagnostics; collisions are visible on fully displayed interior rows.",
     "confound": "The source concatenates number and icon without a separator; expanding the icon lookup to words also produces number-word adjacency (e.g. 6Runden). Preserve this additional formatting effect; do not retune the frozen mutation after model results."
+  },
+  {
+    "variant": "overflow-worker",
+    "languages": [
+      "de",
+      "en"
+    ],
+    "observation_source": "source inspection and visible PNG inspection before this mutation model call",
+    "reproduced": "partly",
+    "visible_behavior": "The long title wraps to four lines in the construction list and fits in the selected-construction title after that panel grows leftwards. The grown panel lies behind the city-name and exit controls; the city-name control obscures part of the construction description in both languages.",
+    "own_label_bounds_overflow": "not demonstrated: the title fits the grown container",
+    "collision": true,
+    "collision_detail": "Different widgets overlap: city-name control occludes construction-description text; the full selected Worker title itself remains visible.",
+    "full_title_visible_elsewhere": true,
+    "scroll_clipping": "The occlusion is caused by another control, not an ancestor scroll viewport. The list retains wrapped text without losing the Worker title.",
+    "font_shrinking": "not observed; text keeps ordinary font size; source uses fixed font sizes and content-driven packing."
+  },
+  {
+    "variant": "wrong-language-fallback",
+    "languages": [
+      "de"
+    ],
+    "observation_source": "translation-source and PNG inspection before the mutation model calls",
+    "reproduced": "yes",
+    "visible_behavior": "The German technology tree shows Mining in place of Bergbau, surrounded by German technology names. Archery remains selected.",
+    "full_text_visible_elsewhere": "The complete Mining fallback is visible; no truncation or target collision is observed.",
+    "scroll_clipping": "Unrelated partial technology-tree/description viewport content remains excluded under D-025.",
+    "english_applicability": "No wrong-language mutation in EN: removing a German entry does not affect EN and English fallback is already the screen language."
+  },
+  {
+    "variant": "wrong-language-foreign",
+    "languages": [
+      "de",
+      "en"
+    ],
+    "observation_source": "translation-source and PNG inspection before the mutation model calls",
+    "reproduced": "yes",
+    "visible_behavior": "Worker is rendered as Рабочий in German UI and Arbeiter in English UI, both in the list and selected-construction panel.",
+    "full_title_visible_elsewhere": true,
+    "collision": false,
+    "scroll_clipping": "No target clipping or collision; the complete foreign-language token is visible in both occurrences."
+  },
+  {
+    "variant": "placeholder-tech",
+    "languages": [
+      "de",
+      "en"
+    ],
+    "observation_source": "translation-source and PNG inspection before model calls",
+    "reproduced": "yes",
+    "visible_behavior": "The research button shows [amount] erforschen in DE and Research [amount] in EN. The literal placeholder survives because the value no longer contains source placeholder [technology].",
+    "full_text_visible_elsewhere": "The complete technical token is visible. The selected technology is Archery, but its name was not substituted into the action button.",
+    "scroll_clipping": "The target button is outside the description scroll pane; no target clipping or collision is observed."
+  },
+  {
+    "variant": "placeholder-city",
+    "languages": [
+      "de",
+      "en"
+    ],
+    "observation_source": "translation-source and visible PNG inspection before mutation model calls",
+    "reproduced": "yes",
+    "visible_behavior": "The selected-construction panel shows Arbeiter [amount] in DE and Worker [amount] in EN. In the list, the square brackets are stripped and the corresponding text reads Arbeiter amount / Worker amount. This is a literal-token translation path, not a template-name mismatch.",
+    "full_text_visible_elsewhere": "The complete bracketed token is visible in the bottom-right panel; the list has its bracket-free form.",
+    "collision": false,
+    "scroll_clipping": "No target clipping, collision or shrinking is observed; the title and technical token are readable."
+  },
+  {
+    "variant": "truncation-mining",
+    "languages": [
+      "de",
+      "en"
+    ],
+    "observation_source": "source and visible PNG inspection before mutation model calls",
+    "reproduced": "yes",
+    "visible_behavior": "The Mining technology title uses ellipsis: Bergbau und Erzgew... in DE and Mining and ore extra... in EN. TechButton text has a fixed 140-unit cell, font size 14 and setEllipsis(true).",
+    "full_text_visible_elsewhere": false,
+    "full_text_detail": "Archery is selected. Neither the technology description nor the research action button displays the full mutated Mining name.",
+    "collision": false,
+    "scroll_clipping": "The mutated Mining button is fully inside the tree viewport. Its ellipsis is separate from unrelated ancestor viewport clipping at the upper tree and bottom description edges (D-025).",
+    "font_shrinking": "not observed: name is ellipsized at the fixed font size."
+  },
+  {
+    "variant": "small-text-tech",
+    "languages": [
+      "de",
+      "en"
+    ],
+    "observation_source": "source and visible PNG inspection before mutation model calls",
+    "reproduced": "no",
+    "visible_behavior": "The long Research translation enlarges the action button to the left and reduces the description viewport width. The text remains at the ordinary action-button font size, on one title line plus the existing science-progress line. The source placeholder is replaced with the selected Archery name.",
+    "full_text_visible_elsewhere": "The complete expanded action text is visible on its button in both languages; no target ellipsis or text loss is observed.",
+    "collision": false,
+    "scroll_clipping": "More of the description lies outside its narrowed scroll viewport. This is ancestor viewport clipping, not evidence that the action text shrank or was cut. D-025 remains binding.",
+    "font_shrinking": "Not reproduced in this action button or the long Worker title probe. TechButton uses fixed 14-unit text and ellipsis; the inspected PickerScreen/PickerPane and ordinary label/button helpers contain no text-length-dependent font fitting. This is a bounded negative finding for these widgets, not all of Unciv."
   }
 ]

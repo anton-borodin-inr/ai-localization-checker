@@ -1,0 +1,72 @@
+"""Execute exactly one separately approved install plan; never uninstall or launch."""
+
+import argparse
+import json
+from pathlib import Path
+import sys
+
+ROOT = Path(__file__).resolve().parent
+CHECKER = ROOT / "checker"
+EVIDENCE = CHECKER / "docs/evidence/45"
+sys.path.insert(0, str(CHECKER / "scripts"))
+sys.path.insert(0, str(CHECKER / "src"))
+from issue45_capture import BACKUP, Device, digest, saves, settings, settings_stat, write_json
+
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument("--plan", type=Path, required=True)
+parser.add_argument("--approved-sha256", required=True)
+parser.add_argument("--attempt", type=int, default=1)
+options = parser.parse_args()
+payload = options.plan.read_bytes()
+assert digest(payload) == options.approved_sha256, "Plan differs from separately approved hash"
+plan = json.loads(payload)
+assert plan["no_uninstall_or_clear_data"] is True
+assert plan["app_data_overwrites"] == 0
+apk = Path(plan["target_apk"])
+assert digest(apk.read_bytes()) == plan["to_apk_sha256"]
+private = BACKUP / "private"
+original = (private / "GameSettings.json").read_bytes()
+backup = json.loads((private / "backup-manifest.json").read_text())
+device = Device(Path("/Users/antonborodin/Library/Android/sdk/platform-tools/adb"), "emulator-5554")
+assert options.attempt >= 1
+suffix = "" if options.attempt == 1 else f"-attempt-{options.attempt}"
+audit_path = CHECKER / "data/issue-45/install-audits" / f"{plan['variant']}{suffix}.json"
+assert not audit_path.exists(), "Preserve an existing attempt; prepare an explicit retry record"
+audit = {"plan_sha256": digest(payload), "plan": plan, "status": "preflight"}
+
+
+def installed_hash():
+    paths = device.shell("pm", "path", "com.unciv.app").strip().splitlines()
+    assert len(paths) == 1 and paths[0].startswith("package:/data/app/")
+    return device.shell("sha256sum", paths[0].removeprefix("package:")).split()[0]
+
+
+def check_data():
+    assert settings(device) == original, "Settings differ from pre-task backup"
+    assert settings_stat(device) == backup["settings_stat"], "Settings metadata differ"
+    assert saves(device) == backup["archives"]["external"]["files"], "Saves differ"
+
+
+try:
+    device.connect()
+    device.force_stop()
+    assert device.build() == plan["from_version_code"]
+    assert installed_hash() == plan["from_apk_sha256"]
+    check_data()
+    audit["status"] = "install_attempted"
+    write_json(audit_path, audit)
+    install_arguments = ["install", "-r"]
+    if plan.get("allow_downgrade"):
+        assert plan["to_version_code"] == "1271045"
+        assert plan["to_apk_sha256"] == backup["apk_sha256"]
+        install_arguments.append("-d")
+    result = device.run(*install_arguments, str(apk)).decode()
+    audit["adb_output"] = result
+    assert "Success" in result
+    assert device.build() == plan["to_version_code"]
+    assert installed_hash() == plan["to_apk_sha256"]
+    check_data()
+    audit.update(status="installed_and_verified", settings_byte_identical=True, all_saves_unchanged=True, app_left_stopped=True)
+finally:
+    write_json(audit_path, audit)
+print(json.dumps(audit, indent=2))

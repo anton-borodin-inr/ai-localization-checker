@@ -1,0 +1,28 @@
+{
+  "id": "f7b0eae5-8ad5-4cf5-b6d0-6f69e292c573",
+  "object": "chat.completion",
+  "created": 1792610467,
+  "model": "deepseek-flash",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\"readability\":\"readable\",\"unreadable_regions\":[],\"readability_reason\":null,\"findings\":[{\"defect_type\":\"untranslated\",\"text_seen\":\"Рабочий\",\"region\":\"left\",\"confidence\":0.95},{\"defect_type\":\"untranslated\",\"text_seen\":\"Siedler\",\"region\":\"left\",\"confidence\":0.95},{\"defect_type\":\"untranslated\",\"text_seen\":\"Späher\",\"region\":\"left\",\"confidence\":0.95},{\"defect_type\":\"untranslated\",\"text_seen\":\"Krieger\",\"region\":\"left\",\"confidence\":0.95},{\"defect_type\":\"untranslated\",\"text_seen\":\"Рабочий\",\"region\":\"bottom-right\",\"confidence\":0.95}]}"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1836,
+    "completion_tokens": 160,
+    "total_tokens": 1996,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 1836
+  },
+  "system_fingerprint": "e72d3c7f663d3e1383b00b3884cb4501"
+}

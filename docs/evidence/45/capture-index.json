@@ -1,0 +1,268 @@
+[
+  {
+    "variant": "clean",
+    "image": "captures/clean-retry-2/city-production__de__2400x1080__probe-clean__1271045.png",
+    "sha256": "b26abc6f7646666460edb51309a220a1d3dd8fdd01476d103bda2bb8929cb368",
+    "screen": "city-production",
+    "language": "de",
+    "version_code": "1271045",
+    "request_id": "i45-clean-de-d21b8f6bfd98",
+    "ready_frames": 2,
+    "runs": [
+      "20261021T185946Z-c21c92",
+      "20261021T185948Z-4ba077"
+    ]
+  },
+  {
+    "variant": "clean",
+    "image": "captures/clean-retry-2/tech-picker__de__2400x1080__probe-clean__1271045.png",
+    "sha256": "37789ea25484d22c3b14f97dba3520c3fbd5dd87667ba5db9e1ba3daaf6ee4f0",
+    "screen": "tech-picker",
+    "language": "de",
+    "version_code": "1271045",
+    "request_id": "i45-clean-de-f44efc8934cd",
+    "ready_frames": 2,
+    "runs": [
+      "20261021T185950Z-bbbee4",
+      "20261021T185953Z-6b3140"
+    ]
+  },
+  {
+    "variant": "clean",
+    "image": "captures/clean-retry-2/city-production__en__2400x1080__probe-clean__1271045.png",
+    "sha256": "afc99e09d8d7d955b8acd7ad1ef74bd26710a8b60bd6e0b233b66b60493045fb",
+    "screen": "city-production",
+    "language": "en",
+    "version_code": "1271045",
+    "request_id": "i45-clean-en-5f02c8336b28",
+    "ready_frames": 2,
+    "runs": [
+      "20261021T185955Z-e3cd99",
+      "20261021T185957Z-cbf5a7"
+    ]
+  },
+  {
+    "variant": "clean",
+    "image": "captures/clean-retry-2/tech-picker__en__2400x1080__probe-clean__1271045.png",
+    "sha256": "d225bc7d71de675dd621a5e6cdfb6bd2e7e92c383c16bcd2ccdfa000190b2c56",
+    "screen": "tech-picker",
+    "language": "en",
+    "version_code": "1271045",
+    "request_id": "i45-clean-en-00705290f9e0",
+    "ready_frames": 2,
+    "runs": [
+      "20261021T190000Z-d845c8",
+      "20261021T190002Z-c1ff72"
+    ]
+  },
+  {
+    "variant": "overflow-turns",
+    "image": "captures/overflow-turns/tech-picker__de__2400x1080__probe-overflow-turns__1271451.png",
+    "sha256": "1fa18aeed84588630fc5e5308142b7a97e84cdb8eefaa3ec12c40b88a4bf52d4",
+    "screen": "tech-picker",
+    "language": "de",
+    "version_code": "1271451",
+    "request_id": "i45-overflow-turns-de-045989e66185",
+    "ready_frames": 2,
+    "runs": [
+      "20261021T191152Z-72ce18",
+      "20261021T191155Z-17b6ce"
+    ]
+  },
+  {
+    "variant": "overflow-turns",
+    "image": "captures/overflow-turns/tech-picker__en__2400x1080__probe-overflow-turns__1271451.png",
+    "sha256": "027b199bbdfc1d1ac3d3186e353ee6b9e660c841359ac6488e1e7d290e3757c2",
+    "screen": "tech-picker",
+    "language": "en",
+    "version_code": "1271451",
+    "request_id": "i45-overflow-turns-en-e96f9eb87040",
+    "ready_frames": 2,
+    "runs": [
+      "20261021T191158Z-913f4c",
+      "20261021T191204Z-2cd54a"
+    ]
+  },
+  {
+    "variant": "overflow-worker",
+    "image": "captures/overflow-worker/city-production__de__2400x1080__probe-overflow-worker__1271452.png",
+    "sha256": "70030202ee779cbc010b50b2c9088a11ba06d940ce662b7344ce0adb8bc85118",
+    "screen": "city-production",
+    "language": "de",
+    "version_code": "1271452",
+    "request_id": "i45-overflow-worker-de-22c82d785350",
+    "ready_frames": 2,
+    "runs": [
+      "20261021T191708Z-c9f170",
+      "20261021T191710Z-11f2ef"
+    ]
+  },
+  {
+    "variant": "overflow-worker",
+    "image": "captures/overflow-worker/city-production__en__2400x1080__probe-overflow-worker__1271452.png",
+    "sha256": "91f81196c22a36445ec40511afc6bb0ab9ca62312292987983a6e356e7b95088",
+    "screen": "city-production",
+    "language": "en",
+    "version_code": "1271452",
+    "request_id": "i45-overflow-worker-en-b189c4c4690d",
+    "ready_frames": 2,
+    "runs": [
+      "20261021T191712Z-44af22",
+      "20261021T191714Z-e425ce"
+    ]
+  },
+  {
+    "variant": "placeholder-city",
+    "image": "captures/placeholder-city/city-production__de__2400x1080__probe-placeholder-city__1271456.png",
+    "sha256": "7e15e9b5cfe0bb3f1caf64a77f4b942c242ca13b20cf211156d13039c60f6095",
+    "screen": "city-production",
+    "language": "de",
+    "version_code": "1271456",
+    "request_id": "i45-placeholder-city-de-798743807497",
+    "ready_frames": 2,
+    "runs": [
+      "20261021T193656Z-4395d8",
+      "20261021T193658Z-52cb3a"
+    ]
+  },
+  {
+    "variant": "placeholder-city",
+    "image": "captures/placeholder-city/city-production__en__2400x1080__probe-placeholder-city__1271456.png",
+    "sha256": "b0b169a2e11f68d7968e269958ff77502d84887b1aac148b460892f12586ca73",
+    "screen": "city-production",
+    "language": "en",
+    "version_code": "1271456",
+    "request_id": "i45-placeholder-city-en-295f33aa9f68",
+    "ready_frames": 2,
+    "runs": [
+      "20261021T193700Z-68873e",
+      "20261021T193702Z-8dbcb6"
+    ]
+  },
+  {
+    "variant": "placeholder-tech",
+    "image": "captures/placeholder-tech/tech-picker__de__2400x1080__probe-placeholder-tech__1271455.png",
+    "sha256": "8b2708bf5260e140d87da3c7ffdaf6518bc3dd2d91802839e7157b0c2a69b142",
+    "screen": "tech-picker",
+    "language": "de",
+    "version_code": "1271455",
+    "request_id": "i45-placeholder-tech-de-8163eea167f3",
+    "ready_frames": 2,
+    "runs": [
+      "20261021T192526Z-a462f9",
+      "20261021T192529Z-130955"
+    ]
+  },
+  {
+    "variant": "placeholder-tech",
+    "image": "captures/placeholder-tech/tech-picker__en__2400x1080__probe-placeholder-tech__1271455.png",
+    "sha256": "1f724be35d6bc6ecec8ca19cc27ac16789cd0c6d539a908784a640d2e5b633a2",
+    "screen": "tech-picker",
+    "language": "en",
+    "version_code": "1271455",
+    "request_id": "i45-placeholder-tech-en-90229c194422",
+    "ready_frames": 2,
+    "runs": [
+      "20261021T192531Z-7bb89c",
+      "20261021T192533Z-1179ee"
+    ]
+  },
+  {
+    "variant": "small-text-tech",
+    "image": "captures/small-text-tech/tech-picker__de__2400x1080__probe-small-text-tech__1271458.png",
+    "sha256": "8f169cf474133e09efcc9f0025f2544a5d9d3b5358e10f726e4c32160ee82c9a",
+    "screen": "tech-picker",
+    "language": "de",
+    "version_code": "1271458",
+    "request_id": "i45-small-text-tech-de-909ba6bfaa2a",
+    "ready_frames": 2,
+    "runs": [
+      "20261021T194220Z-cfcd3b",
+      "20261021T194222Z-e17536"
+    ]
+  },
+  {
+    "variant": "small-text-tech",
+    "image": "captures/small-text-tech/tech-picker__en__2400x1080__probe-small-text-tech__1271458.png",
+    "sha256": "ba771a70426da9f532b8a091f5a9fdcc7e9f25a9482b75c419d2cef91e5ad9f3",
+    "screen": "tech-picker",
+    "language": "en",
+    "version_code": "1271458",
+    "request_id": "i45-small-text-tech-en-65b935816244",
+    "ready_frames": 2,
+    "runs": [
+      "20261021T194224Z-e02c81",
+      "20261021T194226Z-1f0332"
+    ]
+  },
+  {
+    "variant": "truncation-mining",
+    "image": "captures/truncation-mining/tech-picker__de__2400x1080__probe-truncation-mining__1271457.png",
+    "sha256": "97c3959c820dfaf3fe5b73174f28b2db1c2b2c602fcd81c9ddb83c3e288e19d5",
+    "screen": "tech-picker",
+    "language": "de",
+    "version_code": "1271457",
+    "request_id": "i45-truncation-mining-de-039a86686cd3",
+    "ready_frames": 2,
+    "runs": [
+      "20261021T194040Z-e60d0f",
+      "20261021T194043Z-772638"
+    ]
+  },
+  {
+    "variant": "truncation-mining",
+    "image": "captures/truncation-mining/tech-picker__en__2400x1080__probe-truncation-mining__1271457.png",
+    "sha256": "391e66e681b48c155865a82b43cca9334fa3dd2f19b3c3cd563cbaa7880ae3e0",
+    "screen": "tech-picker",
+    "language": "en",
+    "version_code": "1271457",
+    "request_id": "i45-truncation-mining-en-9491f2ac8463",
+    "ready_frames": 2,
+    "runs": [
+      "20261021T194044Z-5800a2",
+      "20261021T194047Z-e39bbe"
+    ]
+  },
+  {
+    "variant": "wrong-language-fallback",
+    "image": "captures/wrong-language-fallback/tech-picker__de__2400x1080__probe-wrong-language-fallback__1271453.png",
+    "sha256": "955704fb9704edbd1651d889c267435419116c3c3a3b7b53e66d295eceee3c8f",
+    "screen": "tech-picker",
+    "language": "de",
+    "version_code": "1271453",
+    "request_id": "i45-wrong-language-fallback-de-b1dd8f4ab7b2",
+    "ready_frames": 2,
+    "runs": [
+      "20261021T191932Z-d9ffa2",
+      "20261021T191934Z-724fbb"
+    ]
+  },
+  {
+    "variant": "wrong-language-foreign",
+    "image": "captures/wrong-language-foreign/city-production__de__2400x1080__probe-wrong-language-foreign__1271454.png",
+    "sha256": "6a7f1e915877c333a87879584c6d25530d400ad2eed7a08cbf9857d01a79b580",
+    "screen": "city-production",
+    "language": "de",
+    "version_code": "1271454",
+    "request_id": "i45-wrong-language-foreign-de-d6491d4c87af",
+    "ready_frames": 2,
+    "runs": [
+      "20261021T192106Z-be2cea",
+      "20261021T192108Z-23a082"
+    ]
+  },
+  {
+    "variant": "wrong-language-foreign",
+    "image": "captures/wrong-language-foreign/city-production__en__2400x1080__probe-wrong-language-foreign__1271454.png",
+    "sha256": "cbeccf807e45293bd296ed900e017ef8cec0ad1f5371cb54b7b0ebba4ee7308a",
+    "screen": "city-production",
+    "language": "en",
+    "version_code": "1271454",
+    "request_id": "i45-wrong-language-foreign-en-dd12ee19dbcc",
+    "ready_frames": 2,
+    "runs": [
+      "20261021T192110Z-eca08b",
+      "20261021T192113Z-9ed206"
+    ]
+  }
+]
