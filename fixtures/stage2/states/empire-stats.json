@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "save": "issue-8-pair",
+  "selection": {},
+  "tab": "statistics",
+  "expanded_sections": [],
+  "scroll": {},
+  "scroll_to": {
+    "tabs-header": {
+      "edge": "start",
+      "align": "visible"
+    },
+    "tabs-fixed": {
+      "edge": "start",
+      "align": "visible"
+    },
+    "tabs-content": {
+      "edge": "start",
+      "align": "visible"
+    }
+  },
+  "camera": null,
+  "new_game": null
+}
