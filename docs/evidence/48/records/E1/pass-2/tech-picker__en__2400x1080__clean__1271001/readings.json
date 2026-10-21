@@ -1,0 +1,610 @@
+[
+  {
+    "text_seen": "Animal Husbandry",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      762,
+      206,
+      976,
+      244
+    ]
+  },
+  {
+    "text_seen": "6&",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1076,
+      213,
+      1115,
+      237
+    ]
+  },
+  {
+    "text_seen": "Trapping",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1382,
+      211,
+      1490,
+      245
+    ]
+  },
+  {
+    "text_seen": "108",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1683,
+      212,
+      1735,
+      237
+    ]
+  },
+  {
+    "text_seen": "Horseback Riding",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2004,
+      207,
+      2209,
+      245
+    ]
+  },
+  {
+    "text_seen": "198",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2304,
+      212,
+      2356,
+      237
+    ]
+  },
+  {
+    "text_seen": "Agriculture",
+    "region": "top-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      141,
+      327,
+      271,
+      361
+    ]
+  },
+  {
+    "text_seen": "Archery",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      762,
+      442,
+      855,
+      477
+    ]
+  },
+  {
+    "text_seen": "6&",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1076,
+      447,
+      1115,
+      471
+    ]
+  },
+  {
+    "text_seen": "The Wheel",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1383,
+      446,
+      1506,
+      473
+    ]
+  },
+  {
+    "text_seen": "10R",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1683,
+      446,
+      1733,
+      471
+    ]
+  },
+  {
+    "text_seen": "Mathematics",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2005,
+      446,
+      2157,
+      472
+    ]
+  },
+  {
+    "text_seen": "198",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2304,
+      446,
+      2356,
+      471
+    ]
+  },
+  {
+    "text_seen": "#",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1929,
+      470,
+      1982,
+      507
+    ]
+  },
+  {
+    "text_seen": "ttt",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1932,
+      501,
+      1977,
+      517
+    ]
+  },
+  {
+    "text_seen": "3",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2171,
+      489,
+      2204,
+      524
+    ]
+  },
+  {
+    "text_seen": "Mining",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      760,
+      675,
+      846,
+      713
+    ]
+  },
+  {
+    "text_seen": "6&",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1076,
+      681,
+      1115,
+      705
+    ]
+  },
+  {
+    "text_seen": "Masonry",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1383,
+      678,
+      1487,
+      711
+    ]
+  },
+  {
+    "text_seen": "108",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1681,
+      677,
+      1738,
+      708
+    ]
+  },
+  {
+    "text_seen": "Construction",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2004,
+      679,
+      2154,
+      706
+    ]
+  },
+  {
+    "text_seen": "198",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2304,
+      680,
+      2356,
+      705
+    ]
+  },
+  {
+    "text_seen": "nnn",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2167,
+      736,
+      2206,
+      755
+    ]
+  },
+  {
+    "text_seen": "R",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2240,
+      745,
+      2267,
+      764
+    ]
+  },
+  {
+    "text_seen": "Bronze Working",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1382,
+      792,
+      1568,
+      830
+    ]
+  },
+  {
+    "text_seen": "10R",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1683,
+      797,
+      1733,
+      822
+    ]
+  },
+  {
+    "text_seen": "Units enabled:",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      179,
+      917,
+      391,
+      953
+    ]
+  },
+  {
+    "text_seen": "Archer (5",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      235,
+      950,
+      373,
+      989
+    ]
+  },
+  {
+    "text_seen": "170)",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      395,
+      949,
+      477,
+      988
+    ]
+  },
+  {
+    "text_seen": "Research",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2077,
+      962,
+      2218,
+      999
+    ]
+  },
+  {
+    "text_seen": "Archery",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2244,
+      956,
+      2366,
+      1005
+    ]
+  },
+  {
+    "text_seen": "Close",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      38,
+      978,
+      126,
+      1013
+    ]
+  },
+  {
+    "text_seen": "(0/24)",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2170,
+      995,
+      2268,
+      1034
+    ]
+  },
+  {
+    "text_seen": "Wonders enabled:",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      180,
+      1014,
+      444,
+      1050
+    ]
+  },
+  {
+    "text_seen": "@Temple of Artemis (+1",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      210,
+      1047,
+      561,
+      1080
+    ]
+  },
+  {
+    "text_seen": "Culture; +10%",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      595,
+      1047,
+      800,
+      1080
+    ]
+  },
+  {
+    "text_seen": "Food in all cities; +15% Production when constructing",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      830,
+      1047,
+      1603,
+      1080
+    ]
+  },
+  {
+    "text_seen": "Archerv units in this city;",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1632,
+      1045,
+      1992,
+      1080
+    ]
+  }
+]

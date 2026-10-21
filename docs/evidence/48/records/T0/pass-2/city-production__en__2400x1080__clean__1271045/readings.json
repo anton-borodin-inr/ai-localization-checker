@@ -1,0 +1,642 @@
+[
+  {
+    "text_seen": "Current construction",
+    "region": "top-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      22,
+      20,
+      412,
+      53
+    ]
+  },
+  {
+    "text_seen": "O462@05084018260 <",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1741,
+      30,
+      2372,
+      66
+    ]
+  },
+  {
+    "text_seen": "Raze city",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1137,
+      67,
+      1263,
+      98
+    ]
+  },
+  {
+    "text_seen": "Pick a construction",
+    "region": "top-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      82,
+      104,
+      354,
+      129
+    ]
+  },
+  {
+    "text_seen": "Queue empty",
+    "region": "top-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      36,
+      209,
+      288,
+      250
+    ]
+  },
+  {
+    "text_seen": "34",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1246,
+      271,
+      1263,
+      283
+    ]
+  },
+  {
+    "text_seen": "34,",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1138,
+      333,
+      1155,
+      346
+    ]
+  },
+  {
+    "text_seen": "34",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1354,
+      333,
+      1371,
+      346
+    ]
+  },
+  {
+    "text_seen": "Buy 160.4",
+    "region": "top-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      46,
+      342,
+      188,
+      373
+    ]
+  },
+  {
+    "text_seen": "34",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1030,
+      396,
+      1047,
+      408
+    ]
+  },
+  {
+    "text_seen": "oe",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1088,
+      421,
+      1160,
+      473
+    ]
+  },
+  {
+    "text_seen": "Ss",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1303,
+      421,
+      1376,
+      475
+    ]
+  },
+  {
+    "text_seen": "34",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1030,
+      520,
+      1047,
+      533
+    ]
+  },
+  {
+    "text_seen": "34",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1462,
+      520,
+      1479,
+      533
+    ]
+  },
+  {
+    "text_seen": "Qs",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      31,
+      515,
+      185,
+      590
+    ]
+  },
+  {
+    "text_seen": "O-2 a",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1196,
+      539,
+      1342,
+      600
+    ]
+  },
+  {
+    "text_seen": "Settler",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      125,
+      615,
+      217,
+      640
+    ]
+  },
+  {
+    "text_seen": "47® 8R",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      125,
+      647,
+      242,
+      672
+    ]
+  },
+  {
+    "text_seen": "34",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1030,
+      645,
+      1047,
+      657
+    ]
+  },
+  {
+    "text_seen": "34",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1462,
+      645,
+      1479,
+      657
+    ]
+  },
+  {
+    "text_seen": "Oe,",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1232,
+      663,
+      1276,
+      684
+    ]
+  },
+  {
+    "text_seen": "Requires at least 2 population",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      24,
+      689,
+      447,
+      720
+    ]
+  },
+  {
+    "text_seen": ">",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      586,
+      674,
+      638,
+      730
+    ]
+  },
+  {
+    "text_seen": "34",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1138,
+      707,
+      1155,
+      720
+    ]
+  },
+  {
+    "text_seen": "@O (a)",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1233,
+      685,
+      1340,
+      722
+    ]
+  },
+  {
+    "text_seen": "34",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1354,
+      707,
+      1371,
+      720
+    ]
+  },
+  {
+    "text_seen": "Scout",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      125,
+      748,
+      206,
+      771
+    ]
+  },
+  {
+    "text_seen": "34",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1246,
+      770,
+      1263,
+      782
+    ]
+  },
+  {
+    "text_seen": "11938",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      127,
+      778,
+      242,
+      804
+    ]
+  },
+  {
+    "text_seen": "Worker",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2063,
+      797,
+      2164,
+      822
+    ]
+  },
+  {
+    "text_seen": "319 8B",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2063,
+      829,
+      2180,
+      854
+    ]
+  },
+  {
+    "text_seen": "Warrior",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      125,
+      843,
+      229,
+      867
+    ]
+  },
+  {
+    "text_seen": "“",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1779,
+      785,
+      1869,
+      875
+    ]
+  },
+  {
+    "text_seen": "1792 58",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      127,
+      874,
+      242,
+      899
+    ]
+  },
+  {
+    "text_seen": "Istanbul (1) @",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1058,
+      879,
+      1390,
+      943
+    ]
+  },
+  {
+    "text_seen": "Can build Land improvements on tiles",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1770,
+      917,
+      2308,
+      949
+    ]
+  },
+  {
+    "text_seen": "Buildings",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      34,
+      940,
+      205,
+      983
+    ]
+  },
+  {
+    "text_seen": "Exit city",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1145,
+      1001,
+      1255,
+      1032
+    ]
+  },
+  {
+    "text_seen": "Buy 160.",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1997,
+      989,
+      2140,
+      1019
+    ]
+  },
+  {
+    "text_seen": "Other",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      33,
+      1021,
+      136,
+      1055
+    ]
+  }
+]

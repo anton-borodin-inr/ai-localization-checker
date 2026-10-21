@@ -1,0 +1,754 @@
+[
+  {
+    "text_seen": "Aktuelle Produktion",
+    "region": "top-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      83,
+      18,
+      456,
+      53
+    ]
+  },
+  {
+    "text_seen": "0402@5®840182980 «4",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1740,
+      30,
+      2372,
+      66
+    ]
+  },
+  {
+    "text_seen": "Stadt niederreißen",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1068,
+      66,
+      1329,
+      91
+    ]
+  },
+  {
+    "text_seen": "Wähle ein Bauwerk",
+    "region": "top-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      134,
+      104,
+      405,
+      129
+    ]
+  },
+  {
+    "text_seen": "Warteschlange leer",
+    "region": "top-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      35,
+      207,
+      403,
+      251
+    ]
+  },
+  {
+    "text_seen": "34",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1245,
+      271,
+      1263,
+      283
+    ]
+  },
+  {
+    "text_seen": "Kaufen 160.4",
+    "region": "top-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      21,
+      341,
+      213,
+      367
+    ]
+  },
+  {
+    "text_seen": "34",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1137,
+      333,
+      1155,
+      346
+    ]
+  },
+  {
+    "text_seen": "34",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1353,
+      333,
+      1371,
+      346
+    ]
+  },
+  {
+    "text_seen": "34",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1029,
+      395,
+      1047,
+      408
+    ]
+  },
+  {
+    "text_seen": "\\ el",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1311,
+      385,
+      1443,
+      415
+    ]
+  },
+  {
+    "text_seen": "(oye",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1086,
+      434,
+      1160,
+      475
+    ]
+  },
+  {
+    "text_seen": "<j",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1303,
+      435,
+      1376,
+      475
+    ]
+  },
+  {
+    "text_seen": "34",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1029,
+      520,
+      1047,
+      533
+    ]
+  },
+  {
+    "text_seen": "34",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1461,
+      520,
+      1479,
+      533
+    ]
+  },
+  {
+    "text_seen": "Yee",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1236,
+      525,
+      1308,
+      557
+    ]
+  },
+  {
+    "text_seen": "Qi",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      31,
+      515,
+      185,
+      590
+    ]
+  },
+  {
+    "text_seen": "oy =",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1235,
+      549,
+      1342,
+      602
+    ]
+  },
+  {
+    "text_seen": "Siedler",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      125,
+      615,
+      222,
+      640
+    ]
+  },
+  {
+    "text_seen": "4/0882",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      125,
+      647,
+      243,
+      672
+    ]
+  },
+  {
+    "text_seen": "34",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1029,
+      645,
+      1047,
+      658
+    ]
+  },
+  {
+    "text_seen": "34",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1461,
+      645,
+      1479,
+      657
+    ]
+  },
+  {
+    "text_seen": "Tih)",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      980,
+      664,
+      1016,
+      693
+    ]
+  },
+  {
+    "text_seen": "Benötigt mindestens 2 Bevölkerung N",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      24,
+      673,
+      638,
+      731
+    ]
+  },
+  {
+    "text_seen": "34",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1137,
+      707,
+      1155,
+      720
+    ]
+  },
+  {
+    "text_seen": "@O (a)",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1233,
+      683,
+      1341,
+      724
+    ]
+  },
+  {
+    "text_seen": "34",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1353,
+      707,
+      1371,
+      720
+    ]
+  },
+  {
+    "text_seen": "Spaher",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      125,
+      746,
+      225,
+      778
+    ]
+  },
+  {
+    "text_seen": "34",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1245,
+      769,
+      1263,
+      782
+    ]
+  },
+  {
+    "text_seen": "Arbeiter",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2062,
+      764,
+      2176,
+      790
+    ]
+  },
+  {
+    "text_seen": "©",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      32,
+      743,
+      104,
+      815
+    ]
+  },
+  {
+    "text_seen": "11832",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      126,
+      778,
+      243,
+      804
+    ]
+  },
+  {
+    "text_seen": "31© 8R",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2063,
+      796,
+      2180,
+      822
+    ]
+  },
+  {
+    "text_seen": "oS",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1779,
+      752,
+      1869,
+      842
+    ]
+  },
+  {
+    "text_seen": "Krieger",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      127,
+      843,
+      227,
+      874
+    ]
+  },
+  {
+    "text_seen": "2>",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1769,
+      853,
+      1816,
+      879
+    ]
+  },
+  {
+    "text_seen": "8",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      32,
+      839,
+      104,
+      911
+    ]
+  },
+  {
+    "text_seen": "17852",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      126,
+      874,
+      243,
+      899
+    ]
+  },
+  {
+    "text_seen": "Kann Land Verbesserungen auf Feldern",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1770,
+      885,
+      2332,
+      917
+    ]
+  },
+  {
+    "text_seen": "Istanbul (1) ®",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1058,
+      881,
+      1392,
+      941
+    ]
+  },
+  {
+    "text_seen": "auen",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1788,
+      924,
+      1855,
+      943
+    ]
+  },
+  {
+    "text_seen": "Gebäude",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      32,
+      940,
+      201,
+      975
+    ]
+  },
+  {
+    "text_seen": "——",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1168,
+      972,
+      1247,
+      974
+    ]
+  },
+  {
+    "text_seen": "Kaufen 160.4",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1973,
+      987,
+      2164,
+      1013
+    ]
+  },
+  {
+    "text_seen": "Stadt verlassen",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1088,
+      999,
+      1310,
+      1027
+    ]
+  },
+  {
+    "text_seen": "Andere",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      31,
+      1021,
+      166,
+      1056
+    ]
+  },
+  {
+    "text_seen": "—",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1168,
+      1060,
+      1247,
+      1062
+    ]
+  }
+]

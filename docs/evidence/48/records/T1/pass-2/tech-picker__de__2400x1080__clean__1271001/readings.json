@@ -1,0 +1,594 @@
+[
+  {
+    "text_seen": "SCHFITT",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1387,
+      0,
+      1459,
+      16
+    ]
+  },
+  {
+    "text_seen": "IU a",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1692,
+      0,
+      1733,
+      15
+    ]
+  },
+  {
+    "text_seen": "u: 2",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1204,
+      0,
+      1401,
+      114
+    ]
+  },
+  {
+    "text_seen": "DAG",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1406,
+      27,
+      1593,
+      81
+    ]
+  },
+  {
+    "text_seen": "108",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1687,
+      226,
+      1732,
+      246
+    ]
+  },
+  {
+    "text_seen": "Reiten",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2009,
+      227,
+      2076,
+      246
+    ]
+  },
+  {
+    "text_seen": "19%",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2308,
+      226,
+      2353,
+      246
+    ]
+  },
+  {
+    "text_seen": "er",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1913,
+      230,
+      1997,
+      314
+    ]
+  },
+  {
+    "text_seen": "086",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2027,
+      257,
+      2214,
+      311
+    ]
+  },
+  {
+    "text_seen": "SAG",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      62,
+      375,
+      116,
+      398
+    ]
+  },
+  {
+    "text_seen": "Weeks",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      132,
+      373,
+      484,
+      427
+    ]
+  },
+  {
+    "text_seen": "Das Rad",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1388,
+      457,
+      1478,
+      476
+    ]
+  },
+  {
+    "text_seen": "10%",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1687,
+      456,
+      1732,
+      476
+    ]
+  },
+  {
+    "text_seen": "Mathematik",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2009,
+      457,
+      2141,
+      476
+    ]
+  },
+  {
+    "text_seen": "192",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2308,
+      456,
+      2353,
+      476
+    ]
+  },
+  {
+    "text_seen": "SICHT",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      670,
+      459,
+      1116,
+      547
+    ]
+  },
+  {
+    "text_seen": "O80",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1406,
+      488,
+      1593,
+      542
+    ]
+  },
+  {
+    "text_seen": "See",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2027,
+      488,
+      2214,
+      542
+    ]
+  },
+  {
+    "text_seen": "Baukunst",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2009,
+      687,
+      2111,
+      707
+    ]
+  },
+  {
+    "text_seen": "198",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2308,
+      687,
+      2353,
+      706
+    ]
+  },
+  {
+    "text_seen": "or",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1913,
+      691,
+      1997,
+      774
+    ]
+  },
+  {
+    "text_seen": "09009",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2027,
+      718,
+      2281,
+      772
+    ]
+  },
+  {
+    "text_seen": "ae 37S",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      657,
+      678,
+      1367,
+      892
+    ]
+  },
+  {
+    "text_seen": "Bronzebearbeitung",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1388,
+      802,
+      1596,
+      827
+    ]
+  },
+  {
+    "text_seen": "108",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1687,
+      802,
+      1732,
+      822
+    ]
+  },
+  {
+    "text_seen": "@ 0700",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1291,
+      805,
+      1660,
+      890
+    ]
+  },
+  {
+    "text_seen": "—",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      103,
+      954,
+      129,
+      955
+    ]
+  },
+  {
+    "text_seen": "Freigeschaltete Einheiten:",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      244,
+      933,
+      610,
+      986
+    ]
+  },
+  {
+    "text_seen": "Schließen",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      41,
+      981,
+      180,
+      1008
+    ]
+  },
+  {
+    "text_seen": "- @Bogenschütze (59, 7@)",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      251,
+      965,
+      642,
+      1000
+    ]
+  },
+  {
+    "text_seen": "©®Bogenschießen erforschen",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1944,
+      963,
+      2358,
+      998
+    ]
+  },
+  {
+    "text_seen": "a",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      103,
+      1043,
+      129,
+      1044
+    ]
+  },
+  {
+    "text_seen": "Freigeschaltete Wunder:",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      244,
+      1031,
+      588,
+      1080
+    ]
+  },
+  {
+    "text_seen": "Tatiaatate* Ar",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      315,
+      1070,
+      459,
+      1080
+    ]
+  },
+  {
+    "text_seen": "rtarmin",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      490,
+      1064,
+      579,
+      1080
+    ]
+  },
+  {
+    "text_seen": "ID UV ı ıl+t",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      648,
+      1063,
+      730,
+      1080
+    ]
+  },
+  {
+    "text_seen": "ıın &AäMaAahrıınma im allan Ctadtan ı1E Dreads ıl+iaAmn haim Da nn",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      776,
+      1065,
+      1704,
+      1080
+    ]
+  }
+]

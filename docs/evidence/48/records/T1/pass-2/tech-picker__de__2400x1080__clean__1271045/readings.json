@@ -1,0 +1,866 @@
+[
+  {
+    "text_seen": "Schrift",
+    "region": "top-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      733,
+      3,
+      806,
+      23
+    ]
+  },
+  {
+    "text_seen": "31K",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2275,
+      3,
+      2322,
+      23
+    ]
+  },
+  {
+    "text_seen": "u",
+    "region": "top-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      551,
+      0,
+      723,
+      91
+    ]
+  },
+  {
+    "text_seen": "ao",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      752,
+      34,
+      940,
+      88
+    ]
+  },
+  {
+    "text_seen": "102 © und u",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1034,
+      3,
+      2156,
+      88
+    ]
+  },
+  {
+    "text_seen": "102",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1034,
+      233,
+      1080,
+      253
+    ]
+  },
+  {
+    "text_seen": "Reiten",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1355,
+      235,
+      1423,
+      253
+    ]
+  },
+  {
+    "text_seen": "192",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1655,
+      233,
+      1701,
+      253
+    ]
+  },
+  {
+    "text_seen": "®",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1259,
+      237,
+      1343,
+      321
+    ]
+  },
+  {
+    "text_seen": "080",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1373,
+      265,
+      1561,
+      319
+    ]
+  },
+  {
+    "text_seen": "Das Rad",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      734,
+      464,
+      824,
+      484
+    ]
+  },
+  {
+    "text_seen": "Mathematik",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1355,
+      464,
+      1487,
+      484
+    ]
+  },
+  {
+    "text_seen": "192",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1655,
+      463,
+      1701,
+      483
+    ]
+  },
+  {
+    "text_seen": "Währung",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1975,
+      464,
+      2074,
+      489
+    ]
+  },
+  {
+    "text_seen": "31K",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2275,
+      463,
+      2322,
+      484
+    ]
+  },
+  {
+    "text_seen": "Oso |",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      16,
+      464,
+      467,
+      565
+    ]
+  },
+  {
+    "text_seen": "©",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      638,
+      467,
+      723,
+      552
+    ]
+  },
+  {
+    "text_seen": "680",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      752,
+      495,
+      940,
+      549
+    ]
+  },
+  {
+    "text_seen": "®",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1259,
+      467,
+      1343,
+      551
+    ]
+  },
+  {
+    "text_seen": "980",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1373,
+      495,
+      1561,
+      549
+    ]
+  },
+  {
+    "text_seen": "&",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1880,
+      467,
+      1964,
+      551
+    ]
+  },
+  {
+    "text_seen": "@®®",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1994,
+      495,
+      2182,
+      549
+    ]
+  },
+  {
+    "text_seen": "Ingenieurswesen",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1976,
+      580,
+      2163,
+      604
+    ]
+  },
+  {
+    "text_seen": "31K",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2275,
+      579,
+      2322,
+      599
+    ]
+  },
+  {
+    "text_seen": "O",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1880,
+      583,
+      1964,
+      667
+    ]
+  },
+  {
+    "text_seen": "OOo",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1994,
+      610,
+      2248,
+      664
+    ]
+  },
+  {
+    "text_seen": "Mauerarbeiten",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      734,
+      694,
+      894,
+      714
+    ]
+  },
+  {
+    "text_seen": "102",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1034,
+      694,
+      1080,
+      714
+    ]
+  },
+  {
+    "text_seen": "Baukunst",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1355,
+      694,
+      1458,
+      714
+    ]
+  },
+  {
+    "text_seen": "192",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1655,
+      694,
+      1701,
+      714
+    ]
+  },
+  {
+    "text_seen": "80806",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      752,
+      725,
+      1073,
+      779
+    ]
+  },
+  {
+    "text_seen": "or",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1259,
+      698,
+      1343,
+      782
+    ]
+  },
+  {
+    "text_seen": "BOO",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1373,
+      725,
+      1627,
+      779
+    ]
+  },
+  {
+    "text_seen": "Bronzebearbeitung",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      734,
+      810,
+      943,
+      834
+    ]
+  },
+  {
+    "text_seen": "102",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1034,
+      809,
+      1080,
+      829
+    ]
+  },
+  {
+    "text_seen": "Eisenbearbeitung",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1976,
+      810,
+      2167,
+      834
+    ]
+  },
+  {
+    "text_seen": "312",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2275,
+      809,
+      2322,
+      829
+    ]
+  },
+  {
+    "text_seen": "<2",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      5,
+      687,
+      714,
+      897
+    ]
+  },
+  {
+    "text_seen": "© 00700",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      638,
+      813,
+      1006,
+      897
+    ]
+  },
+  {
+    "text_seen": "8",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1880,
+      813,
+      1964,
+      897
+    ]
+  },
+  {
+    "text_seen": "GAGS",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1994,
+      841,
+      2248,
+      895
+    ]
+  },
+  {
+    "text_seen": "—",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      103,
+      954,
+      129,
+      955
+    ]
+  },
+  {
+    "text_seen": "Freigeschaltete Einheiten:",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      244,
+      933,
+      610,
+      986
+    ]
+  },
+  {
+    "text_seen": "- @Bogenschütze (59, 7%)",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      251,
+      965,
+      642,
+      1000
+    ]
+  },
+  {
+    "text_seen": "Schließen",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      41,
+      981,
+      180,
+      1008
+    ]
+  },
+  {
+    "text_seen": "©®Bogenschießen erforschen",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1944,
+      963,
+      2358,
+      998
+    ]
+  },
+  {
+    "text_seen": "a",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      103,
+      1043,
+      129,
+      1044
+    ]
+  },
+  {
+    "text_seen": "Freigeschaltete Wunder:",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      244,
+      1031,
+      588,
+      1080
+    ]
+  },
+  {
+    "text_seen": "rw",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      335,
+      1072,
+      360,
+      1080
+    ]
+  },
+  {
+    "text_seen": "rtarmin",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      490,
+      1064,
+      579,
+      1080
+    ]
+  },
+  {
+    "text_seen": "ı7 @al/, I+",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      600,
+      1063,
+      730,
+      1080
+    ]
+  },
+  {
+    "text_seen": "t1NY BAALlAMr Inn im allan CHtAAntan LICKY",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      776,
+      1065,
+      1332,
+      1080
+    ]
+  },
+  {
+    "text_seen": "Dreads ıl+iaAmn haim Da",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1347,
+      1063,
+      1626,
+      1080
+    ]
+  },
+  {
+    "text_seen": "rn",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1670,
+      1072,
+      1704,
+      1080
+    ]
+  }
+]

@@ -1,0 +1,15 @@
+{
+  "image": {
+    "name": "tech-picker__de__2400x1080__clean__1271045.png",
+    "sha256": "37789ea25484d22c3b14f97dba3520c3fbd5dd87667ba5db9e1ba3daaf6ee4f0"
+  },
+  "requests_sent": 0,
+  "ocr": {
+    "engine": "tesseract 5.5.2",
+    "languages": "deu+eng",
+    "traineddata_sha256": {
+      "deu": "19d219bbb6672c869d20a9636c6816a81eb9a71796cb93ebe0cb1530e2cdb22d",
+      "eng": "7d4322bd2a7749724879683fc3912cb542f19906c83bcc1a52132556427170b2"
+    }
+  }
+}

@@ -1,0 +1,223 @@
+{
+  "schema_version": 1,
+  "issue": 48,
+  "approved_by": "Anton",
+  "approved_in_chat": "2026-10-21",
+  "base_commit": "63b65347b328363f2fdfd51a345a805a6e8c17f9",
+  "grid": [
+    {
+      "id": "T0",
+      "engine": "tesseract",
+      "preprocess": "none"
+    },
+    {
+      "id": "T1",
+      "engine": "tesseract",
+      "preprocess": "upscale2x"
+    },
+    {
+      "id": "T2",
+      "engine": "tesseract",
+      "preprocess": "upscale2x-otsu"
+    },
+    {
+      "id": "E0",
+      "engine": "easyocr",
+      "preprocess": "none"
+    },
+    {
+      "id": "E1",
+      "engine": "easyocr",
+      "preprocess": "upscale2x"
+    },
+    {
+      "id": "E2",
+      "engine": "easyocr",
+      "preprocess": "upscale2x-otsu"
+    }
+  ],
+  "preprocessing": {
+    "upscale2x": "Pillow convert RGB then resize exactly 2x with LANCZOS",
+    "upscale2x-otsu": "upscale2x then Pillow L grayscale; maximize between-class variance over 256-bin histogram, smallest threshold on ties; values > threshold become 255, all others 0; no inversion",
+    "none": "original PNG path and bytes; no re-encoding"
+  },
+  "languages": {
+    "tesseract": {
+      "en": "eng",
+      "de": "deu+eng"
+    },
+    "easyocr": {
+      "en": [
+        "en"
+      ],
+      "de": [
+        "de",
+        "en"
+      ]
+    }
+  },
+  "tesseract": {
+    "oem": 1,
+    "psm": 11,
+    "timeout_s": 30
+  },
+  "easyocr": {
+    "version": "1.7.2",
+    "gpu": false,
+    "detect_network": "craft",
+    "recog_network": "standard",
+    "quantize": true,
+    "cudnn_benchmark": false,
+    "readtext": {
+      "decoder": "greedy",
+      "beamWidth": 5,
+      "batch_size": 1,
+      "workers": 0,
+      "allowlist": null,
+      "blocklist": null,
+      "detail": 1,
+      "rotation_info": null,
+      "paragraph": false,
+      "min_size": 20,
+      "contrast_ths": 0.1,
+      "adjust_contrast": 0.5,
+      "filter_ths": 0.003,
+      "text_threshold": 0.7,
+      "low_text": 0.4,
+      "link_threshold": 0.4,
+      "canvas_size": 4800,
+      "mag_ratio": 1.0,
+      "slope_ths": 0.1,
+      "ycenter_ths": 0.5,
+      "height_ths": 0.5,
+      "width_ths": 0.5,
+      "y_ths": 0.5,
+      "x_ths": 1.0,
+      "add_margin": 0.1,
+      "threshold": 0.2,
+      "bbox_min_score": 0.2,
+      "bbox_min_size": 3,
+      "max_candidates": 0,
+      "output_format": "standard"
+    },
+    "torch_threads": 1,
+    "timeout_s": 300
+  },
+  "runs": {
+    "passes": 2,
+    "images_per_pass": 7,
+    "total_ocr_calls": 84,
+    "execution": "serial; new engine session per configuration/pass; no output-based retries",
+    "timing": "per-image preprocessing + OCR + adaptation; reader initialization reported separately; model downloads excluded",
+    "determinism": "compare raw native OCR, adapted TSV, readings, findings and diagnostics; exclude only runtime and run ids",
+    "failures": "not_checked; unavailable transcription coverage, never zero coverage or a successful empty check"
+  },
+  "reference_sha256": "bba4e51d48d81bfa836eb80632697069b4e70fd67944a09f93d71aada609dd19",
+  "images": [
+    {
+      "path": "docs/evidence/8/final/tech-picker__de__2400x1080__clean__1271001.png",
+      "sha256": "a6a5beb3ef17ce4a640261821ff1bfc02f2dfda0e81c1cfb3aadaa32407f954e",
+      "language": "de",
+      "screen": "tech-picker",
+      "scope": "labelled",
+      "labels": "docs/evidence/8/final/tech-picker__de__2400x1080__clean__1271001.labels.json",
+      "labels_sha256": "34343ca94e8f0ccf652aec9869a79e85ff60d5c42588ac300c23c304f1e68a43"
+    },
+    {
+      "path": "docs/evidence/8/final/tech-picker__de__2400x1080__injected__1271002.png",
+      "sha256": "372aa318ce3bf4d553b4b9d427a7fe6d87f566953605c21bc705dd10df816b93",
+      "language": "de",
+      "screen": "tech-picker",
+      "scope": "labelled",
+      "labels": "docs/evidence/8/final/tech-picker__de__2400x1080__injected__1271002.labels.json",
+      "labels_sha256": "cc38f51351bf9ca71bc54f9d15c7cdbdda2e0e3f812be7b7f6d680f1acfed533"
+    },
+    {
+      "path": "docs/evidence/8/final/tech-picker__en__2400x1080__clean__1271001.png",
+      "sha256": "88ff1c55aef33cc9ff0fd89cd5912384b7a1017d8d9ca2d88965ec39389b9f47",
+      "language": "en",
+      "screen": "tech-picker",
+      "scope": "labelled",
+      "labels": "docs/evidence/8/final/tech-picker__en__2400x1080__clean__1271001.labels.json",
+      "labels_sha256": "33e8e1aa6de3e3d7101978a2e48fc673473a03b28839c55140ceb8feedb0311a"
+    },
+    {
+      "path": "docs/evidence/48/inputs/city-production__de__2400x1080__clean__1271045.png",
+      "sha256": "b26abc6f7646666460edb51309a220a1d3dd8fdd01476d103bda2bb8929cb368",
+      "language": "de",
+      "screen": "city-production",
+      "scope": "qualitative",
+      "source": {
+        "issue": 41,
+        "run": "capture-20261021",
+        "png": "pass-1/city-production__de__2400x1080__clean__1271045.png",
+        "pass": 1,
+        "manifest_sha256": "ca5cbd960f50ca4b63a40c501198b05e9767f4313f6b3e4882d477b536daf895"
+      }
+    },
+    {
+      "path": "docs/evidence/48/inputs/city-production__en__2400x1080__clean__1271045.png",
+      "sha256": "afc99e09d8d7d955b8acd7ad1ef74bd26710a8b60bd6e0b233b66b60493045fb",
+      "language": "en",
+      "screen": "city-production",
+      "scope": "qualitative",
+      "source": {
+        "issue": 41,
+        "run": "capture-20261021",
+        "png": "pass-1/city-production__en__2400x1080__clean__1271045.png",
+        "pass": 1,
+        "manifest_sha256": "ca5cbd960f50ca4b63a40c501198b05e9767f4313f6b3e4882d477b536daf895"
+      }
+    },
+    {
+      "path": "docs/evidence/48/inputs/tech-picker__de__2400x1080__clean__1271045.png",
+      "sha256": "37789ea25484d22c3b14f97dba3520c3fbd5dd87667ba5db9e1ba3daaf6ee4f0",
+      "language": "de",
+      "screen": "tech-picker",
+      "scope": "qualitative",
+      "source": {
+        "issue": 41,
+        "run": "capture-20261021",
+        "png": "pass-1/tech-picker__de__2400x1080__clean__1271045.png",
+        "pass": 1,
+        "manifest_sha256": "ca5cbd960f50ca4b63a40c501198b05e9767f4313f6b3e4882d477b536daf895"
+      }
+    },
+    {
+      "path": "docs/evidence/48/inputs/tech-picker__en__2400x1080__clean__1271045.png",
+      "sha256": "d225bc7d71de675dd621a5e6cdfb6bd2e7e92c383c16bcd2ccdfa000190b2c56",
+      "language": "en",
+      "screen": "tech-picker",
+      "scope": "qualitative",
+      "source": {
+        "issue": 41,
+        "run": "capture-20261021",
+        "png": "pass-1/tech-picker__en__2400x1080__clean__1271045.png",
+        "pass": 1,
+        "manifest_sha256": "ca5cbd960f50ca4b63a40c501198b05e9767f4313f6b3e4882d477b536daf895"
+      }
+    }
+  ],
+  "protected_sha256": {
+    "docs/evidence/12/tech-picker.json": "60b2c3a39a82cf9f5378f2cf127d7fe51240e12d80a52957102d3b17373e2d64",
+    "docs/evidence/8/final/tech-picker__de__2400x1080__clean__1271001.labels.json": "34343ca94e8f0ccf652aec9869a79e85ff60d5c42588ac300c23c304f1e68a43",
+    "docs/evidence/8/final/tech-picker__de__2400x1080__injected__1271002.labels.json": "cc38f51351bf9ca71bc54f9d15c7cdbdda2e0e3f812be7b7f6d680f1acfed533",
+    "docs/evidence/8/final/tech-picker__en__2400x1080__clean__1271001.labels.json": "33e8e1aa6de3e3d7101978a2e48fc673473a03b28839c55140ceb8feedb0311a",
+    "docs/evidence/8/pair-manifest.json": "7bcda935b9f36cc98fb389d7c7bc34ceac749d3fc757e62dea284a654ada4c28",
+    "docs/experiments/issue-10/reference-amendment-approval.json": "2b982863c26dc4e48165b2b097f3b42a73b6b2db783af280ded404bd72c13766",
+    "docs/experiments/issue-10/reference-amendment-candidate.json": "bba4e51d48d81bfa836eb80632697069b4e70fd67944a09f93d71aada609dd19",
+    "src/l10n_checker/matching.py": "3816a1c64e15e949f454775ff46950b3a475093534e449cc453dd50fd1d3d71f",
+    "src/l10n_checker/metrics.py": "3ffae120860ee75bd4de69515ea4913aa5f161bcbca67a09592ea7022bfa7a16",
+    "src/l10n_checker/reading_metrics.py": "959fe3bb7689882d900657e7ecfe2558ac6e56fa4ff1a0c3df991ac543bbffea",
+    "src/l10n_checker/slice.py": "a0906b54ab8e7d65f6114f4a5ce43fca6670c79e2a40bc131ccf219f35883fed",
+    "src/l10n_checker/unciv_text.py": "4d0c62d0a9d7a14eb108da6cda857bbc49500cb2702c5b4a5262f88d1db161eb",
+    "src/l10n_checker/vision.py": "37f2f48209c7959a6ad8a980922d0a9942ba469b9cc0dfbd5516e55ccd20f8f2",
+    "tests/golden/README.md": "0bd03e219a59db22e3fddfb899e0ffa179f69f633543852a88dafb251dd759c1",
+    "tests/golden/__init__.py": "70b0600138ed113b65cd8861e5ef9869417b97ed9f892e133a36de0c8198079e",
+    "tests/golden/conftest.py": "4f6815d2cc0748e5471facbb5a9f57681ebd7324fca17d3f9e8b9815173162e2",
+    "tests/golden/matching_cases.json": "43479f14c2684b7c6b113caa094f180a55ff22f46679c75ef00f77c98d12e49e",
+    "tests/golden/small_text_cases.json": "80443278d1299c86303ffe52094cd507822f55d918c53d3776d27fbfdb0c2bc3",
+    "tests/golden/test_golden_matching.py": "d357d0ced953edbde900457246f40065b2b80e8d999a5444f7c6575b2a969f26",
+    "tests/golden/test_golden_metrics.py": "50ec9c5a477dd7277f947c36013a977a747516a7c1d1dbc60b0d586dc55bc7ee"
+  }
+}

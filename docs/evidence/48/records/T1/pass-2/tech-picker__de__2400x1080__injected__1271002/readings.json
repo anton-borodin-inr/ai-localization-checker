@@ -1,0 +1,594 @@
+[
+  {
+    "text_seen": "SCHFITT",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1387,
+      0,
+      1459,
+      16
+    ]
+  },
+  {
+    "text_seen": "IU a",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1692,
+      0,
+      1733,
+      15
+    ]
+  },
+  {
+    "text_seen": "u: 2",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1204,
+      0,
+      1401,
+      114
+    ]
+  },
+  {
+    "text_seen": "DAG",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1406,
+      27,
+      1593,
+      81
+    ]
+  },
+  {
+    "text_seen": "108",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1687,
+      226,
+      1734,
+      246
+    ]
+  },
+  {
+    "text_seen": "Reiten",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2009,
+      227,
+      2076,
+      246
+    ]
+  },
+  {
+    "text_seen": "192",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2308,
+      226,
+      2355,
+      246
+    ]
+  },
+  {
+    "text_seen": "er",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1913,
+      230,
+      1997,
+      314
+    ]
+  },
+  {
+    "text_seen": "086",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2027,
+      257,
+      2214,
+      311
+    ]
+  },
+  {
+    "text_seen": "Fr",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      54,
+      375,
+      113,
+      425
+    ]
+  },
+  {
+    "text_seen": "uy )",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      62,
+      344,
+      134,
+      428
+    ]
+  },
+  {
+    "text_seen": "OOOO”",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      164,
+      373,
+      484,
+      427
+    ]
+  },
+  {
+    "text_seen": "Das Rad",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1388,
+      457,
+      1478,
+      476
+    ]
+  },
+  {
+    "text_seen": "Mathematik",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2009,
+      457,
+      2141,
+      476
+    ]
+  },
+  {
+    "text_seen": "19",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2308,
+      456,
+      2354,
+      476
+    ]
+  },
+  {
+    "text_seen": "SICHT",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      670,
+      459,
+      1116,
+      547
+    ]
+  },
+  {
+    "text_seen": "O80",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1406,
+      488,
+      1593,
+      542
+    ]
+  },
+  {
+    "text_seen": "See",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2027,
+      488,
+      2214,
+      542
+    ]
+  },
+  {
+    "text_seen": "Mauerarbeiten",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1388,
+      687,
+      1547,
+      707
+    ]
+  },
+  {
+    "text_seen": "108",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1687,
+      687,
+      1733,
+      707
+    ]
+  },
+  {
+    "text_seen": "Baukunst",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2009,
+      687,
+      2111,
+      707
+    ]
+  },
+  {
+    "text_seen": "198",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2308,
+      687,
+      2354,
+      706
+    ]
+  },
+  {
+    "text_seen": "80006",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1406,
+      718,
+      1726,
+      772
+    ]
+  },
+  {
+    "text_seen": "or",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1913,
+      691,
+      1997,
+      774
+    ]
+  },
+  {
+    "text_seen": "09009",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2027,
+      718,
+      2281,
+      772
+    ]
+  },
+  {
+    "text_seen": "Oe",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      659,
+      680,
+      1278,
+      850
+    ]
+  },
+  {
+    "text_seen": "Bronzebearbeitung",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1388,
+      802,
+      1596,
+      827
+    ]
+  },
+  {
+    "text_seen": "108",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1687,
+      802,
+      1734,
+      822
+    ]
+  },
+  {
+    "text_seen": "0200",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1406,
+      833,
+      1660,
+      887
+    ]
+  },
+  {
+    "text_seen": "—_",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      103,
+      954,
+      129,
+      955
+    ]
+  },
+  {
+    "text_seen": "Freigeschaltete Einheiten:",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      244,
+      919,
+      610,
+      972
+    ]
+  },
+  {
+    "text_seen": "Bogenschütze (59, 7®)",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      300,
+      952,
+      642,
+      985
+    ]
+  },
+  {
+    "text_seen": "©®Bogenschießen erforschen",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1944,
+      963,
+      2358,
+      998
+    ]
+  },
+  {
+    "text_seen": "Schließen",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      41,
+      981,
+      180,
+      1008
+    ]
+  },
+  {
+    "text_seen": "a",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      103,
+      1043,
+      129,
+      1044
+    ]
+  },
+  {
+    "text_seen": "Freigeschaltete Wunder:",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      244,
+      1016,
+      588,
+      1069
+    ]
+  },
+  {
+    "text_seen": "*@Tempel der Artemis (+1 ®Kultur; +10% ©Nahrung in allen Städten; +15% Produktion beim Bau von",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      251,
+      1048,
+      1704,
+      1080
+    ]
+  }
+]

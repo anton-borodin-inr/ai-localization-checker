@@ -1,0 +1,18 @@
+usage: l10n-baseline [-h] --image IMAGE --manifest MANIFEST
+                     --inventory INVENTORY --unciv-fork UNCIV_FORK
+                     [--runs-dir RUNS_DIR] [--ocr-engine {tesseract,easyocr}]
+                     [--ocr-preprocess {none,upscale2x,upscale2x-otsu}]
+                     [--ocr-model-dir OCR_MODEL_DIR]
+
+Offline OCR + Unciv translation baseline
+
+options:
+  -h, --help            show this help message and exit
+  --image IMAGE
+  --manifest MANIFEST
+  --inventory INVENTORY
+  --unciv-fork UNCIV_FORK
+  --runs-dir RUNS_DIR
+  --ocr-engine {tesseract,easyocr}
+  --ocr-preprocess {none,upscale2x,upscale2x-otsu}
+  --ocr-model-dir OCR_MODEL_DIR

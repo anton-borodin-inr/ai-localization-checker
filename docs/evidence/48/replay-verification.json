@@ -1,0 +1,8 @@
+{
+  "command": "uv run --offline --no-editable python -m l10n_checker.ocr_experiment summarize",
+  "exit_code": 0,
+  "compared_files": 86,
+  "changed_files": [],
+  "ocr_calls": 0,
+  "provider_requests": 0
+}

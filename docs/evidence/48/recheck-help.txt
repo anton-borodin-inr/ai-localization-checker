@@ -1,0 +1,14 @@
+   Building ai-localization-checker @ file:///Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository
+      Built ai-localization-checker @ file:///Users/antonborodin/Documents/Codex/2026-10-21/task-issue-48-https-github-com/work/repository
+Uninstalled 1 package in 1ms
+Installed 1 package in 525ms
+usage: ocr_recheck.py [-h] --unciv-fork UNCIV_FORK [--runs-dir RUNS_DIR]
+                      [--model-dir MODEL_DIR]
+
+Re-run the recommended, already registered E2 on the labelled trio only.
+
+options:
+  -h, --help            show this help message and exit
+  --unciv-fork UNCIV_FORK
+  --runs-dir RUNS_DIR
+  --model-dir MODEL_DIR

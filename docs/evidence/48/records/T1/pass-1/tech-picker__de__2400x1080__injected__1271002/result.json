@@ -1,0 +1,158 @@
+{
+  "status": "checked",
+  "findings": [
+    {
+      "defect_type": "truncated_text",
+      "text_seen": "Schrift",
+      "region": "top",
+      "confidence": 0.5
+    },
+    {
+      "defect_type": "truncated_text",
+      "text_seen": "Landwirtschaft",
+      "region": "top-left",
+      "confidence": 0.5
+    },
+    {
+      "defect_type": "truncated_text",
+      "text_seen": "Tierhaltung",
+      "region": "top",
+      "confidence": 0.5
+    },
+    {
+      "defect_type": "truncated_text",
+      "text_seen": "Bogenschießen",
+      "region": "center",
+      "confidence": 0.5
+    },
+    {
+      "defect_type": "truncated_text",
+      "text_seen": "Bergbau und Erzgewinnung",
+      "region": "center",
+      "confidence": 0.5
+    },
+    {
+      "defect_type": "truncated_text",
+      "text_seen": "Fallenstellen",
+      "region": "top",
+      "confidence": 0.5
+    },
+    {
+      "defect_type": "truncated_text",
+      "text_seen": "Bogenschießen erforschen",
+      "region": "bottom-right",
+      "confidence": 0.5
+    },
+    {
+      "defect_type": "truncated_text",
+      "text_seen": "Tempel der Artemis",
+      "region": "bottom",
+      "confidence": 0.5
+    },
+    {
+      "defect_type": "truncated_text",
+      "text_seen": "Kultur",
+      "region": "bottom",
+      "confidence": 0.5
+    },
+    {
+      "defect_type": "truncated_text",
+      "text_seen": "+10% Nahrung in allen Städten",
+      "region": "bottom",
+      "confidence": 0.5
+    },
+    {
+      "defect_type": "truncated_text",
+      "text_seen": "+15% Produktion beim Bau von Bogenschießen Einheiten in dieser Stadt",
+      "region": "bottom",
+      "confidence": 0.5
+    },
+    {
+      "defect_type": "truncated_text",
+      "text_seen": "+15% Produktion beim Bau von Schießpulver-Fernkampf Einheiten in dieser Stadt",
+      "region": "bottom",
+      "confidence": 0.5
+    }
+  ],
+  "reason": null,
+  "metadata": {
+    "detector": "ocr-translation-baseline",
+    "settings": {
+      "version": "baseline-v0.1",
+      "oem": 1,
+      "psm": 11,
+      "languages": {
+        "en": "eng",
+        "de": "deu+eng"
+      },
+      "timeout_s": 30,
+      "exact_match": "NFKC + casefold + whitespace collapse",
+      "prefix_min_letters": 4,
+      "prefix_min_fraction": 0.5,
+      "missing_confidence": 0.5,
+      "missing_text_seen": "expected string",
+      "ocr_confidence_filter": null
+    },
+    "requests_sent": 0,
+    "run_id": "20261021T185843Z-e374c5",
+    "missing_rule_findings": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "image": {
+      "name": "tech-picker__de__2400x1080__injected__1271002.png",
+      "sha256": "372aa318ce3bf4d553b4b9d427a7fe6d87f566953605c21bc705dd10df816b93",
+      "size": [
+        2400,
+        1080
+      ]
+    },
+    "version_code": 1271002,
+    "fork_commit": "038329f93966a8d1d0ac7f23f551c98feb32614c",
+    "base_commit": "899367522cea36d6063c84b02b41eedfa9a0d0e9",
+    "translations": {
+      "en": {
+        "path": "android/assets/jsons/translations/English.properties",
+        "sha256": "f4bae85883e7430cf01ba257bf924db6aaa6df564c4896ac2d3783ee41216b02"
+      },
+      "de": {
+        "path": "android/assets/jsons/translations/German.properties",
+        "sha256": "947b0875cdef628c3e57e773976c3e16f3041924dc3b8880a8eebed023e2caf7"
+      }
+    },
+    "manifest_sha256": "7bcda935b9f36cc98fb389d7c7bc34ceac749d3fc757e62dea284a654ada4c28",
+    "inventory_sha256": "60b2c3a39a82cf9f5378f2cf127d7fe51240e12d80a52957102d3b17373e2d64",
+    "language": "de",
+    "ocr": {
+      "engine": "tesseract 5.5.2",
+      "languages": "deu+eng",
+      "traineddata_sha256": {
+        "deu": "19d219bbb6672c869d20a9636c6816a81eb9a71796cb93ebe0cb1530e2cdb22d",
+        "eng": "7d4322bd2a7749724879683fc3912cb542f19906c83bcc1a52132556427170b2"
+      },
+      "preprocessing": {
+        "variant": "upscale2x",
+        "scale": 2,
+        "source_size": [
+          2400,
+          1080
+        ],
+        "source_sha256": "372aa318ce3bf4d553b4b9d427a7fe6d87f566953605c21bc705dd10df816b93",
+        "prepared_sha256": "7bd27943a94770540138bfd2af44b7b1243ab7c48a409e49803f7c8e95180b62",
+        "otsu_threshold": null
+      },
+      "native_tsv": "level\tpage_num\tblock_num\tpar_num\tline_num\tword_num\tleft\ttop\twidth\theight\tconf\ttext\n1\t1\t0\t0\t0\t0\t0\t0\t4800\t2160\t-1\t\n2\t1\t1\t0\t0\t0\t2774\t0\t144\t31\t-1\t\n3\t1\t1\t1\t0\t0\t2774\t0\t144\t31\t-1\t\n4\t1\t1\t1\t1\t0\t2774\t0\t144\t31\t-1\t\n5\t1\t1\t1\t1\t1\t2774\t0\t144\t31\t63.820652\tSCHFITT\n2\t1\t2\t0\t0\t0\t3384\t0\t82\t30\t-1\t\n3\t1\t2\t1\t0\t0\t3384\t0\t894\t86\t-1\t\n4\t1\t2\t1\t1\t0\t3384\t0\t82\t30\t-1\t\n5\t1\t2\t1\t1\t1\t3384\t0\t40\t30\t12.151194\tIU\n5\t1\t2\t1\t1\t2\t3440\t0\t26\t30\t12.151194\ta\n2\t1\t3\t0\t0\t0\t2408\t0\t392\t167\t-1\t\n3\t1\t3\t1\t0\t0\t2408\t0\t392\t167\t-1\t\n4\t1\t3\t1\t1\t0\t2408\t0\t392\t167\t-1\t\n5\t1\t3\t1\t1\t1\t2408\t0\t392\t167\t32.311890\tu:\n5\t1\t3\t1\t1\t2\t2725\t0\t77\t227\t24.001780\t2\n2\t1\t4\t0\t0\t0\t2812\t54\t374\t108\t-1\t\n3\t1\t4\t1\t0\t0\t2812\t54\t374\t108\t-1\t\n4\t1\t4\t1\t1\t0\t2812\t54\t374\t108\t-1\t\n5\t1\t4\t1\t1\t1\t2812\t54\t374\t108\t74.276947\tDAG\n2\t1\t5\t0\t0\t0\t3374\t452\t93\t40\t-1\t\n3\t1\t5\t1\t0\t0\t3374\t452\t93\t40\t-1\t\n4\t1\t5\t1\t1\t0\t3374\t452\t93\t40\t-1\t\n5\t1\t5\t1\t1\t1\t3374\t452\t93\t40\t61.585682\t108\n2\t1\t6\t0\t0\t0\t4018\t455\t134\t37\t-1\t\n3\t1\t6\t1\t0\t0\t4018\t455\t134\t37\t-1\t\n4\t1\t6\t1\t1\t0\t4018\t455\t134\t37\t-1\t\n5\t1\t6\t1\t1\t1\t4018\t455\t134\t37\t92.683975\tReiten\n2\t1\t7\t0\t0\t0\t4616\t452\t93\t39\t-1\t\n3\t1\t7\t1\t0\t0\t4616\t452\t93\t39\t-1\t\n4\t1\t7\t1\t1\t0\t4616\t452\t93\t39\t-1\t\n5\t1\t7\t1\t1\t1\t4616\t452\t93\t39\t44.714970\t192\n2\t1\t8\t0\t0\t0\t3826\t460\t167\t167\t-1\t\n3\t1\t8\t1\t0\t0\t3826\t460\t167\t167\t-1\t\n4\t1\t8\t1\t1\t0\t3826\t460\t167\t167\t-1\t\n5\t1\t8\t1\t1\t1\t3826\t460\t167\t167\t41.866421\ter\n2\t1\t9\t0\t0\t0\t4054\t514\t374\t108\t-1\t\n3\t1\t9\t1\t0\t0\t4054\t514\t374\t108\t-1\t\n4\t1\t9\t1\t1\t0\t4054\t514\t374\t108\t-1\t\n5\t1\t9\t1\t1\t1\t4054\t514\t374\t108\t45.647617\t086\n2\t1\t10\t0\t0\t0\t109\t751\t116\t98\t-1\t\n3\t1\t10\t1\t0\t0\t109\t751\t116\t98\t-1\t\n4\t1\t10\t1\t1\t0\t109\t751\t116\t98\t-1\t\n5\t1\t10\t1\t1\t1\t109\t751\t116\t98\t29.273392\tFr\n2\t1\t11\t0\t0\t0\t124\t689\t144\t167\t-1\t\n3\t1\t11\t1\t0\t0\t124\t689\t145\t167\t-1\t\n4\t1\t11\t1\t1\t0\t124\t689\t144\t167\t-1\t\n5\t1\t11\t1\t1\t1\t124\t689\t136\t167\t51.813370\tuy\n5\t1\t11\t1\t1\t2\t241\t722\t27\t113\t89.716011\t)\n2\t1\t12\t0\t0\t0\t328\t746\t639\t108\t-1\t\n3\t1\t12\t1\t0\t0\t328\t746\t639\t108\t-1\t\n4\t1\t12\t1\t1\t0\t328\t746\t639\t108\t-1\t\n5\t1\t12\t1\t1\t1\t328\t746\t639\t108\t31.559095\tOOOO”\n2\t1\t13\t0\t0\t0\t2776\t914\t179\t38\t-1\t\n3\t1\t13\t1\t0\t0\t2776\t914\t179\t38\t-1\t\n4\t1\t13\t1\t1\t0\t2776\t914\t179\t38\t-1\t\n5\t1\t13\t1\t1\t1\t2776\t916\t80\t36\t96.621887\tDas\n5\t1\t13\t1\t1\t2\t2875\t914\t80\t38\t96.621887\tRad\n2\t1\t14\t0\t0\t0\t4018\t914\t263\t38\t-1\t\n3\t1\t14\t1\t0\t0\t4018\t914\t263\t38\t-1\t\n4\t1\t14\t1\t1\t0\t4018\t914\t263\t38\t-1\t\n5\t1\t14\t1\t1\t1\t4018\t914\t263\t38\t96.776466\tMathematik\n2\t1\t15\t0\t0\t0\t4617\t912\t91\t40\t-1\t\n3\t1\t15\t1\t0\t0\t4617\t912\t91\t40\t-1\t\n4\t1\t15\t1\t1\t0\t4617\t912\t91\t40\t-1\t\n5\t1\t15\t1\t1\t1\t4617\t912\t91\t40\t46.240051\t19\n2\t1\t16\t0\t0\t0\t1340\t918\t892\t176\t-1\t\n3\t1\t16\t1\t0\t0\t1340\t918\t892\t176\t-1\t\n4\t1\t16\t1\t1\t0\t1340\t918\t892\t176\t-1\t\n5\t1\t16\t1\t1\t1\t1340\t918\t892\t176\t51.993557\tSICHT\n2\t1\t17\t0\t0\t0\t2812\t976\t374\t108\t-1\t\n3\t1\t17\t1\t0\t0\t2812\t976\t374\t108\t-1\t\n4\t1\t17\t1\t1\t0\t2812\t976\t374\t108\t-1\t\n5\t1\t17\t1\t1\t1\t2812\t976\t374\t108\t49.128883\tO80\n2\t1\t18\t0\t0\t0\t4054\t976\t374\t108\t-1\t\n3\t1\t18\t1\t0\t0\t4054\t976\t374\t108\t-1\t\n4\t1\t18\t1\t1\t0\t4054\t976\t374\t108\t-1\t\n5\t1\t18\t1\t1\t1\t4054\t976\t374\t108\t46.461403\tSee\n2\t1\t19\t0\t0\t0\t2776\t1374\t318\t39\t-1\t\n3\t1\t19\t1\t0\t0\t2776\t1374\t318\t39\t-1\t\n4\t1\t19\t1\t1\t0\t2776\t1374\t318\t39\t-1\t\n5\t1\t19\t1\t1\t1\t2776\t1374\t318\t39\t89.641747\tMauerarbeiten\n2\t1\t20\t0\t0\t0\t3374\t1374\t92\t39\t-1\t\n3\t1\t20\t1\t0\t0\t3374\t1374\t92\t39\t-1\t\n4\t1\t20\t1\t1\t0\t3374\t1374\t92\t39\t-1\t\n5\t1\t20\t1\t1\t1\t3374\t1374\t92\t39\t47.292801\t108\n2\t1\t21\t0\t0\t0\t4018\t1374\t204\t39\t-1\t\n3\t1\t21\t1\t0\t0\t4018\t1374\t204\t39\t-1\t\n4\t1\t21\t1\t1\t0\t4018\t1374\t204\t39\t-1\t\n5\t1\t21\t1\t1\t1\t4018\t1374\t204\t39\t92.742302\tBaukunst\n2\t1\t22\t0\t0\t0\t4616\t1374\t92\t38\t-1\t\n3\t1\t22\t1\t0\t0\t4616\t1374\t92\t38\t-1\t\n4\t1\t22\t1\t1\t0\t4616\t1374\t92\t38\t-1\t\n5\t1\t22\t1\t1\t1\t4616\t1374\t92\t38\t31.610518\t198\n2\t1\t23\t0\t0\t0\t2812\t1436\t640\t108\t-1\t\n3\t1\t23\t1\t0\t0\t2812\t1436\t640\t108\t-1\t\n4\t1\t23\t1\t1\t0\t2812\t1436\t640\t108\t-1\t\n5\t1\t23\t1\t1\t1\t2812\t1436\t640\t108\t0.000000\t80006\n2\t1\t24\t0\t0\t0\t3826\t1382\t167\t166\t-1\t\n3\t1\t24\t1\t0\t0\t3826\t1382\t167\t166\t-1\t\n4\t1\t24\t1\t1\t0\t3826\t1382\t167\t166\t-1\t\n5\t1\t24\t1\t1\t1\t3826\t1382\t167\t166\t57.429119\tor\n2\t1\t25\t0\t0\t0\t4054\t1436\t507\t108\t-1\t\n3\t1\t25\t1\t0\t0\t4054\t1436\t507\t108\t-1\t\n4\t1\t25\t1\t1\t0\t4054\t1436\t507\t108\t-1\t\n5\t1\t25\t1\t1\t1\t4054\t1436\t507\t108\t12.595215\t09009\n2\t1\t26\t0\t0\t0\t1318\t1361\t1238\t339\t-1\t\n3\t1\t26\t1\t0\t0\t1318\t1361\t1238\t339\t-1\t\n4\t1\t26\t1\t1\t0\t1318\t1361\t1238\t339\t-1\t\n5\t1\t26\t1\t1\t1\t1318\t1361\t1238\t339\t31.766182\tOe\n2\t1\t27\t0\t0\t0\t2776\t1605\t416\t49\t-1\t\n3\t1\t27\t1\t0\t0\t2776\t1605\t416\t49\t-1\t\n4\t1\t27\t1\t1\t0\t2776\t1605\t416\t49\t-1\t\n5\t1\t27\t1\t1\t1\t2776\t1605\t416\t49\t91.470505\tBronzebearbeitung\n2\t1\t28\t0\t0\t0\t3374\t1604\t93\t40\t-1\t\n3\t1\t28\t1\t0\t0\t3374\t1604\t93\t40\t-1\t\n4\t1\t28\t1\t1\t0\t3374\t1604\t93\t40\t-1\t\n5\t1\t28\t1\t1\t1\t3374\t1604\t93\t40\t61.585682\t108\n2\t1\t29\t0\t0\t0\t2812\t1666\t508\t108\t-1\t\n3\t1\t29\t1\t0\t0\t2812\t1666\t508\t108\t-1\t\n4\t1\t29\t1\t1\t0\t2812\t1666\t508\t108\t-1\t\n5\t1\t29\t1\t1\t1\t2812\t1666\t508\t108\t24.378891\t0200\n2\t1\t30\t0\t0\t0\t206\t1909\t52\t1\t-1\t\n3\t1\t30\t1\t0\t0\t206\t1909\t52\t1\t-1\t\n4\t1\t30\t1\t1\t0\t206\t1909\t52\t1\t-1\t\n5\t1\t30\t1\t1\t1\t206\t1909\t52\t1\t4.307852\t—_\n2\t1\t31\t0\t0\t0\t488\t1838\t731\t105\t-1\t\n3\t1\t31\t1\t0\t0\t488\t1838\t731\t105\t-1\t\n4\t1\t31\t1\t1\t0\t488\t1838\t731\t105\t-1\t\n5\t1\t31\t1\t1\t1\t488\t1838\t434\t105\t92.848564\tFreigeschaltete\n5\t1\t31\t1\t1\t2\t947\t1838\t272\t71\t96.302277\tEinheiten:\n2\t1\t32\t0\t0\t0\t600\t1904\t684\t66\t-1\t\n3\t1\t32\t1\t0\t0\t600\t1904\t684\t66\t-1\t\n4\t1\t32\t1\t1\t0\t600\t1904\t684\t66\t-1\t\n5\t1\t32\t1\t1\t1\t600\t1907\t403\t63\t92.578789\tBogenschütze\n5\t1\t32\t1\t1\t2\t1026\t1904\t124\t66\t19.499798\t(59,\n5\t1\t32\t1\t1\t3\t1172\t1904\t112\t66\t89.855721\t7®)\n2\t1\t33\t0\t0\t0\t3889\t1927\t827\t69\t-1\t\n3\t1\t33\t1\t0\t0\t3889\t1927\t827\t69\t-1\t\n4\t1\t33\t1\t1\t0\t3889\t1927\t827\t69\t-1\t\n5\t1\t33\t1\t1\t1\t3889\t1927\t500\t69\t56.653194\t©®Bogenschießen\n5\t1\t33\t1\t1\t2\t4409\t1931\t307\t52\t96.259827\terforschen\n2\t1\t34\t0\t0\t0\t82\t1963\t277\t52\t-1\t\n3\t1\t34\t1\t0\t0\t82\t1963\t277\t52\t-1\t\n4\t1\t34\t1\t1\t0\t82\t1963\t277\t52\t-1\t\n5\t1\t34\t1\t1\t1\t82\t1963\t277\t52\t96.592323\tSchließen\n2\t1\t35\t0\t0\t0\t206\t2086\t52\t1\t-1\t\n3\t1\t35\t1\t0\t0\t206\t2086\t52\t1\t-1\t\n4\t1\t35\t1\t1\t0\t206\t2086\t52\t1\t-1\t\n5\t1\t35\t1\t1\t1\t206\t2086\t52\t1\t0.000000\ta\n2\t1\t36\t0\t0\t0\t488\t2032\t688\t106\t-1\t\n3\t1\t36\t1\t0\t0\t488\t2032\t688\t106\t-1\t\n4\t1\t36\t1\t1\t0\t488\t2032\t688\t106\t-1\t\n5\t1\t36\t1\t1\t1\t488\t2032\t436\t106\t92.843857\tFreigeschaltete\n5\t1\t36\t1\t1\t2\t944\t2032\t232\t71\t95.726341\tWunder:\n2\t1\t37\t0\t0\t0\t502\t2096\t2905\t64\t-1\t\n3\t1\t37\t1\t0\t0\t502\t2096\t2905\t64\t-1\t\n4\t1\t37\t1\t1\t0\t502\t2096\t2905\t64\t-1\t\n5\t1\t37\t1\t1\t1\t502\t2096\t303\t64\t55.218582\t*@Tempel\n5\t1\t37\t1\t1\t2\t828\t2102\t90\t49\t95.728172\tder\n5\t1\t37\t1\t1\t3\t936\t2104\t222\t47\t95.983612\tArtemis\n5\t1\t37\t1\t1\t4\t1181\t2099\t78\t61\t93.098618\t(+1\n5\t1\t37\t1\t1\t5\t1296\t2102\t235\t58\t81.676086\t®Kultur;\n5\t1\t37\t1\t1\t6\t1552\t2103\t152\t48\t88.231407\t+10%\n5\t1\t37\t1\t1\t7\t1730\t2102\t327\t58\t88.892204\t©Nahrung\n5\t1\t37\t1\t1\t8\t2050\t2116\t43\t34\t96.485832\tin\n5\t1\t37\t1\t1\t9\t2116\t2102\t129\t49\t92.900368\tallen\n5\t1\t37\t1\t1\t10\t2268\t2102\t230\t57\t93.158760\tStädten;\n5\t1\t37\t1\t1\t11\t2519\t2103\t153\t48\t92.070076\t+15%\n5\t1\t37\t1\t1\t12\t2695\t2102\t305\t49\t96.191879\tProduktion\n5\t1\t37\t1\t1\t13\t3025\t2102\t135\t49\t96.181328\tbeim\n5\t1\t37\t1\t1\t14\t3185\t2104\t102\t47\t96.970802\tBau\n5\t1\t37\t1\t1\t15\t3308\t2116\t99\t35\t96.701797\tvon\n"
+    },
+    "latency_s": 1.542
+  }
+}

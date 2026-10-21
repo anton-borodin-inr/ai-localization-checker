@@ -1,0 +1,276 @@
+{
+  "en": [
+    {
+      "key": "+10",
+      "value": null,
+      "line": null
+    },
+    {
+      "key": "+15",
+      "value": null,
+      "line": null
+    },
+    {
+      "key": "Agriculture",
+      "value": null,
+      "line": 8498
+    },
+    {
+      "key": "Animal Husbandry",
+      "value": null,
+      "line": 8507
+    },
+    {
+      "key": "Archer",
+      "value": null,
+      "line": 9486
+    },
+    {
+      "key": "Archery",
+      "value": null,
+      "line": 8511
+    },
+    {
+      "key": "Bronze Working",
+      "value": null,
+      "line": 8544
+    },
+    {
+      "key": "Close",
+      "value": null,
+      "line": 2548
+    },
+    {
+      "key": "Construction",
+      "value": null,
+      "line": 8565
+    },
+    {
+      "key": "Culture",
+      "value": null,
+      "line": 2494
+    },
+    {
+      "key": "Food",
+      "value": null,
+      "line": 2486
+    },
+    {
+      "key": "Horseback Riding",
+      "value": null,
+      "line": 8557
+    },
+    {
+      "key": "Masonry",
+      "value": null,
+      "line": 8540
+    },
+    {
+      "key": "Mathematics",
+      "value": null,
+      "line": 8561
+    },
+    {
+      "key": "Mining",
+      "value": null,
+      "line": 8515
+    },
+    {
+      "key": "Ranged Gunpowder",
+      "value": null,
+      "line": 9147
+    },
+    {
+      "key": "Research [technology]",
+      "value": null,
+      "line": 2772
+    },
+    {
+      "key": "Temple of Artemis",
+      "value": null,
+      "line": 5991
+    },
+    {
+      "key": "The Wheel",
+      "value": null,
+      "line": 8536
+    },
+    {
+      "key": "Trapping",
+      "value": null,
+      "line": 8532
+    },
+    {
+      "key": "Units enabled",
+      "value": null,
+      "line": 2776
+    },
+    {
+      "key": "Wonders enabled",
+      "value": null,
+      "line": 2786
+    },
+    {
+      "key": "Writing",
+      "value": null,
+      "line": 8528
+    },
+    {
+      "key": "[relativeAmount]% Production when constructing [baseUnitFilter] units [cityFilter]",
+      "value": null,
+      "line": 4044
+    },
+    {
+      "key": "[relativeAmount]% [stat] [cityFilter]",
+      "value": null,
+      "line": 4024
+    },
+    {
+      "key": "in all cities",
+      "value": null,
+      "line": 5212
+    },
+    {
+      "key": "in this city",
+      "value": null,
+      "line": 4788
+    }
+  ],
+  "de": [
+    {
+      "key": "+10",
+      "value": null,
+      "line": null
+    },
+    {
+      "key": "+15",
+      "value": null,
+      "line": null
+    },
+    {
+      "key": "Agriculture",
+      "value": "Landwirtschaft",
+      "line": 5115
+    },
+    {
+      "key": "Animal Husbandry",
+      "value": "Tierhaltung",
+      "line": 5120
+    },
+    {
+      "key": "Archer",
+      "value": "Bogenschütze",
+      "line": 5731
+    },
+    {
+      "key": "Archery",
+      "value": "Bogenschießen",
+      "line": 5122
+    },
+    {
+      "key": "Bronze Working",
+      "value": "Bronzebearbeitung",
+      "line": 5139
+    },
+    {
+      "key": "Close",
+      "value": "Schließen",
+      "line": 1397
+    },
+    {
+      "key": "Construction",
+      "value": "Baukunst",
+      "line": 5150
+    },
+    {
+      "key": "Culture",
+      "value": "Kultur",
+      "line": 1368
+    },
+    {
+      "key": "Food",
+      "value": "Nahrung",
+      "line": 1364
+    },
+    {
+      "key": "Horseback Riding",
+      "value": "Reiten",
+      "line": 5146
+    },
+    {
+      "key": "Masonry",
+      "value": "Mauerarbeiten",
+      "line": 5137
+    },
+    {
+      "key": "Mathematics",
+      "value": "Mathematik",
+      "line": 5148
+    },
+    {
+      "key": "Mining",
+      "value": "Bergbau und Erzgewinnung",
+      "line": 5124
+    },
+    {
+      "key": "Ranged Gunpowder",
+      "value": "Schießpulver-Fernkampf",
+      "line": 5501
+    },
+    {
+      "key": "Research [technology]",
+      "value": "[technology] erforschen",
+      "line": 1515
+    },
+    {
+      "key": "Temple of Artemis",
+      "value": "Tempel der Artemis",
+      "line": 3230
+    },
+    {
+      "key": "The Wheel",
+      "value": "Das Rad",
+      "line": 5135
+    },
+    {
+      "key": "Trapping",
+      "value": "Fallenstellen",
+      "line": 5133
+    },
+    {
+      "key": "Units enabled",
+      "value": "Freigeschaltete Einheiten",
+      "line": 1517
+    },
+    {
+      "key": "Wonders enabled",
+      "value": "Freigeschaltete Wunder",
+      "line": 1522
+    },
+    {
+      "key": "Writing",
+      "value": "Schrift",
+      "line": 5131
+    },
+    {
+      "key": "[relativeAmount]% Production when constructing [baseUnitFilter] units [cityFilter]",
+      "value": "[relativeAmount]% Produktion beim Bau von [baseUnitFilter] Einheiten [cityFilter]",
+      "line": 2192
+    },
+    {
+      "key": "[relativeAmount]% [stat] [cityFilter]",
+      "value": "[relativeAmount]% [stat] [cityFilter]",
+      "line": 2182
+    },
+    {
+      "key": "in all cities",
+      "value": "in allen Städten",
+      "line": 2790
+    },
+    {
+      "key": "in this city",
+      "value": "in dieser Stadt",
+      "line": 2564
+    }
+  ]
+}

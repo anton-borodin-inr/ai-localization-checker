@@ -1,0 +1,562 @@
+[
+  {
+    "text_seen": "Current construction",
+    "region": "top-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      17,
+      14,
+      419,
+      61
+    ]
+  },
+  {
+    "text_seen": "4 02",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1785,
+      25,
+      1901,
+      70
+    ]
+  },
+  {
+    "text_seen": "5",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1952,
+      30,
+      1974,
+      59
+    ]
+  },
+  {
+    "text_seen": "4",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2036,
+      31,
+      2057,
+      59
+    ]
+  },
+  {
+    "text_seen": "1",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2116,
+      31,
+      2144,
+      60
+    ]
+  },
+  {
+    "text_seen": "0-2",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2157,
+      29,
+      2233,
+      62
+    ]
+  },
+  {
+    "text_seen": "0",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2291,
+      32,
+      2313,
+      58
+    ]
+  },
+  {
+    "text_seen": "Raze city",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1131,
+      62,
+      1267,
+      102
+    ]
+  },
+  {
+    "text_seen": "Pick a construction",
+    "region": "top-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      77,
+      99,
+      359,
+      134
+    ]
+  },
+  {
+    "text_seen": "Queue empty",
+    "region": "top-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      32,
+      205,
+      292,
+      257
+    ]
+  },
+  {
+    "text_seen": "Buy 1602",
+    "region": "top-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      37,
+      335,
+      191,
+      381
+    ]
+  },
+  {
+    "text_seen": "Units",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      28,
+      437,
+      134,
+      482
+    ]
+  },
+  {
+    "text_seen": "Worker",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      123,
+      515,
+      233,
+      551
+    ]
+  },
+  {
+    "text_seen": "31",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      121,
+      549,
+      161,
+      582
+    ]
+  },
+  {
+    "text_seen": "83",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      194,
+      546,
+      246,
+      581
+    ]
+  },
+  {
+    "text_seen": "47",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      122,
+      645,
+      163,
+      677
+    ]
+  },
+  {
+    "text_seen": "85",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      195,
+      642,
+      245,
+      677
+    ]
+  },
+  {
+    "text_seen": "Scout",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      121,
+      744,
+      212,
+      777
+    ]
+  },
+  {
+    "text_seen": "11",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      123,
+      777,
+      160,
+      808
+    ]
+  },
+  {
+    "text_seen": "38",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      194,
+      773,
+      245,
+      808
+    ]
+  },
+  {
+    "text_seen": "Worker",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2060,
+      792,
+      2170,
+      827
+    ]
+  },
+  {
+    "text_seen": "Warrior",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      122,
+      836,
+      235,
+      874
+    ]
+  },
+  {
+    "text_seen": "8",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      604,
+      738,
+      685,
+      922
+    ]
+  },
+  {
+    "text_seen": "31",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2059,
+      826,
+      2098,
+      859
+    ]
+  },
+  {
+    "text_seen": "85",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2133,
+      826,
+      2182,
+      858
+    ]
+  },
+  {
+    "text_seen": "17",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      123,
+      871,
+      162,
+      903
+    ]
+  },
+  {
+    "text_seen": "58",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      197,
+      869,
+      246,
+      904
+    ]
+  },
+  {
+    "text_seen": "2-",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1767,
+      882,
+      1806,
+      913
+    ]
+  },
+  {
+    "text_seen": "Istanbul (1)",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1048,
+      880,
+      1332,
+      944
+    ]
+  },
+  {
+    "text_seen": "Can build Land improvements on tiles",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1763,
+      910,
+      2315,
+      955
+    ]
+  },
+  {
+    "text_seen": "Buildings",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      27,
+      929,
+      213,
+      990
+    ]
+  },
+  {
+    "text_seen": "Exit city",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1140,
+      994,
+      1260,
+      1037
+    ]
+  },
+  {
+    "text_seen": "1602",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2054,
+      982,
+      2143,
+      1020
+    ]
+  },
+  {
+    "text_seen": "Other",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      29,
+      1017,
+      142,
+      1062
+    ]
+  },
+  {
+    "text_seen": "Buy",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1988,
+      980,
+      2056,
+      1028
+    ]
+  }
+]

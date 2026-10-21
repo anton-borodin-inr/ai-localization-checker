@@ -1,0 +1,658 @@
+[
+  {
+    "text_seen": "ocnritt",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1387,
+      0,
+      1459,
+      15
+    ]
+  },
+  {
+    "text_seen": "Ua",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1692,
+      0,
+      1733,
+      15
+    ]
+  },
+  {
+    "text_seen": "@",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1204,
+      0,
+      1375,
+      83
+    ]
+  },
+  {
+    "text_seen": "ao",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1406,
+      27,
+      1593,
+      81
+    ]
+  },
+  {
+    "text_seen": "Tierhaltung",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      765,
+      226,
+      891,
+      252
+    ]
+  },
+  {
+    "text_seen": "6a",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1079,
+      227,
+      1110,
+      247
+    ]
+  },
+  {
+    "text_seen": "10%",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1687,
+      226,
+      1733,
+      246
+    ]
+  },
+  {
+    "text_seen": "Reiten",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2009,
+      227,
+      2076,
+      246
+    ]
+  },
+  {
+    "text_seen": "19",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2308,
+      226,
+      2354,
+      246
+    ]
+  },
+  {
+    "text_seen": "8:",
+    "region": "top",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      858,
+      273,
+      899,
+      296
+    ]
+  },
+  {
+    "text_seen": "©",
+    "region": "top-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      671,
+      230,
+      754,
+      313
+    ]
+  },
+  {
+    "text_seen": "®",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1913,
+      230,
+      1996,
+      313
+    ]
+  },
+  {
+    "text_seen": "O09®",
+    "region": "top-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2027,
+      257,
+      2214,
+      311
+    ]
+  },
+  {
+    "text_seen": "Landwirtschaft",
+    "region": "top-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      146,
+      342,
+      311,
+      361
+    ]
+  },
+  {
+    "text_seen": "9090",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      164,
+      373,
+      418,
+      427
+    ]
+  },
+  {
+    "text_seen": "- BI",
+    "region": "left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      770,
+      456,
+      781,
+      470
+    ]
+  },
+  {
+    "text_seen": "eee",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      799,
+      461,
+      845,
+      477
+    ]
+  },
+  {
+    "text_seen": "Das Rad",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1388,
+      457,
+      1478,
+      476
+    ]
+  },
+  {
+    "text_seen": "10",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1687,
+      456,
+      1733,
+      476
+    ]
+  },
+  {
+    "text_seen": "Mathematik",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2009,
+      457,
+      2141,
+      476
+    ]
+  },
+  {
+    "text_seen": "198",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2308,
+      456,
+      2354,
+      476
+    ]
+  },
+  {
+    "text_seen": "O80",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1406,
+      488,
+      1593,
+      542
+    ]
+  },
+  {
+    "text_seen": "80",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2027,
+      488,
+      2214,
+      542
+    ]
+  },
+  {
+    "text_seen": "6%",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1079,
+      687,
+      1110,
+      707
+    ]
+  },
+  {
+    "text_seen": "Mauerarbeiten",
+    "region": "center",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1388,
+      687,
+      1547,
+      707
+    ]
+  },
+  {
+    "text_seen": "102",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1687,
+      687,
+      1733,
+      707
+    ]
+  },
+  {
+    "text_seen": "Baukunst",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2009,
+      687,
+      2111,
+      707
+    ]
+  },
+  {
+    "text_seen": "19%",
+    "region": "right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2308,
+      687,
+      2354,
+      706
+    ]
+  },
+  {
+    "text_seen": "9000%",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1406,
+      718,
+      1726,
+      772
+    ]
+  },
+  {
+    "text_seen": "806",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      2027,
+      718,
+      2214,
+      772
+    ]
+  },
+  {
+    "text_seen": "oO n",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      669,
+      673,
+      905,
+      776
+    ]
+  },
+  {
+    "text_seen": "or",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1913,
+      691,
+      1996,
+      774
+    ]
+  },
+  {
+    "text_seen": "Bronzebearbeitung",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1388,
+      802,
+      1596,
+      827
+    ]
+  },
+  {
+    "text_seen": "10%",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1687,
+      802,
+      1733,
+      822
+    ]
+  },
+  {
+    "text_seen": "03200",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1406,
+      833,
+      1660,
+      887
+    ]
+  },
+  {
+    "text_seen": "Freigeschaltete Einheiten:",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      244,
+      934,
+      609,
+      986
+    ]
+  },
+  {
+    "text_seen": "Schließen",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      41,
+      982,
+      179,
+      1007
+    ]
+  },
+  {
+    "text_seen": "3Bogenschütze (59, 7#)",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      276,
+      966,
+      642,
+      1000
+    ]
+  },
+  {
+    "text_seen": "©®Bogenschießen erforschen",
+    "region": "bottom-right",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      1944,
+      963,
+      2358,
+      998
+    ]
+  },
+  {
+    "text_seen": "Freigeschaltete Wunder",
+    "region": "bottom-left",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      244,
+      1033,
+      582,
+      1064
+    ]
+  },
+  {
+    "text_seen": "an I nrmmnalrnnr Artamic (1.1 I8l/ııltı ı- LAMY PAALAKri Inn im allan C+ı=Atan: L1KY Drarlııl tan Kai Daııymn",
+    "region": "bottom",
+    "box": [
+      0,
+      0,
+      2400,
+      1080
+    ],
+    "text_box": [
+      276,
+      1062,
+      1703,
+      1080
+    ]
+  }
+]
