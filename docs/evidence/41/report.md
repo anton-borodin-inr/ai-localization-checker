@@ -1,13 +1,57 @@
 # Issue #41 Report
 
-**Capture implementation and device verification completed. Pending: Anton's
-gallery review, the two D-025 on-device checks, independent code review and
-approval to push/open the draft PR. D-039 remains Proposed.**
+**New Game correction in progress: the original German capture differs from
+#40 by 44,997 pixels because the reset button is missing. Fixed templates and
+offline checks are ready; four replacement captures await separate device-write
+approval. Push and draft PR are approved. Gallery review, the two D-025 on-device
+checks and independent code review remain pending. D-039 remains Proposed.**
 The installed CLI still needs this Mac's existing hidden-`.pth` workaround
 (`PYTHONPATH=src`); this task does not fix packaging or the filesystem flag setter.
 
 Branch `feat/41-screen-capture`, based on checker main `eb5616d`.
 Implementation under test: `e0d2888`; fixtures/decision commit: `05fa997`.
+
+## New Game correction before review
+
+Anton identified a missing "Auf Standardwerte zurücksetzen" button. Independent
+decoded-RGBA comparison against `issue-40-screenshots-1271045.zip` confirms
+44,997 changed pixels in the original #41 `new-game/de` capture, bounding box
+`[1616, 950, 2131, 1040]`. The other nine German screens match #40 with zero
+changed pixels (`reference-comparison-before-fix.json`). Repeatability of the
+original run did not establish equivalence with the intended #40 screen.
+
+At [NewGameScreen.kt:107 in 877b0dc](https://github.com/anton-borodin-inr/Unciv/blob/877b0dc/core/src/com/unciv/ui/screens/newgamescreen/NewGameScreen.kt#L107),
+the button is conditional on `settings.lastGameSetup != null`. Both original
+templates omitted that field and therefore used the null default. Both now
+contain the same fixed `lastGameSetup` object from the verified #40 settings
+backup (SHA-256 `7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7`).
+No personal fields were copied. The displayed fields still come from the
+unchanged D-038 `new_game` state (SHA-256
+`72b95927042892b69c9693646c449a1c5b8e945b33c585cdd862c330be83886a`).
+No hook, protocol, runner or CLI change was needed. The fixture contract test
+now checks the fixed setup in both languages and the distinct D-038 setup seed.
+
+Updated settings SHA-256: EN
+`853e1a055177314c866ae4427e697adeb6f79cab051d31bff0d6160b149c1776`, DE
+`397ddd96452874b01d9f096311049c0d076492297d557a9fb7c3d2abf1f3cdea`.
+The full updated manifest SHA-256 is
+`2c181c26f0f924d47036846f6eeadaf1366eaac361ccb0c106b99544e8d8700d`.
+For this targeted correction, a frozen copy under
+`data/issue-41/new-game-fix-inputs/` retains only the `new-game` screen entry;
+all remaining fields and referenced bytes are unchanged. Its manifest SHA-256
+is `442813d4b81cca8ce7434c9d731e1a85049ce82b28b33b25c2e488ebf6a5e06f`
+(`new-game-fix-inputs.json`). The planned loop is pass 1 EN/DE, then pass 2
+EN/DE, with one screen each: four cold launches and four captures. A single
+screen cannot itself test order dependence; the original ten-screen reverse
+pass remains the evidence for that check. The other nine screens are not
+recaptured in this correction. Old raw summaries, PNGs and audit are retained.
+
+Checks after the template/test change: `uv run pytest -q` **1448 passed,
+2 skipped**, 9.32 s; both skips are device opt-in tests. `uv run ruff check .`
+passed; `uv run ruff format --check .` passed, 74 files formatted. The prior
+full `--run-device` result below predates this correction. It is not claimed
+as a rerun of the corrected templates; the four targeted live captures and
+their pixel/reference comparisons are pending separate device approval.
 
 ## What changed
 
@@ -44,8 +88,10 @@ Implementation under test: `e0d2888`; fixtures/decision commit: `05fa997`.
 - `docs/evidence/41/capture-audit.json`
 - `docs/evidence/41/capture-summary.json`
 - `docs/evidence/41/data-preservation.json`
+- `docs/evidence/41/new-game-fix-inputs.json`
 - `docs/evidence/41/pytest-device.txt`
 - `docs/evidence/41/pytest-device.xml`
+- `docs/evidence/41/reference-comparison-before-fix.json`
 - `docs/evidence/41/report.md`
 - `docs/stage2-capture.md`
 - `fixtures/stage2/README.md`
@@ -86,8 +132,9 @@ No removal is currently planned. These candidates were inspected:
 
 ## How it was verified
 
-All Python checks below ran after the last Python change. Later edits add only
-reports/evidence and update the fixture README from pending to verified.
+The checks below describe the original ten-screen run, before the New Game
+template/test correction documented above. They ran after its last runtime
+Python change; the correction leaves runtime code unchanged.
 
 - `uv run pytest --run-device --junitxml=data/issue-41/pytest-device.xml`:
   **1450 passed, 0 skipped, 0 failures/errors**, 42.76 s, exit 0. This includes
@@ -136,7 +183,7 @@ reports/evidence and update the fixture README from pending to verified.
 
 ### Repeatability by source screen
 
-Each comparison has 2,592,000 pixels, differing share **0.0**, and bounding box
+For the original run, each comparison has 2,592,000 pixels, differing share **0.0**, and bounding box
 **null**. The first pass is 01 to 10 for EN then DE; the second is 10 to 01 for
 EN then DE. All 40 requests used their exact source states and reached READY.
 
@@ -160,6 +207,8 @@ EN then DE. All 40 requests used their exact source states and reached READY.
 - Review ZIP: `/Users/antonborodin/Documents/Codex/2026-10-21/next-task-issue-41-https-github/outputs/issue-41-screenshots-1271045.zip`.
 - Full 40-image/evidence ZIP: `/Users/antonborodin/Documents/Codex/2026-10-21/next-task-issue-41-https-github/outputs/issue-41-evidence-1271045.zip`.
 
+These currently retain the original captures, including the New Game button
+omission. They will be superseded explicitly after the four correction captures.
 The gallery contains the primary pass only; every PNG retains its D-003/D-016
 name and original 2400 x 1080 pixels. The evidence ZIP includes both passes and
 public verification records, never private settings/save backups.
@@ -201,6 +250,31 @@ under `data/device-tests/`; the hook smoke validates PNG bytes without saving a
 Stage 2 image. Private preflight, capture and final-verification backups remain
 under `data/issue-41/`, outside Git and public exports.
 
+Correction preparation completed with exit 0 and **zero app-data writes**:
+`PYTHONPATH=src uv run l10n-capture
+--manifest data/issue-41/new-game-fix-inputs/screens.json --lang en --lang de
+--prepare-only --output-dir data/issue-41/new-game-fix-preflight-20261021`.
+Fresh settings/all-save backups were read back and verified. APK, original
+settings bytes/metadata and all four saves still match the original baseline;
+no save copies are needed. The app is stopped and adbd was unrooted on exit.
+
+The following **five additional writes are planned, not yet executed**, all to
+the same `GameSettings.json` path. Separate approval is required before capture:
+
+| Planned # | Operation | Payload SHA-256 |
+|---:|---|---|
+| 8 | pass 1 / en, capture new-game | `853e1a055177314c866ae4427e697adeb6f79cab051d31bff0d6160b149c1776` |
+| 9 | pass 1 / de, capture new-game | `397ddd96452874b01d9f096311049c0d076492297d557a9fb7c3d2abf1f3cdea` |
+| 10 | pass 2 / en, capture new-game | `853e1a055177314c866ae4427e697adeb6f79cab051d31bff0d6160b149c1776` |
+| 11 | pass 2 / de, capture new-game | `397ddd96452874b01d9f096311049c0d076492297d557a9fb7c3d2abf1f3cdea` |
+| 12 | restore original bytes/uid/gid/mode | `7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7` |
+
+Other planned operations: temporary adb root/unroot, force-stop, four cold hook
+launches/unique sequential requests, fresh-log matching waits, SDK screencaps,
+and final read-only settings/save/build verification. No full device-suite rerun
+is included in this batch, so its two legacy-test settings writes are not added.
+The original seven writes above remain the complete executed app-data ledger.
+
 ## Deviations from the task
 
 No scope changes. The old ordinary-APK fixed-delay path remains supported and
@@ -222,8 +296,8 @@ loop. D-038 remains Accepted and unchanged, pinned to fork merge `877b0dc`.
 - Two on-device checks under Accepted D-025 remain exactly as requested:
   horizontal clipping on victory-status; whether Civilopedia's category bar
   actually scrolls. No rule change or label is inferred from those screenshots.
-- Separate push/draft-PR approval is pending under the established repository
-  workflow. No known capture or device-test failure remains.
+- Push and draft PR are approved. The four New Game correction captures await
+  separate approval of the five additional settings writes listed above.
 
 ## API usage
 

@@ -163,6 +163,20 @@ def test_real_fixture_manifest_contract():
     assert en.pop("language") == "English"
     assert de.pop("language") == "German"
     assert en == de
+    # NewGameScreen shows "Reset to defaults" only with a saved setup.
+    # Keep the archived #40 setup fixed, while D-038 owns the displayed fields.
+    setup = en["lastGameSetup"]
+    assert setup["gameParameters"]["players"] == [
+        {"playerType": "Human"},
+        {},
+        {},
+        {},
+    ]
+    assert setup["mapParameters"]["seed"] == 1792416007321
+    for language in ("en", "de"):
+        state = inputs.states["new-game", language]
+        assert state["new_game"]["seed"] == 0
+        assert state["new_game"]["map_size"] == "Medium"
 
 
 def edited_manifest(tmp_path):

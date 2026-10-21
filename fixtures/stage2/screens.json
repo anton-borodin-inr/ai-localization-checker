@@ -17,13 +17,13 @@
       "code": "en",
       "game_language": "English",
       "settings": "settings/en.json",
-      "sha256": "008046f1fb619410aa930a68ff2bbb8f8ee20f5a90d3da463130fabaf98c675c"
+      "sha256": "853e1a055177314c866ae4427e697adeb6f79cab051d31bff0d6160b149c1776"
     },
     {
       "code": "de",
       "game_language": "German",
       "settings": "settings/de.json",
-      "sha256": "28d1b5df2733f372e466402981b8e6997093fb21a6d7760cd5090fbab4e8ec87"
+      "sha256": "397ddd96452874b01d9f096311049c0d076492297d557a9fb7c3d2abf1f3cdea"
     }
   ],
   "fixtures": [

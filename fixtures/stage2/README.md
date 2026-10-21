@@ -39,6 +39,13 @@ history is retained. Hook mode suppresses transient hints and persists neither
 settings nor autosaves. Unspecified fields use the pinned build's defaults.
 No personal multiplayer id or console history is copied.
 
+Both templates also retain the same fixed `lastGameSetup` object from that
+verified #40 settings backup. At `NewGameScreen.kt:107` in `877b0dc`, its
+non-null presence controls the visible "Reset to defaults" button. The first
+#41 capture omitted it and was repeatable but differed from #40 on New Game.
+The hook's D-038 `new_game` state still supplies the displayed setup fields;
+the archived seed in `lastGameSetup` does not replace that state or start a game.
+
 World explicitly has **empty notifications on turn 1**, accepted by Anton.
 New Game is never started: the hook pins the displayed preview to seed 40;
 setup `seed=0` does not promise a deterministic subsequently generated game.

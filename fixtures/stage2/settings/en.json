@@ -52,5 +52,38 @@
   "showAutosaves": false,
   "visualMods": [],
   "consoleCommandHistory": [],
-  "language": "English"
+  "language": "English",
+  "lastGameSetup": {
+    "gameParameters": {
+      "difficulty": "Chieftain",
+      "espionageEnabled": true,
+      "players": [
+        {
+          "playerType": "Human"
+        },
+        {},
+        {},
+        {}
+      ],
+      "victoryTypes": [
+        "Scientific",
+        "Cultural",
+        "Domination",
+        "Diplomatic",
+        "Time"
+      ]
+    },
+    "mapParameters": {
+      "createdWithVersion": "4.22.10 (Build 1271)",
+      "mapSize": {
+        "height": 29,
+        "name": "Medium",
+        "radius": 20,
+        "width": 44
+      },
+      "seed": 1792416007321,
+      "shape": "Rectangular",
+      "worldWrap": true
+    }
+  }
 }
