@@ -1,0 +1,38 @@
+{
+  "status": "checked_before_approved_device_writes",
+  "method": "Complete structural allowlist of lastGameSetup; recursive identifier-key and UUID/email scan of templates; players are type-only or empty objects. All setup string values inspected.",
+  "templates_changed": false,
+  "payload_hashes_match_approved_plan": true,
+  "records": [
+    {
+      "language": "en",
+      "settings_sha256": "853e1a055177314c866ae4427e697adeb6f79cab051d31bff0d6160b149c1776",
+      "last_game_setup_sha256": "f4620625364b5ebc16e8b697b659ee4069295768b07f60aaf654fc8dc7b39309",
+      "player_objects": [
+        {
+          "playerType": "Human"
+        },
+        {},
+        {},
+        {}
+      ],
+      "personal_identifier_keys": [],
+      "template_changed": false
+    },
+    {
+      "language": "de",
+      "settings_sha256": "397ddd96452874b01d9f096311049c0d076492297d557a9fb7c3d2abf1f3cdea",
+      "last_game_setup_sha256": "f4620625364b5ebc16e8b697b659ee4069295768b07f60aaf654fc8dc7b39309",
+      "player_objects": [
+        {
+          "playerType": "Human"
+        },
+        {},
+        {},
+        {}
+      ],
+      "personal_identifier_keys": [],
+      "template_changed": false
+    }
+  ]
+}

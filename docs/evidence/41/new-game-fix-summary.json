@@ -1,0 +1,483 @@
+{
+  "schema_version": 1,
+  "status": "complete",
+  "manifest_sha256": "442813d4b81cca8ce7434c9d731e1a85049ce82b28b33b25c2e488ebf6a5e06f",
+  "languages": [
+    "en",
+    "de"
+  ],
+  "passes": [
+    "forward",
+    "reverse"
+  ],
+  "records": [
+    {
+      "pass": 1,
+      "language": "en",
+      "screen": "new-game",
+      "request": "i41-a301f5477db44a1bb1766e8ccb5aac39",
+      "state": {
+        "schema_version": 1,
+        "save": null,
+        "selection": {},
+        "tab": null,
+        "expanded_sections": [],
+        "scroll": {},
+        "scroll_to": {
+          "pane-0": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "pane-1": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "pane-2": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "pane-3": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "pane-4": {
+            "edge": "start",
+            "align": "visible"
+          }
+        },
+        "camera": null,
+        "new_game": {
+          "ruleset": "Civ V - Gods & Kings",
+          "difficulty": "Chieftain",
+          "speed": "Quick",
+          "era": "Ancient era",
+          "max_turns": 500,
+          "city_states": 6,
+          "map_type": "Pangaea",
+          "map_size": "Medium",
+          "seed": 0,
+          "players": [
+            {
+              "type": "Human",
+              "civilization": "Random"
+            },
+            {
+              "type": "AI",
+              "civilization": "Random"
+            },
+            {
+              "type": "AI",
+              "civilization": "Random"
+            },
+            {
+              "type": "AI",
+              "civilization": "Random"
+            }
+          ]
+        }
+      },
+      "status": "captured",
+      "readiness": {
+        "events": [
+          "[GLThread 53] L10N_SCREEN_PANES new-game request=i41-a301f5477db44a1bb1766e8ccb5aac39 panes=pane-0,pane-1,pane-2,pane-3,pane-4",
+          "[GLThread 53] L10N_SCREEN_READY new-game request=i41-a301f5477db44a1bb1766e8ccb5aac39 frames=2"
+        ],
+        "panes": [
+          "pane-0",
+          "pane-1",
+          "pane-2",
+          "pane-3",
+          "pane-4"
+        ],
+        "frames": 2,
+        "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\nStatus: ok\nLaunchState: COLD\nActivity: com.unciv.app/.AndroidLauncher\nTotalTime: 2371\nWaitTime: 2377\nComplete\n"
+      },
+      "png": "pass-1/new-game__en__2400x1080__clean__1271045.png",
+      "png_sha256": "a90dd2f03cb381e544bed78bf0c5ccbe14e5a4e9372bb5d2341e131c0e590761"
+    },
+    {
+      "pass": 1,
+      "language": "de",
+      "screen": "new-game",
+      "request": "i41-8303b84c2ff5426f87170f20b48007a4",
+      "state": {
+        "schema_version": 1,
+        "save": null,
+        "selection": {},
+        "tab": null,
+        "expanded_sections": [],
+        "scroll": {},
+        "scroll_to": {
+          "pane-0": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "pane-1": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "pane-2": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "pane-3": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "pane-4": {
+            "edge": "start",
+            "align": "visible"
+          }
+        },
+        "camera": null,
+        "new_game": {
+          "ruleset": "Civ V - Gods & Kings",
+          "difficulty": "Chieftain",
+          "speed": "Quick",
+          "era": "Ancient era",
+          "max_turns": 500,
+          "city_states": 6,
+          "map_type": "Pangaea",
+          "map_size": "Medium",
+          "seed": 0,
+          "players": [
+            {
+              "type": "Human",
+              "civilization": "Random"
+            },
+            {
+              "type": "AI",
+              "civilization": "Random"
+            },
+            {
+              "type": "AI",
+              "civilization": "Random"
+            },
+            {
+              "type": "AI",
+              "civilization": "Random"
+            }
+          ]
+        }
+      },
+      "status": "captured",
+      "readiness": {
+        "events": [
+          "[GLThread 53] L10N_SCREEN_PANES new-game request=i41-8303b84c2ff5426f87170f20b48007a4 panes=pane-0,pane-1,pane-2,pane-3,pane-4",
+          "[GLThread 53] L10N_SCREEN_READY new-game request=i41-8303b84c2ff5426f87170f20b48007a4 frames=2"
+        ],
+        "panes": [
+          "pane-0",
+          "pane-1",
+          "pane-2",
+          "pane-3",
+          "pane-4"
+        ],
+        "frames": 2,
+        "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\nStatus: ok\nLaunchState: COLD\nActivity: com.unciv.app/.AndroidLauncher\nTotalTime: 2929\nWaitTime: 2938\nComplete\n"
+      },
+      "png": "pass-1/new-game__de__2400x1080__clean__1271045.png",
+      "png_sha256": "3bed668eaf308cf4f079659f1fd714f46d1b05039e776b5445b28187feeed87d"
+    },
+    {
+      "pass": 2,
+      "language": "en",
+      "screen": "new-game",
+      "request": "i41-6eda271c16a343fea1c482cb1cd129b6",
+      "state": {
+        "schema_version": 1,
+        "save": null,
+        "selection": {},
+        "tab": null,
+        "expanded_sections": [],
+        "scroll": {},
+        "scroll_to": {
+          "pane-0": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "pane-1": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "pane-2": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "pane-3": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "pane-4": {
+            "edge": "start",
+            "align": "visible"
+          }
+        },
+        "camera": null,
+        "new_game": {
+          "ruleset": "Civ V - Gods & Kings",
+          "difficulty": "Chieftain",
+          "speed": "Quick",
+          "era": "Ancient era",
+          "max_turns": 500,
+          "city_states": 6,
+          "map_type": "Pangaea",
+          "map_size": "Medium",
+          "seed": 0,
+          "players": [
+            {
+              "type": "Human",
+              "civilization": "Random"
+            },
+            {
+              "type": "AI",
+              "civilization": "Random"
+            },
+            {
+              "type": "AI",
+              "civilization": "Random"
+            },
+            {
+              "type": "AI",
+              "civilization": "Random"
+            }
+          ]
+        }
+      },
+      "status": "captured",
+      "readiness": {
+        "events": [
+          "[GLThread 54] L10N_SCREEN_PANES new-game request=i41-6eda271c16a343fea1c482cb1cd129b6 panes=pane-0,pane-1,pane-2,pane-3,pane-4",
+          "[GLThread 54] L10N_SCREEN_READY new-game request=i41-6eda271c16a343fea1c482cb1cd129b6 frames=2"
+        ],
+        "panes": [
+          "pane-0",
+          "pane-1",
+          "pane-2",
+          "pane-3",
+          "pane-4"
+        ],
+        "frames": 2,
+        "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\nStatus: ok\nLaunchState: COLD\nActivity: com.unciv.app/.AndroidLauncher\nTotalTime: 2149\nWaitTime: 2155\nComplete\n"
+      },
+      "png": "pass-2/new-game__en__2400x1080__clean__1271045.png",
+      "png_sha256": "a90dd2f03cb381e544bed78bf0c5ccbe14e5a4e9372bb5d2341e131c0e590761"
+    },
+    {
+      "pass": 2,
+      "language": "de",
+      "screen": "new-game",
+      "request": "i41-7880bf3da5ca4b7b81bf995ad2b34f33",
+      "state": {
+        "schema_version": 1,
+        "save": null,
+        "selection": {},
+        "tab": null,
+        "expanded_sections": [],
+        "scroll": {},
+        "scroll_to": {
+          "pane-0": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "pane-1": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "pane-2": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "pane-3": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "pane-4": {
+            "edge": "start",
+            "align": "visible"
+          }
+        },
+        "camera": null,
+        "new_game": {
+          "ruleset": "Civ V - Gods & Kings",
+          "difficulty": "Chieftain",
+          "speed": "Quick",
+          "era": "Ancient era",
+          "max_turns": 500,
+          "city_states": 6,
+          "map_type": "Pangaea",
+          "map_size": "Medium",
+          "seed": 0,
+          "players": [
+            {
+              "type": "Human",
+              "civilization": "Random"
+            },
+            {
+              "type": "AI",
+              "civilization": "Random"
+            },
+            {
+              "type": "AI",
+              "civilization": "Random"
+            },
+            {
+              "type": "AI",
+              "civilization": "Random"
+            }
+          ]
+        }
+      },
+      "status": "captured",
+      "readiness": {
+        "events": [
+          "[GLThread 53] L10N_SCREEN_PANES new-game request=i41-7880bf3da5ca4b7b81bf995ad2b34f33 panes=pane-0,pane-1,pane-2,pane-3,pane-4",
+          "[GLThread 53] L10N_SCREEN_READY new-game request=i41-7880bf3da5ca4b7b81bf995ad2b34f33 frames=2"
+        ],
+        "panes": [
+          "pane-0",
+          "pane-1",
+          "pane-2",
+          "pane-3",
+          "pane-4"
+        ],
+        "frames": 2,
+        "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\nStatus: ok\nLaunchState: COLD\nActivity: com.unciv.app/.AndroidLauncher\nTotalTime: 2018\nWaitTime: 2031\nComplete\n"
+      },
+      "png": "pass-2/new-game__de__2400x1080__clean__1271045.png",
+      "png_sha256": "3bed668eaf308cf4f079659f1fd714f46d1b05039e776b5445b28187feeed87d"
+    }
+  ],
+  "comparisons": [
+    {
+      "screen": "new-game",
+      "language": "en",
+      "status": "identical",
+      "total_pixels": 2592000,
+      "different_pixels": 0,
+      "different_share": 0.0,
+      "bounding_box": null,
+      "bounding_box_convention": "[left, top, right-exclusive, bottom-exclusive] or null"
+    },
+    {
+      "screen": "new-game",
+      "language": "de",
+      "status": "identical",
+      "total_pixels": 2592000,
+      "different_pixels": 0,
+      "different_share": 0.0,
+      "bounding_box": null,
+      "bounding_box_convention": "[left, top, right-exclusive, bottom-exclusive] or null"
+    }
+  ],
+  "app_data_operations": [
+    {
+      "operation": "replace_settings",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "853e1a055177314c866ae4427e697adeb6f79cab051d31bff0d6160b149c1776",
+      "status": "verified",
+      "language": "en",
+      "pass_number": 1
+    },
+    {
+      "operation": "replace_settings",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "397ddd96452874b01d9f096311049c0d076492297d557a9fb7c3d2abf1f3cdea",
+      "status": "verified",
+      "language": "de",
+      "pass_number": 1
+    },
+    {
+      "operation": "replace_settings",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "853e1a055177314c866ae4427e697adeb6f79cab051d31bff0d6160b149c1776",
+      "status": "verified",
+      "language": "en",
+      "pass_number": 2
+    },
+    {
+      "operation": "replace_settings",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "397ddd96452874b01d9f096311049c0d076492297d557a9fb7c3d2abf1f3cdea",
+      "status": "verified",
+      "language": "de",
+      "pass_number": 2
+    },
+    {
+      "operation": "restore_original_settings",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7",
+      "status": "verified"
+    }
+  ],
+  "live_provider_requests": 0,
+  "api_spend_usd": 0,
+  "observed_build": {
+    "version_code": "1271045",
+    "apk_sha256": "16b6e07eaa8f7ca35b71f361f0bdcceb7015987b60e796d15d2f3b53bb61af1a",
+    "density_dpi": 420
+  },
+  "backup": {
+    "settings_sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7",
+    "settings_stat": "10196 10196 600 873",
+    "settings_backup": "private/GameSettings.json",
+    "saves_backup": "private/SaveFiles.tar",
+    "saves": {
+      "./Autosave": "9d2a4cd5e1de2b2ae9102a2e6e6d15210e32ae5188c895f84e8a3a6ce19c3b4e",
+      "./Autosave-The Ottomans-1": "62c62dcefb9065850dea34293a8a644a5ccea5397aa5bd5b1a12620a220e9e13",
+      "./issue-8-pair": "9d2a4cd5e1de2b2ae9102a2e6e6d15210e32ae5188c895f84e8a3a6ce19c3b4e",
+      "./issue-40-belgrade-metissue-8-pair": "2cf381aa7bf544961a302989c027045572b8d7036ab1840b01bc3ee4409c551e"
+    },
+    "save_copies_needed": []
+  },
+  "planned_app_data_operations": [
+    {
+      "operation": "replace_settings",
+      "pass": 1,
+      "language": "en",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "853e1a055177314c866ae4427e697adeb6f79cab051d31bff0d6160b149c1776",
+      "screen_order": [
+        "new-game"
+      ]
+    },
+    {
+      "operation": "replace_settings",
+      "pass": 1,
+      "language": "de",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "397ddd96452874b01d9f096311049c0d076492297d557a9fb7c3d2abf1f3cdea",
+      "screen_order": [
+        "new-game"
+      ]
+    },
+    {
+      "operation": "replace_settings",
+      "pass": 2,
+      "language": "en",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "853e1a055177314c866ae4427e697adeb6f79cab051d31bff0d6160b149c1776",
+      "screen_order": [
+        "new-game"
+      ]
+    },
+    {
+      "operation": "replace_settings",
+      "pass": 2,
+      "language": "de",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "397ddd96452874b01d9f096311049c0d076492297d557a9fb7c3d2abf1f3cdea",
+      "screen_order": [
+        "new-game"
+      ]
+    },
+    {
+      "operation": "restore_original_settings",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7"
+    }
+  ],
+  "device_plan_sha256": "513bec34bade628ca257607282518696858e1d467ecb8108080d1d4a101acbd1",
+  "saves_unchanged": true,
+  "settings_restored": true
+}

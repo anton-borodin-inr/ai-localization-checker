@@ -1,0 +1,17 @@
+{
+  "operation": "Retain only screens[id=new-game]; all other manifest fields and referenced bytes unchanged.",
+  "source_manifest": "fixtures/stage2/screens.json",
+  "source_manifest_sha256": "2c181c26f0f924d47036846f6eeadaf1366eaac361ccb0c106b99544e8d8700d",
+  "capture_manifest_sha256": "442813d4b81cca8ce7434c9d731e1a85049ce82b28b33b25c2e488ebf6a5e06f",
+  "state_sha256": "72b95927042892b69c9693646c449a1c5b8e945b33c585cdd862c330be83886a",
+  "settings_sha256": {
+    "en": "853e1a055177314c866ae4427e697adeb6f79cab051d31bff0d6160b149c1776",
+    "de": "397ddd96452874b01d9f096311049c0d076492297d557a9fb7c3d2abf1f3cdea"
+  },
+  "last_game_setup_source": {
+    "archive_setting_sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7",
+    "field": "lastGameSetup",
+    "fields_displayed_by": "unchanged D-038 new_game state"
+  },
+  "other_nine_screens_recaptured": false
+}

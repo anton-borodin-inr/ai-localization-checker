@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "save": null,
+  "selection": {},
+  "tab": "gameplay",
+  "expanded_sections": [],
+  "scroll": {},
+  "scroll_to": {
+    "menu-map": {
+      "edge": "center",
+      "align": "visible"
+    },
+    "pane-1": {
+      "edge": "start",
+      "align": "visible"
+    },
+    "tabs-header": {
+      "edge": "start",
+      "align": "visible"
+    },
+    "tabs-fixed": {
+      "edge": "start",
+      "align": "visible"
+    },
+    "tabs-content": {
+      "edge": "start",
+      "align": "visible"
+    }
+  },
+  "camera": null,
+  "new_game": null
+}

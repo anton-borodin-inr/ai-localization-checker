@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "save": "issue-40-belgrade-metissue-8-pair",
+  "selection": {
+    "city_state": "Belgrade"
+  },
+  "tab": null,
+  "expanded_sections": [],
+  "scroll": {},
+  "scroll_to": {
+    "pane-0": {
+      "edge": "start",
+      "align": "visible"
+    },
+    "pane-1": {
+      "edge": "start",
+      "align": "visible"
+    }
+  },
+  "camera": null,
+  "new_game": null
+}

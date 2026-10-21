@@ -1,0 +1,76 @@
+{
+  "mode": "prepare_only",
+  "app_data_writes": 0,
+  "manifest_sha256": "442813d4b81cca8ce7434c9d731e1a85049ce82b28b33b25c2e488ebf6a5e06f",
+  "observed_build": {
+    "version_code": "1271045",
+    "apk_sha256": "16b6e07eaa8f7ca35b71f361f0bdcceb7015987b60e796d15d2f3b53bb61af1a",
+    "density_dpi": 420
+  },
+  "backup": {
+    "settings_sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7",
+    "settings_stat": "10196 10196 600 873",
+    "settings_backup": "private/GameSettings.json",
+    "saves_backup": "private/SaveFiles.tar",
+    "saves": {
+      "./Autosave": "9d2a4cd5e1de2b2ae9102a2e6e6d15210e32ae5188c895f84e8a3a6ce19c3b4e",
+      "./Autosave-The Ottomans-1": "62c62dcefb9065850dea34293a8a644a5ccea5397aa5bd5b1a12620a220e9e13",
+      "./issue-8-pair": "9d2a4cd5e1de2b2ae9102a2e6e6d15210e32ae5188c895f84e8a3a6ce19c3b4e",
+      "./issue-40-belgrade-metissue-8-pair": "2cf381aa7bf544961a302989c027045572b8d7036ab1840b01bc3ee4409c551e"
+    },
+    "save_copies_needed": []
+  },
+  "planned_app_data_operations": [
+    {
+      "operation": "replace_settings",
+      "pass": 1,
+      "language": "en",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "853e1a055177314c866ae4427e697adeb6f79cab051d31bff0d6160b149c1776",
+      "screen_order": [
+        "new-game"
+      ]
+    },
+    {
+      "operation": "replace_settings",
+      "pass": 1,
+      "language": "de",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "397ddd96452874b01d9f096311049c0d076492297d557a9fb7c3d2abf1f3cdea",
+      "screen_order": [
+        "new-game"
+      ]
+    },
+    {
+      "operation": "replace_settings",
+      "pass": 2,
+      "language": "en",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "853e1a055177314c866ae4427e697adeb6f79cab051d31bff0d6160b149c1776",
+      "screen_order": [
+        "new-game"
+      ]
+    },
+    {
+      "operation": "replace_settings",
+      "pass": 2,
+      "language": "de",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "397ddd96452874b01d9f096311049c0d076492297d557a9fb7c3d2abf1f3cdea",
+      "screen_order": [
+        "new-game"
+      ]
+    },
+    {
+      "operation": "restore_original_settings",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7"
+    }
+  ],
+  "other_device_operations": [
+    "adb root/unroot and force-stop; app left stopped",
+    "one cold hook launch per language per pass; pass 2 reverses screen order",
+    "after a client timeout or uncertain launch, force-stop before another request",
+    "unique Android logcat barrier per request (Android logs only)"
+  ]
+}

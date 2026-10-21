@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "save": null,
+  "selection": {},
+  "tab": null,
+  "expanded_sections": [],
+  "scroll": {},
+  "scroll_to": {
+    "pane-0": {
+      "edge": "start",
+      "align": "visible"
+    },
+    "pane-1": {
+      "edge": "start",
+      "align": "visible"
+    },
+    "pane-2": {
+      "edge": "start",
+      "align": "visible"
+    },
+    "pane-3": {
+      "edge": "start",
+      "align": "visible"
+    },
+    "pane-4": {
+      "edge": "start",
+      "align": "visible"
+    }
+  },
+  "camera": null,
+  "new_game": {
+    "ruleset": "Civ V - Gods & Kings",
+    "difficulty": "Chieftain",
+    "speed": "Quick",
+    "era": "Ancient era",
+    "max_turns": 500,
+    "city_states": 6,
+    "map_type": "Pangaea",
+    "map_size": "Medium",
+    "seed": 0,
+    "players": [
+      {
+        "type": "Human",
+        "civilization": "Random"
+      },
+      {
+        "type": "AI",
+        "civilization": "Random"
+      },
+      {
+        "type": "AI",
+        "civilization": "Random"
+      },
+      {
+        "type": "AI",
+        "civilization": "Random"
+      }
+    ]
+  }
+}

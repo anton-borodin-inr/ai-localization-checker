@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "save": "issue-8-pair",
+  "selection": {
+    "unit": {
+      "owner": "The Ottomans",
+      "name": "Warrior",
+      "tile": [
+        -7,
+        11
+      ]
+    }
+  },
+  "tab": null,
+  "expanded_sections": [],
+  "scroll": {},
+  "scroll_to": {
+    "pane-0": {
+      "edge": "start",
+      "align": "visible"
+    }
+  },
+  "camera": {
+    "center_tile": [
+      -7,
+      11
+    ],
+    "zoom": 1.0
+  },
+  "new_game": null
+}

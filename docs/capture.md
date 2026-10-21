@@ -1,7 +1,9 @@
 # Capture the main menu in a requested language
 
 Issue #2 added capture of the current screen; issue #9 adds setting the language
-before launch. There is still no navigation (Stage 2), detection or model call.
+before launch. This page describes the retained ordinary-APK single-screen mode.
+For the Stage 2 hook manifest, see [stage2-capture.md](stage2-capture.md).
+Neither capture mode makes detector or model calls.
 Use the existing Stage 0 environment from [environment.md](environment.md).
 
 ## Run

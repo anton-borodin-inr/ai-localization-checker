@@ -1,0 +1,17 @@
+{
+  "device_save_name": "issue-40-belgrade-metissue-8-pair",
+  "base_save": "issue-8-pair",
+  "base_sha256": "9d2a4cd5e1de2b2ae9102a2e6e6d15210e32ae5188c895f84e8a3a6ce19c3b4e",
+  "candidate_sha256": "2cf381aa7bf544961a302989c027045572b8d7036ab1840b01bc3ee4409c551e",
+  "bytes": 119029,
+  "turn": 1,
+  "console_command": "diplomacy meet the-ottomans belgrade",
+  "created_with_versionCode": 1271002,
+  "creation_route": "Resume (Autosave bytes equal issue-8-pair), developer console, command, dismiss first-contact popup, Save Game under a new name",
+  "original_save_unchanged": true,
+  "gold_after_contact": 30,
+  "known_belgrade": true,
+  "game_actions": "No turn advancement, unit movement, construction purchase or policy adoption. Standard first-contact effects retained.",
+  "accepted_for": "city-state-diplomacy only; Anton approved in issue #41 chat on 2026-10-21",
+  "base_provenance": "Anton manually founded Istanbul and saved issue-8-pair during issue #8; recovered byte-for-byte from the verified issue #40 external app-data backup."
+}

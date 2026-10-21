@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "save": "issue-8-pair",
+  "selection": {},
+  "tab": null,
+  "expanded_sections": [
+    "Tradition",
+    "Liberty",
+    "Honor",
+    "Piety",
+    "Patronage"
+  ],
+  "scroll": {},
+  "scroll_to": {
+    "policy-tree": {
+      "edge": "start",
+      "align": "visible"
+    },
+    "description": {
+      "edge": "start",
+      "align": "visible"
+    }
+  },
+  "camera": null,
+  "new_game": null
+}

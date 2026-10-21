@@ -1,0 +1,100 @@
+{
+  "status": "independently_verified",
+  "fixture_commit": "383a13f",
+  "summary_sha256": "e077a8c04e81063dd9ff5405a1bd5608943c58c473d9136aa1cf8d182a586364",
+  "manifest_sha256": "442813d4b81cca8ce7434c9d731e1a85049ce82b28b33b25c2e488ebf6a5e06f",
+  "request_count": 4,
+  "languages_outer_loop": true,
+  "passes": [
+    "forward-single-screen",
+    "reverse-single-screen"
+  ],
+  "order_dependence_evidence": "original ten-screen forward/reverse run; targeted one-screen repeat does not retest order dependence",
+  "records": [
+    {
+      "pass": 1,
+      "language": "en",
+      "screen": "new-game",
+      "request": "i41-a301f5477db44a1bb1766e8ccb5aac39",
+      "png": "pass-1/new-game__en__2400x1080__clean__1271045.png",
+      "png_sha256": "a90dd2f03cb381e544bed78bf0c5ccbe14e5a4e9372bb5d2341e131c0e590761",
+      "rgba_sha256": "6a55e03a066ee3dc1bc646a2c859f89ff67efd128ef19f9729afc8813e4ff453",
+      "panes": [
+        "pane-0",
+        "pane-1",
+        "pane-2",
+        "pane-3",
+        "pane-4"
+      ]
+    },
+    {
+      "pass": 1,
+      "language": "de",
+      "screen": "new-game",
+      "request": "i41-8303b84c2ff5426f87170f20b48007a4",
+      "png": "pass-1/new-game__de__2400x1080__clean__1271045.png",
+      "png_sha256": "3bed668eaf308cf4f079659f1fd714f46d1b05039e776b5445b28187feeed87d",
+      "rgba_sha256": "a76cc99bce4d1192fed293d14a9d969d9a66ea6d52f09a2b5bff0d03e15bb246",
+      "panes": [
+        "pane-0",
+        "pane-1",
+        "pane-2",
+        "pane-3",
+        "pane-4"
+      ]
+    },
+    {
+      "pass": 2,
+      "language": "en",
+      "screen": "new-game",
+      "request": "i41-6eda271c16a343fea1c482cb1cd129b6",
+      "png": "pass-2/new-game__en__2400x1080__clean__1271045.png",
+      "png_sha256": "a90dd2f03cb381e544bed78bf0c5ccbe14e5a4e9372bb5d2341e131c0e590761",
+      "rgba_sha256": "6a55e03a066ee3dc1bc646a2c859f89ff67efd128ef19f9729afc8813e4ff453",
+      "panes": [
+        "pane-0",
+        "pane-1",
+        "pane-2",
+        "pane-3",
+        "pane-4"
+      ]
+    },
+    {
+      "pass": 2,
+      "language": "de",
+      "screen": "new-game",
+      "request": "i41-7880bf3da5ca4b7b81bf995ad2b34f33",
+      "png": "pass-2/new-game__de__2400x1080__clean__1271045.png",
+      "png_sha256": "3bed668eaf308cf4f079659f1fd714f46d1b05039e776b5445b28187feeed87d",
+      "rgba_sha256": "a76cc99bce4d1192fed293d14a9d969d9a66ea6d52f09a2b5bff0d03e15bb246",
+      "panes": [
+        "pane-0",
+        "pane-1",
+        "pane-2",
+        "pane-3",
+        "pane-4"
+      ]
+    }
+  ],
+  "comparisons": [
+    {
+      "screen": "new-game",
+      "language": "en",
+      "total_pixels": 2592000,
+      "different_pixels": 0,
+      "different_share": 0.0,
+      "bounding_box": null
+    },
+    {
+      "screen": "new-game",
+      "language": "de",
+      "total_pixels": 2592000,
+      "different_pixels": 0,
+      "different_share": 0.0,
+      "bounding_box": null
+    }
+  ],
+  "app_data_writes": 5,
+  "templates_changed_after_approval": false,
+  "english_state_overrides_needed": []
+}
