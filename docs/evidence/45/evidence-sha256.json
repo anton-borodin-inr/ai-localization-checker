@@ -344,13 +344,13 @@
     },
     {
       "path": "changed-files.txt",
-      "bytes": 23037,
-      "sha256": "512e6c8a4cdaf6e534711fa27b0440f93e9bcddc5afef47370b8151ee282be8f"
+      "bytes": 23179,
+      "sha256": "b18ad336251ef76f5eb468961ca057b21ee0e346b43f2bb4702795be91e24cdb"
     },
     {
       "path": "checks.json",
-      "bytes": 860,
-      "sha256": "a2da726351e9e1a2feb4644ff94a474847837b63e35e66d224dd6e0350740765"
+      "bytes": 1178,
+      "sha256": "02303598beb664721f1081dde4f1e78567aa46e910ba0d22f50c10b6f7d03c7d"
     },
     {
       "path": "clean-runs.json",
@@ -359,8 +359,8 @@
     },
     {
       "path": "device-operation-summary.json",
-      "bytes": 14728,
-      "sha256": "9a8b365aae540cf0413df883a4e9f311f3d30ef16d3792548b35b3965fe4de2d"
+      "bytes": 14955,
+      "sha256": "3c545a0b0bbf939babbf021809f2995a4489fb69ddc292b599dd74b72c2447fd"
     },
     {
       "path": "device-plans/clean.json",
@@ -454,8 +454,13 @@
     },
     {
       "path": "evidence-reconciliation.json",
-      "bytes": 638,
-      "sha256": "aaefc00ad80c3a57615791cbc6044770748a1a1f83c53f737019066017ca46ca"
+      "bytes": 637,
+      "sha256": "85037d6fa16299f2d071bc17a1e12e53257bd199c955be73073c6adac752c678"
+    },
+    {
+      "path": "final-device-verification.json",
+      "bytes": 1127,
+      "sha256": "5bd2afc48fc5bf526a35a5dd0fb9486255616603314e3c5dcfc817611ec64669"
     },
     {
       "path": "frozen-contract.json",
@@ -513,6 +518,11 @@
       "sha256": "7c101e770db6b4548cd3c730ce9d964cfbbd8a15e7ebab50ffbf7dd100f1a3bf"
     },
     {
+      "path": "install-audits/restore-original.json",
+      "bytes": 1462,
+      "sha256": "42f0a4690d0a35967650c29b032e3d542387556ed5a01c3251ad43622477e1a8"
+    },
+    {
       "path": "install-audits/small-text-tech.json",
       "bytes": 1509,
       "sha256": "bc1a3fc6169d3bf4f1447e32c16da375d5abacfa736a23dfe2e79df4dee07a05"
@@ -564,8 +574,8 @@
     },
     {
       "path": "progress.md",
-      "bytes": 434,
-      "sha256": "b7537bc65d7a43d77a4a3c147a1cabef6374dec9aecc9a334c2731a49bafb7f1"
+      "bytes": 376,
+      "sha256": "625c0f28cf975fe8f9c47516c142f40dd4a994a340746a501fcec6f26963a217"
     },
     {
       "path": "prompt.txt",
@@ -586,6 +596,11 @@
       "path": "pytest-final.txt",
       "bytes": 1712,
       "sha256": "2072610c6acf37c51730f662cdf57519ef9c814238ff0ae2629907a7816cd2b6"
+    },
+    {
+      "path": "pytest-hook-device.txt",
+      "bytes": 99,
+      "sha256": "69a64f90438bb79a463550c420fa9189fd06b69ef27ce40ddda7adfe66728f99"
     },
     {
       "path": "recipes/README.md",
@@ -634,8 +649,8 @@
     },
     {
       "path": "report.md",
-      "bytes": 24598,
-      "sha256": "46078218e8b35a026eee6b5316c4c9de83506f3154d8c1722d2d8fe55c0dd6f6"
+      "bytes": 25185,
+      "sha256": "c3bd87b00b59da72aeb30cbe03a3a999cb1b79a0b317c8cd340619099b4c575b"
     },
     {
       "path": "run-records/20261021T185946Z-c21c92/cli.txt",

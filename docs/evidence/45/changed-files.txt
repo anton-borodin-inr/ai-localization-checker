@@ -91,6 +91,7 @@ docs/evidence/45/device-plans/wrong-language-fallback.json
 docs/evidence/45/device-plans/wrong-language-foreign.json
 docs/evidence/45/evidence-reconciliation.json
 docs/evidence/45/evidence-sha256.json
+docs/evidence/45/final-device-verification.json
 docs/evidence/45/frozen-contract.json
 docs/evidence/45/gallery.html
 docs/evidence/45/inputs/settings/de.json
@@ -102,6 +103,7 @@ docs/evidence/45/install-audits/overflow-turns.json
 docs/evidence/45/install-audits/overflow-worker.json
 docs/evidence/45/install-audits/placeholder-city.json
 docs/evidence/45/install-audits/placeholder-tech.json
+docs/evidence/45/install-audits/restore-original.json
 docs/evidence/45/install-audits/small-text-tech.json
 docs/evidence/45/install-audits/truncation-mining.json
 docs/evidence/45/install-audits/wrong-language-fallback.json
@@ -117,6 +119,7 @@ docs/evidence/45/prompt.txt
 docs/evidence/45/prompt_sent.txt
 docs/evidence/45/pytest-checkpoint.txt
 docs/evidence/45/pytest-final.txt
+docs/evidence/45/pytest-hook-device.txt
 docs/evidence/45/recipes/README.md
 docs/evidence/45/recipes/build_probes.py.txt
 docs/evidence/45/recipes/export_evidence.py.txt

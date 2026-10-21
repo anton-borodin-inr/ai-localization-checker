@@ -366,6 +366,13 @@
       "plan_sha256": "aa04378eef5d075516b85daefa7dc47bc23352637e367d45efb57c113bb1439b"
     },
     {
+      "variant": "restore-original",
+      "from": "1271458",
+      "to": "1271045",
+      "status": "installed_and_verified",
+      "plan_sha256": "7957b727639e90a26116db7044568e48ecae97d05238269937fe392ad7f4d7db"
+    },
+    {
       "variant": "small-text-tech",
       "from": "1271457",
       "to": "1271458",
@@ -394,5 +401,5 @@
       "plan_sha256": "1116b8dd0bd5013a88b097d2f607ce0f7db8b1b366107ebda7dfea912de28e35"
     }
   ],
-  "final_restoration_verified": false
+  "final_restoration_verified": true
 }

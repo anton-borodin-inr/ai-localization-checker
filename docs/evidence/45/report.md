@@ -2,7 +2,7 @@
 
 **Limitations and outstanding work:** this is exploration on two dev screens, not a labeled evaluation or a detector-quality/baseline comparison. Two counter-overflow runs are `not_checked` because the model reports partial readability. The model also returns findings for visibly complete/native text and misses other reproduced mechanisms. No prompt/schema or mutation was retuned after the results. The class definitions below need Anton's edits/acceptance and independent review; no Accepted decision is changed.
 
-**Device restoration pending:** 1271458 is installed, original settings are restored, and all saves are verified unchanged. The emulator is still occupied by #45. Separate restoration/smoke approval is pending.
+**Device restored and free:** original hook APK 1271045 is installed and independently hash-verified. The existing D-038 hook device test passed. Original settings bytes/stat and all saves match the pre-task backup before and after the test. The app is stopped and the same AVD remains running. See [final verification](final-device-verification.json).
 
 ## What changed
 
@@ -46,7 +46,7 @@
 - Clean controls and probes belong to the same task session, with a documented emulator restart between controls and probes. Anton approved restarting the existing AVD without wipe, snapshot load/save or reset, plus standard cutout preparation. APK/settings/saves were verified against backup after reboot before the first successful probe install.
 - [Evidence reconciliation](evidence-reconciliation.json) independently checks 19 PNG hashes against capture/run metadata, matching READY, exactly two runs per PNG, original local run metadata versus committed copies, every frozen prompt/sent hash and exact ledger usage/cost totals. No live provider call is made by this check.
 - Final offline suite after task helper changes: `PYTHONPATH=src .venv/bin/python -m pytest -q`: **1455 passed, 2 skipped**, exit 0 ([output](pytest-final.txt)). The two default skips require --run-device. Ruff check and format check: exit 0, 84 files already formatted. The existing main-menu device test changes settings outside the approved blocks and was not run; task-specific captures provide direct device evidence.
-- Final original-build install and read-only hook smoke remain pending the separate device gate.
+- After restoration, `tests/test_hook_device.py` with `--run-device` passed: **1 passed**, exit 0 ([output](pytest-hook-device.txt)). It launches only tech-picker through D-038 under original settings, then stops the app. Before/after verification confirms original APK hash, byte-identical settings/stat and all four save files unchanged. Original APK SHA-256 `16b6e07eaa8f7ca35b71f361f0bdcceb7015987b60e796d15d2f3b53bb61af1a`; settings SHA-256 `7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7`, stat `10196:10196:600:873`.
 
 ## Deviations from the task
 

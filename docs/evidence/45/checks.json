@@ -4,7 +4,7 @@
     "exit_code": 0,
     "passed": 1455,
     "skipped": 2,
-    "skip_reason": "Generic device tests require --run-device; main-menu test writes settings outside approved blocks. Existing hook test is deferred to the original-build restoration gate.",
+    "skip_reason": "Default device marker skips two tests. The existing hook test was subsequently run separately on restored 1271045; main-menu device test was not run because it writes settings outside approved blocks.",
     "output": "pytest-final.txt"
   },
   "ruff_check": {
@@ -24,5 +24,13 @@
   "scope_audit": {
     "checker_protected_areas_unchanged": true,
     "all_eight_fork_commits_translation_only_against_base": true
+  },
+  "hook_device_test": {
+    "command": "PYTHONPATH=src .venv/bin/python -m pytest --run-device tests/test_hook_device.py -q",
+    "exit_code": 0,
+    "passed": 1,
+    "duration_seconds": 12.32,
+    "output": "pytest-hook-device.txt",
+    "before_after_original_data_verified": true
   }
 }
