@@ -1,0 +1,354 @@
+[
+  {
+    "pair": "city-production__de",
+    "draws": 42,
+    "unknown_owner": 0,
+    "primary": 12,
+    "diagnostic": 30,
+    "empty_text": 1,
+    "warnings": {
+      "source_unavailable": 33,
+      "partial_glyph_requires_human_review": 1,
+      "clipped_top": 1,
+      "icon_glyph:a4": 2,
+      "icon_glyph:2699": 5,
+      "icon_glyph:23f3": 5,
+      "markup_input": 1,
+      "icon_glyph:27a1": 1
+    }
+  },
+  {
+    "pair": "city-production__en",
+    "draws": 42,
+    "unknown_owner": 0,
+    "primary": 12,
+    "diagnostic": 30,
+    "empty_text": 1,
+    "warnings": {
+      "source_unavailable": 41,
+      "partial_glyph_requires_human_review": 1,
+      "clipped_top": 1,
+      "icon_glyph:a4": 2,
+      "icon_glyph:2699": 5,
+      "icon_glyph:23f3": 5,
+      "markup_input": 1,
+      "icon_glyph:27a1": 1
+    }
+  },
+  {
+    "pair": "city-state-diplomacy__de",
+    "draws": 17,
+    "unknown_owner": 0,
+    "primary": 14,
+    "diagnostic": 3,
+    "empty_text": 0,
+    "warnings": {
+      "source_unavailable": 2,
+      "markup_input": 2,
+      "icon_glyph:e23e": 1,
+      "icon_glyph:e0c9": 1,
+      "icon_glyph:e1c6": 1
+    }
+  },
+  {
+    "pair": "city-state-diplomacy__en",
+    "draws": 17,
+    "unknown_owner": 0,
+    "primary": 14,
+    "diagnostic": 3,
+    "empty_text": 0,
+    "warnings": {
+      "source_unavailable": 15,
+      "markup_input": 2,
+      "icon_glyph:e23e": 1,
+      "icon_glyph:e0c9": 1,
+      "icon_glyph:e1c6": 1
+    }
+  },
+  {
+    "pair": "civilopedia__de",
+    "draws": 28,
+    "unknown_owner": 0,
+    "primary": 15,
+    "diagnostic": 2,
+    "empty_text": 1,
+    "warnings": {
+      "partial_glyph_requires_human_review": 2,
+      "clipped_right": 1,
+      "clipped_bottom": 11,
+      "clipped_top": 1
+    }
+  },
+  {
+    "pair": "civilopedia__en",
+    "draws": 29,
+    "unknown_owner": 0,
+    "primary": 16,
+    "diagnostic": 6,
+    "empty_text": 2,
+    "warnings": {
+      "source_unavailable": 29,
+      "partial_glyph_requires_human_review": 3,
+      "clipped_right": 1,
+      "clipped_bottom": 11,
+      "clipped_top": 1
+    }
+  },
+  {
+    "pair": "empire-stats__de",
+    "draws": 54,
+    "unknown_owner": 0,
+    "primary": 31,
+    "diagnostic": 23,
+    "empty_text": 0,
+    "warnings": {
+      "icon_glyph:2323": 1,
+      "source_unavailable": 18,
+      "icon_glyph:a4": 1,
+      "icon_glyph:237e": 1,
+      "icon_glyph:266a": 1,
+      "icon_glyph:262e": 1
+    }
+  },
+  {
+    "pair": "empire-stats__en",
+    "draws": 54,
+    "unknown_owner": 0,
+    "primary": 31,
+    "diagnostic": 23,
+    "empty_text": 0,
+    "warnings": {
+      "source_unavailable": 54,
+      "icon_glyph:2323": 1,
+      "icon_glyph:a4": 1,
+      "icon_glyph:237e": 1,
+      "icon_glyph:266a": 1,
+      "icon_glyph:262e": 1
+    }
+  },
+  {
+    "pair": "new-game__de",
+    "draws": 61,
+    "unknown_owner": 0,
+    "primary": 38,
+    "diagnostic": 14,
+    "empty_text": 3,
+    "warnings": {
+      "source_unavailable": 11,
+      "icon_glyph:270f": 1,
+      "partial_glyph_requires_human_review": 3,
+      "clipped_bottom": 12
+    }
+  },
+  {
+    "pair": "new-game__en",
+    "draws": 61,
+    "unknown_owner": 0,
+    "primary": 38,
+    "diagnostic": 14,
+    "empty_text": 3,
+    "warnings": {
+      "source_unavailable": 52,
+      "icon_glyph:270f": 1,
+      "partial_glyph_requires_human_review": 3,
+      "clipped_bottom": 12
+    }
+  },
+  {
+    "pair": "options-gameplay__de",
+    "draws": 34,
+    "unknown_owner": 0,
+    "primary": 23,
+    "diagnostic": 11,
+    "empty_text": 0,
+    "warnings": {
+      "source_unavailable": 9,
+      "partial_glyph_requires_human_review": 1,
+      "clipped_right": 1
+    }
+  },
+  {
+    "pair": "options-gameplay__en",
+    "draws": 35,
+    "unknown_owner": 0,
+    "primary": 24,
+    "diagnostic": 10,
+    "empty_text": 0,
+    "warnings": {
+      "source_unavailable": 35,
+      "clipped_right": 1
+    }
+  },
+  {
+    "pair": "policy-picker__de",
+    "draws": 26,
+    "unknown_owner": 0,
+    "primary": 17,
+    "diagnostic": 36,
+    "empty_text": 0,
+    "warnings": {
+      "source_unavailable": 15,
+      "icon_glyph:2323": 1,
+      "icon_glyph:2699": 1,
+      "icon_glyph:2042": 1,
+      "icon_glyph:a4": 2,
+      "icon_glyph:237e": 2,
+      "icon_glyph:266a": 2,
+      "icon_glyph:e113": 1,
+      "icon_glyph:262e": 5,
+      "partial_glyph_requires_human_review": 5,
+      "clipped_bottom": 9,
+      "icon_glyph:e27e": 2,
+      "icon_glyph:e278": 2,
+      "markup_input": 4,
+      "icon_glyph:e115": 1,
+      "icon_glyph:e284": 2,
+      "icon_glyph:e110": 1,
+      "icon_glyph:e111": 1,
+      "icon_glyph:e260": 1,
+      "icon_glyph:e18b": 1,
+      "icon_glyph:e112": 1
+    }
+  },
+  {
+    "pair": "policy-picker__en",
+    "draws": 26,
+    "unknown_owner": 0,
+    "primary": 17,
+    "diagnostic": 36,
+    "empty_text": 0,
+    "warnings": {
+      "source_unavailable": 26,
+      "icon_glyph:2323": 1,
+      "icon_glyph:2699": 1,
+      "icon_glyph:2042": 1,
+      "icon_glyph:a4": 2,
+      "icon_glyph:237e": 2,
+      "icon_glyph:266a": 2,
+      "icon_glyph:e113": 1,
+      "icon_glyph:262e": 5,
+      "partial_glyph_requires_human_review": 5,
+      "clipped_bottom": 9,
+      "icon_glyph:e27e": 2,
+      "icon_glyph:e278": 2,
+      "markup_input": 4,
+      "icon_glyph:e115": 1,
+      "icon_glyph:e284": 2,
+      "icon_glyph:e110": 1,
+      "icon_glyph:e111": 1,
+      "icon_glyph:e260": 1,
+      "icon_glyph:e18b": 1,
+      "icon_glyph:e112": 1
+    }
+  },
+  {
+    "pair": "tech-picker__de",
+    "draws": 33,
+    "unknown_owner": 0,
+    "primary": 14,
+    "diagnostic": 21,
+    "empty_text": 4,
+    "warnings": {
+      "source_unavailable": 32,
+      "partial_glyph_requires_human_review": 5,
+      "clipped_top": 4,
+      "icon_glyph:23f3": 15,
+      "icon_glyph:e0a6": 1,
+      "icon_glyph:2020": 1,
+      "icon_glyph:2021": 1,
+      "icon_glyph:e029": 1,
+      "icon_glyph:266a": 1,
+      "icon_glyph:2042": 1,
+      "icon_glyph:e1ae": 2,
+      "clipped_bottom": 1
+    }
+  },
+  {
+    "pair": "tech-picker__en",
+    "draws": 33,
+    "unknown_owner": 0,
+    "primary": 14,
+    "diagnostic": 21,
+    "empty_text": 4,
+    "warnings": {
+      "source_unavailable": 33,
+      "partial_glyph_requires_human_review": 5,
+      "clipped_top": 4,
+      "icon_glyph:23f3": 15,
+      "icon_glyph:e0a6": 1,
+      "icon_glyph:2020": 1,
+      "icon_glyph:2021": 1,
+      "icon_glyph:e029": 1,
+      "icon_glyph:266a": 1,
+      "icon_glyph:2042": 1,
+      "icon_glyph:e1ae": 2,
+      "clipped_bottom": 1
+    }
+  },
+  {
+    "pair": "victory-status__de",
+    "draws": 32,
+    "unknown_owner": 0,
+    "primary": 23,
+    "diagnostic": 4,
+    "empty_text": 1,
+    "warnings": {
+      "partial_glyph_requires_human_review": 4,
+      "clipped_right": 3,
+      "clipped_bottom": 6
+    }
+  },
+  {
+    "pair": "victory-status__en",
+    "draws": 32,
+    "unknown_owner": 0,
+    "primary": 26,
+    "diagnostic": 1,
+    "empty_text": 1,
+    "warnings": {
+      "source_unavailable": 32,
+      "partial_glyph_requires_human_review": 1,
+      "clipped_bottom": 6
+    }
+  },
+  {
+    "pair": "world__de",
+    "draws": 33,
+    "unknown_owner": 0,
+    "primary": 13,
+    "diagnostic": 20,
+    "empty_text": 0,
+    "warnings": {
+      "icon_glyph:2020": 2,
+      "source_unavailable": 23,
+      "icon_glyph:23f3": 2,
+      "icon_glyph:27a1": 1,
+      "icon_glyph:2699": 1,
+      "icon_glyph:2042": 1,
+      "icon_glyph:e28d": 1,
+      "icon_glyph:e1a9": 1,
+      "icon_glyph:e0a2": 1,
+      "icon_glyph:e209": 1
+    }
+  },
+  {
+    "pair": "world__en",
+    "draws": 33,
+    "unknown_owner": 0,
+    "primary": 13,
+    "diagnostic": 20,
+    "empty_text": 0,
+    "warnings": {
+      "icon_glyph:2020": 2,
+      "source_unavailable": 32,
+      "icon_glyph:23f3": 2,
+      "icon_glyph:27a1": 1,
+      "icon_glyph:2699": 1,
+      "icon_glyph:2042": 1,
+      "icon_glyph:e28d": 1,
+      "icon_glyph:e1a9": 1,
+      "icon_glyph:e0a2": 1,
+      "icon_glyph:e209": 1
+    }
+  }
+]

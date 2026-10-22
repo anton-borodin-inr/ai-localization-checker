@@ -1,5 +1,7 @@
 # Engine text candidates (issue 47)
 
+Latest runtime evidence: [1271048 device attempt 2](evidence/47/device-attempt-2/report.md) captured 40 pairs; repeat PNG/dump checks and lifecycle checks passed, but strict equality with 1271045 failed on Tech Picker. Twenty candidates remain unconfirmed. The emulator is free; any further device operation needs its own exact plan. Historical offline/device-gate descriptions below are retained as requirements and checkpoint context.
+
 This is an offline candidate/review workflow. Engine output is not an approved
 reference, a detector or a defect label. D-038 remains Accepted for protocol v1;
 the additive v2 contract and candidate rules are Proposed as D-0XX below.

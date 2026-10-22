@@ -1,0 +1,23 @@
+{
+  "source": "Actual 1271048 PNG/dump candidates in IAB, served on loopback port 8849",
+  "pages": [
+    {
+      "screen": "victory-status",
+      "language": "de",
+      "clip_boxes_toggled": true,
+      "screenshot": "issue-47-victory-review-preview.png",
+      "screenshot_sha256": "3a4ded6270769072114ece6058784f6fc852ac806b2763370028e4677025f2c7"
+    },
+    {
+      "screen": "civilopedia",
+      "language": "de",
+      "screenshot": "issue-47-civilopedia-review-preview.png",
+      "screenshot_sha256": "48ac15cb3ce3bca78f597c54b4e4f3d5d159acddeb65af92dda88f11a7e71b7f"
+    }
+  ],
+  "review_timer_started": false,
+  "Anton_ack_checked": false,
+  "confirmation_exported": false,
+  "reference_approval": false,
+  "observed": "Glyph overlay aligns with the displayed text in sampled page views; clipped candidates remain diagnostic. This is agent visual UI QA, not Anton confirmation or full completeness proof."
+}

@@ -1,3 +1,5 @@
+> Latest device update (2026-10-22): [1271048 attempt 2](device-attempt-2/report.md) captured all 40 pairs and passed repeat/lifecycle checks, but the strict 1271045 comparison failed on Tech Picker. Original data was verified restored; emulator free. Twenty candidates remain unconfirmed.
+
 > Runtime update (2026-10-22): the original 1271047 device attempt failed; original settings/saves were verified restored. See [device-attempt-1/report.md](device-attempt-1/report.md) and [replacement-host/report.md](replacement-host/report.md) for the host-tested 1271048 replacement, which still needs separate device approval. The original offline checkpoint below is historical.
 
 # Issue 47 Report — offline phase

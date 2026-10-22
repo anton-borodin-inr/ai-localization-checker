@@ -1,0 +1,74 @@
+[
+  {
+    "check": "primer-1",
+    "interval_min_seconds": 2,
+    "sf_latency_identical": true,
+    "sf_latency_valid_nonzero_rows": 127,
+    "gfxinfo_total_frames": [
+      [
+        "3",
+        "3"
+      ],
+      [
+        "3",
+        "3"
+      ]
+    ],
+    "gfxinfo_totals_identical": true,
+    "interpretation": "No additional layer frame presentation observed in this sample; counters are not continuous long-duration proof."
+  },
+  {
+    "check": "primer-2",
+    "interval_min_seconds": 2,
+    "sf_latency_identical": true,
+    "sf_latency_valid_nonzero_rows": 127,
+    "gfxinfo_total_frames": [
+      [
+        "3",
+        "3"
+      ],
+      [
+        "3",
+        "3"
+      ]
+    ],
+    "gfxinfo_totals_identical": true,
+    "interpretation": "No additional layer frame presentation observed in this sample; counters are not continuous long-duration proof."
+  },
+  {
+    "check": "cold-supersession",
+    "interval_min_seconds": 2,
+    "sf_latency_identical": true,
+    "sf_latency_valid_nonzero_rows": 127,
+    "gfxinfo_total_frames": [
+      [
+        "3",
+        "3"
+      ],
+      [
+        "3",
+        "3"
+      ]
+    ],
+    "gfxinfo_totals_identical": true,
+    "interpretation": "No additional layer frame presentation observed in this sample; counters are not continuous long-duration proof."
+  },
+  {
+    "check": "warm-supersession",
+    "interval_min_seconds": 2,
+    "sf_latency_identical": true,
+    "sf_latency_valid_nonzero_rows": 127,
+    "gfxinfo_total_frames": [
+      [
+        "3",
+        "3"
+      ],
+      [
+        "3",
+        "3"
+      ]
+    ],
+    "gfxinfo_totals_identical": true,
+    "interpretation": "No additional layer frame presentation observed in this sample; counters are not continuous long-duration proof."
+  }
+]

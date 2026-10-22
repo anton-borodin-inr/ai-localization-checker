@@ -1,0 +1,33 @@
+{
+  "sha256": {
+    "against-1271045.json": "bd314a18fea3f3d723cc7756552b4a5d6bd2fc9241c111791344a810e220882c",
+    "authorization.json": "e896820803fa7768d45b25b77213d57579cbd20c0f195390fe05388b72f3ee05",
+    "before-legacy-preservation.json": "82c97248147fe9481c2c5dde294c9352d8c1222488ac763aeb518ee4d55b00e6",
+    "candidate-diagnostics.json": "2169092b70c391e1fae42da54410964d2b8a548aafa91dc817c0d0da2f45a291",
+    "capture-device-plan.json": "56d4738ede3e9a0427459125855358533d4fb8a9cf7d79b090f89681e44cf9bb",
+    "capture-exit.json": "98253085ab5f51cf7c071cff18af88b51544656e5b89959ceb83bc79456d09fb",
+    "capture-summary.json": "24d748f1334eaf925c8a939ea72da0d8292e72968e22524c14356838e8c96b4e",
+    "capture.txt": "521f7d96c6209dabee6ba1e772c915376bb360e060c861c08c5b3092f6dec756",
+    "execution-ledger.json": "b8f5cb18d603554db47bf3787955fb9030b46360779f8dcea4d3305238c3717d",
+    "final-preservation.json": "bed564b3f7441587f48b520752d0697ea5d883296b938ec66b16e844f86ad717",
+    "freeze-analysis.json": "54a90ed763ba757caf8ddb8ab2cb3f2bff375db5e24d514ad6be4cfe4ffe3ccc",
+    "install-result.json": "7a1832e7c3b181b2cde6449b6258c94b153261555d50294b5f0e25fd16a9bee6",
+    "issue-47-device-plan-2.json": "b5b78e4262618b992330cd16c1638b413a58a8dd085536eb801c7c9561de62f8",
+    "issue-47-device-plan-2.md": "85d7af76f7a944ee5513d10f3d36c50d8056905d63a04158c0359c5106482355",
+    "legacy-device-test.json": "6e7b77fc25d2648dc75fa8bd8ce00e43fe605eacbe1d4c71abb9d3bd91a882b8",
+    "legacy-device-test.txt": "ec69c469352d44663c942f6c51f9787c45f534068f0af980bbca4d2f2679f577",
+    "lifecycle-result.json": "555df93ea7740f46109576b95887dccc8f1058471bd6f7549a983b62bf140a57",
+    "ordinary-visual-inspection.json": "e68bf47d9b9c5f2a911b84e5a3f181d81e7351c6a32c7979f922a17390760055",
+    "postinstall-verification.json": "e738a402241b34cb1bc836157eecfa2712ed29d500e9792d0dbb31c09d483aa6",
+    "primer-result.json": "fc00ac81143be4139b9b55ca1c52559b305fe9bf006ce2ab9520262dff67d112",
+    "report.md": "d60ae8b3bbb414082a7b3c5e298e7e271e884b5d4358d2cea5e426bbb61fe788",
+    "review-hashes.json": "bc08b9dadd1a7f94329827f7b3228cca9cfd445dc1e72e4599ee0ef7f78eb737",
+    "tech-picker-pixel-deltas.json": "4ddba996bdf5e5954fc04201d5429c7d184c23348c845411311f924c6b70b0d3",
+    "real-review-ui-smoke.json": "56c93620b2bc096d10f9254cde5acbdbe7039089d1aace98192da8d3826fff86"
+  },
+  "excluded": "private settings/save backups; full public PNG/dump runs are kept in task outputs",
+  "device_acceptance": "incomplete: strict old-build pixel comparison failed",
+  "confirmed_references": 0,
+  "provider_requests": 0,
+  "spend_usd": 0
+}

@@ -1,0 +1,18 @@
+{
+  "command": [
+    "env",
+    "PYTHONPATH=src",
+    "uv",
+    "run",
+    "--offline",
+    "--cache-dir",
+    "/private/tmp/issue47-uv-cache",
+    "pytest",
+    "--run-device",
+    "tests/test_capture_device.py",
+    "-q",
+    "-rs"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 17.913995125098154
+}
