@@ -1,0 +1,9 @@
+{
+  "approved_by": "Anton",
+  "user_reply": "Согласовано",
+  "plan_id": "i47-control-86938c3fd2a64844b96330d477918a25",
+  "plan_sha256": "4d8b08cef5077e62551813fe4e55678f352ab6a2ad4be15fd720c23fbf32828a",
+  "runner_sha256": "13db065b92a307b6b83ecbc59a149b65128afcc5083d072bb54083cc97e4f51f",
+  "recorded_utc": "2026-10-22T14:35:36.554756+00:00",
+  "scope": "Exact plan 4: two pinned data-preserving APK updates, two v1 Tech Picker controls, preservation checks and one conditional settings recovery; no retries or provider calls."
+}
