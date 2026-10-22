@@ -1,0 +1,40 @@
+{
+  "all_match": true,
+  "artifacts": [
+    {
+      "path": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/Unciv/build/issue47-evidence/Unciv-1271047-debug.apk",
+      "sha256": "ecd8c424dc09500f32edd075df71903ab64f6ba9c7ba985bc536e80f21e2c438",
+      "matches_retained_provenance": true
+    },
+    {
+      "path": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/Unciv/build/issue47-evidence/host-draw-sample.texts.json",
+      "sha256": "dc4269e8827703c5f9e443c6e52d222a165618413a0acc6b039bb972589f2c80",
+      "matches_retained_provenance": true
+    },
+    {
+      "path": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/Unciv/build/issue47-evidence/sample.texts.json",
+      "sha256": "e649419796a921d14e9c272282830b4bc09ce5cfb7d727724c494343f340685d",
+      "matches_retained_provenance": true
+    },
+    {
+      "path": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/Unciv/build/issue47-evidence/host-verification.json",
+      "sha256": "0d7c5314706fd821b83269cb2b50d201a87e92a28bfcc48f5e35db318432daa3",
+      "matches_retained_provenance": true
+    },
+    {
+      "path": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/Unciv/build/issue47-fix-evidence/Unciv-1271048-debug.apk",
+      "sha256": "91d9a900f8204880e590de7fb90f0fc15e2aa5cf5d94a3ae77364497d7b0541e",
+      "matches_retained_provenance": true
+    },
+    {
+      "path": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/Unciv/build/issue47-fix-evidence/host-draw-sample.texts.json",
+      "sha256": "c6193bbdc368dc67899608f681409214e46d46e0ac5e8db4bb7b78f2d670ea95",
+      "matches_retained_provenance": true
+    },
+    {
+      "path": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/Unciv/build/issue47-fix-evidence/sample.texts.json",
+      "sha256": "fe7355848948e69c3a67e0dcaa74ed6e5f66c938a9113884fab430c02fc1fcf7",
+      "matches_retained_provenance": true
+    }
+  ]
+}

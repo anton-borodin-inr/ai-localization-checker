@@ -1,0 +1,33 @@
+{
+  "fork_evidence_hashes_verified": true,
+  "compressed_logs": {
+    "cache-ab.log": {
+      "uncompressed_sha256": "fab8edf2d9b9e022108e05a795e7aff3e97bb4f0fed3641fdb1421090a5104c4",
+      "gzip_sha256": "677832246350b5db14ecbf31c6eb040d54f67e47ea53978432f9adcefb2ae227"
+    },
+    "cache-ab-attempt-1.log": {
+      "uncompressed_sha256": "cef59294abdb16fc3626bfef715bbc5f364acf3c14d94690cfd628db8329d850",
+      "gzip_sha256": "5b4a33cf9e36f729cb1da29ff040d3c3ff492f848d4ca5003a858b75bc9b4729"
+    },
+    "cache-ab-attempt-2.log": {
+      "uncompressed_sha256": "3ead68f3dc08039f4e2361f56fce8fd03add551cae61710117a208082ac506bc",
+      "gzip_sha256": "db2d83f270b1cdca70332905e9f081d253e2f26ec5fa71f61beed44b7e1c7728"
+    }
+  },
+  "files": {
+    "affected-glyphs.json": "15a337e118f6afea956def054b201d54a3cc671de7feaaf2da6ba8497f976cd6",
+    "artifact-preservation.json": "cac47462fa73d03980a514e296e02054d04379ded2d747ef5ec4efee52d061ef",
+    "cache-ab-attempt-1.log.gz": "5b4a33cf9e36f729cb1da29ff040d3c3ff492f848d4ca5003a858b75bc9b4729",
+    "cache-ab-attempt-2.log.gz": "db2d83f270b1cdca70332905e9f081d253e2f26ec5fa71f61beed44b7e1c7728",
+    "cache-ab-result.json": "bcaff5fce2f5aae9dcc71d60db6adb87fe5fef82d4a0878907b877704954abf4",
+    "cache-ab.log.gz": "677832246350b5db14ecbf31c6eb040d54f67e47ea53978432f9adcefb2ae227",
+    "diagnosis.json": "d64fc172e240b6f82ffc6ff83bc5f1b063397ad050ffb624ceeac170ceb02226",
+    "pixel-comparisons.jsonl": "7d828813a8b9982444df009e9d81e03c4ef884358c65b95feab895b30b2626f4",
+    "png-metadata.json": "dbba2a1e6d4cc590c4d82831e4531600b9f70ff2530b0d5fd4e03f1f68e50e4b",
+    "replay-inputs.json": "4d2dcc4b023f05e6877ae69f8200a653763fbd7a7e4c14779b2e8b3bee9ff518",
+    "report.md": "66eb0ba957f48af17ffc5b5c4b186681d131d08aa72c61bc6f703f219c3d5e13",
+    "source-audit.json": "b20e810ce35ff52f55d3215efe55b13a93ad935e4f3870b4bcaf6129402540cc"
+  },
+  "helper_source_location": "Separate fork build/issue47-pixel-evidence; full diagnostic archive in task outputs",
+  "parent_inspection": "Read final report, strict pixel comparisons, source audit, cache result/log and all recorded hashes; parent did not rerun fork harness or Gradle"
+}

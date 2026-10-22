@@ -1,0 +1,152 @@
+[
+  {
+    "language": "en",
+    "text": "Writing",
+    "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/47:Table/0:TechButton/1:Actor/1:Label/draw-0"
+  },
+  {
+    "language": "en",
+    "text": "Drama and Poetry",
+    "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/49:Table/0:TechButton/1:Actor/1:Label/draw-0"
+  },
+  {
+    "language": "en",
+    "text": "Animal Husbandry",
+    "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/82:Table/0:TechButton/1:Actor/1:Label/draw-0"
+  },
+  {
+    "language": "en",
+    "text": "Trapping",
+    "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/83:Table/0:TechButton/1:Actor/1:Label/draw-0"
+  },
+  {
+    "language": "en",
+    "text": "Horseback Riding",
+    "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/84:Table/0:TechButton/1:Actor/1:Label/draw-0"
+  },
+  {
+    "language": "en",
+    "text": "Archery",
+    "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/118:Table/0:TechButton/1:Actor/1:Label/draw-0"
+  },
+  {
+    "language": "en",
+    "text": "The Wheel",
+    "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/119:Table/0:TechButton/1:Actor/1:Label/draw-0"
+  },
+  {
+    "language": "en",
+    "text": "Mathematics",
+    "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/120:Table/0:TechButton/1:Actor/1:Label/draw-0"
+  },
+  {
+    "language": "en",
+    "text": "Currency",
+    "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/121:Table/0:TechButton/1:Actor/1:Label/draw-0"
+  },
+  {
+    "language": "en",
+    "text": "Engineering",
+    "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/139:Table/0:TechButton/1:Actor/1:Label/draw-0"
+  },
+  {
+    "language": "en",
+    "text": "Mining",
+    "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/154:Table/0:TechButton/1:Actor/1:Label/draw-0"
+  },
+  {
+    "language": "en",
+    "text": "Masonry",
+    "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/155:Table/0:TechButton/1:Actor/1:Label/draw-0"
+  },
+  {
+    "language": "en",
+    "text": "Construction",
+    "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/156:Table/0:TechButton/1:Actor/1:Label/draw-0"
+  },
+  {
+    "language": "en",
+    "text": "Bronze Working",
+    "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/173:Table/0:TechButton/1:Actor/1:Label/draw-0"
+  },
+  {
+    "language": "en",
+    "text": "Iron Working",
+    "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/175:Table/0:TechButton/1:Actor/1:Label/draw-0"
+  },
+  {
+    "language": "de",
+    "text": "Schrift",
+    "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/47:Table/0:TechButton/1:Actor/1:Label/draw-0"
+  },
+  {
+    "language": "de",
+    "text": "Drama und Lyrik",
+    "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/49:Table/0:TechButton/1:Actor/1:Label/draw-0"
+  },
+  {
+    "language": "de",
+    "text": "Tierhaltung",
+    "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/82:Table/0:TechButton/1:Actor/1:Label/draw-0"
+  },
+  {
+    "language": "de",
+    "text": "Fallenstellen",
+    "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/83:Table/0:TechButton/1:Actor/1:Label/draw-0"
+  },
+  {
+    "language": "de",
+    "text": "Reiten",
+    "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/84:Table/0:TechButton/1:Actor/1:Label/draw-0"
+  },
+  {
+    "language": "de",
+    "text": "Bogenschießen",
+    "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/118:Table/0:TechButton/1:Actor/1:Label/draw-0"
+  },
+  {
+    "language": "de",
+    "text": "Das Rad",
+    "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/119:Table/0:TechButton/1:Actor/1:Label/draw-0"
+  },
+  {
+    "language": "de",
+    "text": "Mathematik",
+    "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/120:Table/0:TechButton/1:Actor/1:Label/draw-0"
+  },
+  {
+    "language": "de",
+    "text": "Währung",
+    "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/121:Table/0:TechButton/1:Actor/1:Label/draw-0"
+  },
+  {
+    "language": "de",
+    "text": "Ingenieurswesen",
+    "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/139:Table/0:TechButton/1:Actor/1:Label/draw-0"
+  },
+  {
+    "language": "de",
+    "text": "Bergbau",
+    "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/154:Table/0:TechButton/1:Actor/1:Label/draw-0"
+  },
+  {
+    "language": "de",
+    "text": "Mauerarbeiten",
+    "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/155:Table/0:TechButton/1:Actor/1:Label/draw-0"
+  },
+  {
+    "language": "de",
+    "text": "Baukunst",
+    "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/156:Table/0:TechButton/1:Actor/1:Label/draw-0"
+  },
+  {
+    "language": "de",
+    "text": "Bronzebearbeitung",
+    "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/173:Table/0:TechButton/1:Actor/1:Label/draw-0"
+  },
+  {
+    "language": "de",
+    "text": "Eisenbearbeitung",
+    "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/175:Table/0:TechButton/1:Actor/1:Label/draw-0"
+  }
+]

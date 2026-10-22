@@ -1,0 +1,106 @@
+[
+  {
+    "file": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/checker/data/issue-47/capture-approved-2/pass-1/tech-picker__en__2400x1080__clean__1271048.png",
+    "sha256": "10da72efbf69aea770b366a838bfff46080858d68065091536801c5f7f8620de",
+    "chunks_except_IDAT": [
+      {
+        "type": "IHDR",
+        "length": 13,
+        "data_hex": "00000960000004380806000000"
+      },
+      {
+        "type": "sRGB",
+        "length": 1,
+        "data_hex": "00"
+      },
+      {
+        "type": "sBIT",
+        "length": 4,
+        "data_hex": "08080808"
+      },
+      {
+        "type": "IEND",
+        "length": 0,
+        "data_hex": ""
+      }
+    ]
+  },
+  {
+    "file": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/checker/data/issue-47/reference-1271045-effective/pass-1/tech-picker__en__2400x1080__clean__1271045.png",
+    "sha256": "d225bc7d71de675dd621a5e6cdfb6bd2e7e92c383c16bcd2ccdfa000190b2c56",
+    "chunks_except_IDAT": [
+      {
+        "type": "IHDR",
+        "length": 13,
+        "data_hex": "00000960000004380806000000"
+      },
+      {
+        "type": "sRGB",
+        "length": 1,
+        "data_hex": "00"
+      },
+      {
+        "type": "sBIT",
+        "length": 4,
+        "data_hex": "08080808"
+      },
+      {
+        "type": "IEND",
+        "length": 0,
+        "data_hex": ""
+      }
+    ]
+  },
+  {
+    "file": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/checker/data/issue-47/capture-approved-2/pass-1/tech-picker__de__2400x1080__clean__1271048.png",
+    "sha256": "386641974edb33edae4f38e4b186fb4cd1d684730e3fc43adfd35052e52a63c3",
+    "chunks_except_IDAT": [
+      {
+        "type": "IHDR",
+        "length": 13,
+        "data_hex": "00000960000004380806000000"
+      },
+      {
+        "type": "sRGB",
+        "length": 1,
+        "data_hex": "00"
+      },
+      {
+        "type": "sBIT",
+        "length": 4,
+        "data_hex": "08080808"
+      },
+      {
+        "type": "IEND",
+        "length": 0,
+        "data_hex": ""
+      }
+    ]
+  },
+  {
+    "file": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/checker/data/issue-47/reference-1271045-effective/pass-1/tech-picker__de__2400x1080__clean__1271045.png",
+    "sha256": "37789ea25484d22c3b14f97dba3520c3fbd5dd87667ba5db9e1ba3daaf6ee4f0",
+    "chunks_except_IDAT": [
+      {
+        "type": "IHDR",
+        "length": 13,
+        "data_hex": "00000960000004380806000000"
+      },
+      {
+        "type": "sRGB",
+        "length": 1,
+        "data_hex": "00"
+      },
+      {
+        "type": "sBIT",
+        "length": 4,
+        "data_hex": "08080808"
+      },
+      {
+        "type": "IEND",
+        "length": 0,
+        "data_hex": ""
+      }
+    ]
+  }
+]

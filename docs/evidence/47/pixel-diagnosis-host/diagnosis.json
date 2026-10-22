@@ -1,0 +1,58 @@
+{
+  "date": "2026-10-22",
+  "scope": "fork-only host diagnosis",
+  "conclusion": "root cause not demonstrated; no speculative production change",
+  "strict_pixel_acceptance": "failed",
+  "commit": "b534a8ae67c390412984869c7a03b168d532c36c",
+  "branch": "feat/47-engine-text-dump",
+  "tracked_worktree_clean": true,
+  "version_code": 1271048,
+  "new_apk_created": false,
+  "new_commit_created": false,
+  "reference_comparisons": {
+    "count": 40,
+    "exact": 36,
+    "differing_tech_picker": 4
+  },
+  "repeat_comparisons": {
+    "count": 20,
+    "exact": 20
+  },
+  "tech_picker_deltas": {
+    "en": {
+      "pixels_per_pass": 40,
+      "exclusive_bbox": [
+        751,
+        469,
+        768,
+        484
+      ],
+      "max_absolute_channel_delta": 1
+    },
+    "de": {
+      "pixels_per_pass": 72,
+      "exclusive_bbox": [
+        214,
+        239,
+        237,
+        258
+      ],
+      "max_absolute_channel_delta": 2
+    }
+  },
+  "cache_ab": {
+    "status": "passed",
+    "runs": 8,
+    "limit": "synthetic glyphs, mocked GL/Batch, one atlas page; historical APK and Android GPU not executed"
+  },
+  "retained_artifacts_preserved": true,
+  "device_commands_this_followup": 0,
+  "provider_requests_this_followup": 0,
+  "checker_edits": 0,
+  "push_performed": false,
+  "pull_request_created": false,
+  "full_build_test_lint_rerun": false,
+  "next_experiment": "proposed same-1271048 German cold v1 -> warm v2, cold v2 -> warm v1; four fresh tokens, four PNGs, two v2 dumps; separate exact-operation approval required",
+  "next_experiment_authorized_by_this_handoff": false,
+  "handoff": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/fork-pixel-handoff.md"
+}

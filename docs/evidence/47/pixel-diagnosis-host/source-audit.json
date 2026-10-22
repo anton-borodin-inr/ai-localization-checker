@@ -1,0 +1,60 @@
+{
+  "base_commit": "877b0dc2ee706dbbdb4a17e14b4522408d197390",
+  "current_commit": "b534a8ae67c390412984869c7a03b168d532c36c",
+  "paths": [
+    {
+      "path": "core/src/com/unciv/ui/components/fonts/MipmappedFontTexture.kt",
+      "base_sha256": "35601a08dd4cf8a0b6b2fed694f462076cc3220bdb07504a6112600c47a6824c",
+      "current_sha256": "35601a08dd4cf8a0b6b2fed694f462076cc3220bdb07504a6112600c47a6824c",
+      "unchanged": true
+    },
+    {
+      "path": "core/src/com/unciv/ui/screens/basescreen/FontLodBiasBatch.kt",
+      "base_sha256": "1315f936c80aedebcab8797f59078f90a4ccc972b66d8fdeb81fa3e39036a0e6",
+      "current_sha256": "1315f936c80aedebcab8797f59078f90a4ccc972b66d8fdeb81fa3e39036a0e6",
+      "unchanged": true
+    },
+    {
+      "path": "core/src/com/unciv/ui/screens/basescreen/TextureArraySpriteBatch.java",
+      "base_sha256": "4c7ea117908f5b081215e523a72945135a2c49acb8f0aa10b873218ff2dde0a7",
+      "current_sha256": "4c7ea117908f5b081215e523a72945135a2c49acb8f0aa10b873218ff2dde0a7",
+      "unchanged": true
+    },
+    {
+      "path": "android/src/com/unciv/app/AndroidFont.kt",
+      "base_sha256": "53db924bb736b181519cc6c65a3a838a2d7b052d2e3b8358667e7165443451cf",
+      "current_sha256": "53db924bb736b181519cc6c65a3a838a2d7b052d2e3b8358667e7165443451cf",
+      "unchanged": true
+    },
+    {
+      "path": "core/src/com/unciv/ui/screens/pickerscreens/TechButton.kt",
+      "base_sha256": "4a1056bf4f8f13d12adb39e9ba6c17bb65701bbdc42f0cc0804a7485b08d3b81",
+      "current_sha256": "4a1056bf4f8f13d12adb39e9ba6c17bb65701bbdc42f0cc0804a7485b08d3b81",
+      "unchanged": true
+    },
+    {
+      "path": "core/src/com/unciv/ui/screens/pickerscreens/TechPickerScreen.kt",
+      "base_sha256": "88295bd45ea0c51967a0e2f01f7d6600bfc639d4eca3b4970dea416c961e0a1d",
+      "current_sha256": "88295bd45ea0c51967a0e2f01f7d6600bfc639d4eca3b4970dea416c961e0a1d",
+      "unchanged": true
+    },
+    {
+      "path": "core/src/com/unciv/ui/components/fonts/NativeBitmapFontData.kt",
+      "base_sha256": "21ac238cd5a0f2776538bc52548c8772d7b1923f34c3dce8cb02e5ce5ad30d44",
+      "current_sha256": "cf46c3bbbb7b94b183239cfd6c46b98364cdc10aae2a3827a9100dd4bd7ca98d",
+      "unchanged": false
+    },
+    {
+      "path": "core/src/com/unciv/ui/components/fonts/FontImplementation.kt",
+      "base_sha256": "bf232e06ee1863697b9c1c55edd9084bcbf85809bea5da07dd2aeda4ee8d4387",
+      "current_sha256": "9831823c47fac4a6c7b7616c86156d5a33fc3a2c5c5f8faf06a2b7d34d8bcd93",
+      "unchanged": false
+    },
+    {
+      "path": "core/src/com/unciv/l10n/L10nScreenHook.kt",
+      "base_sha256": "fe515cffef62d3cc6f6a62dc065f3f18a60e4cb8a402820448cc459d6e5daf1c",
+      "current_sha256": "36f865645a376270d8da7ed915a85e5c696d0fcec2b78fd86d71e7fac0e20511",
+      "unchanged": false
+    }
+  ]
+}
