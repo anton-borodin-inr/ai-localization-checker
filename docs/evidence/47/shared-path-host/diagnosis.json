@@ -1,0 +1,76 @@
+{
+  "date": "2026-10-22",
+  "scope": "fork-only host shared-path diagnosis",
+  "source_base": "877b0dc2ee706dbbdb4a17e14b4522408d197390",
+  "commit": "b534a8ae67c390412984869c7a03b168d532c36c",
+  "branch": "feat/47-engine-text-dump",
+  "version_code": 1271048,
+  "tracked_worktree_clean": true,
+  "new_production_change": false,
+  "new_commit": false,
+  "new_apk": false,
+  "new_version_allocation": false,
+  "actual_android_delta_cause_proven": false,
+  "strict_pixel_acceptance": "still failed",
+  "phase3_scope": "reported German v1/v2 cold/warm paths identical; 8 screenshots each retain the 72-pixel delta",
+  "host_probe": {
+    "status": "passed",
+    "compile_exit": 0,
+    "run_exit": 0,
+    "abba_runs": 8,
+    "isolated_guard_cases": 6,
+    "conclusion": "loading draws can change glyph order, UVs and CPU atlas with deferred layout; already-validated control removes atlas/UV difference but not all mipmap-history difference",
+    "scope_limit": "synthetic font pixels, mocked ordinary screen/GL/Batch; no actual WorldScreen jobs, old APK execution or GPU pixels"
+  },
+  "source_findings": {
+    "pending_work_barrier_unchanged": true,
+    "loading_draw_suppression_changed": true,
+    "explicit_world_and_loading_snapshot_draws_retained": true,
+    "target_published_before_loading_clear_in_new_finally": true,
+    "blind_loading_return_revert_justified": false
+  },
+  "prior_evidence_hashes_preserved": 27,
+  "recommended_next_control": {
+    "status": "proposal only; separate exact-operation approval needed",
+    "original_apk_sha256": "16b6e07eaa8f7ca35b71f361f0bdcceb7015987b60e796d15d2f3b53bb61af1a",
+    "restore_apk_sha256": "91d9a900f8204880e590de7fb90f0fc15e2aa5cf5d94a3ae77364497d7b0541e",
+    "package_updates": 2,
+    "new_v1_requests": 2,
+    "png_paths": 4,
+    "v2_dumps": 0,
+    "regular_settings_or_save_writes_proposed": 0,
+    "purpose": "test exact saved 1271045 binary in current environment before attributing the delta to code"
+  },
+  "conditional_diagnostic_build": {
+    "status": "plan only; not implemented or version allocated",
+    "precondition": "binary-dependent difference reproduced by original-APK control",
+    "apk_count": 1,
+    "modes": [
+      "current loading, telemetry off control",
+      "current loading, telemetry on",
+      "owned loading draws with target-null/ownership/leave/terminal guards, telemetry on"
+    ],
+    "v1_cold_requests": 3,
+    "terminal_png_paths": 6,
+    "telemetry_json_paths": 2,
+    "cpu_atlas_png_slots_max": 4,
+    "v2_dumps": 0,
+    "required_telemetry": [
+      "frame/request/font-generation chronology",
+      "actual glyph creation order, raster hashes, placement and raw UV bits",
+      "CPU atlas hashes and affected final pages",
+      "actual uploads/dirty state/mipmap generation sequence",
+      "actual affected cache geometry/color/UV/matrices",
+      "actual batch flush/texture-slot/shader/LOD/framebuffer state"
+    ]
+  },
+  "device_commands_this_followup": 0,
+  "provider_or_api_requests_this_followup": 0,
+  "spend_usd": 0,
+  "checker_edits": 0,
+  "push": false,
+  "pull_request": false,
+  "outgoing_messages": false,
+  "full_test_build_lint_rerun": false,
+  "handoff": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/fork-shared-path-handoff.md"
+}

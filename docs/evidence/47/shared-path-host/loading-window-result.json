@@ -1,0 +1,162 @@
+{
+  "status": "passed",
+  "compile_exit": 0,
+  "run_exit": 0,
+  "runs": [
+    {
+      "legacyLoadingReturn": false,
+      "prevalidated": false,
+      "ordinaryDraws": 0,
+      "creationAfterLoading": "[ ]",
+      "creationFinal": "[ , S, c, h, r, i, f, t, D, a, m, u, n, d, L, y, k, T, e, l, g, F, s, R, B, o, \u00df, M, W, \u00e4, I, w, b, z, E]",
+      "finalPositionColor": "fff6579f9642a3784669eae2836a54d057a9cf8ccb2318788e4fd5a0186f04be",
+      "finalUv": "449a76ab4aaa0884ed440fdadcab32e148958661cc268c60b1e51f3e1848a28f",
+      "finalAtlasPixels": "c2fe321f56e43300dee6a976c718888d32135fbec209d218c48a0d93fe745bdc",
+      "finalGlyphPlacement": "T:0,658,16,1059356672,1041563648;i:0,16,761,1015021568,1063223296;e:0,96,463,1035993088,1058340864;r:0,16,612,1015021568,1060782080;h:0,16,463,1015021568,1058340864;a:0,212,16,1045692416,1041563648;l:0,724,16,1060438016,1041563648;t:0,147,16,1041432576,1041563648;u:0,349,16,1051623424,1041563648;n:0,415,16,1053786112,1041563648;g:0,781,16,1061371904,1041563648;",
+      "mipmapCalls": 12
+    },
+    {
+      "legacyLoadingReturn": true,
+      "prevalidated": false,
+      "ordinaryDraws": 3,
+      "creationAfterLoading": "[ , T, i, e, r, h, a, l, t, u, n, g]",
+      "creationFinal": "[ , T, i, e, r, h, a, l, t, u, n, g, S, c, f, D, m, d, L, y, k, F, s, R, B, o, \u00df, M, W, \u00e4, I, w, b, z, E]",
+      "finalPositionColor": "fff6579f9642a3784669eae2836a54d057a9cf8ccb2318788e4fd5a0186f04be",
+      "finalUv": "12e754e367b3c82d3d06410cb94445c16629bc0099c9b2aeb97473ec50b9b032",
+      "finalAtlasPixels": "dfe6454f8291aec2fc072f3293308036ce209e25f406558eefaae752aa43e82c",
+      "finalGlyphPlacement": "T:0,16,165,1015021568,1049952256;i:0,16,314,1015021568,1054834688;e:0,16,463,1015021568,1058340864;r:0,16,612,1015021568,1060782080;h:0,16,761,1015021568,1063223296;a:0,96,16,1035993088,1041563648;l:0,175,16,1043267584,1041563648;t:0,232,16,1047003136,1041563648;u:0,297,16,1049919488,1041563648;n:0,363,16,1052082176,1041563648;g:0,422,16,1054015488,1041563648;",
+      "mipmapCalls": 12
+    },
+    {
+      "legacyLoadingReturn": true,
+      "prevalidated": false,
+      "ordinaryDraws": 3,
+      "creationAfterLoading": "[ , T, i, e, r, h, a, l, t, u, n, g]",
+      "creationFinal": "[ , T, i, e, r, h, a, l, t, u, n, g, S, c, f, D, m, d, L, y, k, F, s, R, B, o, \u00df, M, W, \u00e4, I, w, b, z, E]",
+      "finalPositionColor": "fff6579f9642a3784669eae2836a54d057a9cf8ccb2318788e4fd5a0186f04be",
+      "finalUv": "12e754e367b3c82d3d06410cb94445c16629bc0099c9b2aeb97473ec50b9b032",
+      "finalAtlasPixels": "dfe6454f8291aec2fc072f3293308036ce209e25f406558eefaae752aa43e82c",
+      "finalGlyphPlacement": "T:0,16,165,1015021568,1049952256;i:0,16,314,1015021568,1054834688;e:0,16,463,1015021568,1058340864;r:0,16,612,1015021568,1060782080;h:0,16,761,1015021568,1063223296;a:0,96,16,1035993088,1041563648;l:0,175,16,1043267584,1041563648;t:0,232,16,1047003136,1041563648;u:0,297,16,1049919488,1041563648;n:0,363,16,1052082176,1041563648;g:0,422,16,1054015488,1041563648;",
+      "mipmapCalls": 12
+    },
+    {
+      "legacyLoadingReturn": false,
+      "prevalidated": false,
+      "ordinaryDraws": 0,
+      "creationAfterLoading": "[ ]",
+      "creationFinal": "[ , S, c, h, r, i, f, t, D, a, m, u, n, d, L, y, k, T, e, l, g, F, s, R, B, o, \u00df, M, W, \u00e4, I, w, b, z, E]",
+      "finalPositionColor": "fff6579f9642a3784669eae2836a54d057a9cf8ccb2318788e4fd5a0186f04be",
+      "finalUv": "449a76ab4aaa0884ed440fdadcab32e148958661cc268c60b1e51f3e1848a28f",
+      "finalAtlasPixels": "c2fe321f56e43300dee6a976c718888d32135fbec209d218c48a0d93fe745bdc",
+      "finalGlyphPlacement": "T:0,658,16,1059356672,1041563648;i:0,16,761,1015021568,1063223296;e:0,96,463,1035993088,1058340864;r:0,16,612,1015021568,1060782080;h:0,16,463,1015021568,1058340864;a:0,212,16,1045692416,1041563648;l:0,724,16,1060438016,1041563648;t:0,147,16,1041432576,1041563648;u:0,349,16,1051623424,1041563648;n:0,415,16,1053786112,1041563648;g:0,781,16,1061371904,1041563648;",
+      "mipmapCalls": 12
+    },
+    {
+      "legacyLoadingReturn": false,
+      "prevalidated": true,
+      "ordinaryDraws": 0,
+      "creationAfterLoading": "[ , T, i, e, r, h, a, l, t, u, n, g]",
+      "creationFinal": "[ , T, i, e, r, h, a, l, t, u, n, g, S, c, f, D, m, d, L, y, k, F, s, R, B, o, \u00df, M, W, \u00e4, I, w, b, z, E]",
+      "finalPositionColor": "fff6579f9642a3784669eae2836a54d057a9cf8ccb2318788e4fd5a0186f04be",
+      "finalUv": "12e754e367b3c82d3d06410cb94445c16629bc0099c9b2aeb97473ec50b9b032",
+      "finalAtlasPixels": "dfe6454f8291aec2fc072f3293308036ce209e25f406558eefaae752aa43e82c",
+      "finalGlyphPlacement": "T:0,16,165,1015021568,1049952256;i:0,16,314,1015021568,1054834688;e:0,16,463,1015021568,1058340864;r:0,16,612,1015021568,1060782080;h:0,16,761,1015021568,1063223296;a:0,96,16,1035993088,1041563648;l:0,175,16,1043267584,1041563648;t:0,232,16,1047003136,1041563648;u:0,297,16,1049919488,1041563648;n:0,363,16,1052082176,1041563648;g:0,422,16,1054015488,1041563648;",
+      "mipmapCalls": 11
+    },
+    {
+      "legacyLoadingReturn": true,
+      "prevalidated": true,
+      "ordinaryDraws": 3,
+      "creationAfterLoading": "[ , T, i, e, r, h, a, l, t, u, n, g]",
+      "creationFinal": "[ , T, i, e, r, h, a, l, t, u, n, g, S, c, f, D, m, d, L, y, k, F, s, R, B, o, \u00df, M, W, \u00e4, I, w, b, z, E]",
+      "finalPositionColor": "fff6579f9642a3784669eae2836a54d057a9cf8ccb2318788e4fd5a0186f04be",
+      "finalUv": "12e754e367b3c82d3d06410cb94445c16629bc0099c9b2aeb97473ec50b9b032",
+      "finalAtlasPixels": "dfe6454f8291aec2fc072f3293308036ce209e25f406558eefaae752aa43e82c",
+      "finalGlyphPlacement": "T:0,16,165,1015021568,1049952256;i:0,16,314,1015021568,1054834688;e:0,16,463,1015021568,1058340864;r:0,16,612,1015021568,1060782080;h:0,16,761,1015021568,1063223296;a:0,96,16,1035993088,1041563648;l:0,175,16,1043267584,1041563648;t:0,232,16,1047003136,1041563648;u:0,297,16,1049919488,1041563648;n:0,363,16,1052082176,1041563648;g:0,422,16,1054015488,1041563648;",
+      "mipmapCalls": 12
+    },
+    {
+      "legacyLoadingReturn": true,
+      "prevalidated": true,
+      "ordinaryDraws": 3,
+      "creationAfterLoading": "[ , T, i, e, r, h, a, l, t, u, n, g]",
+      "creationFinal": "[ , T, i, e, r, h, a, l, t, u, n, g, S, c, f, D, m, d, L, y, k, F, s, R, B, o, \u00df, M, W, \u00e4, I, w, b, z, E]",
+      "finalPositionColor": "fff6579f9642a3784669eae2836a54d057a9cf8ccb2318788e4fd5a0186f04be",
+      "finalUv": "12e754e367b3c82d3d06410cb94445c16629bc0099c9b2aeb97473ec50b9b032",
+      "finalAtlasPixels": "dfe6454f8291aec2fc072f3293308036ce209e25f406558eefaae752aa43e82c",
+      "finalGlyphPlacement": "T:0,16,165,1015021568,1049952256;i:0,16,314,1015021568,1054834688;e:0,16,463,1015021568,1058340864;r:0,16,612,1015021568,1060782080;h:0,16,761,1015021568,1063223296;a:0,96,16,1035993088,1041563648;l:0,175,16,1043267584,1041563648;t:0,232,16,1047003136,1041563648;u:0,297,16,1049919488,1041563648;n:0,363,16,1052082176,1041563648;g:0,422,16,1054015488,1041563648;",
+      "mipmapCalls": 12
+    },
+    {
+      "legacyLoadingReturn": false,
+      "prevalidated": true,
+      "ordinaryDraws": 0,
+      "creationAfterLoading": "[ , T, i, e, r, h, a, l, t, u, n, g]",
+      "creationFinal": "[ , T, i, e, r, h, a, l, t, u, n, g, S, c, f, D, m, d, L, y, k, F, s, R, B, o, \u00df, M, W, \u00e4, I, w, b, z, E]",
+      "finalPositionColor": "fff6579f9642a3784669eae2836a54d057a9cf8ccb2318788e4fd5a0186f04be",
+      "finalUv": "12e754e367b3c82d3d06410cb94445c16629bc0099c9b2aeb97473ec50b9b032",
+      "finalAtlasPixels": "dfe6454f8291aec2fc072f3293308036ce209e25f406558eefaae752aa43e82c",
+      "finalGlyphPlacement": "T:0,16,165,1015021568,1049952256;i:0,16,314,1015021568,1054834688;e:0,16,463,1015021568,1058340864;r:0,16,612,1015021568,1060782080;h:0,16,761,1015021568,1063223296;a:0,96,16,1035993088,1041563648;l:0,175,16,1043267584,1041563648;t:0,232,16,1047003136,1041563648;u:0,297,16,1049919488,1041563648;n:0,363,16,1052082176,1041563648;g:0,422,16,1054015488,1041563648;",
+      "mipmapCalls": 11
+    }
+  ],
+  "comparisons": [
+    {
+      "prevalidated": false,
+      "current_draws": 0,
+      "guarded_legacy_draws": 3,
+      "xy_color_identical": true,
+      "uv_identical": false,
+      "cpu_atlas_identical": false,
+      "current_mipmap_calls": 12,
+      "guarded_legacy_mipmap_calls": 12
+    },
+    {
+      "prevalidated": true,
+      "current_draws": 0,
+      "guarded_legacy_draws": 3,
+      "xy_color_identical": true,
+      "uv_identical": true,
+      "cpu_atlas_identical": true,
+      "current_mipmap_calls": 11,
+      "guarded_legacy_mipmap_calls": 12
+    }
+  ],
+  "guard_cases": [
+    {
+      "state": "owned",
+      "ordinary_draws": 1
+    },
+    {
+      "state": "superseded",
+      "ordinary_draws": 0
+    },
+    {
+      "state": "leave",
+      "ordinary_draws": 0
+    },
+    {
+      "state": "ready",
+      "ordinary_draws": 0
+    },
+    {
+      "state": "error",
+      "ordinary_draws": 0
+    },
+    {
+      "state": "target-before-finally",
+      "ordinary_draws": 0
+    }
+  ],
+  "mechanism_only": true,
+  "historical_android_delta_reproduced": false,
+  "modified_class": "L10nScreenHook.render return adjusted only in JVM memory by Byte Buddy Advice; class bytes restored before JVM exit",
+  "ordinary_screen": "mocked BaseScreen dispatching real libGDX Stage/Label layout",
+  "font": "current NativeBitmapFontData with deterministic synthetic Pixmaps; protocol-v1 trace disabled",
+  "limitations": [
+    "WorldScreen/LoadingScreen construction and actual background UI jobs not executed",
+    "Historical APK not executed",
+    "GL and Batch sink mocked, one font atlas page",
+    "No Android glyph rasterization, mipmap pixels or framebuffer result"
+  ]
+}

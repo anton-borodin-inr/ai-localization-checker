@@ -1,3 +1,5 @@
+Latest host findings: [shared-path mechanism probe](evidence/47/shared-path-host/report.md) demonstrates a possible loading/layout-to-atlas mechanism in a synthetic fixture, not the Android delta cause. Production source and APK remain unchanged. The proposed next control replays the exact retained 1271045 APK, then restores 1271048; its two package updates require separate exact-operation approval.
+
 Latest device follow-up: [same-APK v1/v2 diagnosis](evidence/47/device-attempt-3/report.md) completed four approved German Tech Picker launches on 1271048. All modes match the retained 1271048 pixels and preserve the same 72-pixel difference from 1271045. No settings/save writes or install occurred; original data is unchanged, app stopped, adbd shell, emulator free. Host-only investigation continues; strict acceptance and human confirmation remain pending.
 
 Host follow-up: [bounded pixel diagnosis](evidence/47/pixel-diagnosis-host/report.md) found no demonstrated cause or justified replacement APK. Synthetic cache A/B checks passed; a separately proposed same-APK v1/v2 device comparison awaits approval.

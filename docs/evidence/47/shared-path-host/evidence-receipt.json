@@ -1,0 +1,46 @@
+{
+  "fork_hashes_verified": true,
+  "compressed_logs": {
+    "loading-window.log": {
+      "uncompressed_sha256": "d73ad623ee3065845545fbf25595890f8f5b0f39167fe56c15c5706d6e6cece4",
+      "gzip_sha256": "9a4de47f3975fbe417ae2b35ba0e82fdb4e085d66bf3df2d65413381169cbdc4"
+    },
+    "loading-window-attempt-1.log": {
+      "uncompressed_sha256": "980286a9288098d7b086caf0c80174175748cfa56539ba04df5a9ef0e681b58c",
+      "gzip_sha256": "0470d8252b9729b4c2169a25e16f8a617f8c3184e5299a84cb0f1906e3ff9941"
+    },
+    "loading-window-unguarded-mechanism.log": {
+      "uncompressed_sha256": "5bfb5c50c08b500aff21604b14b0cdadaef62e9502e18034092b6667182947d9",
+      "gzip_sha256": "19e2dbbf7109055f597ca162bd64243d2ab61a35d23d5746c353cd427bcf5663"
+    },
+    "loading-window-ownership-only.log": {
+      "uncompressed_sha256": "96dda2771c8410151e87f69fccd5f572d98f68987c1019712ac84a82b8d5447d",
+      "gzip_sha256": "ec2cae27076df6fba1b9110682355fff3e23e05ece460215ab5c594ffe82a9af"
+    },
+    "original-apk-signing.txt": {
+      "uncompressed_sha256": "436231b6082eec90856aaf1e5005446dcfe2c50b4d5ce47329a1b66c4ee278d9",
+      "gzip_sha256": "33e4058a2ab384f2dd731683e06b1982d49038d55092ed20e3fa037d31269a25"
+    },
+    "original-apk-badging.txt": {
+      "uncompressed_sha256": "6e091438ccd767a382641f2a4d5ddd8237dd9d30b163ebb9217f90c0441fe6eb",
+      "gzip_sha256": "2d1649dddf785672c56ca9083e7cb10065c1eb37b66df70b9b1902e017483d10"
+    }
+  },
+  "files": {
+    "diagnosis.json": "5b83c9ec59cb23a3794f1c7627d2dad90a1f9e8d6007ef439a793a14bd45afe8",
+    "loading-window-attempt-1.log.gz": "0470d8252b9729b4c2169a25e16f8a617f8c3184e5299a84cb0f1906e3ff9941",
+    "loading-window-ownership-only.log.gz": "ec2cae27076df6fba1b9110682355fff3e23e05ece460215ab5c594ffe82a9af",
+    "loading-window-result.json": "edf7565ed90dd8fbb7a97f4d7833a4089e9932e1851ebbaeb7ed6cfec06c07b4",
+    "loading-window-unguarded-mechanism.log.gz": "19e2dbbf7109055f597ca162bd64243d2ab61a35d23d5746c353cd427bcf5663",
+    "loading-window.log.gz": "9a4de47f3975fbe417ae2b35ba0e82fdb4e085d66bf3df2d65413381169cbdc4",
+    "original-apk-badging.txt.gz": "2d1649dddf785672c56ca9083e7cb10065c1eb37b66df70b9b1902e017483d10",
+    "original-apk-signing.txt.gz": "33e4058a2ab384f2dd731683e06b1982d49038d55092ed20e3fa037d31269a25",
+    "original-apk.json": "d69a965e4c2c204e425481f393646e7005ffc162037a4015dcaf7f2d3c24a129",
+    "phase-3-inputs.json": "5307280d63f681b440d2fbd34377568114a710e1dad9bf468c1cd68b5bab9bfb",
+    "prior-evidence-preservation.json": "a587904271c247f2155b88e8025a4ec8ec7f75aa986d6088123b0fbebff2b9c6",
+    "report.md": "901b85b08144b6497148fd42b0e2e69746fcf990d136fbf03bf053b9a54976a4",
+    "shared-source-audit.json": "c41c33eb66edaf96c8d003b54f5b5522d2fb9841ef3e2db7bfe11de52c7bdf5a"
+  },
+  "parent_inspection": "Inspected final report, probe result, source audit and all recorded hashes; did not rerun fork harness/Gradle",
+  "helper_source": "Retained only in separate fork ignored build directory and task output archive; no Unciv implementation added to checker"
+}
