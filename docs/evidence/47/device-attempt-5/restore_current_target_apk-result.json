@@ -1,0 +1,15 @@
+{
+  "command": [
+    "/Users/antonborodin/Library/Android/sdk/platform-tools/adb",
+    "-s",
+    "emulator-5554",
+    "install",
+    "-r",
+    "-d",
+    "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/outputs/Unciv-1271048-debug.apk"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 0.1944901249371469,
+  "stdout": "Performing Streamed Install\nSuccess\n",
+  "stderr": ""
+}

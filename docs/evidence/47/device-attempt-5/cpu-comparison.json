@@ -1,0 +1,91 @@
+{
+  "projection_excludes": [
+    "seq",
+    "frame",
+    "phase",
+    "handle",
+    "shader_handle"
+  ],
+  "raw_sidecars_unchanged": true,
+  "limitation": "Selected CPU/batch inputs only; not all GPU mipmap texels, prior framebuffer content or final shader output",
+  "glyph-created": {
+    "equal": true,
+    "first_sha256": "419f08a67124c2f21c2299e86b45572ccd8fc99cb54fa11fc50846ee34fd5a83",
+    "second_sha256": "419f08a67124c2f21c2299e86b45572ccd8fc99cb54fa11fc50846ee34fd5a83",
+    "first_count": 91,
+    "second_count": 91,
+    "different_indices": []
+  },
+  "full-upload": {
+    "equal": true,
+    "first_sha256": "0973f752a9a2aaae89109519fb159d281eb4fbd49a9568b7dea259d4d55f61c0",
+    "second_sha256": "0973f752a9a2aaae89109519fb159d281eb4fbd49a9568b7dea259d4d55f61c0",
+    "first_count": 2,
+    "second_count": 2,
+    "different_indices": []
+  },
+  "sub-upload": {
+    "equal": true,
+    "first_sha256": "e263423c0568893eb19c59892e6582afb1ffd156968219a26dcd2dec7864a870",
+    "second_sha256": "e263423c0568893eb19c59892e6582afb1ffd156968219a26dcd2dec7864a870",
+    "first_count": 89,
+    "second_count": 89,
+    "different_indices": []
+  },
+  "generate-mipmaps": {
+    "equal": true,
+    "first_sha256": "6c94815d556f5f43a7a480bb2fccb64ee1b3966797d3d03b2e96d72fecf01517",
+    "second_sha256": "6c94815d556f5f43a7a480bb2fccb64ee1b3966797d3d03b2e96d72fecf01517",
+    "first_count": 3,
+    "second_count": 3,
+    "different_indices": []
+  },
+  "affected-cache": {
+    "equal": true,
+    "first_sha256": "f8632f9e6451835c3e5bfab30445fe7867a7b2d3f984a2dac587bb5da74e68c7",
+    "second_sha256": "f8632f9e6451835c3e5bfab30445fe7867a7b2d3f984a2dac587bb5da74e68c7",
+    "first_count": 2,
+    "second_count": 2,
+    "different_indices": []
+  },
+  "batch-flush": {
+    "equal": true,
+    "first_sha256": "268f06f0cbe1e4e368e84516ac62b713c5cce2d2474e01ebf427b37e6e377c2a",
+    "second_sha256": "268f06f0cbe1e4e368e84516ac62b713c5cce2d2474e01ebf427b37e6e377c2a",
+    "first_count": 14,
+    "second_count": 14,
+    "different_indices": []
+  },
+  "lod-bias": {
+    "equal": true,
+    "first_sha256": "805ed47b72f5ffca6aa1a581c971d2f45b8dc2c55ba87435899e536419c846ad",
+    "second_sha256": "805ed47b72f5ffca6aa1a581c971d2f45b8dc2c55ba87435899e536419c846ad",
+    "first_count": 14,
+    "second_count": 14,
+    "different_indices": []
+  },
+  "atlas-checkpoint": {
+    "equal": true,
+    "first_sha256": "586270e713178058dc6f94ca2829d37b017c11c8e22e589cbd4da3de0ff4c493",
+    "second_sha256": "586270e713178058dc6f94ca2829d37b017c11c8e22e589cbd4da3de0ff4c493",
+    "first_count": 3,
+    "second_count": 3,
+    "different_indices": []
+  },
+  "cpu_atlas_pages": {
+    "equal": true,
+    "first_sha256": "6aaaccf522439268a3cecbf20c8c801002d9dd7f9a33a840fc003c11a97d1aa0",
+    "second_sha256": "6aaaccf522439268a3cecbf20c8c801002d9dd7f9a33a840fc003c11a97d1aa0",
+    "first_count": 1,
+    "second_count": 1,
+    "different_indices": []
+  },
+  "glyph_upload_mipmap_timeline": {
+    "equal": true,
+    "first_sha256": "abeef07460fcf998e2d400a27fb81a9a9505722f54536e7a7b27c5fec28787dc",
+    "second_sha256": "abeef07460fcf998e2d400a27fb81a9a9505722f54536e7a7b27c5fec28787dc",
+    "first_count": 185,
+    "second_count": 185,
+    "different_indices": []
+  }
+}

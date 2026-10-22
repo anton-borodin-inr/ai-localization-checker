@@ -1,0 +1,594 @@
+"""Proposed plan 5. SDK access requires the future exact approval receipt."""
+
+import base64
+import copy
+import json
+import re
+import shlex
+import subprocess
+import sys
+import time
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[2]
+CHECKER = ROOT / "work/checker"
+OUT = ROOT / "work/device-execution-5"
+sys.path.insert(0, str(CHECKER / "src"))
+from controller import control_flow
+from diagnostic_readback import validate_sidecar
+from l10n_checker.capture import SETTINGS_PATH, Device, png_size
+from l10n_checker.hook import EVENT, Logcat, wait_terminal
+from l10n_checker.screen_capture import (
+    backup_device,
+    check_build,
+    read_saves,
+    save_inventory,
+)
+from l10n_checker.screen_manifest import Build, Inputs, digest
+from l10n_checker.text_dump import rgba_digest
+
+PLAN_SHA = "301b207483112563fda281da03181f31440a4e7b867a631e19541eefed87aa15"
+DIAG = re.compile(
+    r"\bL10N_SCREEN_DIAGNOSTICS ([A-Za-z0-9._-]+) request=([A-Za-z0-9._-]+) file=(\S+) sha256=([0-9a-f]{64}) complete=(true|false) mode=([a-z-]+)$"
+)
+
+
+class AuditDevice(Device):
+    def __init__(self, *args):
+        super().__init__(*args)
+        self.commands = []
+
+    def run(self, *args, **kwargs):
+        row = {"arguments": list(args), "started_monotonic": time.monotonic()}
+        self.commands.append(row)
+        try:
+            data = super().run(*args, **kwargs)
+            row.update(status="returned", size_bytes=len(data), sha256=digest(data))
+            return data
+        except BaseException as exc:
+            row.update(status="failed", exception=type(exc).__name__)
+            raise
+        finally:
+            row["finished_monotonic"] = time.monotonic()
+            (OUT / "commands.json").write_text(
+                json.dumps(self.commands, indent=2) + "\n"
+            )
+
+
+class Collect:
+    def __init__(self, log, lines):
+        self.log, self.lines = log, lines
+
+    def next_line(self, deadline):
+        line = self.log.next_line(deadline)
+        self.lines.append(line)
+        return line
+
+
+class Operations:
+    def __init__(self, plan, original, target_inputs, diagnostic_inputs):
+        self.p, self.original = plan, original
+        self.target_inputs, self.diagnostic_inputs = target_inputs, diagnostic_inputs
+        self.rows, self.data_checks, self.outputs = [], [], {}
+        self.source_verified = False
+        self.d = AuditDevice(
+            Path(plan["requests"][0]["command"][0]), plan["device"]["serial"]
+        )
+
+    def hook_inventory(self):
+        return {
+            row["file"]: digest(
+                self.d.run("exec-out", "run-as", "com.unciv.app", "cat", row["file"])
+            )
+            for row in self.p["existing_hook_outputs_to_verify"]
+        }
+
+    def diagnostic_inventory(self):
+        found = {}
+        for path in self.p["diagnostic_paths_to_verify"]:
+            command = f"if [ -e {shlex.quote(path)} ]; then printf present; else printf absent; fi"
+            status = self.d.run(
+                "exec-out", "run-as", "com.unciv.app", "sh", "-c", command
+            )
+            assert status in (b"present", b"absent"), (
+                "Invalid exact-path existence readback"
+            )
+            if status == b"present":
+                found[path] = digest(
+                    self.d.run("exec-out", "run-as", "com.unciv.app", "cat", path)
+                )
+        return found
+
+    def data_check(self, label, backup=False):
+        d = self.d
+        try:
+            d.root()
+            d.force_stop()
+            if backup:
+                folder = CHECKER / "data/issue-47/diagnostic-5-preflight"
+                folder.mkdir(exist_ok=False)
+                snap = backup_device(d, self.target_inputs, folder)
+                data, stat, saves = snap["original"], snap["stat"], snap["saves"]
+            else:
+                data, stat = d.read_file(SETTINGS_PATH), d.stat(SETTINGS_PATH)
+                saves = save_inventory(read_saves(d))
+            hooks, diagnostics = self.hook_inventory(), self.diagnostic_inventory()
+            row = {
+                "phase": label,
+                "settings_sha256": digest(data),
+                "settings_stat": stat,
+                "saves": saves,
+                "hook_files": hooks,
+                "diagnostic_files": diagnostics,
+            }
+            self.data_checks.append(row)
+            (OUT / "data-checks.json").write_text(
+                json.dumps(self.data_checks, indent=2) + "\n"
+            )
+            assert (
+                data == self.original
+                and stat == self.p["settings"]["settings_stat_uid_gid_mode_size"]
+            ), "Original settings pin changed"
+            assert saves == self.p["saves"], "Save changed; no overwrite authorized"
+            assert hooks == {
+                r["file"]: r["sha256"]
+                for r in self.p["existing_hook_outputs_to_verify"]
+            }, "Prior hook output changed; no overwrite authorized"
+            assert diagnostics == self.outputs, (
+                "Unexpected, premature, temporary or changed diagnostic file; no cleanup authorized"
+            )
+        finally:
+            d.unroot()
+
+    def preflight(self):
+        d = self.d
+        assert (
+            check_build(d, self.target_inputs)["apk_sha256"]
+            == self.p["source_installed"]["apk_sha256"]
+        )
+        assert d.shell("getprop", "ro.build.version.sdk").strip() == "34"
+        assert d.shell("getprop", "ro.product.cpu.abi").strip() == "arm64-v8a"
+        assert d.run("emu", "avd", "name").decode().splitlines()[0] == "unciv_api34"
+        self.source_verified = True
+        self.data_check("preflight", backup=True)
+
+    def install(self, index):
+        operation = self.p["install_operations"][index]
+        name = operation["name"]
+        marker = OUT / f"{name}-started.json"
+        assert not marker.exists(), "No install retry"
+        self.d.force_stop()
+        marker.write_text(
+            json.dumps(
+                {"command": operation["command"], "started_epoch": time.time()},
+                indent=2,
+            )
+            + "\n"
+        )
+        started = time.monotonic()
+        try:
+            r = subprocess.run(
+                operation["command"], check=False, capture_output=True, timeout=120
+            )
+            (OUT / f"{name}-stdout.txt").write_bytes(r.stdout)
+            (OUT / f"{name}-stderr.txt").write_bytes(r.stderr)
+            row = {
+                "command": operation["command"],
+                "exit_code": r.returncode,
+                "elapsed_seconds": time.monotonic() - started,
+                "stdout": r.stdout.decode(errors="replace"),
+                "stderr": r.stderr.decode(errors="replace"),
+            }
+            (OUT / f"{name}-result.json").write_text(json.dumps(row, indent=2) + "\n")
+            assert r.returncode == 0 and "Success" in row["stdout"], (
+                "PackageManager update failed; no retry"
+            )
+        except subprocess.TimeoutExpired:
+            (OUT / f"{name}-result.json").write_text(
+                json.dumps(
+                    {
+                        "command": operation["command"],
+                        "status": "timeout",
+                        "elapsed_seconds": time.monotonic() - started,
+                    },
+                    indent=2,
+                )
+                + "\n"
+            )
+            raise
+
+    def install_diagnostic(self):
+        self.install(0)
+
+    def install_target(self):
+        self.install(1)
+
+    def verify_diagnostic(self):
+        observed = check_build(self.d, self.diagnostic_inputs)
+        (OUT / "diagnostic-build.json").write_text(
+            json.dumps(observed, indent=2) + "\n"
+        )
+        self.data_check("after-diagnostic-update")
+
+    def verify_target(self):
+        observed = check_build(self.d, self.target_inputs)
+        (OUT / "restored-build.json").write_text(json.dumps(observed, indent=2) + "\n")
+        self.data_check("after-target-restore")
+
+    def capture(self, index):
+        request = self.p["requests"][index]
+        d = self.d
+        d.check_cutout()
+        assert d.build() == self.p["diagnostic_build"]["version_code"]
+        d.force_stop()
+        row = {
+            "check": request["check"],
+            "request": request["request"],
+            "mode": request["diagnostic_mode"],
+            "lines": [],
+            "images": [],
+        }
+        self.rows.append(row)
+        try:
+            with Logcat(d) as log:
+                reader = Collect(log, row["lines"])
+                started = time.monotonic()
+                row["am_start"] = d.run(*request["command"][3:]).decode(
+                    errors="replace"
+                )
+                assert (
+                    "Starting: Intent" in row["am_start"]
+                    and "Error:" not in row["am_start"]
+                )
+                state = json.loads(
+                    base64.b64decode(
+                        request["command"][
+                            request["command"].index("l10n_state_b64") + 1
+                        ]
+                    )
+                )
+                row["readiness"] = wait_terminal(
+                    reader,
+                    "tech-picker",
+                    request["request"],
+                    set(state["scroll"]) | set(state["scroll_to"]),
+                    started + self.p["timeout_seconds_per_request"],
+                    1,
+                )
+                row["terminal_elapsed_seconds"] = time.monotonic() - started
+                assert "com.unciv.app" in d.foreground()
+                for n, name in enumerate(request["host_png_files"]):
+                    if n:
+                        time.sleep(2)
+                    png = d.screenshot()
+                    assert png_size(png) == (2400, 1080)
+                    (OUT / name).write_bytes(png)
+                    row["images"].append(
+                        {
+                            "file": name,
+                            "sha256": digest(png),
+                            "rgba_sha256": rgba_digest(png),
+                        }
+                    )
+                    (OUT / f"{request['check']}-gfxinfo-{n}.txt").write_text(
+                        d.shell("dumpsys", "gfxinfo", "com.unciv.app", "framestats")
+                    )
+                    layers = d.shell("dumpsys", "SurfaceFlinger", "--list")
+                    (OUT / f"{request['check']}-layers-{n}.txt").write_text(layers)
+                    selected = [
+                        x
+                        for x in layers.splitlines()
+                        if "com.unciv.app/com.unciv.app.AndroidLauncher" in x
+                        and "BLAST" in x
+                    ]
+                    if selected:
+                        (OUT / f"{request['check']}-latency-{n}.txt").write_text(
+                            d.shell(
+                                "dumpsys SurfaceFlinger --latency "
+                                + shlex.quote(selected[-1]),
+                                allow_fail=True,
+                            )
+                        )
+                until = time.monotonic() + 2
+                while True:
+                    try:
+                        reader.next_line(until)
+                    except TimeoutError:
+                        break
+            events = [EVENT.search(line) for line in row["lines"]]
+            events = [e for e in events if e and e[3] == request["request"]]
+            assert [e[1] for e in events if e[1] in ("READY", "ERROR")] == ["READY"]
+            assert sum(e[1] == "PANES" for e in events) == 1 and not any(
+                e[1] == "DUMP" for e in events
+            )
+            self.validate_trace(request, row)
+            row["status"] = "observed"
+            self.data_check("after-" + request["check"])
+            print(request["check"], "observed", flush=True)
+        finally:
+            (OUT / "captures.json").write_text(json.dumps(self.rows, indent=2) + "\n")
+
+    def validate_trace(self, request, row):
+        lines = [
+            (n, line)
+            for n, line in enumerate(row["lines"])
+            if f"L10N_SCREEN_DIAGNOSTICS tech-picker request={request['request']} "
+            in line
+        ]
+        if not request["telemetry"]:
+            assert not lines, "Unexpected diagnostics event in off mode"
+            return
+        assert len(lines) == 1, "Missing/duplicate diagnostic event"
+        index, line = lines[0]
+        event = DIAG.search(line)
+        assert (
+            event
+            and event[1] == "tech-picker"
+            and event[2] == request["request"]
+            and event[3] == request["diagnostic_final_path"]
+            and event[6] == request["diagnostic_mode"]
+        ), "Invalid/incomplete diagnostic event"
+        ready_index = next(
+            n
+            for n, line in enumerate(row["lines"])
+            if (match := EVENT.search(line))
+            and match[1] == "READY"
+            and match[3] == request["request"]
+        )
+        assert index < ready_index, "Diagnostic event must precede READY"
+        data = self.d.run("exec-out", "run-as", "com.unciv.app", "cat", event[3])
+        (OUT / (request["check"] + ".diag.json")).write_bytes(data)
+        row["diagnostic_event"] = {
+            "file": event[3],
+            "sha256": event[4],
+            "complete": event[5] == "true",
+            "mode": event[6],
+        }
+        assert event[5] == "true", "Incomplete diagnostic event; raw sidecar retained"
+        row["diagnostic"] = validate_sidecar(
+            data,
+            {
+                "diagnostic_version": 1,
+                "build_version_code": int(self.p["diagnostic_build"]["version_code"]),
+                "protocol_version": 1,
+                "screen": "tech-picker",
+                "language": "German",
+                "request": request["request"],
+                "mode": request["diagnostic_mode"],
+                "state_sha256": request["state_sha256"],
+            },
+            event[4],
+        )
+        self.outputs[event[3]] = event[4]
+
+    def finalize(self, began):
+        if not began and not self.source_verified:
+            (OUT / "final-preservation.json").write_text(
+                json.dumps(
+                    {
+                        "status": "not_run_source_preflight_rejected",
+                        "apk_update_phase_began": False,
+                        "device_cleanup_commands": 0,
+                    },
+                    indent=2,
+                )
+                + "\n"
+            )
+            return
+        d = self.d
+        result = {
+            "apk_update_phase_began": began,
+            "conditional_settings_restore_used": False,
+        }
+        try:
+            d.root()
+            d.force_stop()
+            result.update(installed_version_code=d.build(), app_running=bool(d.pid()))
+            paths = d.shell("pm", "path", "com.unciv.app").strip().splitlines()
+            assert len(paths) == 1 and paths[0].startswith("package:")
+            result["installed_apk_sha256"] = d.shell(
+                "sha256sum " + shlex.quote(paths[0].removeprefix("package:"))
+            ).split()[0]
+            current, stat = d.read_file(SETTINGS_PATH), d.stat(SETTINGS_PATH)
+            saves = save_inventory(read_saves(d))
+            result.update(
+                settings_before_sha256=digest(current),
+                settings_before_stat=stat,
+                saves=saves,
+            )
+            if (
+                current != self.original
+                or stat != self.p["settings"]["settings_stat_uid_gid_mode_size"]
+            ):
+                assert began, "Preflight settings mismatch; do not overwrite"
+                marker = OUT / "conditional-settings-restore.json"
+                assert not marker.exists()
+                marker.write_text(
+                    json.dumps(
+                        {
+                            "status": "attempted",
+                            "before_sha256": digest(current),
+                            "target_sha256": digest(self.original),
+                        },
+                        indent=2,
+                    )
+                    + "\n"
+                )
+                private = OUT / "private"
+                private.mkdir(mode=0o700, exist_ok=True)
+                backup = private / "settings-before-recovery.json"
+                backup.write_bytes(current)
+                backup.chmod(0o600)
+                d.write_file(SETTINGS_PATH, self.original)
+                uid, gid, mode, _ = self.p["settings"][
+                    "settings_stat_uid_gid_mode_size"
+                ].split()
+                d.shell("chown", uid + ":" + gid, SETTINGS_PATH)
+                d.shell("chmod", mode, SETTINGS_PATH)
+                result["conditional_settings_restore_used"] = True
+            data, stat = d.read_file(SETTINGS_PATH), d.stat(SETTINGS_PATH)
+            hooks, diagnostics = self.hook_inventory(), self.diagnostic_inventory()
+            result.update(
+                settings_sha256=digest(data),
+                settings_stat=stat,
+                settings_match_original=data == self.original
+                and stat == self.p["settings"]["settings_stat_uid_gid_mode_size"],
+                saves_match_original=saves == self.p["saves"],
+                prior_hook_outputs_unchanged=hooks
+                == {
+                    r["file"]: r["sha256"]
+                    for r in self.p["existing_hook_outputs_to_verify"]
+                },
+                hook_files=hooks,
+                diagnostic_files=diagnostics,
+                diagnostic_files_match_verified=diagnostics == self.outputs,
+                app_running=bool(d.pid()),
+            )
+        finally:
+            try:
+                d.unroot()
+                result["adbd"] = d.shell("whoami").strip()
+            except BaseException as exc:
+                result["unroot_error"] = str(exc)
+                raise
+            finally:
+                (OUT / "final-preservation.json").write_text(
+                    json.dumps(result, indent=2) + "\n"
+                )
+        assert (
+            result["settings_match_original"]
+            and result["saves_match_original"]
+            and result["prior_hook_outputs_unchanged"]
+            and result["diagnostic_files_match_verified"]
+        )
+        assert (
+            result["installed_version_code"] == "1271048"
+            and result["installed_apk_sha256"] == self.p["final_target"]["apk_sha256"]
+        )
+        assert not result["app_running"] and result["adbd"] == "shell"
+
+
+def main():
+    raw = (ROOT / "outputs/issue-47-device-plan-5.json").read_bytes()
+    assert digest(raw) == PLAN_SHA
+    p = json.loads(raw)
+    assert (
+        digest(Path(p["diagnostic_contract"]["path"]).read_bytes())
+        == p["diagnostic_contract"]["sha256"]
+    )
+    for name, pin in p["host_components"].items():
+        assert digest((Path(__file__).parent / name).read_bytes()) == pin
+    assert len(p["requests"]) == 4 and len(p["install_operations"]) == 2
+    assert (
+        not p["normal_settings_writes"]
+        and not p["save_writes"]
+        and not p["new_v2_hook_output_files"]
+    )
+    assert p["install_operations"][0]["command"][3:5] == ["install", "-r"]
+    assert p["install_operations"][1]["command"][3:6] == ["install", "-r", "-d"]
+    for name in ("diagnostic_build", "final_target"):
+        assert digest(Path(p[name]["apk"]).read_bytes()) == p[name]["apk_sha256"]
+    target = Inputs(Path(p["final_target"]["manifest"]))
+    assert target.sha256 == p["final_target"]["manifest_sha256"]
+    diagnostic = copy.copy(target)
+    diagnostic.manifest = target.manifest.model_copy(
+        update={
+            "build": Build.model_validate(
+                {
+                    k: p["diagnostic_build"][k]
+                    for k in (
+                        "version_code",
+                        "apk_sha256",
+                        "fork_commit",
+                        "implementation_commit",
+                    )
+                }
+            )
+        }
+    )
+    for r in p["requests"]:
+        assert (
+            r["protocol_version"] == 1
+            and "l10n_protocol" not in r["command"]
+            and "l10n_fault" not in r["command"]
+        )
+        assert re.fullmatch(r"[A-Za-z0-9._-]{1,59}", r["request"])
+        assert r["diagnostic_mode"] in (
+            "current-off",
+            "current-on",
+            "owned-loading-off",
+            "owned-loading-on",
+        )
+        assert (
+            r["command"][r["command"].index("l10n_diagnostics") + 1]
+            == r["diagnostic_mode"]
+        )
+        assert (
+            digest(
+                base64.b64decode(
+                    r["command"][r["command"].index("l10n_state_b64") + 1],
+                    validate=True,
+                )
+            )
+            == r["state_sha256"]
+        )
+        assert r["telemetry"] == r["diagnostic_mode"].endswith("-on")
+    assert (
+        len(p["diagnostic_paths_to_verify"]) == 8
+        and len(set(p["diagnostic_paths_to_verify"])) == 8
+    )
+    assert all(
+        re.fullmatch(r"files/l10n-hook/[A-Za-z0-9._-]{1,59}\.diag\.json(?:\.tmp)?", x)
+        for x in p["diagnostic_paths_to_verify"]
+    )
+    assert len(p["existing_hook_outputs_to_verify"]) == 45
+    original = Path(p["conditional_settings_recovery"]["payload_source"]).read_bytes()
+    assert digest(original) == p["settings"]["settings_sha256"]
+    assert not subprocess.check_output(
+        ["git", "diff", p["checker_runtime_commit"], "--", "src"], cwd=CHECKER
+    )
+    if "--validate-only" in sys.argv:
+        print(
+            json.dumps(
+                {
+                    "status": "host_validated_no_device_access",
+                    "plan_sha256": PLAN_SHA,
+                    "apk_updates_max": 2,
+                    "requests": 4,
+                    "diagnostic_final_files": 2,
+                    "normal_settings_writes": 0,
+                    "prior_hook_files_to_verify": 45,
+                },
+                indent=2,
+            )
+        )
+        return 0
+    receipt = json.loads((OUT / "authorization.json").read_bytes())
+    assert (
+        receipt["approved_by"] == "Anton"
+        and receipt["plan_sha256"] == PLAN_SHA
+        and receipt["runner_sha256"] == digest(Path(__file__).read_bytes())
+    )
+    assert not (OUT / "started.json").exists()
+    (OUT / "started.json").write_text(
+        json.dumps({"started_epoch": time.time(), "plan_sha256": PLAN_SHA}, indent=2)
+        + "\n"
+    )
+    errors = control_flow(Operations(p, original, target, diagnostic))
+    (OUT / "result.json").write_text(
+        json.dumps(
+            {
+                "status": "failed" if errors else "completed",
+                "errors": errors,
+                "provider_requests": 0,
+                "spend_usd": 0,
+            },
+            indent=2,
+        )
+        + "\n"
+    )
+    return 1 if errors else 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

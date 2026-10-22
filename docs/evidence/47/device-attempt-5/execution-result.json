@@ -1,0 +1,16 @@
+{
+  "runner": "work/device-phase-5/runner.py",
+  "runner_sha256": "1f8960cfb2f0c4a6f74390489d48f60b07fb7ede6b12cb96cec7edba4869ac9d",
+  "exit_code": 0,
+  "source": "SDK runner process tool session89970 completed with exit_code0",
+  "plan_sha256": "301b207483112563fda281da03181f31440a4e7b867a631e19541eefed87aa15",
+  "installs": 2,
+  "requests_executed": 4,
+  "normal_settings_writes": 0,
+  "save_writes": 0,
+  "diagnostic_final_files": 2,
+  "new_v2_dump_files": 0,
+  "conditional_settings_restore_used": false,
+  "provider_requests": 0,
+  "spend_usd": 0
+}
