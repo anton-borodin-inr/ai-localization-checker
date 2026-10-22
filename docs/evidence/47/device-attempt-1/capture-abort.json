@@ -1,0 +1,6 @@
+{
+  "reason": "Android PatternSyntaxException in L10nTextMetadata.bind; abort remaining requests and restore through capture finally",
+  "signal": "SIGINT",
+  "pid": 11488,
+  "command": "/Library/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python /Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/checker/.venv/bin/l10n-capture --manifest fixtures/stage2/screens-v2.json --serial emulator-5554 --lang en --lang de --repeat 2 --timeout 90 --device-plan /Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/device-phase-1/capture-device-plan.json --output-dir data/issue-47/capture-approved-1"
+}

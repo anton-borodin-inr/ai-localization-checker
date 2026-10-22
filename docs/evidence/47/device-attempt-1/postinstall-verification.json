@@ -1,0 +1,13 @@
+{
+  "status": "verified",
+  "observed_build": {
+    "version_code": "1271047",
+    "apk_sha256": "ecd8c424dc09500f32edd075df71903ab64f6ba9c7ba985bc536e80f21e2c438",
+    "density_dpi": 420
+  },
+  "settings_and_all_saves_unchanged": true,
+  "app": "stopped",
+  "adbd": "shell",
+  "capture_plan_activated_sha256": "26abb6bc39dbd9b2829ae6f2dd2061944390978fbe16606e6ae4520f8524fd21",
+  "app_data_explicit_writes": 0
+}

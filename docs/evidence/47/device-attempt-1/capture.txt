@@ -1,0 +1,38 @@
+   Building ai-localization-checker @ file:///Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/checker
+      Built ai-localization-checker @ file:///Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/checker
+Uninstalled 1 package in 1ms
+Installed 1 package in 2ms
+Traceback (most recent call last):
+  File "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/checker/.venv/bin/l10n-capture", line 10, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/checker/src/l10n_checker/cli.py", line 84, in main
+    summary = capture_manifest(
+        device,
+    ...<5 lines>...
+        device_plan=args.device_plan,
+    )
+  File "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/checker/src/l10n_checker/screen_capture.py", line 458, in capture_manifest
+    record["readiness"] = request(
+                          ~~~~~~~^
+        device,
+        ^^^^^^^
+    ...<4 lines>...
+        **({"protocol_version": 2} if v2 else {}),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/checker/src/l10n_checker/hook.py", line 215, in request_screen
+    result = wait_terminal(
+        log, screen, request, panes, deadline, protocol_version
+    )
+  File "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/checker/src/l10n_checker/hook.py", line 115, in wait_terminal
+    line = log.next_line(deadline)
+  File "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/checker/src/l10n_checker/hook.py", line 82, in next_line
+    line = self.lines.get(timeout=remaining)
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/queue.py", line 213, in get
+    self.not_empty.wait(remaining)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/threading.py", line 373, in wait
+    gotit = waiter.acquire(True, timeout)
+KeyboardInterrupt

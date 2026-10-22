@@ -1,0 +1,374 @@
+{
+  "schema_version": 1,
+  "status": "failed",
+  "manifest_sha256": "5f5b99aabde04290ce10ee480b2de75fde81f5fc266b27db93a4f70241084168",
+  "languages": [
+    "en",
+    "de"
+  ],
+  "passes": [
+    "forward",
+    "reverse"
+  ],
+  "records": [
+    {
+      "pass": 1,
+      "language": "en",
+      "screen": "options-gameplay",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-1-0-0",
+      "state": {
+        "schema_version": 1,
+        "save": null,
+        "selection": {},
+        "tab": "gameplay",
+        "expanded_sections": [],
+        "scroll": {},
+        "scroll_to": {
+          "menu-map": {
+            "edge": "center",
+            "align": "visible"
+          },
+          "pane-1": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "tabs-header": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "tabs-fixed": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "tabs-content": {
+            "edge": "start",
+            "align": "visible"
+          }
+        },
+        "camera": null,
+        "new_game": null
+      },
+      "status": "failed",
+      "reason": "client_timeout",
+      "events": [],
+      "terminal_received": false,
+      "recovery": "force_stopped_before_next_request"
+    },
+    {
+      "pass": 1,
+      "language": "en",
+      "screen": "new-game",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-1-0-1",
+      "state": {
+        "schema_version": 1,
+        "save": null,
+        "selection": {},
+        "tab": null,
+        "expanded_sections": [],
+        "scroll": {},
+        "scroll_to": {
+          "pane-0": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "pane-1": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "pane-2": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "pane-3": {
+            "edge": "start",
+            "align": "visible"
+          },
+          "pane-4": {
+            "edge": "start",
+            "align": "visible"
+          }
+        },
+        "camera": null,
+        "new_game": {
+          "ruleset": "Civ V - Gods & Kings",
+          "difficulty": "Chieftain",
+          "speed": "Quick",
+          "era": "Ancient era",
+          "max_turns": 500,
+          "city_states": 6,
+          "map_type": "Pangaea",
+          "map_size": "Medium",
+          "seed": 0,
+          "players": [
+            {
+              "type": "Human",
+              "civilization": "Random"
+            },
+            {
+              "type": "AI",
+              "civilization": "Random"
+            },
+            {
+              "type": "AI",
+              "civilization": "Random"
+            },
+            {
+              "type": "AI",
+              "civilization": "Random"
+            }
+          ]
+        }
+      },
+      "status": "pending"
+    }
+  ],
+  "comparisons": [
+    {
+      "screen": "options-gameplay",
+      "language": "en",
+      "status": "unavailable"
+    },
+    {
+      "screen": "new-game",
+      "language": "en",
+      "status": "unavailable"
+    },
+    {
+      "screen": "tech-picker",
+      "language": "en",
+      "status": "unavailable"
+    },
+    {
+      "screen": "city-production",
+      "language": "en",
+      "status": "unavailable"
+    },
+    {
+      "screen": "empire-stats",
+      "language": "en",
+      "status": "unavailable"
+    },
+    {
+      "screen": "policy-picker",
+      "language": "en",
+      "status": "unavailable"
+    },
+    {
+      "screen": "victory-status",
+      "language": "en",
+      "status": "unavailable"
+    },
+    {
+      "screen": "civilopedia",
+      "language": "en",
+      "status": "unavailable"
+    },
+    {
+      "screen": "world",
+      "language": "en",
+      "status": "unavailable"
+    },
+    {
+      "screen": "city-state-diplomacy",
+      "language": "en",
+      "status": "unavailable"
+    },
+    {
+      "screen": "options-gameplay",
+      "language": "de",
+      "status": "unavailable"
+    },
+    {
+      "screen": "new-game",
+      "language": "de",
+      "status": "unavailable"
+    },
+    {
+      "screen": "tech-picker",
+      "language": "de",
+      "status": "unavailable"
+    },
+    {
+      "screen": "city-production",
+      "language": "de",
+      "status": "unavailable"
+    },
+    {
+      "screen": "empire-stats",
+      "language": "de",
+      "status": "unavailable"
+    },
+    {
+      "screen": "policy-picker",
+      "language": "de",
+      "status": "unavailable"
+    },
+    {
+      "screen": "victory-status",
+      "language": "de",
+      "status": "unavailable"
+    },
+    {
+      "screen": "civilopedia",
+      "language": "de",
+      "status": "unavailable"
+    },
+    {
+      "screen": "world",
+      "language": "de",
+      "status": "unavailable"
+    },
+    {
+      "screen": "city-state-diplomacy",
+      "language": "de",
+      "status": "unavailable"
+    }
+  ],
+  "app_data_operations": [
+    {
+      "operation": "replace_settings",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "853e1a055177314c866ae4427e697adeb6f79cab051d31bff0d6160b149c1776",
+      "status": "verified",
+      "language": "en",
+      "pass_number": 1
+    },
+    {
+      "operation": "ensure_hook_output_directory",
+      "path": "files/l10n-hook",
+      "condition": "created by the hook if absent before dump publication",
+      "status": "attempted_or_already_present"
+    },
+    {
+      "operation": "hook_output",
+      "pass": 1,
+      "language": "en",
+      "screen": "options-gameplay",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-1-0-0",
+      "temporary": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-1-0-0.json.tmp",
+      "file": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-1-0-0.json",
+      "status": "attempted"
+    },
+    {
+      "operation": "hook_output",
+      "pass": 1,
+      "language": "en",
+      "screen": "new-game",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-1-0-1",
+      "temporary": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-1-0-1.json.tmp",
+      "file": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-1-0-1.json",
+      "status": "attempted"
+    },
+    {
+      "operation": "restore_original_settings",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7",
+      "status": "verified"
+    }
+  ],
+  "live_provider_requests": 0,
+  "api_spend_usd": 0,
+  "observed_build": {
+    "version_code": "1271047",
+    "apk_sha256": "ecd8c424dc09500f32edd075df71903ab64f6ba9c7ba985bc536e80f21e2c438",
+    "density_dpi": 420
+  },
+  "backup": {
+    "settings_sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7",
+    "settings_stat": "10196 10196 600 873",
+    "settings_backup": "private/GameSettings.json",
+    "saves_backup": "private/SaveFiles.tar",
+    "saves": {
+      "./Autosave": "9d2a4cd5e1de2b2ae9102a2e6e6d15210e32ae5188c895f84e8a3a6ce19c3b4e",
+      "./Autosave-The Ottomans-1": "62c62dcefb9065850dea34293a8a644a5ccea5397aa5bd5b1a12620a220e9e13",
+      "./issue-8-pair": "9d2a4cd5e1de2b2ae9102a2e6e6d15210e32ae5188c895f84e8a3a6ce19c3b4e",
+      "./issue-40-belgrade-metissue-8-pair": "2cf381aa7bf544961a302989c027045572b8d7036ab1840b01bc3ee4409c551e"
+    },
+    "save_copies_needed": []
+  },
+  "planned_app_data_operations": [
+    {
+      "operation": "replace_settings",
+      "pass": 1,
+      "language": "en",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "853e1a055177314c866ae4427e697adeb6f79cab051d31bff0d6160b149c1776",
+      "screen_order": [
+        "options-gameplay",
+        "new-game",
+        "tech-picker",
+        "city-production",
+        "empire-stats",
+        "policy-picker",
+        "victory-status",
+        "civilopedia",
+        "world",
+        "city-state-diplomacy"
+      ]
+    },
+    {
+      "operation": "replace_settings",
+      "pass": 1,
+      "language": "de",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "397ddd96452874b01d9f096311049c0d076492297d557a9fb7c3d2abf1f3cdea",
+      "screen_order": [
+        "options-gameplay",
+        "new-game",
+        "tech-picker",
+        "city-production",
+        "empire-stats",
+        "policy-picker",
+        "victory-status",
+        "civilopedia",
+        "world",
+        "city-state-diplomacy"
+      ]
+    },
+    {
+      "operation": "replace_settings",
+      "pass": 2,
+      "language": "en",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "853e1a055177314c866ae4427e697adeb6f79cab051d31bff0d6160b149c1776",
+      "screen_order": [
+        "city-state-diplomacy",
+        "world",
+        "civilopedia",
+        "victory-status",
+        "policy-picker",
+        "empire-stats",
+        "city-production",
+        "tech-picker",
+        "new-game",
+        "options-gameplay"
+      ]
+    },
+    {
+      "operation": "replace_settings",
+      "pass": 2,
+      "language": "de",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "397ddd96452874b01d9f096311049c0d076492297d557a9fb7c3d2abf1f3cdea",
+      "screen_order": [
+        "city-state-diplomacy",
+        "world",
+        "civilopedia",
+        "victory-status",
+        "policy-picker",
+        "empire-stats",
+        "city-production",
+        "tech-picker",
+        "new-game",
+        "options-gameplay"
+      ]
+    },
+    {
+      "operation": "restore_original_settings",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7"
+    }
+  ],
+  "device_plan_sha256": "26abb6bc39dbd9b2829ae6f2dd2061944390978fbe16606e6ae4520f8524fd21",
+  "settings_restored": true
+}

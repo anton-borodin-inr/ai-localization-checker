@@ -1,0 +1,916 @@
+{
+  "plan_version": 1,
+  "plan_id": "issue47-device-66807a6e823c2330d40e07aa7697748c",
+  "status": "AWAITING_ANTON_EXACT_OPERATION_APPROVAL",
+  "authorization_received": "Emulator availability only; no installation or app-data writes authorized yet",
+  "serial": "emulator-5554",
+  "avd": "unciv_api34",
+  "api": 34,
+  "abi": "arm64-v8a",
+  "current_device": {
+    "app": "stopped",
+    "adbd": "shell",
+    "density_dpi": 420,
+    "physical_resolution_portrait": [
+      1080,
+      2400
+    ],
+    "capture_resolution_landscape": [
+      2400,
+      1080
+    ],
+    "cutout": "disabled",
+    "version_code": "1271045",
+    "apk_sha256": "16b6e07eaa8f7ca35b71f361f0bdcceb7015987b60e796d15d2f3b53bb61af1a",
+    "signer_certificate_sha256": "b4752f8cee80842f55883ca2a9b62ca75c898df5a1b7cefd63959ba1b8fecb99",
+    "settings_sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7",
+    "settings_stat_uid_gid_mode_size": "10196 10196 600 873",
+    "saves": {
+      "./Autosave": "9d2a4cd5e1de2b2ae9102a2e6e6d15210e32ae5188c895f84e8a3a6ce19c3b4e",
+      "./Autosave-The Ottomans-1": "62c62dcefb9065850dea34293a8a644a5ccea5397aa5bd5b1a12620a220e9e13",
+      "./issue-8-pair": "9d2a4cd5e1de2b2ae9102a2e6e6d15210e32ae5188c895f84e8a3a6ce19c3b4e",
+      "./issue-40-belgrade-metissue-8-pair": "2cf381aa7bf544961a302989c027045572b8d7036ab1840b01bc3ee4409c551e"
+    }
+  },
+  "preparation_executed": {
+    "no_app_data_writes": true,
+    "operations": [
+      "read-only inventory and installed APK backup",
+      "temporary adb root/unroot",
+      "force-stop",
+      "settings and all-save backups with independent readback"
+    ],
+    "backup_directory": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/checker/data/issue-47/preinstall-20261021",
+    "apk_backup": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/device-phase-1/installed-original.apk"
+  },
+  "target": {
+    "checker_commit": "97dadecd98a8924cefab517d1cc6705f76dacaf8",
+    "fork_commit": "df59cf982e3035f7733d4ffd58e3a56325eb4c82",
+    "manifest": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/checker/fixtures/stage2/screens-v2.json",
+    "manifest_sha256": "5f5b99aabde04290ce10ee480b2de75fde81f5fc266b27db93a4f70241084168",
+    "version_code": "1271047",
+    "apk": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/outputs/Unciv-1271047-debug.apk",
+    "apk_sha256": "ecd8c424dc09500f32edd075df71903ab64f6ba9c7ba985bc536e80f21e2c438",
+    "signer_certificate_sha256": "b4752f8cee80842f55883ca2a9b62ca75c898df5a1b7cefd63959ba1b8fecb99"
+  },
+  "install_operation": {
+    "command": [
+      "/Users/antonborodin/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5554",
+      "install",
+      "-r",
+      "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/outputs/Unciv-1271047-debug.apk"
+    ],
+    "package": "com.unciv.app",
+    "data_preserving_update": true,
+    "uninstall_or_clear_data": false,
+    "android_managed_paths": "PackageManager chooses new /data/app and installation-staging paths; read and hash the resulting pm path after installation"
+  },
+  "settings_operations_normal_path": [
+    {
+      "operation": "replace_settings",
+      "pass": 1,
+      "language": "en",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "853e1a055177314c866ae4427e697adeb6f79cab051d31bff0d6160b149c1776",
+      "screen_order": [
+        "options-gameplay",
+        "new-game",
+        "tech-picker",
+        "city-production",
+        "empire-stats",
+        "policy-picker",
+        "victory-status",
+        "civilopedia",
+        "world",
+        "city-state-diplomacy"
+      ]
+    },
+    {
+      "operation": "replace_settings",
+      "pass": 1,
+      "language": "de",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "397ddd96452874b01d9f096311049c0d076492297d557a9fb7c3d2abf1f3cdea",
+      "screen_order": [
+        "options-gameplay",
+        "new-game",
+        "tech-picker",
+        "city-production",
+        "empire-stats",
+        "policy-picker",
+        "victory-status",
+        "civilopedia",
+        "world",
+        "city-state-diplomacy"
+      ]
+    },
+    {
+      "operation": "replace_settings",
+      "pass": 2,
+      "language": "en",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "853e1a055177314c866ae4427e697adeb6f79cab051d31bff0d6160b149c1776",
+      "screen_order": [
+        "city-state-diplomacy",
+        "world",
+        "civilopedia",
+        "victory-status",
+        "policy-picker",
+        "empire-stats",
+        "city-production",
+        "tech-picker",
+        "new-game",
+        "options-gameplay"
+      ]
+    },
+    {
+      "operation": "replace_settings",
+      "pass": 2,
+      "language": "de",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "397ddd96452874b01d9f096311049c0d076492297d557a9fb7c3d2abf1f3cdea",
+      "screen_order": [
+        "city-state-diplomacy",
+        "world",
+        "civilopedia",
+        "victory-status",
+        "policy-picker",
+        "empire-stats",
+        "city-production",
+        "tech-picker",
+        "new-game",
+        "options-gameplay"
+      ]
+    },
+    {
+      "operation": "restore_original_settings",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7"
+    },
+    {
+      "operation": "legacy_real_capture_apply_english",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "99f9b6b293c1e6268d6d18891805872e1546c177775680f2718e8c206dcb4b23",
+      "payload_source": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/device-phase-1/legacy-english-payload.json"
+    },
+    {
+      "operation": "legacy_real_capture_restore_original",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7"
+    }
+  ],
+  "save_write_operations": [],
+  "hook_directory_operation": {
+    "operation": "ensure_hook_output_directory",
+    "path": "files/l10n-hook",
+    "condition": "created by the hook if absent before dump publication"
+  },
+  "capture_requests": [
+    {
+      "pass": 1,
+      "language": "en",
+      "screen": "options-gameplay",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-1-0-0",
+      "temporary": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-1-0-0.json.tmp",
+      "file": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-1-0-0.json"
+    },
+    {
+      "pass": 1,
+      "language": "en",
+      "screen": "new-game",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-1-0-1",
+      "temporary": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-1-0-1.json.tmp",
+      "file": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-1-0-1.json"
+    },
+    {
+      "pass": 1,
+      "language": "en",
+      "screen": "tech-picker",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-1-0-2",
+      "temporary": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-1-0-2.json.tmp",
+      "file": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-1-0-2.json"
+    },
+    {
+      "pass": 1,
+      "language": "en",
+      "screen": "city-production",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-1-0-3",
+      "temporary": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-1-0-3.json.tmp",
+      "file": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-1-0-3.json"
+    },
+    {
+      "pass": 1,
+      "language": "en",
+      "screen": "empire-stats",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-1-0-4",
+      "temporary": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-1-0-4.json.tmp",
+      "file": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-1-0-4.json"
+    },
+    {
+      "pass": 1,
+      "language": "en",
+      "screen": "policy-picker",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-1-0-5",
+      "temporary": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-1-0-5.json.tmp",
+      "file": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-1-0-5.json"
+    },
+    {
+      "pass": 1,
+      "language": "en",
+      "screen": "victory-status",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-1-0-6",
+      "temporary": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-1-0-6.json.tmp",
+      "file": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-1-0-6.json"
+    },
+    {
+      "pass": 1,
+      "language": "en",
+      "screen": "civilopedia",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-1-0-7",
+      "temporary": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-1-0-7.json.tmp",
+      "file": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-1-0-7.json"
+    },
+    {
+      "pass": 1,
+      "language": "en",
+      "screen": "world",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-1-0-8",
+      "temporary": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-1-0-8.json.tmp",
+      "file": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-1-0-8.json"
+    },
+    {
+      "pass": 1,
+      "language": "en",
+      "screen": "city-state-diplomacy",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-1-0-9",
+      "temporary": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-1-0-9.json.tmp",
+      "file": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-1-0-9.json"
+    },
+    {
+      "pass": 1,
+      "language": "de",
+      "screen": "options-gameplay",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-1-1-0",
+      "temporary": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-1-1-0.json.tmp",
+      "file": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-1-1-0.json"
+    },
+    {
+      "pass": 1,
+      "language": "de",
+      "screen": "new-game",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-1-1-1",
+      "temporary": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-1-1-1.json.tmp",
+      "file": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-1-1-1.json"
+    },
+    {
+      "pass": 1,
+      "language": "de",
+      "screen": "tech-picker",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-1-1-2",
+      "temporary": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-1-1-2.json.tmp",
+      "file": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-1-1-2.json"
+    },
+    {
+      "pass": 1,
+      "language": "de",
+      "screen": "city-production",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-1-1-3",
+      "temporary": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-1-1-3.json.tmp",
+      "file": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-1-1-3.json"
+    },
+    {
+      "pass": 1,
+      "language": "de",
+      "screen": "empire-stats",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-1-1-4",
+      "temporary": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-1-1-4.json.tmp",
+      "file": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-1-1-4.json"
+    },
+    {
+      "pass": 1,
+      "language": "de",
+      "screen": "policy-picker",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-1-1-5",
+      "temporary": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-1-1-5.json.tmp",
+      "file": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-1-1-5.json"
+    },
+    {
+      "pass": 1,
+      "language": "de",
+      "screen": "victory-status",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-1-1-6",
+      "temporary": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-1-1-6.json.tmp",
+      "file": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-1-1-6.json"
+    },
+    {
+      "pass": 1,
+      "language": "de",
+      "screen": "civilopedia",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-1-1-7",
+      "temporary": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-1-1-7.json.tmp",
+      "file": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-1-1-7.json"
+    },
+    {
+      "pass": 1,
+      "language": "de",
+      "screen": "world",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-1-1-8",
+      "temporary": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-1-1-8.json.tmp",
+      "file": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-1-1-8.json"
+    },
+    {
+      "pass": 1,
+      "language": "de",
+      "screen": "city-state-diplomacy",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-1-1-9",
+      "temporary": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-1-1-9.json.tmp",
+      "file": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-1-1-9.json"
+    },
+    {
+      "pass": 2,
+      "language": "en",
+      "screen": "city-state-diplomacy",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-2-0-0",
+      "temporary": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-2-0-0.json.tmp",
+      "file": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-2-0-0.json"
+    },
+    {
+      "pass": 2,
+      "language": "en",
+      "screen": "world",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-2-0-1",
+      "temporary": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-2-0-1.json.tmp",
+      "file": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-2-0-1.json"
+    },
+    {
+      "pass": 2,
+      "language": "en",
+      "screen": "civilopedia",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-2-0-2",
+      "temporary": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-2-0-2.json.tmp",
+      "file": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-2-0-2.json"
+    },
+    {
+      "pass": 2,
+      "language": "en",
+      "screen": "victory-status",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-2-0-3",
+      "temporary": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-2-0-3.json.tmp",
+      "file": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-2-0-3.json"
+    },
+    {
+      "pass": 2,
+      "language": "en",
+      "screen": "policy-picker",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-2-0-4",
+      "temporary": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-2-0-4.json.tmp",
+      "file": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-2-0-4.json"
+    },
+    {
+      "pass": 2,
+      "language": "en",
+      "screen": "empire-stats",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-2-0-5",
+      "temporary": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-2-0-5.json.tmp",
+      "file": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-2-0-5.json"
+    },
+    {
+      "pass": 2,
+      "language": "en",
+      "screen": "city-production",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-2-0-6",
+      "temporary": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-2-0-6.json.tmp",
+      "file": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-2-0-6.json"
+    },
+    {
+      "pass": 2,
+      "language": "en",
+      "screen": "tech-picker",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-2-0-7",
+      "temporary": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-2-0-7.json.tmp",
+      "file": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-2-0-7.json"
+    },
+    {
+      "pass": 2,
+      "language": "en",
+      "screen": "new-game",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-2-0-8",
+      "temporary": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-2-0-8.json.tmp",
+      "file": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-2-0-8.json"
+    },
+    {
+      "pass": 2,
+      "language": "en",
+      "screen": "options-gameplay",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-2-0-9",
+      "temporary": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-2-0-9.json.tmp",
+      "file": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-2-0-9.json"
+    },
+    {
+      "pass": 2,
+      "language": "de",
+      "screen": "city-state-diplomacy",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-2-1-0",
+      "temporary": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-2-1-0.json.tmp",
+      "file": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-2-1-0.json"
+    },
+    {
+      "pass": 2,
+      "language": "de",
+      "screen": "world",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-2-1-1",
+      "temporary": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-2-1-1.json.tmp",
+      "file": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-2-1-1.json"
+    },
+    {
+      "pass": 2,
+      "language": "de",
+      "screen": "civilopedia",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-2-1-2",
+      "temporary": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-2-1-2.json.tmp",
+      "file": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-2-1-2.json"
+    },
+    {
+      "pass": 2,
+      "language": "de",
+      "screen": "victory-status",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-2-1-3",
+      "temporary": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-2-1-3.json.tmp",
+      "file": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-2-1-3.json"
+    },
+    {
+      "pass": 2,
+      "language": "de",
+      "screen": "policy-picker",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-2-1-4",
+      "temporary": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-2-1-4.json.tmp",
+      "file": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-2-1-4.json"
+    },
+    {
+      "pass": 2,
+      "language": "de",
+      "screen": "empire-stats",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-2-1-5",
+      "temporary": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-2-1-5.json.tmp",
+      "file": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-2-1-5.json"
+    },
+    {
+      "pass": 2,
+      "language": "de",
+      "screen": "city-production",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-2-1-6",
+      "temporary": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-2-1-6.json.tmp",
+      "file": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-2-1-6.json"
+    },
+    {
+      "pass": 2,
+      "language": "de",
+      "screen": "tech-picker",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-2-1-7",
+      "temporary": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-2-1-7.json.tmp",
+      "file": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-2-1-7.json"
+    },
+    {
+      "pass": 2,
+      "language": "de",
+      "screen": "new-game",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-2-1-8",
+      "temporary": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-2-1-8.json.tmp",
+      "file": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-2-1-8.json"
+    },
+    {
+      "pass": 2,
+      "language": "de",
+      "screen": "options-gameplay",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-2-1-9",
+      "temporary": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-2-1-9.json.tmp",
+      "file": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-2-1-9.json"
+    }
+  ],
+  "capture_command": [
+    "env",
+    "PYTHONPATH=src",
+    "uv",
+    "run",
+    "--offline",
+    "--cache-dir",
+    "/private/tmp/issue47-uv-cache",
+    "l10n-capture",
+    "--manifest",
+    "fixtures/stage2/screens-v2.json",
+    "--serial",
+    "emulator-5554",
+    "--lang",
+    "en",
+    "--lang",
+    "de",
+    "--repeat",
+    "2",
+    "--timeout",
+    "90",
+    "--device-plan",
+    "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/device-phase-1/capture-device-plan.json",
+    "--output-dir",
+    "data/issue-47/capture-approved-1"
+  ],
+  "capture_plan_expected_file": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/device-phase-1/capture-device-plan.expected.json",
+  "capture_plan_expected_sha256": "26abb6bc39dbd9b2829ae6f2dd2061944390978fbe16606e6ae4520f8524fd21",
+  "capture_plan_activation": "Verify installed build after update with check_build; verify unchanged settings/saves. Copy expected bytes to capture-device-plan.json only after these checks; capture_manifest rechecks all inputs before writes. No fresh random namespace is substituted.",
+  "lifecycle_requests": [
+    {
+      "check": "v1-compatibility",
+      "screen": "tech-picker",
+      "language": "German (verified original settings)",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-lc-0",
+      "protocol_version": 1,
+      "state_sha256": "2e94f33cabdf1bd7cabbd54b055988471d077e6b778f12bf44c91ad82b39422a",
+      "command": [
+        "/Users/antonborodin/Library/Android/sdk/platform-tools/adb",
+        "-s",
+        "emulator-5554",
+        "shell",
+        "am",
+        "start",
+        "-n",
+        "com.unciv.app/.AndroidLauncher",
+        "--es",
+        "l10n_screen",
+        "tech-picker",
+        "--es",
+        "l10n_request",
+        "i47-66807a6e823c2330d40e07aa7697748c-lc-0",
+        "--es",
+        "l10n_state_b64",
+        "eyJzY2hlbWFfdmVyc2lvbiI6MSwic2F2ZSI6Imlzc3VlLTgtcGFpciIsInNlbGVjdGlvbiI6eyJ0ZWNobm9sb2d5IjoiQXJjaGVyeSJ9LCJ0YWIiOm51bGwsImV4cGFuZGVkX3NlY3Rpb25zIjpbXSwic2Nyb2xsIjp7fSwic2Nyb2xsX3RvIjp7InRlY2gtdHJlZSI6eyJ0ZWNobm9sb2d5IjoiTWluaW5nIiwiYWxpZ24iOiJ2aXNpYmxlIn0sImRlc2NyaXB0aW9uIjp7ImVkZ2UiOiJzdGFydCIsImFsaWduIjoidmlzaWJsZSJ9fSwiY2FtZXJhIjpudWxsLCJuZXdfZ2FtZSI6bnVsbH0="
+      ],
+      "expected": "READY"
+    },
+    {
+      "check": "forced-construction-failure",
+      "screen": "city-production",
+      "language": "German (verified original settings)",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-lc-1",
+      "protocol_version": 2,
+      "state_sha256": "2ca23afb9f3f5c733f569d55b157179edf42cf716ffed383286ad18cf41485f1",
+      "command": [
+        "/Users/antonborodin/Library/Android/sdk/platform-tools/adb",
+        "-s",
+        "emulator-5554",
+        "shell",
+        "am",
+        "start",
+        "-n",
+        "com.unciv.app/.AndroidLauncher",
+        "--es",
+        "l10n_screen",
+        "city-production",
+        "--es",
+        "l10n_request",
+        "i47-66807a6e823c2330d40e07aa7697748c-lc-1",
+        "--es",
+        "l10n_state_b64",
+        "eyJjYW1lcmEiOm51bGwsImV4cGFuZGVkX3NlY3Rpb25zIjpbIlVuaXRzIl0sIm5ld19nYW1lIjpudWxsLCJzYXZlIjoiaXNzdWUtOC1wYWlyIiwic2NoZW1hX3ZlcnNpb24iOjEsInNjcm9sbCI6e30sInNjcm9sbF90byI6eyJjb25zdHJ1Y3Rpb25zIjp7ImFsaWduIjoidmlzaWJsZSIsImNvbnN0cnVjdGlvbiI6IldvcmtlciJ9LCJwYW5lLTAiOnsiYWxpZ24iOiJ2aXNpYmxlIiwiZWRnZSI6ImNlbnRlciJ9LCJwcm9kdWN0aW9uLXF1ZXVlIjp7ImFsaWduIjoidmlzaWJsZSIsImVkZ2UiOiJzdGFydCJ9fSwic2VsZWN0aW9uIjp7ImNpdHkiOnsibmFtZSI6IklzdGFuYnVsIiwib3duZXIiOiJUaGUgT3R0b21hbnMifSwiY29uc3RydWN0aW9uIjoiV29ya2VyIn0sInRhYiI6bnVsbH0K",
+        "--es",
+        "l10n_protocol",
+        "2",
+        "--es",
+        "l10n_fault",
+        "construction-background"
+      ],
+      "expected": "ERROR with forced_construction_background_failure before 60-second timeout",
+      "temporary": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-lc-1.json.tmp",
+      "file": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-lc-1.json"
+    },
+    {
+      "check": "recovery-and-font-reset",
+      "screen": "tech-picker",
+      "language": "German (verified original settings)",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-lc-2",
+      "protocol_version": 2,
+      "state_sha256": "7a30c97c5cce346d532f9630e0b4272070a680ad821a1217fbf27d9ae2e28139",
+      "command": [
+        "/Users/antonborodin/Library/Android/sdk/platform-tools/adb",
+        "-s",
+        "emulator-5554",
+        "shell",
+        "am",
+        "start",
+        "-n",
+        "com.unciv.app/.AndroidLauncher",
+        "--es",
+        "l10n_screen",
+        "tech-picker",
+        "--es",
+        "l10n_request",
+        "i47-66807a6e823c2330d40e07aa7697748c-lc-2",
+        "--es",
+        "l10n_state_b64",
+        "eyJjYW1lcmEiOm51bGwsImV4cGFuZGVkX3NlY3Rpb25zIjpbXSwibmV3X2dhbWUiOm51bGwsInNhdmUiOiJpc3N1ZS04LXBhaXIiLCJzY2hlbWFfdmVyc2lvbiI6MSwic2Nyb2xsIjp7fSwic2Nyb2xsX3RvIjp7ImRlc2NyaXB0aW9uIjp7ImFsaWduIjoidmlzaWJsZSIsImVkZ2UiOiJzdGFydCJ9LCJ0ZWNoLXRyZWUiOnsiYWxpZ24iOiJ2aXNpYmxlIiwidGVjaG5vbG9neSI6Ik1pbmluZyJ9fSwic2VsZWN0aW9uIjp7InRlY2hub2xvZ3kiOiJBcmNoZXJ5In0sInRhYiI6bnVsbH0K",
+        "--es",
+        "l10n_protocol",
+        "2"
+      ],
+      "expected": "READY",
+      "temporary": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-lc-2.json.tmp",
+      "file": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-lc-2.json"
+    },
+    {
+      "check": "cold-supersession-A",
+      "screen": "city-production",
+      "language": "German (verified original settings)",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-lc-3",
+      "protocol_version": 2,
+      "state_sha256": "2ca23afb9f3f5c733f569d55b157179edf42cf716ffed383286ad18cf41485f1",
+      "command": [
+        "/Users/antonborodin/Library/Android/sdk/platform-tools/adb",
+        "-s",
+        "emulator-5554",
+        "shell",
+        "am",
+        "start",
+        "-n",
+        "com.unciv.app/.AndroidLauncher",
+        "--es",
+        "l10n_screen",
+        "city-production",
+        "--es",
+        "l10n_request",
+        "i47-66807a6e823c2330d40e07aa7697748c-lc-3",
+        "--es",
+        "l10n_state_b64",
+        "eyJjYW1lcmEiOm51bGwsImV4cGFuZGVkX3NlY3Rpb25zIjpbIlVuaXRzIl0sIm5ld19nYW1lIjpudWxsLCJzYXZlIjoiaXNzdWUtOC1wYWlyIiwic2NoZW1hX3ZlcnNpb24iOjEsInNjcm9sbCI6e30sInNjcm9sbF90byI6eyJjb25zdHJ1Y3Rpb25zIjp7ImFsaWduIjoidmlzaWJsZSIsImNvbnN0cnVjdGlvbiI6IldvcmtlciJ9LCJwYW5lLTAiOnsiYWxpZ24iOiJ2aXNpYmxlIiwiZWRnZSI6ImNlbnRlciJ9LCJwcm9kdWN0aW9uLXF1ZXVlIjp7ImFsaWduIjoidmlzaWJsZSIsImVkZ2UiOiJzdGFydCJ9fSwic2VsZWN0aW9uIjp7ImNpdHkiOnsibmFtZSI6IklzdGFuYnVsIiwib3duZXIiOiJUaGUgT3R0b21hbnMifSwiY29uc3RydWN0aW9uIjoiV29ya2VyIn0sInRhYiI6bnVsbH0K",
+        "--es",
+        "l10n_protocol",
+        "2"
+      ],
+      "expected": "superseded if still unfinished",
+      "temporary": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-lc-3.json.tmp",
+      "file": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-lc-3.json"
+    },
+    {
+      "check": "cold-supersession-B",
+      "screen": "world",
+      "language": "German (verified original settings)",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-lc-4",
+      "protocol_version": 2,
+      "state_sha256": "2c06dff1a46b60809858d270de8cc1a4d7e3bf6821c6ae3c650fc97f6d9637a4",
+      "command": [
+        "/Users/antonborodin/Library/Android/sdk/platform-tools/adb",
+        "-s",
+        "emulator-5554",
+        "shell",
+        "am",
+        "start",
+        "-n",
+        "com.unciv.app/.AndroidLauncher",
+        "--es",
+        "l10n_screen",
+        "world",
+        "--es",
+        "l10n_request",
+        "i47-66807a6e823c2330d40e07aa7697748c-lc-4",
+        "--es",
+        "l10n_state_b64",
+        "eyJjYW1lcmEiOnsiY2VudGVyX3RpbGUiOlstNywxMV0sInpvb20iOjF9LCJleHBhbmRlZF9zZWN0aW9ucyI6W10sIm5ld19nYW1lIjpudWxsLCJzYXZlIjoiaXNzdWUtOC1wYWlyIiwic2NoZW1hX3ZlcnNpb24iOjEsInNjcm9sbCI6e30sInNjcm9sbF90byI6eyJwYW5lLTAiOnsiYWxpZ24iOiJ2aXNpYmxlIiwiZWRnZSI6InN0YXJ0In19LCJzZWxlY3Rpb24iOnsidW5pdCI6eyJuYW1lIjoiV2FycmlvciIsIm93bmVyIjoiVGhlIE90dG9tYW5zIiwidGlsZSI6Wy03LDExXX19LCJ0YWIiOm51bGx9Cg==",
+        "--es",
+        "l10n_protocol",
+        "2"
+      ],
+      "expected": "superseded if still unfinished",
+      "temporary": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-lc-4.json.tmp",
+      "file": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-lc-4.json"
+    },
+    {
+      "check": "cold-supersession-C",
+      "screen": "tech-picker",
+      "language": "German (verified original settings)",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-lc-5",
+      "protocol_version": 2,
+      "state_sha256": "7a30c97c5cce346d532f9630e0b4272070a680ad821a1217fbf27d9ae2e28139",
+      "command": [
+        "/Users/antonborodin/Library/Android/sdk/platform-tools/adb",
+        "-s",
+        "emulator-5554",
+        "shell",
+        "am",
+        "start",
+        "-n",
+        "com.unciv.app/.AndroidLauncher",
+        "--es",
+        "l10n_screen",
+        "tech-picker",
+        "--es",
+        "l10n_request",
+        "i47-66807a6e823c2330d40e07aa7697748c-lc-5",
+        "--es",
+        "l10n_state_b64",
+        "eyJjYW1lcmEiOm51bGwsImV4cGFuZGVkX3NlY3Rpb25zIjpbXSwibmV3X2dhbWUiOm51bGwsInNhdmUiOiJpc3N1ZS04LXBhaXIiLCJzY2hlbWFfdmVyc2lvbiI6MSwic2Nyb2xsIjp7fSwic2Nyb2xsX3RvIjp7ImRlc2NyaXB0aW9uIjp7ImFsaWduIjoidmlzaWJsZSIsImVkZ2UiOiJzdGFydCJ9LCJ0ZWNoLXRyZWUiOnsiYWxpZ24iOiJ2aXNpYmxlIiwidGVjaG5vbG9neSI6Ik1pbmluZyJ9fSwic2VsZWN0aW9uIjp7InRlY2hub2xvZ3kiOiJBcmNoZXJ5In0sInRhYiI6bnVsbH0K",
+        "--es",
+        "l10n_protocol",
+        "2"
+      ],
+      "expected": "READY",
+      "temporary": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-lc-5.json.tmp",
+      "file": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-lc-5.json"
+    },
+    {
+      "check": "warm-supersession-A",
+      "screen": "city-production",
+      "language": "German (verified original settings)",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-lc-6",
+      "protocol_version": 2,
+      "state_sha256": "2ca23afb9f3f5c733f569d55b157179edf42cf716ffed383286ad18cf41485f1",
+      "command": [
+        "/Users/antonborodin/Library/Android/sdk/platform-tools/adb",
+        "-s",
+        "emulator-5554",
+        "shell",
+        "am",
+        "start",
+        "-n",
+        "com.unciv.app/.AndroidLauncher",
+        "--es",
+        "l10n_screen",
+        "city-production",
+        "--es",
+        "l10n_request",
+        "i47-66807a6e823c2330d40e07aa7697748c-lc-6",
+        "--es",
+        "l10n_state_b64",
+        "eyJjYW1lcmEiOm51bGwsImV4cGFuZGVkX3NlY3Rpb25zIjpbIlVuaXRzIl0sIm5ld19nYW1lIjpudWxsLCJzYXZlIjoiaXNzdWUtOC1wYWlyIiwic2NoZW1hX3ZlcnNpb24iOjEsInNjcm9sbCI6e30sInNjcm9sbF90byI6eyJjb25zdHJ1Y3Rpb25zIjp7ImFsaWduIjoidmlzaWJsZSIsImNvbnN0cnVjdGlvbiI6IldvcmtlciJ9LCJwYW5lLTAiOnsiYWxpZ24iOiJ2aXNpYmxlIiwiZWRnZSI6ImNlbnRlciJ9LCJwcm9kdWN0aW9uLXF1ZXVlIjp7ImFsaWduIjoidmlzaWJsZSIsImVkZ2UiOiJzdGFydCJ9fSwic2VsZWN0aW9uIjp7ImNpdHkiOnsibmFtZSI6IklzdGFuYnVsIiwib3duZXIiOiJUaGUgT3R0b21hbnMifSwiY29uc3RydWN0aW9uIjoiV29ya2VyIn0sInRhYiI6bnVsbH0K",
+        "--es",
+        "l10n_protocol",
+        "2"
+      ],
+      "expected": "superseded if still unfinished",
+      "temporary": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-lc-6.json.tmp",
+      "file": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-lc-6.json"
+    },
+    {
+      "check": "warm-supersession-B",
+      "screen": "world",
+      "language": "German (verified original settings)",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-lc-7",
+      "protocol_version": 2,
+      "state_sha256": "2c06dff1a46b60809858d270de8cc1a4d7e3bf6821c6ae3c650fc97f6d9637a4",
+      "command": [
+        "/Users/antonborodin/Library/Android/sdk/platform-tools/adb",
+        "-s",
+        "emulator-5554",
+        "shell",
+        "am",
+        "start",
+        "-n",
+        "com.unciv.app/.AndroidLauncher",
+        "--es",
+        "l10n_screen",
+        "world",
+        "--es",
+        "l10n_request",
+        "i47-66807a6e823c2330d40e07aa7697748c-lc-7",
+        "--es",
+        "l10n_state_b64",
+        "eyJjYW1lcmEiOnsiY2VudGVyX3RpbGUiOlstNywxMV0sInpvb20iOjF9LCJleHBhbmRlZF9zZWN0aW9ucyI6W10sIm5ld19nYW1lIjpudWxsLCJzYXZlIjoiaXNzdWUtOC1wYWlyIiwic2NoZW1hX3ZlcnNpb24iOjEsInNjcm9sbCI6e30sInNjcm9sbF90byI6eyJwYW5lLTAiOnsiYWxpZ24iOiJ2aXNpYmxlIiwiZWRnZSI6InN0YXJ0In19LCJzZWxlY3Rpb24iOnsidW5pdCI6eyJuYW1lIjoiV2FycmlvciIsIm93bmVyIjoiVGhlIE90dG9tYW5zIiwidGlsZSI6Wy03LDExXX19LCJ0YWIiOm51bGx9Cg==",
+        "--es",
+        "l10n_protocol",
+        "2"
+      ],
+      "expected": "superseded if still unfinished",
+      "temporary": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-lc-7.json.tmp",
+      "file": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-lc-7.json"
+    },
+    {
+      "check": "warm-supersession-C",
+      "screen": "tech-picker",
+      "language": "German (verified original settings)",
+      "request": "i47-66807a6e823c2330d40e07aa7697748c-lc-8",
+      "protocol_version": 2,
+      "state_sha256": "7a30c97c5cce346d532f9630e0b4272070a680ad821a1217fbf27d9ae2e28139",
+      "command": [
+        "/Users/antonborodin/Library/Android/sdk/platform-tools/adb",
+        "-s",
+        "emulator-5554",
+        "shell",
+        "am",
+        "start",
+        "-n",
+        "com.unciv.app/.AndroidLauncher",
+        "--es",
+        "l10n_screen",
+        "tech-picker",
+        "--es",
+        "l10n_request",
+        "i47-66807a6e823c2330d40e07aa7697748c-lc-8",
+        "--es",
+        "l10n_state_b64",
+        "eyJjYW1lcmEiOm51bGwsImV4cGFuZGVkX3NlY3Rpb25zIjpbXSwibmV3X2dhbWUiOm51bGwsInNhdmUiOiJpc3N1ZS04LXBhaXIiLCJzY2hlbWFfdmVyc2lvbiI6MSwic2Nyb2xsIjp7fSwic2Nyb2xsX3RvIjp7ImRlc2NyaXB0aW9uIjp7ImFsaWduIjoidmlzaWJsZSIsImVkZ2UiOiJzdGFydCJ9LCJ0ZWNoLXRyZWUiOnsiYWxpZ24iOiJ2aXNpYmxlIiwidGVjaG5vbG9neSI6Ik1pbmluZyJ9fSwic2VsZWN0aW9uIjp7InRlY2hub2xvZ3kiOiJBcmNoZXJ5In0sInRhYiI6bnVsbH0K",
+        "--es",
+        "l10n_protocol",
+        "2"
+      ],
+      "expected": "READY",
+      "temporary": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-lc-8.json.tmp",
+      "file": "files/l10n-hook/i47-66807a6e823c2330d40e07aa7697748c-lc-8.json"
+    }
+  ],
+  "lifecycle_schedule": [
+    "After the 40-pair run has restored original German settings, make one v1 compatibility request (no dump)",
+    "Force one v2 construction failure, observe exactly one ERROR/cause/latency and two repeated screenshots plus read-only frame stats after terminal",
+    "Recover to v2 Tech Picker; record dump and two repeated screenshots/frame stats after READY",
+    "Force-stop and send cold supersession A/B/C consecutively without -W and without waiting for terminals between requests; then observe all correlated events",
+    "Send warm supersession A/B/C consecutively; observe retired callbacks and exactly-once terminals. Already-terminal requests cannot count as superseded; if the timing fails to exercise loading, report unverified rather than silently retry.",
+    "Launch ordinary mode without extras while warm to exercise leave; observe menu, send KEYCODE_BACK then KEYCODE_BACK to open/dismiss exit confirmation without confirming exit; force-stop",
+    "Run retained real main-menu capture test on new build; it applies compact English copy of original and restores the exact original bytes",
+    "Read-only final settings/all-save/build verification; stop app and unroot adbd"
+  ],
+  "ordinary_mode_commands": [
+    [
+      "/Users/antonborodin/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5554",
+      "shell",
+      "am",
+      "start",
+      "-W",
+      "-n",
+      "com.unciv.app/.AndroidLauncher"
+    ],
+    [
+      "/Users/antonborodin/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5554",
+      "shell",
+      "input",
+      "keyevent",
+      "KEYCODE_BACK"
+    ],
+    [
+      "/Users/antonborodin/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5554",
+      "shell",
+      "input",
+      "keyevent",
+      "KEYCODE_BACK"
+    ]
+  ],
+  "pytest_device_command": [
+    "env",
+    "PYTHONPATH=src",
+    "uv",
+    "run",
+    "--offline",
+    "--cache-dir",
+    "/private/tmp/issue47-uv-cache",
+    "pytest",
+    "--run-device",
+    "tests/test_capture_device.py",
+    "-q",
+    "-rs"
+  ],
+  "legacy_hook_test": "Existing test_hook_device.py is explicitly pinned to 1271045. Do not weaken its expectation or call it a pass on 1271047; the planned v1 request above verifies target-build transport with the same original state.",
+  "read_only_runtime_observations": [
+    "SDK screencap",
+    "logcat with one fresh marker per sequential request or supersession burst; never logcat -c",
+    "pid/foreground/density/cutout/build/hash checks",
+    "dumpsys gfxinfo com.unciv.app framestats without reset",
+    "dumpsys SurfaceFlinger read-only layer/frame observations if available",
+    "run-as com.unciv.app cat only declared hook output paths after publication"
+  ],
+  "recovery": {
+    "on_timeout_or_uncertain_launch": "Force-stop before the next scheduled request; no extra request or namespace retries",
+    "settings_restoration": {
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "payload_sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7",
+      "source": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/checker/data/issue-47/preinstall-20261021/private/GameSettings.json",
+      "metadata": "10196 10196 600 873",
+      "additional_contingent_writes_maximum": 1,
+      "condition": "Only if either ordinary-mode checks or a failed runner leave settings different; stop first, restore exact source bytes, verify unchanged owner/mode and readback, then abort if not verified"
+    },
+    "on_save_change": "Stop and report; no save replacement/deletion authorized by this plan",
+    "on_install_failure": "Stop; no uninstall, downgrade, data clear, alternate APK or automatic rollback",
+    "hook_output_cleanup": "None. Retain new temporary/final files; no wildcard deletion or reuse.",
+    "changed_build_inputs_or_commands": "Invalidate approval and request a revised exact-operation approval before dependent writes"
+  },
+  "reference_comparison": {
+    "directory": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/checker/data/issue-47/reference-1271045-effective",
+    "summary_sha256": "42e1882fe04b5739f7b4e7f628fe27c9a80e9a6426b74b9bf7558efa38119aec",
+    "records": 40,
+    "composition": "Composite effective #41 set: 18 original screen/language pairs plus 2 corrected New Game pairs; not one full rerun after the template correction",
+    "criterion": "0 changed decoded pixels for every corresponding image; repeated dump bytes must match exactly. Preserve differences without normalization or input changes."
+  },
+  "final_state_required": {
+    "installed_version_code": "1271047",
+    "settings_sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7",
+    "settings_stat": "10196 10196 600 873",
+    "saves": "All four original file hashes unchanged",
+    "adbd": "shell",
+    "app": "stopped",
+    "new_hook_outputs": "retained"
+  },
+  "reference_confirmation": "Not included in device approval. Generate 20 candidates; Anton alone confirms references and performs the remaining two D-025 human scroll checks.",
+  "live_provider_requests": 0,
+  "estimated_cost_usd": 0
+}

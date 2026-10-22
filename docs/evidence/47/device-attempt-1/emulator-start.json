@@ -1,0 +1,10 @@
+{
+  "command": [
+    "/Users/antonborodin/Library/Android/sdk/emulator/emulator",
+    "-avd",
+    "unciv_api34",
+    "-no-snapshot-save"
+  ],
+  "pid": 11295,
+  "authorization": "Anton explicitly authorized starting the free emulator on 2026-10-22"
+}

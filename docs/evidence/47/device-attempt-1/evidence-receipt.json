@@ -1,0 +1,76 @@
+{
+  "status": "device_acceptance_failed",
+  "losslessly_compressed_outputs": [],
+  "files": [
+    {
+      "file": "after-abort-preservation.json",
+      "sha256": "00015a384aa36b0cd29aca42100218731ef40966c4b7bd6e7f51f38619e2a6db",
+      "bytes": 801
+    },
+    {
+      "file": "android-crash.txt",
+      "sha256": "41f66ba146870af275a55664796207bdb3b36c6404201cab66695941dd8c8c6e",
+      "bytes": 4585
+    },
+    {
+      "file": "approved-device-plan.json",
+      "sha256": "adf97ce9ec33e3c289c57e13ab7a37308ea2a5c9d33e959365d177e9aaa30261",
+      "bytes": 38556
+    },
+    {
+      "file": "authorization.json",
+      "sha256": "6f3efcb55c9de793978ed54616c7e719ed287841670ee68be56a9f2ea63f9e72",
+      "bytes": 376
+    },
+    {
+      "file": "capture-abort.json",
+      "sha256": "cec2e78fdfef1dfb351ce1204fef346e9e42e4c8ff015074142fa21e17292194",
+      "bytes": 691
+    },
+    {
+      "file": "capture-diagnostic-log.txt",
+      "sha256": "7670ae55abf6b1b632fec017911240db43412122858da257e013fe3b2b43c99c",
+      "bytes": 1327
+    },
+    {
+      "file": "capture-exit.json",
+      "sha256": "ec437ca036a170ec67e85bcfe95be2a0de6be52da238ae7325e2723b9427f36d",
+      "bytes": 635
+    },
+    {
+      "file": "capture-summary.json",
+      "sha256": "43460630a7d1a441a4d30f9c0c2de7bd07e7b4703803b9dd13bd69689569ff13",
+      "bytes": 9863
+    },
+    {
+      "file": "capture.txt",
+      "sha256": "63d3846f4b2a1caaf4427732104d5f59c01977372eeb8d68a6e53de9455f4801",
+      "bytes": 2177
+    },
+    {
+      "file": "emulator-prepare.txt",
+      "sha256": "bcd2dba11eb066619b27073b7d579edfabbefec6bf4b0a860f7c4382548b67e9",
+      "bytes": 48
+    },
+    {
+      "file": "emulator-start.json",
+      "sha256": "2f077f439b2eb7e04d43f8277844ef487e912f52c4dd44ef6b5eeede5cc34c13",
+      "bytes": 250
+    },
+    {
+      "file": "install-result.json",
+      "sha256": "88bf1b438ca413e5bb4f17c8b4ecdaf7a13b816db81513539270e356e18d18fb",
+      "bytes": 400
+    },
+    {
+      "file": "postinstall-verification.json",
+      "sha256": "a338e84219809d685ae0c07eca15a9b50bf89e05093f766d8d09f26aeee60f74",
+      "bytes": 413
+    },
+    {
+      "file": "report.md",
+      "sha256": "df3d06bd1e812c3ee039144a6155b6841af4faae02f7814193ca051a158b12a6",
+      "bytes": 6174
+    }
+  ]
+}
