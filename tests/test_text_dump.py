@@ -134,18 +134,29 @@ def test_strict_dump_validation_and_original_rendered_text():
 
 
 @pytest.mark.parametrize(
-    ("sample", "display", "hidden_input"),
+    ("sample", "display", "hidden_input", "expected_build"),
     [
-        ("fork-synthetic-sample.texts.json", "ü", "ü hidden suffix"),
-        ("fork-host-draw-sample.texts.json", "üЖ...", "[RED]üЖ[] long suffix"),
+        ("fork-synthetic-sample.texts.json", "ü", "ü hidden suffix", 1271047),
+        (
+            "fork-host-draw-sample.texts.json",
+            "üЖ...",
+            "[RED]üЖ[] long suffix",
+            1271047,
+        ),
+        (
+            "fork-fixed-host-draw-sample.texts.json",
+            "üЖ...",
+            "[RED]üЖ[] long suffix",
+            1271048,
+        ),
     ],
 )
 def test_kotlin_generated_dump_is_consumed_verbatim_without_hidden_input(
-    tmp_path, sample, display, hidden_input
+    tmp_path, sample, display, hidden_input, expected_build
 ):
     source = Path(__file__).resolve().parents[1] / "docs/evidence/47" / sample
     raw = source.read_bytes()
-    dump = load_dump(raw)
+    dump = load_dump(raw, expected={"build_version_code": expected_build})
     with pytest.raises(CaptureError, match="build_version_code mismatch"):
         load_dump(raw, expected={"build_version_code": 1271045})
     pair = write_pair(tmp_path, json.loads(raw))
@@ -165,7 +176,7 @@ def test_build_pinned_v2_manifest_reuses_all_v1_screen_inputs():
     v2 = Inputs(FIXTURES / "screens-v2.json")
     assert v1.manifest.protocol_version == 1
     assert v2.manifest.protocol_version == 2
-    assert v2.manifest.build.version_code == "1271047"
+    assert v2.manifest.build.version_code == "1271048"
     assert v2.manifest.model_dump(exclude={"build", "protocol_version"}) == (
         v1.manifest.model_dump(exclude={"build", "protocol_version"})
     )

@@ -1,0 +1,20 @@
+{
+  "version_code": 1271048,
+  "prior_failed_version_code": 1271047,
+  "prior_failed_commit": "df59cf982e3035f7733d4ffd58e3a56325eb4c82",
+  "remote_probe_commit": "10d8c5423921fb875fb7c02fd497bf50c5d368de",
+  "remote_probe_build_config_version": 1271045,
+  "reported_actual_probe_builds": [
+    1271451,
+    1271452,
+    1271453,
+    1271454,
+    1271455,
+    1271456,
+    1271457,
+    1271458
+  ],
+  "probe_allocation_source": "Read-only coordination from parent chat 01a15fbd-9854-7490-a16c-fee4475d4245; parent inspected completed issue 45 chat. Reported, not independently run here.",
+  "allocation_distinct": true,
+  "device_commands_this_session": 0
+}

@@ -1,3 +1,5 @@
+> Runtime update (2026-10-22): the original 1271047 device attempt failed; original settings/saves were verified restored. See [device-attempt-1/report.md](device-attempt-1/report.md) and [replacement-host/report.md](replacement-host/report.md) for the host-tested 1271048 replacement, which still needs separate device approval. The original offline checkpoint below is historical.
+
 # Issue 47 Report — offline phase
 
 **Status: offline implementation complete; device acceptance and human reference confirmation are pending.** This does not complete #47 or close #44. The emulator was not accessed. Pixel equality, real-screen coverage, repeated device dumps, startup/failure/freeze behavior and the installed signing compatibility remain unverified. Android lint retains 36 warnings (0 errors).

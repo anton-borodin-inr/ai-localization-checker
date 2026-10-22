@@ -1,0 +1,111 @@
+{
+  "commit": "b534a8ae67c390412984869c7a03b168d532c36c",
+  "base_commit": "df59cf982e3035f7733d4ffd58e3a56325eb4c82",
+  "branch": "feat/47-engine-text-dump",
+  "worktree_clean": true,
+  "version_code": 1271048,
+  "version_name": "4.22.10",
+  "application_id": "com.unciv.app",
+  "apk_path": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/Unciv/build/issue47-fix-evidence/Unciv-1271048-debug.apk",
+  "apk_sha256": "91d9a900f8204880e590de7fb90f0fc15e2aa5cf5d94a3ae77364497d7b0541e",
+  "signer_certificate_sha256": "b4752f8cee80842f55883ca2a9b62ca75c898df5a1b7cefd63959ba1b8fecb99",
+  "signing_schemes": {
+    "v1": true,
+    "v2": true
+  },
+  "signature_report": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/Unciv/build/issue47-fix-evidence/apk-signing.txt",
+  "build_command": "JAVA_HOME='/Applications/Android Studio.app/Contents/jbr/Contents/Home' GRADLE_USER_HOME=\"$PWD/build/gradle-home\" ./gradlew :tests:test :android:assembleDebug :android:lintDebug --no-daemon",
+  "build_exit_code": 0,
+  "build_log": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/Unciv/build/issue47-fix-evidence/host-checks.log",
+  "diff_check_exit_code": 0,
+  "all_tests": {
+    "tests": 957,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 20,
+    "passed": 937
+  },
+  "l10n_tests": {
+    "tests": 49,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 49
+  },
+  "metadata_tests": 8,
+  "skipped_test_names": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/Unciv/build/issue47-fix-evidence/test-summary.json",
+  "lint_severities": {
+    "Warning": 36
+  },
+  "lint_ids": {
+    "OldTargetApi": 1,
+    "UnusedAttribute": 4,
+    "AndroidGradlePluginVersion": 1,
+    "GradleDependency": 3,
+    "NewerVersionAvailable": 16,
+    "UnusedResources": 2,
+    "TypographyEllipsis": 1,
+    "MonochromeLauncherIcon": 2,
+    "IconDensities": 3,
+    "UseKtx": 3
+  },
+  "same_skip_names_and_lint_ids_as_prior_host_run": true,
+  "regression_before_fix": {
+    "exit_code": 1,
+    "tests": 1,
+    "failures": 1,
+    "expected": true,
+    "log": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/Unciv/build/issue47-fix-evidence/regression-before-fix.log",
+    "junit": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/Unciv/build/issue47-fix-evidence/regression-before-fix.xml"
+  },
+  "focused_after_fix": {
+    "exit_code": 0,
+    "tests": 49,
+    "failures": 0,
+    "log": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/Unciv/build/issue47-fix-evidence/focused-after-fix.log"
+  },
+  "sample_dump": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/Unciv/build/issue47-fix-evidence/host-draw-sample.texts.json",
+  "sample_sha256": "c6193bbdc368dc67899608f681409214e46d46e0ac5e8db4bb7b78f2d670ea95",
+  "samples": {
+    "sample.texts.json": {
+      "path": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/Unciv/build/issue47-fix-evidence/sample.texts.json",
+      "sha256": "fe7355848948e69c3a67e0dcaa74ed6e5f66c938a9113884fab430c02fc1fcf7",
+      "type": "synthetic host sample, not device evidence"
+    },
+    "host-draw-sample.texts.json": {
+      "path": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/Unciv/build/issue47-fix-evidence/host-draw-sample.texts.json",
+      "sha256": "c6193bbdc368dc67899608f681409214e46d46e0ac5e8db4bb7b78f2d670ea95",
+      "type": "synthetic host sample, not device evidence"
+    }
+  },
+  "prior_1271047_artifacts_preserved": true,
+  "prior_artifact_hashes": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/Unciv/build/issue47-fix-evidence/prior-artifact-hashes.json",
+  "version_allocation": {
+    "version_code": 1271048,
+    "prior_failed_version_code": 1271047,
+    "prior_failed_commit": "df59cf982e3035f7733d4ffd58e3a56325eb4c82",
+    "remote_probe_commit": "10d8c5423921fb875fb7c02fd497bf50c5d368de",
+    "remote_probe_build_config_version": 1271045,
+    "reported_actual_probe_builds": [
+      1271451,
+      1271452,
+      1271453,
+      1271454,
+      1271455,
+      1271456,
+      1271457,
+      1271458
+    ],
+    "probe_allocation_source": "Read-only coordination from parent chat 01a15fbd-9854-7490-a16c-fee4475d4245; parent inspected completed issue 45 chat. Reported, not independently run here.",
+    "allocation_distinct": true,
+    "device_commands_this_session": 0
+  },
+  "regex_audit": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/Unciv/build/issue47-fix-evidence/regex-audit.md",
+  "provider_requests": 0,
+  "provider_cost_usd": 0,
+  "device_commands": 0,
+  "device_verification": "not_run; replacement requires new exact-operation approval",
+  "push_performed": false,
+  "pull_request_created": false,
+  "checker_edited": false
+}

@@ -52,12 +52,20 @@ byte-identical as well as PNGs being pixel-identical. Dump differences remain
 in the summary and make the run unsuccessful; request IDs are not stripped
 from files to manufacture equality.
 
-`fixtures/stage2/screens-v2.json` pins the host-built APK 1271047 (fork commit
-`df59cf982e3035f7733d4ffd58e3a56325eb4c82`, APK SHA-256
-`ecd8c424dc09500f32edd075df71903ab64f6ba9c7ba985bc536e80f21e2c438`).
+`fixtures/stage2/screens-v2.json` pins the host-built replacement APK 1271048 (fork commit
+`b534a8ae67c390412984869c7a03b168d532c36c`, APK SHA-256
+`91d9a900f8204880e590de7fb90f0fc15e2aa5cf5d94a3ae77364497d7b0541e`).
 It reuses every v1 screen/state/settings/save byte and route. It is a prepared
 input, not evidence of installation or device acceptance. A changed build
 requires a new manifest pin and exact-write approval.
+
+The first real 1271047 attempt failed on Android component-metadata regex
+compilation and produced no successful pairs. See
+[evidence/47/device-attempt-1/report.md](evidence/47/device-attempt-1/report.md).
+The replacement removes that runtime regex and adds direct binding coverage;
+its host tests do not establish Android acceptance. A fresh device plan uses
+a v1/fault/recovery primer before the 40-pair batch.
+
 
 After capture, compare all 40 new PNGs against the original 1271045 run:
 

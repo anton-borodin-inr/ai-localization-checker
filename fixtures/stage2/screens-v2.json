@@ -2,10 +2,10 @@
   "schema_version": 1,
   "protocol_version": 2,
   "build": {
-    "version_code": "1271047",
-    "apk_sha256": "ecd8c424dc09500f32edd075df71903ab64f6ba9c7ba985bc536e80f21e2c438",
-    "fork_commit": "df59cf982e3035f7733d4ffd58e3a56325eb4c82",
-    "implementation_commit": "df59cf982e3035f7733d4ffd58e3a56325eb4c82"
+    "version_code": "1271048",
+    "apk_sha256": "91d9a900f8204880e590de7fb90f0fc15e2aa5cf5d94a3ae77364497d7b0541e",
+    "fork_commit": "b534a8ae67c390412984869c7a03b168d532c36c",
+    "implementation_commit": "b534a8ae67c390412984869c7a03b168d532c36c"
   },
   "resolution": [
     2400,
