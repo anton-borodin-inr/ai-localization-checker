@@ -1,0 +1,44 @@
+{
+  "sha256": "fc99736e63c9e3b1a1542ec4ef482e5e23737b53a74609abaf5dfea2a95b5d36",
+  "bytes": 5616098,
+  "complete": true,
+  "event_count": 62,
+  "event_kinds": [
+    "affected-cache",
+    "atlas-checkpoint",
+    "batch-flush",
+    "font-created",
+    "font-page",
+    "frame",
+    "full-upload",
+    "generate-mipmaps",
+    "glyph-created",
+    "lod-bias",
+    "phase",
+    "sub-upload"
+  ],
+  "cpu_atlas_pages": [
+    {
+      "font": 1,
+      "page": 0,
+      "texture": 1,
+      "size": [
+        1024,
+        1024
+      ],
+      "rgba_sha256": "a970516e98eef31f218a303efda03f62519ed2cfffc044d3b1524438fda40b52",
+      "bytes": 4194304
+    }
+  ],
+  "provenance": "Fork host synthetic glyphs/mock GL; validates transport interoperability only, never Android coverage/reference",
+  "expected": {
+    "diagnostic_version": 1,
+    "build_version_code": 1271049,
+    "protocol_version": 1,
+    "screen": "tech-picker",
+    "language": "German",
+    "mode": "current-on",
+    "request": "host-diagnostic-sample",
+    "state_sha256": "0ce909d122b405f2aaf922fe1f177b756ffdf62d615b3b7238a2b7fc609ebcb0"
+  }
+}

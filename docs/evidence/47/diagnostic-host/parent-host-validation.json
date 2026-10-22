@@ -1,0 +1,32 @@
+{
+  "status": "host_validated_no_device_access",
+  "plan_sha256": "2e38e2a5c87f9772948ce3a650833c79aac47c23a22a9ebda57b462ad82ac7d0",
+  "runner_sha256": "521a2ab7de546e6bed0599916d188f71a010d921579172ca5b7c1f349eafbbbd",
+  "static_validation": {
+    "status": "host_validated_no_device_access",
+    "plan_sha256": "2e38e2a5c87f9772948ce3a650833c79aac47c23a22a9ebda57b462ad82ac7d0",
+    "apk_updates_max": 2,
+    "requests": 4,
+    "diagnostic_final_files": 2,
+    "normal_settings_writes": 0,
+    "prior_hook_files_to_verify": 45
+  },
+  "unit_tests": 25,
+  "unit_tests_exit_code": 0,
+  "unit_test_interpreter": "work/checker/.venv/bin/python (venv symlink path preserved)",
+  "prior_host_attempt": "Wrongly resolving the interpreter symlink launched system Python without Pillow; import failed before SDK construction. Retained all-host-tests-invalid-interpreter.txt. No dependency/test/code change to obtain the valid rerun.",
+  "missing_receipt_rejected_before_device_construction": true,
+  "device_constructor_calls": 0,
+  "execution_directory_created": false,
+  "files": {
+    "runner.py": "521a2ab7de546e6bed0599916d188f71a010d921579172ca5b7c1f349eafbbbd",
+    "controller.py": "356d8f592c95fc003b5d58c79f4707f7856c6b056a33f0f07c9812b1138fc6c3",
+    "diagnostic_readback.py": "b9b5fdb751719a1263759b673a19c9a00450e4c6235b24c54f814755704ad549",
+    "test_flow.py": "d24bb4191f476f7c2c3b0b34b5305b813a251b3782f08643f6ed774966be0be6",
+    "test_readback.py": "191a53e9d81a162c7461860b4d89ec574f068ae6339f069220f0ed419782f3e8",
+    "test_runner.py": "1ea8e688f1055916377021f59c40ec9285d73bedac9e39fd7595cfbc65ab546c",
+    "prepare_plan.py": "cca44903ab68540aa1fa85702f8ee7776767d3303f4105e3b47103c9823ee75f"
+  },
+  "provider_requests": 0,
+  "spend_usd": 0
+}

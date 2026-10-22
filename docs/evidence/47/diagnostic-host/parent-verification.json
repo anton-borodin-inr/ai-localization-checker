@@ -1,0 +1,29 @@
+{
+  "fork_commit": "c8eb6fb7e42fc29cdc2b20a813f475d645fbf4be",
+  "verification": "Parent inspected actual XML totals, successful host-check log, pinned APK bytes/version/signer; parent did not rerun fork Gradle",
+  "test_totals": {
+    "tests": 967,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 20
+  },
+  "passed": 947,
+  "l10n_totals": {
+    "tests": 59,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "lint_errors": 0,
+  "lint_warnings": 16,
+  "packaged_assets_and_native_entries_checked": 205,
+  "changed_packaged_assets_or_native_libraries": [],
+  "no_android_pixel_equivalence_claim": true,
+  "provider_requests": 0,
+  "spend_usd": 0,
+  "lint_xml_checked": true,
+  "lint_severities": {
+    "Warning": 16
+  },
+  "host_sample_parser_interoperability": true
+}

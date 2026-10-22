@@ -1,0 +1,50 @@
+{
+  "tests": {
+    "tests": 967,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 20,
+    "passed": 947
+  },
+  "l10n": {
+    "tests": 59,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 59
+  },
+  "skips": [
+    "com.unciv.logic.TranslationTests.measureTranslateCivilopedia",
+    "com.unciv.logic.TranslationTests.translateAndHashCivilopedia",
+    "com.unciv.logic.TranslationTests.listTranslatedNames",
+    "com.unciv.logic.map.PathfindingTests.shortestPathEvenWhenItsWayMoreTiles[ClassicPathfinding]",
+    "com.unciv.logic.map.PathfindingTests.canPauseBeforeMountainsToCrossWithoutDamage[ClassicPathfinding]",
+    "com.unciv.logic.map.PathfindingTests.getMovementToTilesAtPosition_withNegativeMovement_ReturnsOrigin[ClassicPathfinding]",
+    "com.unciv.logic.map.PathfindingTests.getMovementToTilesAtPosition_mountains_movesTo[AStarPathfinding]",
+    "com.unciv.logic.map.PathfindingTests.getMovementToTilesAtPosition_ocean_movesTo[AStarPathfinding]",
+    "com.unciv.logic.map.PathfindingTests.getMovementToTilesAtPosition_withVirtuallyNoMovement_ReturnsNeighbors[AStarPathfinding]",
+    "com.unciv.view.ViewPurityTest.non-Readonly functions in owned Views always return Boolean",
+    "com.unciv.logic.LoadGameTest.updateVanillaGameString",
+    "com.unciv.logic.LoadGameTest.updateReligionGameString",
+    "com.unciv.logic.LoadGameTest.updateScreenshotGame",
+    "com.unciv.logic.map.ResourceDiversityTest.resourceDiversityAcrossMapSizesAndTypes",
+    "com.unciv.logic.automation.unit.WorkerAutomationTest.should connect small cities with roads despite competing farm tiles",
+    "com.unciv.ui.components.tilegroups.EditorMapHolderMemoryTest.tileGroupMemoryBreakdown",
+    "com.unciv.testing.BasicTests.statMathStressTest",
+    "com.unciv.logic.MediaFinderTests.Sound listing does not include bullshit",
+    "com.unciv.ui.screens.devconsole.DevConsoleTests.listAllCommands",
+    "com.unciv.logic.NextTurnLatencyTest.classMethod"
+  ],
+  "lint_severities": {
+    "Warning": 16
+  },
+  "lint_ids": {
+    "OldTargetApi": 1,
+    "UnusedAttribute": 4,
+    "UnusedResources": 2,
+    "TypographyEllipsis": 1,
+    "MonochromeLauncherIcon": 2,
+    "IconDensities": 3,
+    "UseKtx": 3
+  }
+}

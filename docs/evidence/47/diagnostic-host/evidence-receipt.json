@@ -1,0 +1,22 @@
+{
+  "files": {
+    "focused-tests-attempt-1.log.gz": "13a73be357e0106b1118c1a1eb4c41d346dc14502160cad6401f7249087dd401",
+    "focused-tests.log.gz": "91e8402d449586f270afeb625073bfd19df07f646f2fabccaa6888d7686bcf35",
+    "fork-apk-badging.txt": "53f04f5ea18e5147b8f9e596ea960e8ff8cbc4fcb75de908c1bf318e202768d4",
+    "fork-apk-signing.txt": "436231b6082eec90856aaf1e5005446dcfe2c50b4d5ce47329a1b66c4ee278d9",
+    "fork-lint-results-debug.xml": "7b0516c5cd4849dabf94bec4fa2639f1ec48d8560bf979b11f49d9acd39a0e20",
+    "fork-sample-verification.json": "5d34660ff70b77994717c7ee2100b32395c11c3b6caf750c4769f50e87534164",
+    "fork-test-summary.json": "b3526febe4b0a96f78cbbb7a56e759b621c525c9b77b1fe3af5d6730806b6445",
+    "host-checks.log.gz": "13947b09a9d319811e9ebefe646faa60b24657d8e1a34a5691d04da359b093ea",
+    "initial-output-snapshot-build.log.gz": "678c1f50d68d163f82490f402d7e2105b35d830c7b3b09f837c96a0f518f0d9b",
+    "parent-host-validation.json": "30183fa520bd540a5414c19812439d742871b6dc97e7f9685ef2959f44adb2e5",
+    "parent-sample-validation.json": "18b7384068f750220f04b11cc02de8def609ae927a65fc4c2ff18cb2e494bc85",
+    "parent-verification.json": "9f8499fe5c67df12259a610fa51e4343fbc49c24dab853549cf56af17aac356a",
+    "proposed-device-plan.json": "2e38e2a5c87f9772948ce3a650833c79aac47c23a22a9ebda57b462ad82ac7d0",
+    "report.md": "04eb2b463122bb5a60a143ac75eabcf95737b3675130eaf30006a79de8e31b54"
+  },
+  "device_5_authorized": false,
+  "device_5_executed": false,
+  "provider_requests": 0,
+  "spend_usd": 0
+}
