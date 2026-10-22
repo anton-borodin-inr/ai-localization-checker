@@ -9,11 +9,11 @@
     "fork-test-summary.json": "b3526febe4b0a96f78cbbb7a56e759b621c525c9b77b1fe3af5d6730806b6445",
     "host-checks.log.gz": "13947b09a9d319811e9ebefe646faa60b24657d8e1a34a5691d04da359b093ea",
     "initial-output-snapshot-build.log.gz": "678c1f50d68d163f82490f402d7e2105b35d830c7b3b09f837c96a0f518f0d9b",
-    "parent-host-validation.json": "30183fa520bd540a5414c19812439d742871b6dc97e7f9685ef2959f44adb2e5",
+    "parent-host-validation.json": "0dd63cfd0749b6c9c1b27a522f4be4256cecee481cb55aa81f255e09b5f04c4b",
     "parent-sample-validation.json": "18b7384068f750220f04b11cc02de8def609ae927a65fc4c2ff18cb2e494bc85",
     "parent-verification.json": "9f8499fe5c67df12259a610fa51e4343fbc49c24dab853549cf56af17aac356a",
-    "proposed-device-plan.json": "2e38e2a5c87f9772948ce3a650833c79aac47c23a22a9ebda57b462ad82ac7d0",
-    "report.md": "04eb2b463122bb5a60a143ac75eabcf95737b3675130eaf30006a79de8e31b54"
+    "proposed-device-plan.json": "301b207483112563fda281da03181f31440a4e7b867a631e19541eefed87aa15",
+    "report.md": "56371b3f5fcce59f575756257749cdbca87769ae864840d9d7e56d65c25c5c56"
   },
   "device_5_authorized": false,
   "device_5_executed": false,

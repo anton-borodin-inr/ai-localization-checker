@@ -60,11 +60,11 @@
   "checker_runtime_commit": "2e6f595506c8df47e70e270f510793658e2bed1a",
   "host_components": {
     "controller.py": "356d8f592c95fc003b5d58c79f4707f7856c6b056a33f0f07c9812b1138fc6c3",
-    "diagnostic_readback.py": "b9b5fdb751719a1263759b673a19c9a00450e4c6235b24c54f814755704ad549"
+    "diagnostic_readback.py": "8fa461230754ac2d9d840350e59cc876e813615936ddfed1e5dfe4c4f7d6674d"
   },
   "diagnostic_contract": {
-    "path": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/fork-diagnostic-contract.md",
-    "sha256": "2028d3065d22db95c50a742305c34feb656f34639c0dd713479b13bc2158346b"
+    "path": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/outputs/issue-47-diagnostic-contract.json",
+    "sha256": "538a5a0ce5de7c9df208100178ce7cc99af0980c8ae960b06f620dbd554f689e"
   },
   "build_verifier": "Inputs from the unchanged hash-pinned 1271048 manifest; diagnostic verification replaces only its in-memory Build metadata with diagnostic_build, preserving state/settings/fixture bytes, resolution and DPI",
   "install_operations": [
@@ -520,5 +520,18 @@
     "provider/model API calls/spend, secrets/hold-out, push/PR/merge/issue closure"
   ],
   "provider_requests": 0,
-  "spend_usd": 0
+  "spend_usd": 0,
+  "diagnostic_limits": {
+    "events": 8192,
+    "hook_callbacks": 1024,
+    "font_generations": 16,
+    "atlas_pages": 16,
+    "textures": 256,
+    "event_bytes": 4194304,
+    "cpu_page_bytes": 4194304,
+    "affected_pages": 2,
+    "sidecar_bytes": 16777216
+  },
+  "supersedes_unapproved_sha256": "2e38e2a5c87f9772948ce3a650833c79aac47c23a22a9ebda57b462ad82ac7d0",
+  "preapproval_revision": "Align final 1024-callback diagnostic capacity and freeze the final machine contract; exact APK operations, requests and file paths unchanged. Prior draft was never approved/executed."
 }

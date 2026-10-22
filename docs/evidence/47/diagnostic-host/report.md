@@ -21,13 +21,13 @@ Fork host test/build/lint completed successfully after the final source change. 
 - Parent compared **205 packaged assets/native-library entries** with exact 1271048: no differences. This does not establish identical DEX behavior, glyph ordering or Android/GPU pixels.
 - New host off/on tests use actual NativeBitmapFontData/FontLodBiasBatch with synthetic glyphs and mock GL; equal host mutating-call/cache observations do not prove Android equivalence.
 - Fork host sidecar sample: SHA-256 `fc99736e63c9e3b1a1542ec4ef482e5e23737b53a74609abaf5dfea2a95b5d36`, **62 events / one CPU atlas page**. Parent parser independently validated binding types, sequence, embedded base64/dimensions/RGBA hashes. This sample is synthetic transport evidence, never a reference or device coverage.
-- Parent controller/event/sidecar tests: **25 passed**, Ruff check/format passed. Static exact-plan validation and missing-approval rejection passed with **0 Device constructor calls**. No plan-5 execution directory or SDK command exists.
+- Parent controller/event/sidecar tests: **26 passed**, Ruff check/format passed. Static exact-plan validation and missing-approval rejection passed with **0 Device constructor calls**. No plan-5 execution directory or SDK command exists.
 
 The initial Gradle attempt stalled while reading prior class outputs; an isolated build/project cache preserved previous evidence. The first focused test attempt had two harness failures, reported by the fork as missing GameSettings and a one-time shader capability probe; those attempts and the successful reruns are retained. Parent also retained a failed host-test invocation that incorrectly resolved the venv interpreter symlink to system Python without Pillow; the valid rerun used the unchanged checker venv, without a dependency/test/production change. These failures did not access a device and are not reported as successful checks.
 
 ## Proposed device gate
 
-Plan ID `i47-diag-f060af2f0b2d453c8a03a4c23d08d7ea`, JSON SHA-256 `2e38e2a5c87f9772948ce3a650833c79aac47c23a22a9ebda57b462ad82ac7d0`. Runner SHA-256 `521a2ab7de546e6bed0599916d188f71a010d921579172ca5b7c1f349eafbbbd`.
+Plan ID `i47-diag-f060af2f0b2d453c8a03a4c23d08d7ea`, JSON SHA-256 `301b207483112563fda281da03181f31440a4e7b867a631e19541eefed87aa15`. Runner SHA-256 `1f8960cfb2f0c4a6f74390489d48f60b07fb7ede6b12cb96cec7edba4869ac9d`.
 
 The separate exact plan proposes two data-preserving APK updates: install 1271049 once, run four cold v1 German requests with eight PNGs and two exact final/two exact temporary sidecars, then explicitly downgrade to exact 1271048 once with `-r -d`. It includes verified private backup/preservation of original German settings, four saves and 45 old hook files, zero normal settings/save writes, and one contingent exact original-settings recovery. Any failure stops later hooks and uses only the same one listed target restoration, with no retry or cleanup. No device operation is authorized by this host report.
 
@@ -42,3 +42,5 @@ The last verified device state after plan 4 is exact 1271048 stopped, adbd shell
 ## Changed checker files
 
 Only `docs/engine-text-reference.md` and the files listed in this directory's `evidence-receipt.json` are added/updated. Full diagnostic fork code/patch, APK and parent orchestration sources remain in separate task output artifacts; no Unciv implementation code is placed in the checker repository.
+
+Preapproval revision: the earlier unapproved draft was superseded after final contract validation. The validator now accepts the APK's 1,024-callback capacity; timeout/readiness/pixel rules and exact device writes are unchanged. The machine contract is a frozen output snapshot, not a mutable fork handoff. No device operation occurred.
