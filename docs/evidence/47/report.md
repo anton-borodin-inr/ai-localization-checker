@@ -52,7 +52,7 @@ and [the separate audit](review-fixes/candidate-independent-check.json).
 
 ## How it was verified
 
-- New regressions on old production code: 7 failed / 2 passed, exit 1; after the fix the whole dump module passed 30 tests, exit 0. [Red evidence](review-fixes/regression-before-fix.txt), [focused output](review-fixes/focused-tests.txt).
+- New regressions on old production code: 7 failed / 2 passed, exit 1; after the fix the whole dump module passed 30 tests, exit 0. [Red evidence](review-fixes/regression-before-fix.txt.gz), [focused output](review-fixes/focused-tests.txt).
 - Full offline `uv run --offline --cache-dir /private/tmp/issue47-uv-cache pytest -q -rs`: **1478 passed, 2 skipped**, exit 0. [Output](review-fixes/pytest.txt). Skips are the existing opt-in capture/hook device tests; `--run-device` was not run because this round expressly prohibits device commands.
 - `uv run ... ruff check .`, `uv run ... ruff format --check .`, and `git diff --check`: exit 0; 82 Python files formatted. Exact command/exit receipts are in [checks.json](review-fixes/checks.json). The task delivery index carries the final committed revision and final-head check receipt.
 - The pre-existing Kotlin host samples remain because the contract tests consume their exact bytes. Existing wheel packaging evidence remains; no wheel/APK/Gradle build was rerun.
@@ -155,7 +155,12 @@ baseline/OCR, label, translation, matching, metric, golden, detector or fixture
 change. Every pre-existing decision byte is preserved. No secrets or hold-out
 access. One host helper initially used system Python without Pillow (exit 1,
 before candidate mutation); rerunning with the existing checker venv succeeded.
-No package installation was needed.
+No package installation was needed. The staged diff check then caught trailing
+spaces in raw pytest assertion output; the first commit command incorrectly
+continued after that nonzero check. A follow-up preserves the exact log in
+lossless gzip (also retained raw in outputs), with decompression hash receipt.
+The complete branch diff is checked after correction; no evidence bytes were
+normalized and no failing regression was weakened.
 
 Anton still owns all 20 confirmations/timing and the Victory Status/Civilopedia
 D-025 scroll checks. Final fixes require independent review, numbering on

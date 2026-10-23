@@ -519,7 +519,11 @@
     },
     {
       "status": "A",
-      "file": "docs/evidence/47/review-fixes/regression-before-fix.txt"
+      "file": "docs/evidence/47/review-fixes/regression-before-fix.txt.gz"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/review-fixes/regression-log-receipt.json"
     },
     {
       "status": "A",
