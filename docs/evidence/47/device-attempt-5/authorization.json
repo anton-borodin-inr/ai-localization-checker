@@ -1,9 +1,0 @@
-{
-  "approved_by": "Anton",
-  "user_reply": "Действуй",
-  "recorded_utc": "2026-10-22T20:30:43.067959+00:00",
-  "plan_id": "i47-diag-f060af2f0b2d453c8a03a4c23d08d7ea",
-  "plan_sha256": "301b207483112563fda281da03181f31440a4e7b867a631e19541eefed87aa15",
-  "runner_sha256": "1f8960cfb2f0c4a6f74390489d48f60b07fb7ede6b12cb96cec7edba4869ac9d",
-  "scope": "Exact final plan5: install diagnostic1271049, four v1 German gate/telemetry controls, two final/two temporary sidecar paths, restore exact1271048 with -r -d once; original data preservation and one conditional settings recovery; no retries or provider calls."
-}

@@ -1,0 +1,68 @@
+{
+  "checked_at_utc": "2026-10-23T12:56:29.474930+00:00",
+  "head": "1d8c1c64e19036beaef3b9a60b86920bad09eccf",
+  "scope": "review-fixes working tree before commit",
+  "source_sha256": {
+    "src/l10n_checker/text_reference.py": "52f424e1fb767e5ec4d195e640d9b9c3ef076b3fcffe558ebff15fca69b120e3",
+    "tests/test_text_dump.py": "f9ef8d782303371fe46669b31fbda1c4693c1e7b914ff36619622d9f49dc7743"
+  },
+  "commands": [
+    {
+      "command": [
+        "uv",
+        "run",
+        "--offline",
+        "--cache-dir",
+        "/private/tmp/issue47-uv-cache",
+        "pytest",
+        "-q",
+        "-rs"
+      ],
+      "exit_code": 0,
+      "seconds": 9.171,
+      "output": "pytest.txt"
+    },
+    {
+      "command": [
+        "uv",
+        "run",
+        "--offline",
+        "--cache-dir",
+        "/private/tmp/issue47-uv-cache",
+        "ruff",
+        "check",
+        "."
+      ],
+      "exit_code": 0,
+      "seconds": 0.051,
+      "output": "ruff.txt"
+    },
+    {
+      "command": [
+        "uv",
+        "run",
+        "--offline",
+        "--cache-dir",
+        "/private/tmp/issue47-uv-cache",
+        "ruff",
+        "format",
+        "--check",
+        "."
+      ],
+      "exit_code": 0,
+      "seconds": 0.025,
+      "output": "format.txt"
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "seconds": 0.018,
+      "output": "diff-check.txt"
+    }
+  ],
+  "all_passed": true
+}

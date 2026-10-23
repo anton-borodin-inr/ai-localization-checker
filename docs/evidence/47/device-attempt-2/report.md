@@ -1,5 +1,9 @@
 # Issue 47 — device attempt 2 Report (1271048)
 
+**Current disposition (2026-10-23):** Cross-build Tech Picker differences are recorded under the third **D-0XX / Proposed** decision. Anton approved the same-build/repeat criterion; the cross-build difference does not block acceptance by itself. Production remains `b534a8a` / 1271048; diagnostic `c8eb6fb` is isolated. Root-cause investigation stays closed. All 20 regenerated candidates and the two D-025 checks still need Anton's confirmation. The text below is the historical checkpoint, including its original raw comparison failure; its pre-update bytes are retained in `issue-47-pre-review-fixes-evidence.zip`. See the current delivery report.
+
+## Historical checkpoint
+
 **Acceptance is incomplete: the strict comparison against 1271045 failed on Tech Picker.** All 40 PNG/dump pairs were captured successfully; all 20 forward/reverse PNG comparisons and all 20 repeated dump byte comparisons passed. Of the 40 corresponding #41 PNG comparisons, 36 are identical. Tech Picker differs by 40 pixels in English and 72 in German in each pass. The zero-pixel requirement is retained. Human reference confirmation and the two D-025 scroll checks remain pending. No push, PR, merge or issue closure occurred.
 
 ## Authorization and provenance

@@ -1,0 +1,80 @@
+{
+  "status": "passed",
+  "candidates": 20,
+  "png_dump_pair_byte_identical": true,
+  "all_other_row_fields_unchanged": true,
+  "moved_rows": {
+    "icons": 30,
+    "markup": 6
+  },
+  "full_units_verified_against_raw_dump": true,
+  "removed_icon_characters_in_full_units": {
+    "¤": 6,
+    "⚙": 12,
+    "⏳": 40,
+    "➡": 4,
+    "": 2,
+    "": 2,
+    "": 2,
+    "⌣": 2,
+    "⍾": 2,
+    "♪": 2,
+    "☮": 2,
+    "✏": 2,
+    "": 2,
+    "†": 4,
+    "⁂": 2,
+    "": 2,
+    "": 2,
+    "": 2,
+    "": 2
+  },
+  "real_candidate_spot_checks": [
+    {
+      "screen": "city-production",
+      "language": "German",
+      "before": "Kaufen 160¤",
+      "after": "Kaufen 160",
+      "primary": true,
+      "warnings": [
+        "icon_glyph:a4",
+        "source_unavailable"
+      ]
+    },
+    {
+      "screen": "city-production",
+      "language": "German",
+      "before": "Arbeiter\n31⚙ 8⏳",
+      "after": "Arbeiter\n31 8",
+      "primary": true,
+      "warnings": [
+        "icon_glyph:2699",
+        "icon_glyph:23f3",
+        "source_unavailable"
+      ]
+    },
+    {
+      "screen": "city-production",
+      "language": "German",
+      "before": "Kaufen 160¤",
+      "after": "Kaufen 160",
+      "primary": true,
+      "warnings": [
+        "icon_glyph:a4",
+        "source_unavailable"
+      ]
+    },
+    {
+      "screen": "city-production",
+      "language": "English",
+      "before": "Requires at least 2 population",
+      "after": "Requires at least 2 population",
+      "primary": true,
+      "warnings": [
+        "markup_input",
+        "source_unavailable"
+      ]
+    }
+  ],
+  "confirmation_created": false
+}

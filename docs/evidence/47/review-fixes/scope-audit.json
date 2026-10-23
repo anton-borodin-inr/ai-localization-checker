@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "review_start_head": "1d8c1c64e19036beaef3b9a60b86920bad09eccf",
+  "all_previous_decision_bytes_unchanged": true,
+  "only_approved_paths_changed": true,
+  "removed_files": 128,
+  "archive_byte_matches": 128,
+  "missing_or_mismatched_archive_files": 0,
+  "selected_method_report_links_exist": 58,
+  "protected_runtime_data_paths_unchanged": true,
+  "device_commands": 0,
+  "new_apks": 0,
+  "provider_requests": 0,
+  "spend_usd": 0
+}

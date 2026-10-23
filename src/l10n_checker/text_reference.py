@@ -111,14 +111,17 @@ def load_pair(path: Path):
     return pair, png, raw_dump, dump
 
 
-def ordinary_text(text: str) -> str:
-    """Keep rendered letters/punctuation; omit actual icon/private-use glyphs."""
-    return "".join(
-        c
-        for c in text
-        if not (0xE000 <= ord(c) <= 0xF8FF or 0xF0000 <= ord(c) <= 0x10FFFD)
-        and c not in "•◦▪"
-    ).strip()
+def ordinary_text(text: str, warnings: list[str]) -> str:
+    """Remove only engine-identified icons, preserving rendered line breaks."""
+    icon_codes = set()
+    for warning in warnings:
+        if warning.startswith("icon_glyph:"):
+            try:
+                icon_codes.add(int(warning.removeprefix("icon_glyph:"), 16))
+            except ValueError:
+                continue
+    visible = "".join(c for c in text if ord(c) not in icon_codes)
+    return "\n".join(" ".join(line.split()) for line in visible.split("\n")).strip()
 
 
 def candidate_for(pair_path: Path) -> dict:
@@ -148,7 +151,7 @@ def candidate_for(pair_path: Path) -> dict:
                 ]  # Explicit unresolved visible fragment for human review.
         draws = [e.id for e in dump.elements if e.logical_id == element.logical_id]
         for index, fragment in enumerate(fragments):
-            text = ordinary_text(fragment)
+            text = ordinary_text(fragment, element.warnings)
             if not text and element.visibility == "full":
                 continue
             warning = list(element.warnings)
@@ -160,8 +163,13 @@ def candidate_for(pair_path: Path) -> dict:
                 element.visibility == "full"
                 and element.bounds is not None
                 and any(c.isalpha() for c in text)
-                # An absent English key does not make observed glyph text uncertain.
-                and not [w for w in warning if w != "source_unavailable"]
+                # Provenance/formatting warnings do not make visible text uncertain.
+                and not [
+                    w
+                    for w in warning
+                    if w not in ("source_unavailable", "markup_input")
+                    and not w.startswith("icon_glyph:")
+                ]
             )
             rows.append(
                 {

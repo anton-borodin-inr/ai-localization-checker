@@ -1,24 +1,19 @@
-Current status (2026-10-22): Anton explicitly [deferred the Tech Picker pixel investigation](evidence/47/deferred-pixel-investigation.md). Its practical impact is unconfirmed; retain the failed zero-pixel comparison and evidence without further diagnostic builds or probes. Deferral does not waive equality or confirm a reference. Main #47 text/geometry/clipping and human review acceptance remain separate.
-
-Latest device diagnosis: [four-mode gate/telemetry matrix](evidence/47/device-attempt-5/report.md) completed on diagnostic 1271049, then restored exact 1271048. All eight PNGs match retained 1271048 and retain the same 72-pixel German difference from #41. Telemetry off/on and the exercised current-owner loading fallback do not change the PNG in these samples. Selected CPU inputs also match; this does not establish a root cause or justify a production gate correction. Original settings/saves and 45 prior outputs are unchanged; two sidecars are retained (47 total JSON outputs). Final app stopped, adbd shell, emulator free. Strict acceptance and human confirmation remain unresolved.
-
-Prior binary control: [exact 1271045/1271048 APK comparison](evidence/47/device-attempt-4/report.md) reproduced the historical 1271045 German Tech Picker pixels exactly, then reproduced the same 72-pixel delta after restoring 1271048. This establishes a binary-dependent result in the tested environment without identifying the responsible source change.
-
-Host checkpoint before plan 5: [diagnostic APK 1271049](evidence/47/diagnostic-host/report.md) adds opt-in current/owned-loading gate and telemetry off/on controls, with the default path retained. Fork host test/build/lint and 26 parent orchestration/readback tests passed. That report preserves its original proposal status; the separately approved execution is recorded above. No production fix has been established.
-
-Historical host findings: [shared-path mechanism probe](evidence/47/shared-path-host/report.md) demonstrates a possible loading/layout-to-atlas mechanism in a synthetic fixture, not the Android delta cause. Production source remains unchanged at that checkpoint. Later diagnosis is recorded above; further investigation is now deferred.
-
-Earlier device follow-up: [same-APK v1/v2 diagnosis](evidence/47/device-attempt-3/report.md) completed four approved German Tech Picker launches on 1271048. All modes match the retained 1271048 pixels and preserve the same 72-pixel difference from 1271045. No settings/save writes or install occurred; original data is unchanged, app stopped, adbd shell, emulator free. Strict acceptance and human confirmation remain pending; later findings and deferral are recorded above.
-
-Earlier host follow-up: [bounded pixel diagnosis](evidence/47/pixel-diagnosis-host/report.md) found no demonstrated cause or justified replacement APK. Synthetic cache A/B checks passed. That checkpoint preserves its original proposal status; the later executions are recorded above.
-
 # Engine text candidates (issue 47)
 
-Latest runtime evidence: [1271048 device attempt 2](evidence/47/device-attempt-2/report.md) captured 40 pairs; repeat PNG/dump checks and lifecycle checks passed, but strict equality with 1271045 failed on Tech Picker. Twenty candidates remain unconfirmed. The emulator is free; any further device operation needs its own exact plan. Historical offline/device-gate descriptions below are retained as requirements and checkpoint context.
+The selected production build is fork `b534a8a` / APK 1271048. Existing
+[device evidence](evidence/47/device-attempt-2/report.md) covers 40 PNG/dump pairs,
+20 identical repeats, v1 compatibility, failure/recovery and restoration.
+Cross-build Tech Picker differences are **recorded under D-0XX**
+("Same-build non-interference and recorded cross-build pixel differences"),
+not an acceptance blocker by themselves. See the [pixel summary](evidence/47/pixel-summary.md)
+and [delivery report](evidence/47/report.md) for history and exact limits.
+All 20 regenerated candidates remain unconfirmed; Anton owns reference and
+D-025 scroll acceptance. This round performs no device work or APK build.
 
 This is an offline candidate/review workflow. Engine output is not an approved
 reference, a detector or a defect label. D-038 remains Accepted for protocol v1;
-the additive v2 contract and candidate rules are Proposed as D-0XX below.
+the additive v2 contract, candidate rules and non-interference criterion are
+three Proposed D-0XX entries in the decision log.
 No OCR, model output, translation-table inference or baseline code is used.
 
 ## Protocol and files
@@ -71,19 +66,20 @@ from files to manufacture equality.
 `fixtures/stage2/screens-v2.json` pins the host-built replacement APK 1271048 (fork commit
 `b534a8ae67c390412984869c7a03b168d532c36c`, APK SHA-256
 `91d9a900f8204880e590de7fb90f0fc15e2aa5cf5d94a3ae77364497d7b0541e`).
-It reuses every v1 screen/state/settings/save byte and route. It is a prepared
-input, not evidence of installation or device acceptance. A changed build
-requires a new manifest pin and exact-write approval.
+It reuses every v1 screen/state/settings/save byte and route. Existing device
+results are bound to these exact bytes. A changed build requires a new manifest
+pin and exact-write approval.
 
-The first real 1271047 attempt failed on Android component-metadata regex
-compilation and produced no successful pairs. See
-[evidence/47/device-attempt-1/report.md](evidence/47/device-attempt-1/report.md).
-The replacement removes that runtime regex and adds direct binding coverage;
-its host tests do not establish Android acceptance. A fresh device plan uses
-a v1/fault/recovery primer before the 40-pair batch.
+## Non-interference checks
 
+Require identical decoded pixels for v1 versus v2 on the same build and for
+repeated captures; repeated v2 dumps must also be byte-identical. Existing
+same-build v1/v2 evidence is the four German Tech Picker cold/warm arms in
+[attempt 3 analysis](evidence/47/device-attempt-3/analysis.json), not a new
+20-screen paired v1/v2 run.
 
-After capture, compare all 40 new PNGs against the original 1271045 run:
+Compare against the original 1271045 captures offline to record cross-build
+differences:
 
 ```sh
 PYTHONPATH=src uv run l10n-reference compare-captures \
@@ -93,15 +89,15 @@ PYTHONPATH=src uv run l10n-reference compare-captures \
 
 This validates PNG hashes from both summaries before decoded-pixel comparison.
 It preserves missing/different results and returns 2 unless all pairs match.
-This is an offline image comparison, not a detector/baseline run.
+That raw comparison result is unchanged. Under the third D-0XX, record the
+count, bounding box, maximum channel delta and text/layout visual check; a
+cross-build difference alone does not block acceptance. This is an offline
+image comparison, not a detector/baseline run.
 
-## Device gate (not authorized by plan approval)
+## Device gate
 
-While #45 owns the emulator, do not run any device command, including
-preparation or inventory. Host unit tests, builds and local synthetic-page
-checks are allowed.
-
-After Anton releases the emulator, APK installation has its own exact
+Future device operations require Anton to release the emulator and approve
+the exact plan. APK installation has its own exact
 operation approval/backups. The v2 manifest must name the actual new APK and
 fork hashes; keep 1271045's manifest intact. Then a fresh `--prepare-only`
 creates the #41 settings/save backup and a device plan. In v2 this includes
@@ -115,7 +111,8 @@ from settings replacement/restoration. It does not claim to know the final
 file state of a request that failed before publication.
 
 Device commands in [stage2-capture.md](stage2-capture.md) are recipes, not
-execution evidence. No device work has been run for the offline implementation.
+execution evidence. The historical executions and restoration checks are recorded in the
+[report](evidence/47/report.md); no device operation is part of this revision.
 
 ## Candidate generation
 
@@ -150,15 +147,19 @@ Rules fixed before device results:
   Hidden full input is shown separately as provenance, never projected.
 - Fully visible applied ellipsis/overflow can remain primary text; flags
   never create defect labels. Numeric/symbol-only units default to diagnostic;
-  numbers in textual composed units remain in those units. Actual private-use
-  icon glyphs/bullets are not transcribed as words.
+  numbers in textual composed units remain in those units. Actual
+  icons are removed only when identified by that element's
+  `icon_glyph:<hex>` warnings; no Unicode range is guessed. Collapse horizontal
+  whitespace after removal, preserving line breaks and other symbols.
 - Regions use displayed glyph-box centres in D-025's 3×3 grid. Exact grid
   boundaries belong to the cell on the right/below; screen-edge cases clamp
   to the grid. Hidden ellipsis suffixes do not enlarge the display box.
 - Unknown owner/other uncertainty is visible to Anton and defaults to
   diagnostic. A known absence of an English source key (`source_unavailable`)
   is provenance information, so fully visible established text can still be
-  a primary candidate. Draw/scissor visibility does not prove that a later opaque
+  a primary candidate. `icon_glyph:*` and `markup_input` also retain their
+  warnings without demoting otherwise established text. Other warnings keep
+  the row diagnostic. Draw/scissor visibility does not prove that a later opaque
   widget did not cover text. Resolve missing draw coverage before acceptance.
 
 These rules do not modify the #10 approved reference, D-037 replay, matching,

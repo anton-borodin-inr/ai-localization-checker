@@ -1,3 +1,0 @@
-data/issue-47/capture-approved-2/summary.json
-data/issue-47/capture-approved-2/gallery.html
-complete: 20 pixel-identical pairs

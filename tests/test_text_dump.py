@@ -264,6 +264,40 @@ def test_zero_alpha_unmapped_and_composed_text(tmp_path):
 
 
 @pytest.mark.parametrize(
+    "text,warnings,expected,primary",
+    [
+        ("Kaufen 160¤", ["icon_glyph:a4"], "Kaufen 160", True),
+        (
+            "Arbeiter\n31⚙ 8⏳",
+            ["icon_glyph:2699", "icon_glyph:23f3", "source_unavailable"],
+            "Arbeiter\n31 8",
+            True,
+        ),
+        (
+            "Requires at least 2 population",
+            ["markup_input"],
+            "Requires at least 2 population",
+            True,
+        ),
+        ("Cost ¤ • ⚙ \ue115", [], "Cost ¤ • ⚙ \ue115", True),
+        ("Work ⚙  now", ["icon_glyph:2699"], "Work now", True),
+        ("160¤", ["icon_glyph:a4"], "160", False),
+        ("Drawn text", ["unmapped_font_draw"], "Drawn text", False),
+        ("Drawn ¤", ["icon_glyph:a4", "unmapped_font_draw"], "Drawn", False),
+    ],
+)
+def test_candidate_icon_provenance_and_primary_rules(
+    tmp_path, text, warnings, expected, primary
+):
+    row = candidate_for(
+        write_pair(tmp_path, dump_for(elements=[element(text, warnings=warnings)]))
+    )["rows"][0]
+    assert row["text_seen"] == expected
+    assert row["primary_denominator"] is primary
+    assert row["warnings"] == warnings
+
+
+@pytest.mark.parametrize(
     "event",
     [
         "",

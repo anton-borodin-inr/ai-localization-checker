@@ -1,8 +1,0 @@
-{
-  "approved_by": "Anton",
-  "user_reply": "Подтверждаю план №3",
-  "plan_sha256": "ec3cf8f267e7b0770feea342f72852aa73d3448720797d247cd3918ad941fb6e",
-  "runner_sha256": "c7069568159d2456854aa1156ce0b5e1645d36b64e2be78c235562b9c03ac8ca",
-  "scope": "Exactly four approved same-APK German v1/v2 launches and declared read/backup/output/recovery operations; no installation, normal settings or save writes",
-  "recorded_at_utc": "2026-10-22T13:39:24.868464+00:00"
-}

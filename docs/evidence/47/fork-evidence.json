@@ -1,7 +1,0 @@
-{
-  "final_gradle_output": "fork-host-checks.txt.gz",
-  "encoding": "gzip; original bytes preserved including whitespace",
-  "uncompressed_sha256": "95dd7bc5be990cfaa755612fe7f1d9806a3ee2998f2217571751bcfe28f52838",
-  "compressed_sha256": "6f9a4f818aa65895fd8221bd5bd73f5df97d20782dbfb22c365869a9b8f5ffbf",
-  "fork_commit": "df59cf982e3035f7733d4ffd58e3a56325eb4c82"
-}
