@@ -1,0 +1,33 @@
+{
+  "check": "D-025 / victory-status scrolling",
+  "status": "passed",
+  "source": "direct_human_user_message",
+  "tested_by": "Anton",
+  "reported_date": "2026-10-26",
+  "recorded_at_utc": "2026-10-26T15:39:12.125725+00:00",
+  "user_report_verbatim": "Проверил скролл списка по всем направлениям - все заголовки и условия победы видны, не обрезаны и читаются хорошо",
+  "context_from_verified_setup": {
+    "package": "com.unciv.app",
+    "version_code": "1271048",
+    "language": "German",
+    "loaded_save": "issue-8-pair",
+    "screen": "Victory Status / Siegesstatus",
+    "tab": "Our status / Unser Status",
+    "launch_mode": "ordinary interactive game, no localization-hook extras",
+    "setup_receipt": "issue-47-victory-status-manual-handoff-20261026.json",
+    "setup_receipt_sha256": "b4f07d9c1a6333b9cb5806fe72afce7d333fde538cde8d157ad5bfff3a6b59e1"
+  },
+  "observations_reported": {
+    "scrolling_checked": "all directions",
+    "all_victory_headings_accessible": true,
+    "all_victory_conditions_accessible": true,
+    "content_readable_after_scrolling": true,
+    "persistent_text_clipping_reported": false
+  },
+  "D025_conclusion": "The initially viewport-clipped Victory Status content is accessible and readable by scrolling in the checked German 1271048 state. Accepted D-025 is satisfied for this manual check.",
+  "scope_limit": "Human report for the prepared German screen; no new all-language, all-screen or pixel-equality claim.",
+  "agent_independently_repeated_check": false,
+  "device_operations_this_update": 0,
+  "remaining_D025_check": "Civilopedia category ribbon scrolling",
+  "other_decisions_labels_metrics_goldens_changed": false
+}

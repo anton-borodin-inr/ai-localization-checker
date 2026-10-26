@@ -1,0 +1,579 @@
+{
+  "files": [
+    {
+      "file": "docs/evidence/47/reference-confirmation/README.md",
+      "sha256": "4c88ecee439f69e97b1d8e1e4f0ed5de0841f32a991cb8824fbb1ac8f49a789e",
+      "bytes": 1883
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/archive-files-sha256.json",
+      "sha256": "dc0190e598e0632e3a5b1143e5089c28d77d1177643aa0bbbbdd12065e74315d",
+      "bytes": 29773
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/chat-authorization.json",
+      "sha256": "741dc3f6c657558d40c5bdb2562a2136582cd144f62aa8dd46158fd5fdb1d9f3",
+      "bytes": 2855
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/city-production__de/approval.json",
+      "sha256": "d81c9669319acb4050613fc428a0627742bbff080aaa464987bf6208605022a9",
+      "bytes": 1018
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/city-production__de/initial-candidate.json",
+      "sha256": "f05fe606ab9c7482bd1a450247d7e2fef78ff5a6285d988a6a801e7c9ee9bff4",
+      "bytes": 36613
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/city-production__de/reference.json",
+      "sha256": "1a35916a0190ec629dd8e3bd488d146c54bc51450413cb804f0c50f146b3ce62",
+      "bytes": 43557
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/city-production__de/reviewed-candidate.json",
+      "sha256": "a1b545e11be254ebffc95ed73c8c54805eb40a58b3fe7f0779bc8851c44333f4",
+      "bytes": 35696
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/city-production__de/unresolved-diagnostics.json",
+      "sha256": "94795ef7ba5759ed7d7fa327f2f9c9bc31f271a4c0f1837b3671adf7d969570a",
+      "bytes": 1405
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/city-production__en/approval.json",
+      "sha256": "367aad70975cfae8fa6debd757f93174fb5815c5975b1ec9b150b03bfb0398ce",
+      "bytes": 1018
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/city-production__en/initial-candidate.json",
+      "sha256": "0ba99cbf005b97399cc8f172ebedee3e13f17a2183c1760d6ae719f1305a34f7",
+      "bytes": 36565
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/city-production__en/reference.json",
+      "sha256": "08674a6a9c8dec0983d2f5b619fde2a9f017ed7fc7e12472c7de9fe118244f18",
+      "bytes": 43410
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/city-production__en/reviewed-candidate.json",
+      "sha256": "7ab494844b0473fd3671205425255c7c57f6a25328f8c9e66cbd183d3b209071",
+      "bytes": 35649
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/city-production__en/unresolved-diagnostics.json",
+      "sha256": "b6860c1e4a53f939a7ea19fa9f30fc8c518ed3468bdf865349f4ee90c17ed203",
+      "bytes": 1405
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/city-state-diplomacy__de/approval.json",
+      "sha256": "bf2533e2a0d93c015a3f0cc64cfd203abdfe816d424be64ef732ded5178495c9",
+      "bytes": 1018
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/city-state-diplomacy__de/initial-candidate.json",
+      "sha256": "263267c2c5ca7e158b2ddd4571a4cf284554fb354039cd84ae69352361c668eb",
+      "bytes": 16501
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/city-state-diplomacy__de/reference.json",
+      "sha256": "9b174d6b819f51ebc15cba86ff2975b568f0eb6b955a9d3127ce2346b63a1e57",
+      "bytes": 20622
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/city-state-diplomacy__de/reviewed-candidate.json",
+      "sha256": "263267c2c5ca7e158b2ddd4571a4cf284554fb354039cd84ae69352361c668eb",
+      "bytes": 16501
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/city-state-diplomacy__de/unresolved-diagnostics.json",
+      "sha256": "a49178e066fdddcf4921e68013db68e8796aefb60806fbe76323e7f0430eadb4",
+      "bytes": 494
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/city-state-diplomacy__en/approval.json",
+      "sha256": "15683923e75652ac3a263426841861e8fe37eafb4f1d3e529f0946629044630a",
+      "bytes": 1018
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/city-state-diplomacy__en/initial-candidate.json",
+      "sha256": "ac3452d557fbfa916192cb6b62980046b512ac887e3489d36114f2fbf7978f84",
+      "bytes": 16206
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/city-state-diplomacy__en/reference.json",
+      "sha256": "656e39083d13f2123999413f19a12afbb54b36cdff9c2fd24b194145f81026de",
+      "bytes": 20137
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/city-state-diplomacy__en/reviewed-candidate.json",
+      "sha256": "ac3452d557fbfa916192cb6b62980046b512ac887e3489d36114f2fbf7978f84",
+      "bytes": 16206
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/city-state-diplomacy__en/unresolved-diagnostics.json",
+      "sha256": "d77d6051e342263088627a4308e7a0619e144caebc6bbc3be53cdbc230b88f94",
+      "bytes": 495
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/civilopedia__de/approval.json",
+      "sha256": "a94b5c12d770608a01c05c7f4d326cfe66dbb83f3e288ea1a4e01c0eb8cbdc2b",
+      "bytes": 1018
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/civilopedia__de/initial-candidate.json",
+      "sha256": "108fe4ea252b8ed166b5e84f52f8d4aa8a2f86097259bf813a943fb427c3ab84",
+      "bytes": 19990
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/civilopedia__de/reference.json",
+      "sha256": "507c27404f002bf773990578c0ae8747dc481de837ab5720fc5279f079c00d41",
+      "bytes": 25427
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/civilopedia__de/reviewed-candidate.json",
+      "sha256": "90eaf450f8b315e616e93e6586972177d2f31cd69ca551a01bc99fc5fd22db9e",
+      "bytes": 18955
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/civilopedia__de/unresolved-diagnostics.json",
+      "sha256": "47d6cf569683ff8eda370dbc1b4557b5374e2020d60a1b87ae64b2b9bbbbaf2e",
+      "bytes": 1519
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/civilopedia__en/approval.json",
+      "sha256": "f20152ded3e26d655650b09699a277a925b40e98269d2b236ef6363b40acf027",
+      "bytes": 1018
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/civilopedia__en/initial-candidate.json",
+      "sha256": "391a42b180d9b6520301a07a3da62ef399a9476f0b62b24bd129d16e5d99393f",
+      "bytes": 25092
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/civilopedia__en/reference.json",
+      "sha256": "c23e02f49c0c8db336df6a98d213bc513b32215c0aaf6ee4e4b6f01a708a0cd8",
+      "bytes": 30259
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/civilopedia__en/reviewed-candidate.json",
+      "sha256": "e034fbcaeacf5d7eeb75df5ae43355b04e9651ea9fa227b4d4051b632a64a44f",
+      "bytes": 23117
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/civilopedia__en/unresolved-diagnostics.json",
+      "sha256": "481528f1dec529eb0eb4743f4126ad5fed723d86ef525f0b25bfb229aee5935e",
+      "bytes": 2460
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/confirmed-reference-set.zip",
+      "sha256": "70db55a62819fc7e913af051626c268703517ccf07b0c23d515e185f99dccd51",
+      "bytes": 10214623
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/empire-stats__de/approval.json",
+      "sha256": "9172c4bdcd29cbf56e04101333a2e2f0e6145c1f7deb28a8cd8ceddd47fba40c",
+      "bytes": 1018
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/empire-stats__de/initial-candidate.json",
+      "sha256": "62db40d738870fbaa823fcc376cc00062b49aa0d81da99f92df8fd46a81151fc",
+      "bytes": 45833
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/empire-stats__de/reference.json",
+      "sha256": "2cc2c5979780e34719777ca48926e004c1ecd52a9921be7b29b2f2ec6cf169f6",
+      "bytes": 55943
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/empire-stats__de/reviewed-candidate.json",
+      "sha256": "62db40d738870fbaa823fcc376cc00062b49aa0d81da99f92df8fd46a81151fc",
+      "bytes": 45833
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/empire-stats__de/unresolved-diagnostics.json",
+      "sha256": "6456d9756219ccea96726e1e4eec046dbb39da7e3f639667f8fec89bd7239c9a",
+      "bytes": 486
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/empire-stats__en/approval.json",
+      "sha256": "ca949f0d364cb847ecfaea926b90df6037c561fd1e5775e0ccbd5b7b4d804d01",
+      "bytes": 1018
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/empire-stats__en/initial-candidate.json",
+      "sha256": "a422ceae53363ad7b5633d0ce900317da060a49f956ffedec35c1e92f0f61023",
+      "bytes": 46052
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/empire-stats__en/reference.json",
+      "sha256": "a0c0bf747de32393ec0e8ec50cff4cf982f766e7dfa497f9210a2f4878a349b6",
+      "bytes": 56054
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/empire-stats__en/reviewed-candidate.json",
+      "sha256": "a422ceae53363ad7b5633d0ce900317da060a49f956ffedec35c1e92f0f61023",
+      "bytes": 46052
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/empire-stats__en/unresolved-diagnostics.json",
+      "sha256": "9320d64a6968701c85827182cf75f89879e672070e040c89c74c737d5bd3dd94",
+      "bytes": 487
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/new-game__de/approval.json",
+      "sha256": "202241f0450996a91709929041799e7317e5d481724e6d4c65d22826cf4839ba",
+      "bytes": 1018
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/new-game__de/initial-candidate.json",
+      "sha256": "c5d520333a75422b9af7620a0fc30181bfa03b2bc8798023b9c169c5abfdb1e2",
+      "bytes": 51817
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/new-game__de/reference.json",
+      "sha256": "f7fa97f9a2f3b7f4ffc9286bd96c5a53bdc88329726811dddd91c905dd060046",
+      "bytes": 60207
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/new-game__de/reviewed-candidate.json",
+      "sha256": "4c22bff2a5d1ff1be88e1f86c700eeb53e05a4d4ba3930206d01277f62a93834",
+      "bytes": 48499
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/new-game__de/unresolved-diagnostics.json",
+      "sha256": "b907c4b2415f215bb89f1281806cf15b03ff893cc754215b1627b51376ae4f84",
+      "bytes": 3799
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/new-game__en/approval.json",
+      "sha256": "97d1db4aa749b99701a4734de4d55bf40601476962524a79fb44e842997a0013",
+      "bytes": 1018
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/new-game__en/initial-candidate.json",
+      "sha256": "3eb0ce992685f7b6396abca08d31216adefcb6b6a92ea77f9ef30f7eefb12bee",
+      "bytes": 51907
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/new-game__en/reference.json",
+      "sha256": "8278868e1c2cc51d7fe16eb49e9a715108af62c888113b3d912ab550db67a44e",
+      "bytes": 60077
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/new-game__en/reviewed-candidate.json",
+      "sha256": "3efac4da3a4e0cea5273ce162ece1727e4373feaef2e7f1c2b12a6e6d9c01002",
+      "bytes": 48579
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/new-game__en/unresolved-diagnostics.json",
+      "sha256": "a8a7bfe50dcaa88f1ba16860d4a5ca5430c09b063d7a93162f82649f660af2d0",
+      "bytes": 3810
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/options-gameplay__de/approval.json",
+      "sha256": "74e2353ead3862fd8e0afb4f09a723669e3e068414886b6cfda77fb7197b71ba",
+      "bytes": 1018
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/options-gameplay__de/initial-candidate.json",
+      "sha256": "d0ab441f692c1462d27dc1d8279311f5846c9af0acec7959c06f8f90fc64944e",
+      "bytes": 31509
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/options-gameplay__de/reference.json",
+      "sha256": "4abee5296c987f6a443f05f2eaf7e508ca7933b3d707782aaf4638c6d14656cc",
+      "bytes": 39152
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/options-gameplay__de/reviewed-candidate.json",
+      "sha256": "d0ab441f692c1462d27dc1d8279311f5846c9af0acec7959c06f8f90fc64944e",
+      "bytes": 31509
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/options-gameplay__de/unresolved-diagnostics.json",
+      "sha256": "414023fdb6f26653a45efe7fb050d90ac52f25a34c3c622c5cdbff8ab70f8646",
+      "bytes": 490
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/options-gameplay__en/approval.json",
+      "sha256": "7695f9d9172789cd9602d7722c934e9242789957f363fc8b37b86c79a0cc1493",
+      "bytes": 1018
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/options-gameplay__en/initial-candidate.json",
+      "sha256": "a355f4026b69350b0d8f6677b836bcfce95869e677b53953d34454a1cfa08cee",
+      "bytes": 31044
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/options-gameplay__en/reference.json",
+      "sha256": "00d04941b59d70f6132afc6eea3dafdb64d50423153f31b1683982b8a95b0f1c",
+      "bytes": 38289
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/options-gameplay__en/reviewed-candidate.json",
+      "sha256": "a355f4026b69350b0d8f6677b836bcfce95869e677b53953d34454a1cfa08cee",
+      "bytes": 31044
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/options-gameplay__en/unresolved-diagnostics.json",
+      "sha256": "a38009737a207a9087d5c99c06dc33d5dc8682b3f8a4f707fe699aa3bd3379fc",
+      "bytes": 491
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/policy-picker__de/approval.json",
+      "sha256": "3a1fc74435a5bab9429e90f74bd0f1715fd27bf0b3b8f6b69b5f782f4d2cec0c",
+      "bytes": 1018
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/policy-picker__de/initial-candidate.json",
+      "sha256": "b7d36420c63897868affe3e7c3034828371ec53c3f1724e6d4d7af28965a94a7",
+      "bytes": 76654
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/policy-picker__de/reference.json",
+      "sha256": "d2ff51c28db691428c678c65f0f450b2fde5e631e3a606613b3c2f4c42e32777",
+      "bytes": 90713
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/policy-picker__de/reviewed-candidate.json",
+      "sha256": "b7d36420c63897868affe3e7c3034828371ec53c3f1724e6d4d7af28965a94a7",
+      "bytes": 76654
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/policy-picker__de/unresolved-diagnostics.json",
+      "sha256": "261362fd88352ceffc56514188aa39a9a8c4b2c34d9e28a66566011171c06532",
+      "bytes": 487
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/policy-picker__en/approval.json",
+      "sha256": "daa1c18e5e990bc738f9362d0b6ec703e0672f426fe4892b0a4ad046540aba18",
+      "bytes": 1018
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/policy-picker__en/initial-candidate.json",
+      "sha256": "013483b1c7c07f44a45d6a418cd857278434b105589dab1e76ba93efabf42a3c",
+      "bytes": 71841
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/policy-picker__en/reference.json",
+      "sha256": "fe5b68cecf9b0ded4a824f542e9661323e42d492a88755ad044587511a797315",
+      "bytes": 85287
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/policy-picker__en/reviewed-candidate.json",
+      "sha256": "013483b1c7c07f44a45d6a418cd857278434b105589dab1e76ba93efabf42a3c",
+      "bytes": 71841
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/policy-picker__en/unresolved-diagnostics.json",
+      "sha256": "8cabdd5051aca667094d81034490ef3dc148792fc67ad7429fc2204b5bbf75a0",
+      "bytes": 488
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/reference-index.json",
+      "sha256": "4dcb5f4cefafb8770a90ae0bc3094553e477c1cca5da734832d878a79e309551",
+      "bytes": 13539
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/tech-picker__de/approval.json",
+      "sha256": "700010093fca755aa15a2b38530b4c4e5aa944fd3233edbbc25270a7aadcc8fb",
+      "bytes": 1018
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/tech-picker__de/initial-candidate.json",
+      "sha256": "6e95247e3c0368bff8eebe172649921ea10f0a46b8b495ca9769a35457b88411",
+      "bytes": 35229
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/tech-picker__de/reference.json",
+      "sha256": "9fd208093a0f513a798345c036f7bdc1ccad02a1afcda05aef104eb201bf5edf",
+      "bytes": 37912
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/tech-picker__de/reviewed-candidate.json",
+      "sha256": "a9410c7ba155645e0794de4cce105c36eaef5e13af20412eb491fd2c7dfd1e3f",
+      "bytes": 31093
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/tech-picker__de/unresolved-diagnostics.json",
+      "sha256": "3bb2a2a6938a3c09804843bb5f0f146a6dc5ad8be66477cc73aeec31d75fbac0",
+      "bytes": 4620
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/tech-picker__en/approval.json",
+      "sha256": "198b1e13db38bbacba19aa9a6a666144a5f54443b434346f06d4f0fae648227f",
+      "bytes": 1018
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/tech-picker__en/initial-candidate.json",
+      "sha256": "95d33c2d825b0f12c9c3fc877707714e09b0457af7d53514d3575991e68d95f3",
+      "bytes": 35015
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/tech-picker__en/reference.json",
+      "sha256": "51fd9acd312c389e45551385d1ae292c1898903f71be419476d0cf6a6fe703fa",
+      "bytes": 37604
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/tech-picker__en/reviewed-candidate.json",
+      "sha256": "d53b59b2dbb33a9eb711266601f2375d7cdd6a75eae371e21d9a6c004b4bc832",
+      "bytes": 30878
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/tech-picker__en/unresolved-diagnostics.json",
+      "sha256": "82d59c7d3cf2c20e3a400cf139098eee4fca0f87710ccb09b8a460d40a35269e",
+      "bytes": 4622
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/unresolved-diagnostics-index.json",
+      "sha256": "ff41b066c0771377b2f24c27a70526cb413338f3593aeb0f44fb6dedc8fb46f0",
+      "bytes": 22954
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/validation.json",
+      "sha256": "3d3d61ebf056c1fd82bce56899c797fa1c8fb38ad1480f1c1e0ad4a2a4488843",
+      "bytes": 820
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/victory-status__de/approval.json",
+      "sha256": "abcaecf4d2a536d79db8463ee59f9cf4ceb7806d6d51f8103480a20bbe2ad384",
+      "bytes": 1018
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/victory-status__de/initial-candidate.json",
+      "sha256": "21002b64f8e61c4a089c10b1e7428f11dd527c2eeb14d7c01a4558d0368e11bd",
+      "bytes": 26627
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/victory-status__de/reference.json",
+      "sha256": "e7d56375119e465d542a6a7610096708f583fa1b0e4e1f0977010ff6437c30cb",
+      "bytes": 31870
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/victory-status__de/reviewed-candidate.json",
+      "sha256": "44ac086be58c79bb553bd506963f70ab354da789966f5a4f8a94bddda180e5ba",
+      "bytes": 25545
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/victory-status__de/unresolved-diagnostics.json",
+      "sha256": "48f022e325942c636fb56581b49ab8ac65ac74b186e596df87970f3c79c692f0",
+      "bytes": 1569
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/victory-status__en/approval.json",
+      "sha256": "5aebe19d580e901072b0afa551ec49aa55574a3608b489ecd18b08f5daaa1283",
+      "bytes": 1018
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/victory-status__en/initial-candidate.json",
+      "sha256": "eacf24b102f4287e537ee6c558f8245b1d42f0ceadab5f9cde27efa4bd33f946",
+      "bytes": 26059
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/victory-status__en/reference.json",
+      "sha256": "fdbe43b44678effca47f77f9dd5b00ca7a015b320b75cda160f94a7cb61d411d",
+      "bytes": 31084
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/victory-status__en/reviewed-candidate.json",
+      "sha256": "bdd5a01be8b03e274ced530d997e51501cbd511532b0c28b4512ff1c47b272a1",
+      "bytes": 24973
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/victory-status__en/unresolved-diagnostics.json",
+      "sha256": "9a80923269cdc65da7ae91be736ccb46d20bc14f774be25b7f4e52b11d67b75d",
+      "bytes": 1574
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/world__de/approval.json",
+      "sha256": "2454a1b093ebfd13aa964e7b67d865b4732eb4c227641cc5060245f988bd68d9",
+      "bytes": 1018
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/world__de/initial-candidate.json",
+      "sha256": "d628724e6da8a21c4ba7b998d276c03c89fe08534b8e065733791679a647b880",
+      "bytes": 27562
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/world__de/reference.json",
+      "sha256": "0f0c01b1d0efac99ecac13fa09a824ba25d4133da3a9a2ba4099e588d2e0b09c",
+      "bytes": 33539
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/world__de/reviewed-candidate.json",
+      "sha256": "d628724e6da8a21c4ba7b998d276c03c89fe08534b8e065733791679a647b880",
+      "bytes": 27562
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/world__de/unresolved-diagnostics.json",
+      "sha256": "af4a7e883aa6839da6677083d8740e3f2a6db2f0e6d59a996eababdb2a287b05",
+      "bytes": 479
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/world__en/approval.json",
+      "sha256": "d86bc0859ca1f778f7f925e61be5480c0e2ec7c649aa043f6fc97a447a74d662",
+      "bytes": 1018
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/world__en/initial-candidate.json",
+      "sha256": "67f5c14cb20ae8fa7a0bacef6040b762b80656be0fe342245457537adbe6a043",
+      "bytes": 27584
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/world__en/reference.json",
+      "sha256": "89ad0cba0e726ec05a35489ab0593a479a137f4ced4fe70e285a1518404e09e6",
+      "bytes": 33471
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/world__en/reviewed-candidate.json",
+      "sha256": "67f5c14cb20ae8fa7a0bacef6040b762b80656be0fe342245457537adbe6a043",
+      "bytes": 27584
+    },
+    {
+      "file": "docs/evidence/47/reference-confirmation/world__en/unresolved-diagnostics.json",
+      "sha256": "ffb4f522a110bc0b19e8474cdc9739c9df06aeec910bd626d59e20803b9b755e",
+      "bytes": 480
+    },
+    {
+      "file": "docs/evidence/47/manual-acceptance/README.md",
+      "sha256": "310df2900277b33e0d6553040252a3f6fb9318ed6cccef92f113b89d14fb51e4",
+      "bytes": 773
+    },
+    {
+      "file": "docs/evidence/47/manual-acceptance/issue-47-civilopedia-de-ready-20261026.png",
+      "sha256": "11d9414f74f060ed93c094224dc1313d05b8afbec8fd88f18dfeb849b7b6b871",
+      "bytes": 847144
+    },
+    {
+      "file": "docs/evidence/47/manual-acceptance/issue-47-civilopedia-manual-handoff-20261026.json",
+      "sha256": "9c4c972dc31337d7fd96335f9765237f4a053c3bf59325bbe57c58c051a001f4",
+      "bytes": 2251
+    },
+    {
+      "file": "docs/evidence/47/manual-acceptance/issue-47-civilopedia-scroll-check-20261026.json",
+      "sha256": "de37066a13a8c442b889c6d1724618c6c206df723eda402d5b7c8aac0136f253",
+      "bytes": 1720
+    },
+    {
+      "file": "docs/evidence/47/manual-acceptance/issue-47-d025-manual-checks-20261026.md",
+      "sha256": "65c5985922587a624d4b620dd77c1ddf6f33617577fda9890f7418b681e5adda",
+      "bytes": 2054
+    },
+    {
+      "file": "docs/evidence/47/manual-acceptance/issue-47-victory-status-de-ready-20261026.png",
+      "sha256": "abbab0541656fed9a57da1609c698bc927da40f0a97a5c362a33c0552584d22d",
+      "bytes": 344304
+    },
+    {
+      "file": "docs/evidence/47/manual-acceptance/issue-47-victory-status-manual-handoff-20261026.json",
+      "sha256": "b4f07d9c1a6333b9cb5806fe72afce7d333fde538cde8d157ad5bfff3a6b59e1",
+      "bytes": 2423
+    },
+    {
+      "file": "docs/evidence/47/manual-acceptance/issue-47-victory-status-scroll-check-20261026.json",
+      "sha256": "ec42a011a5baee3df71529d18e3e178bcd7c02e252597e180c30a1c660883013",
+      "bytes": 1765
+    }
+  ]
+}

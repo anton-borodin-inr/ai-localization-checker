@@ -3,17 +3,22 @@
 The selected production build is fork `b534a8a` / APK 1271048. Existing
 [device evidence](evidence/47/device-attempt-2/report.md) covers 40 PNG/dump pairs,
 20 identical repeats, v1 compatibility, failure/recovery and restoration.
-Cross-build Tech Picker differences are **recorded under D-0XX**
+Cross-build Tech Picker differences are **recorded under D-042**
 ("Same-build non-interference and recorded cross-build pixel differences"),
 not an acceptance blocker by themselves. See the [pixel summary](evidence/47/pixel-summary.md)
 and [delivery report](evidence/47/report.md) for history and exact limits.
-All 20 regenerated candidates remain unconfirmed; Anton owns reference and
-D-025 scroll acceptance. This round performs no device work or APK build.
+All 20 references are now explicitly confirmed by Anton: **441 primary /
+271 diagnostic** nonempty rows, with 21 empty clipped records retained in a
+separate appendix. The [confirmed set](evidence/47/reference-confirmation/README.md)
+preserves every approved hash binding. Both [D-025 manual checks](evidence/47/manual-acceptance/README.md)
+passed per Anton's direct reports on 2026-10-26 (German, 1271048).
+Human review time is unmeasured by explicit agreement; no timed QA-benefit
+result is claimed. Publication adds evidence only; no new device work or APK build.
 
 This is an offline candidate/review workflow. Engine output is not an approved
 reference, a detector or a defect label. D-038 remains Accepted for protocol v1;
 the additive v2 contract, candidate rules and non-interference criterion are
-three Proposed D-0XX entries in the decision log.
+D-040, D-041 and D-042, all Proposed in the decision log.
 No OCR, model output, translation-table inference or baseline code is used.
 
 ## Protocol and files
@@ -89,7 +94,7 @@ PYTHONPATH=src uv run l10n-reference compare-captures \
 
 This validates PNG hashes from both summaries before decoded-pixel comparison.
 It preserves missing/different results and returns 2 unless all pairs match.
-That raw comparison result is unchanged. Under the third D-0XX, record the
+That raw comparison result is unchanged. Under D-042, record the
 count, bounding box, maximum channel delta and text/layout visual check; a
 cross-build difference alone does not block acceptance. This is an offline
 image comparison, not a detector/baseline run.
@@ -163,8 +168,9 @@ Rules fixed before device results:
   widget did not cover text. Resolve missing draw coverage before acceptance.
 
 These rules do not modify the #10 approved reference, D-037 replay, matching,
-metrics, detector schema/prompt, goldens or the OCR baseline. D-025's outstanding
-human scroll checks remain pending.
+metrics, detector schema/prompt, goldens or the OCR baseline. Both D-025
+manual checks passed for the prepared German screens on 1271048; their
+human reports are retained separately from static reference confirmation.
 
 ## Review, timing and confirmation
 
@@ -208,3 +214,13 @@ Ruff and wheel-content checks cover the Python CLI and packaged UI script.
 
 Synthetic UI screenshots are UI evidence only, never device coverage,
 candidate completeness, confirmed references, defect labels or QA time data.
+
+## Accepted set delivered with this PR
+
+The generic `generate` / measured-browser `confirm` workflow above remains
+unchanged. For this set Anton approved a task-local chat-confirmation
+exception: no measured review duration, and 21 empty clipped diagnostic rows
+retained outside `screen_texts`. The complete portable ZIP and readable
+metadata snapshots are in [reference-confirmation](evidence/47/reference-confirmation/README.md).
+The existing browser-only importer rejects unmeasured timing and was not
+invoked or weakened to create this set. See D-041 and the included validation.

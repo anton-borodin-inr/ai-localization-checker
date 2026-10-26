@@ -1,7 +1,8 @@
-# Issue 47 pixel observation — recorded under D-0XX
+# Issue 47 pixel observation — recorded under D-042
 
 Anton approved the revised non-interference criterion on 2026-10-23. Its
-D-0XX entry remains **Proposed** until numbering/rebase before merge. Require
+D-042 entry remains **Proposed**; the number was allocated against main
+`63b6534` on publication rebase and must be rechecked if main changes. Require
 zero changed pixels for same-build v1/v2 and repeats. Record cross-build
 count, bounding box, maximum channel delta and a visual text/layout check;
 a cross-build difference is not an acceptance blocker by itself.
@@ -36,7 +37,8 @@ not establish the Android cause. Root-cause investigation is **closed** for
 this scope, with no production correction or new experiment. Post-READY
 freeze versus 1271045 continuous redraw was never isolated; it remains only
 a historical hypothesis. This criterion does not change D-038 or D-039,
-confirm a candidate, or settle the two D-025 human scroll checks.
+confirm a candidate by itself. The separate reference and D-025 human
+confirmations have since been completed and are linked from the delivery report.
 
 Original reports and every removed evidence file are byte-preserved in
 `issue-47-pre-review-fixes-evidence.zip` in task outputs; the full
