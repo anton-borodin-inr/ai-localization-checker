@@ -11,13 +11,13 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict
 
-from l10n_checker.vision import DefectType, Finding, Region
+from l10n_checker.vision import DefectType, DefectTypeV1, Finding, FindingV1, Region
 
 ScreenStatus = Literal["checked", "not_checked"]
 
 
 class Label(BaseModel):
-    """Human-owned label, including D-027 technical-text notes."""
+    """Human-owned label (label schema 2), including technical-text notes."""
 
     model_config = ConfigDict(extra="forbid")
 
@@ -26,6 +26,21 @@ class Label(BaseModel):
     text_seen: str
     region: Region
     note: str | None = None
+
+
+class LabelV1(Label):
+    """A label from a schema 1 label file, read for detection scoring only."""
+
+    defect_type: DefectTypeV1
+
+
+def load_labels(label_file: dict) -> tuple[int, list[Label]]:
+    """Labels of a `.labels.json` file, validated by its integer schema_version."""
+    version = label_file["schema_version"]
+    if type(version) is not int or version not in (1, 2):
+        raise ValueError(f"unknown label schema version: {version!r}")
+    model = LabelV1 if version == 1 else Label
+    return version, [model.model_validate(row) for row in label_file["labels"]]
 
 
 @dataclass(frozen=True)
@@ -271,6 +286,8 @@ class ScreenMatches:
     unmatched_label_indices: tuple[int, ...]
     duplicate_finding_indices: tuple[int, ...]
     hallucination_indices: tuple[int, ...]
+    label_schema_version: int = 2
+    result_schema_version: int = 2
 
 
 def match_screen(
@@ -279,6 +296,9 @@ def match_screen(
     screen_texts: Sequence[str],
     status: ScreenStatus = "checked",
     config: MatchingConfig = DEFAULT_CONFIG,
+    *,
+    label_schema_version: int = 2,
+    result_schema_version: int = 2,
 ) -> ScreenMatches:
     """Assign findings to labels one-to-one, maximizing matches, then collapse.
 
@@ -287,15 +307,28 @@ def match_screen(
     of matched labels, then the total score, with ties resolved by input order
     (see `_assign`). An unassigned finding that identifies some label is a
     collapsed duplicate: by optimality, every label it identifies is taken.
-    Neither defect type nor confidence influences the assignment.
+    Neither defect type nor confidence influences the assignment. The schema
+    versions only decide whether metrics may compare the classes (D-046).
     """
     if status not in ("checked", "not_checked"):
         raise ValueError("unknown screen status")
     labels, findings = tuple(labels), tuple(findings)
+    for items, version, models, side in (
+        (labels, label_schema_version, (LabelV1, Label), "label"),
+        (findings, result_schema_version, (FindingV1, Finding), "result"),
+    ):
+        if type(version) is not int or version not in (1, 2):
+            raise ValueError(f"unknown {side} schema version: {version!r}")
+        if any(type(item) is not models[version - 1] for item in items):
+            raise ValueError(f"{side} objects do not match {side} schema v{version}")
+    versions = {
+        "label_schema_version": label_schema_version,
+        "result_schema_version": result_schema_version,
+    }
     if status == "not_checked":
         if findings:
             raise ValueError("not_checked must have no findings")
-        return ScreenMatches(status, labels, findings, (), (), (), (), ())
+        return ScreenMatches(status, labels, findings, (), (), (), (), (), **versions)
 
     occurrences = Counter(map(normalize_text, screen_texts))
     label_occurrences = Counter(normalize_text(label.text_seen) for label in labels)
@@ -335,4 +368,5 @@ def match_screen(
         tuple(index for index in range(len(labels)) if index not in matched_labels),
         tuple(duplicates),
         hallucinations,
+        **versions,
     )

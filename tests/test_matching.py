@@ -1,18 +1,24 @@
 """Algorithm boundaries/invariants; hand-computed score examples stay in golden/."""
 
+import json
 import math
+from pathlib import Path
 from time import perf_counter
 
 import pytest
+from pydantic import ValidationError
 
 from l10n_checker.matching import (
     Label,
+    LabelV1,
     MatchingConfig,
+    load_labels,
     match_screen,
     normalize_text,
     text_similarity,
 )
-from l10n_checker.vision import Finding
+from l10n_checker.metrics import score_screen, score_screens
+from l10n_checker.vision import Finding, FindingV1
 
 
 def label(text="Alpha beta gamma...", region="center", **overrides):
@@ -255,3 +261,105 @@ def test_twenty_five_similar_labels_finish_under_one_second():
     assert not result.unmatched_label_indices
     assert not result.hallucination_indices
     print(f"25 similar labels / 25 findings: match_screen took {elapsed:.6f}s")
+
+
+ISSUE_14_LABELS = (
+    Path(__file__).resolve().parents[1]
+    / "docs/evidence/14/records/inputs"
+    / "tech-picker__de__2400x1080__injected__1271002.labels.json"
+)
+
+
+def test_committed_v1_label_file_loads_as_v1():
+    version, labels = load_labels(json.loads(ISSUE_14_LABELS.read_text("utf-8")))
+    assert version == 1
+    assert [type(item) for item in labels] == [LabelV1]
+    assert labels[0].defect_type == "truncated_text"
+
+
+@pytest.mark.parametrize(
+    ("version", "defect_type", "accepted"),
+    [
+        (1, "untranslated", True),
+        (1, "overflow", False),
+        (2, "wrong_language", True),
+        (2, "untranslated", False),
+    ],
+)
+def test_label_file_classes_follow_its_schema_version(version, defect_type, accepted):
+    row = {
+        "defect_type": defect_type,
+        "text_expected": "Neues Spiel",
+        "text_seen": "New Game",
+        "region": "top",
+    }
+    label_file = {"schema_version": version, "labels": [row]}
+    if accepted:
+        assert load_labels(label_file)[0] == version
+    else:
+        with pytest.raises(ValidationError):
+            load_labels(label_file)
+
+
+@pytest.mark.parametrize("version", [0, 3, "2", True])
+def test_unknown_label_schema_version_is_rejected(version):
+    with pytest.raises(ValueError):
+        load_labels({"schema_version": version, "labels": []})
+
+
+def test_objects_must_match_the_declared_schema_versions():
+    v1_label = LabelV1(**label().model_dump())
+    v1_finding = FindingV1(**finding().model_dump())
+    texts = ["Alpha beta gamma..."]
+    with pytest.raises(ValueError, match="label"):
+        match_screen([v1_label], [], texts)
+    with pytest.raises(ValueError, match="result"):
+        match_screen([], [v1_finding], texts)
+    with pytest.raises(ValueError, match="result"):
+        match_screen([], [finding()], texts, result_schema_version=1)
+    with pytest.raises(ValueError, match="label schema version"):
+        match_screen([], [], texts, label_schema_version=True)
+
+
+@pytest.mark.parametrize(
+    ("label_version", "result_version", "reason"),
+    [
+        (2, 2, None),
+        (1, 2, "got labels v1"),
+        (2, 1, "got results v1"),
+        (1, 1, "got labels v1, results v1"),
+    ],
+)
+def test_confusion_needs_v2_labels_and_results(label_version, result_version, reason):
+    labels = [(LabelV1 if label_version == 1 else Label)(**label().model_dump())]
+    findings = [
+        (FindingV1 if result_version == 1 else Finding)(**finding().model_dump())
+    ]
+    screen = match_screen(
+        labels,
+        findings,
+        ["Alpha beta gamma..."],
+        label_schema_version=label_version,
+        result_schema_version=result_version,
+    )
+    metrics = score_screen(screen)
+    assert metrics.tp == 1
+    if reason is None:
+        assert metrics.confusion is not None
+        assert metrics.confusion_unavailable_reason is None
+    else:
+        assert metrics.confusion is None
+        assert metrics.confusion_unavailable_reason.endswith(reason)
+
+
+def test_one_v1_screen_makes_the_dataset_confusion_unavailable():
+    v2 = match_screen([label()], [finding()], ["Alpha beta gamma..."])
+    v1 = match_screen(
+        [],
+        [],
+        [],
+        status="not_checked",
+        result_schema_version=1,
+    )
+    assert score_screens([v2]).confusion is not None
+    assert score_screens([v2, v1]).confusion is None

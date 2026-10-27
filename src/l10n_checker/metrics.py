@@ -26,13 +26,15 @@ class Metrics:
     hallucinations: int
     duplicates_collapsed: int
     not_checked_screens: int
-    confusion: tuple[ConfusionCount, ...]
+    confusion: tuple[ConfusionCount, ...] | None
     fn_on_not_checked: int
+    confusion_unavailable_reason: str | None = None
 
     def to_dict(self) -> dict:
         """JSON-ready values: undefined remains None (JSON null), never NaN."""
         result = asdict(self)
-        result["confusion"] = [asdict(row) for row in self.confusion]
+        if self.confusion is not None:
+            result["confusion"] = [asdict(row) for row in self.confusion]
         return result
 
 
@@ -45,10 +47,18 @@ def score_screens(screens: Iterable[ScreenMatches]) -> Metrics:
 
     No true-negative screen count is inferred. A caller retains the association
     between each ScreenMatches and its screenshot to list unchecked screens.
+    The confusion table needs schema v2 labels and results on every screen;
+    with any v1 side it is None with a reason, and detection is still scored
+    (D-046).
     """
     tp = fp = fn = hallucinations = duplicates = not_checked = fn_unchecked = 0
     confusion: Counter[tuple[DefectType, DefectType]] = Counter()
+    v1_sides: set[str] = set()
     for screen in screens:
+        if screen.label_schema_version != 2:
+            v1_sides.add(f"labels v{screen.label_schema_version}")
+        if screen.result_schema_version != 2:
+            v1_sides.add(f"results v{screen.result_schema_version}")
         if screen.status == "not_checked":
             not_checked += 1
             fn_unchecked += len(screen.labels)
@@ -75,11 +85,19 @@ def score_screens(screens: Iterable[ScreenMatches]) -> Metrics:
         hallucinations=hallucinations,
         duplicates_collapsed=duplicates,
         not_checked_screens=not_checked,
-        confusion=tuple(
+        confusion=None
+        if v1_sides
+        else tuple(
             ConfusionCount(label_type, finding_type, count)
             for (label_type, finding_type), count in sorted(confusion.items())
         ),
         fn_on_not_checked=fn_unchecked,
+        confusion_unavailable_reason=(
+            "classes are comparable only for schema v2 labels and results; "
+            f"got {', '.join(sorted(v1_sides))}"
+        )
+        if v1_sides
+        else None,
     )
 
 

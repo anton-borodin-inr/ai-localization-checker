@@ -10,14 +10,17 @@ from pathlib import Path
 from pydantic import ValidationError
 
 from l10n_checker.baseline import resolve_inputs, run_baseline
-from l10n_checker.matching import Label, MatchingConfig, match_screen
+from l10n_checker.matching import MatchingConfig, load_labels, match_screen
 from l10n_checker.metrics import score_screen, score_screens
 from l10n_checker.vision import (
     CheckResult,
     ModelOutput,
+    ModelOutputV1,
     ProviderError,
     RequestBudget,
+    load_check_result,
     new_run_id,
+    result_schema_version,
     run_check,
 )
 
@@ -123,8 +126,7 @@ def prepare(
             or human["language"] != image.stem.split("__")[1]
         ):
             raise ValueError(f"Human label identity mismatch: {image.name}")
-        for label in human["labels"]:
-            Label.model_validate(label)
+        load_labels(human)
         # Baseline validates build commits, PNG, translations and inventory.
         _, _, _, _, source = resolve_inputs(image, manifest, inventory, fork)
         build = read(reference)["builds"][screen["build"]]
@@ -279,9 +281,7 @@ def run_slice(
 def load_result(root: Path, records: dict, image: dict, detector: str) -> CheckResult:
     for entry in records.values():
         checked_file(root, entry)
-    result = CheckResult.model_validate_json(
-        checked_file(root, records["result.json"]).read_text()
-    )
+    result = load_check_result(checked_file(root, records["result.json"]).read_text())
     metadata = read(checked_file(root, records["run.json"]))
     if result.metadata != metadata or metadata["image"]["sha256"] != image["sha256"]:
         raise ValueError("Run/result/image provenance mismatch")
@@ -291,8 +291,10 @@ def load_result(root: Path, records: dict, image: dict, detector: str) -> CheckR
     if recorded_name != image["image"]:
         raise ValueError("Run screenshot identity mismatch")
     if detector == "vision":
-        if metadata["schema_version"] != "v1" or metadata["prompt_version"] != "v1":
-            raise ValueError("Issue 14 requires prompt/schema v1")
+        if metadata["schema_version"] not in ("v1", "v2") or (
+            metadata["prompt_version"] != metadata["schema_version"]
+        ):
+            raise ValueError("Vision records need matching prompt/schema v1 or v2")
         if result.status == "checked" and metadata["readability"] != "readable":
             raise ValueError("Only readable vision responses may be checked")
         for filename, field in (
@@ -310,7 +312,12 @@ def load_result(root: Path, records: dict, image: dict, detector: str) -> CheckR
                 response = DeepSeekProvider._parse(
                     read(checked_file(root, records["response_raw.json"]))
                 )
-                output = ModelOutput.model_validate_json(response.text)
+                schema = (
+                    ModelOutputV1
+                    if result_schema_version(metadata) == 1
+                    else ModelOutput
+                )
+                output = schema.model_validate_json(response.text)
         except (ProviderError, ValidationError):
             pass
         checked = output is not None and output.readability == "readable"
@@ -380,12 +387,18 @@ def replay(bundle_path: Path, output: Path) -> dict:
         human = read(label_path)
         if human["screenshot"] != screen["image"]:
             raise ValueError("Bundle/human label identity mismatch")
-        labels = [Label.model_validate(label) for label in human["labels"]]
+        label_version, labels = load_labels(human)
         texts, sources = reference_texts(reference_screens[0])
         for detector, detector_matches in all_matches.items():
             result = load_result(root, screen["records"][detector], screen, detector)
             matches = match_screen(
-                labels, result.findings, texts, result.status, config
+                labels,
+                result.findings,
+                texts,
+                result.status,
+                config,
+                label_schema_version=label_version,
+                result_schema_version=result_schema_version(result.metadata),
             )
             detector_matches.append(matches)
             meta = result.metadata
