@@ -74,7 +74,7 @@ Anton writes or edits the definitions/boundaries before acceptance. These are pr
 
 ## Retained support files
 
-Task scripts and focused tests are retained to reproduce guarded capture/accounting and failure-restoration behavior. [Operational recipe snapshots](recipes/README.md) preserve exact build/install/export/verification sources as non-executable audit text; they are not new installed commands. The design initializer must never be rerun over the ledger. APK binaries, full original settings/saves, Gradle caches and raw build logs remain local and uncommitted. No temporary work product is added to production modules. The final original-build test reuses an existing test without modifying hook or capture code.
+Task scripts and focused tests were retained during the task to reproduce guarded capture/accounting and failure-restoration behavior. After review they were moved byte-identically to [recipes](recipes/README.md) as `.py.txt` audit snapshots: they hard-code this task's APK, ledger and evidence paths and are not reusable project commands. [Operational recipe snapshots](recipes/README.md) preserve exact build/install/export/verification sources as non-executable audit text; they are not new installed commands. The design initializer must never be rerun over the ledger. APK binaries, full original settings/saves, Gradle caches and raw build logs remain local and uncommitted. No temporary work product is added to production modules. The final original-build test reuses an existing test without modifying hook or capture code.
 
 ## API usage
 
