@@ -1,0 +1,1270 @@
+{
+  "old_bundle": "issue-47-review-1271048",
+  "old_bundle_sha256": "702b0c1650eb6578153a5d23ebc989c570e0968c91a64b85afc65fb3d94bb16c",
+  "new_bundle": "issue-47-review-1271048-r2",
+  "screens": [
+    {
+      "screen": "city-production",
+      "language": "German",
+      "parent_candidate_sha256": "914fd70ce1acb8c48c7be8101bc6b8bed5400888b629c33dbc233d80075d217f",
+      "candidate_sha256": "f05fe606ab9c7482bd1a450247d7e2fef78ff5a6285d988a6a801e7c9ee9bff4",
+      "rows_before": 42,
+      "primary_before": 12,
+      "rows_after": 42,
+      "primary_after": 17,
+      "moved_to_primary": 5,
+      "text_changed_rows": 8,
+      "icon_only_rows_removed": 0,
+      "diagnostic_before": 30,
+      "diagnostic_after": 25,
+      "moved_rows": [
+        {
+          "id": "root/2:Table/1:Table/0:TextButton/0:Label/draw-0",
+          "before": "Kaufen 160¤",
+          "after": "Kaufen 160",
+          "warnings": [
+            "icon_glyph:a4",
+            "source_unavailable"
+          ]
+        },
+        {
+          "id": "root/3:Table/0:AutoScrollPane/0:Table/0:Table/0:ExpanderTab/1:Table/0:Table/3:Table/3:ColorMarkupLabel/draw-0",
+          "before": "Benötigt mindestens 2 Bevölkerung",
+          "after": "Benötigt mindestens 2 Bevölkerung",
+          "warnings": [
+            "markup_input"
+          ]
+        },
+        {
+          "id": "root/5:ConstructionInfoTable/0:Table/1:Label/draw-0",
+          "before": "Arbeiter\n31⚙ 8⏳",
+          "after": "Arbeiter\n31 8",
+          "warnings": [
+            "icon_glyph:2699",
+            "icon_glyph:23f3",
+            "source_unavailable"
+          ]
+        },
+        {
+          "id": "root/5:ConstructionInfoTable/0:Table/2:Label/draw-0",
+          "before": "2➡\nKann Land Verbesserungen auf Feldern\nbauen",
+          "after": "2\nKann Land Verbesserungen auf Feldern\nbauen",
+          "warnings": [
+            "icon_glyph:27a1",
+            "source_unavailable"
+          ]
+        },
+        {
+          "id": "root/5:ConstructionInfoTable/0:Table/3:TextButton/0:Label/draw-0",
+          "before": "Kaufen 160¤",
+          "after": "Kaufen 160",
+          "warnings": [
+            "icon_glyph:a4",
+            "source_unavailable"
+          ]
+        }
+      ],
+      "changed_text": [
+        {
+          "id": "root/2:Table/1:Table/0:TextButton/0:Label/draw-0",
+          "before": "Kaufen 160¤",
+          "after": "Kaufen 160"
+        },
+        {
+          "id": "root/3:Table/0:AutoScrollPane/0:Table/0:Table/0:ExpanderTab/1:Table/0:Table/1:Table/2:Table/1:Table/0:Label/draw-0",
+          "before": "31⚙ 8⏳",
+          "after": "31 8"
+        },
+        {
+          "id": "root/3:Table/0:AutoScrollPane/0:Table/0:Table/0:ExpanderTab/1:Table/0:Table/3:Table/2:Table/1:Table/0:Label/draw-0",
+          "before": "47⚙ 8⏳",
+          "after": "47 8"
+        },
+        {
+          "id": "root/3:Table/0:AutoScrollPane/0:Table/0:Table/0:ExpanderTab/1:Table/0:Table/5:Table/2:Table/1:Table/0:Label/draw-0",
+          "before": "11⚙ 3⏳",
+          "after": "11 3"
+        },
+        {
+          "id": "root/3:Table/0:AutoScrollPane/0:Table/0:Table/0:ExpanderTab/1:Table/0:Table/7:Table/2:Table/1:Table/0:Label/draw-0",
+          "before": "17⚙ 5⏳",
+          "after": "17 5"
+        },
+        {
+          "id": "root/5:ConstructionInfoTable/0:Table/1:Label/draw-0",
+          "before": "Arbeiter\n31⚙ 8⏳",
+          "after": "Arbeiter\n31 8"
+        },
+        {
+          "id": "root/5:ConstructionInfoTable/0:Table/2:Label/draw-0",
+          "before": "2➡\nKann Land Verbesserungen auf Feldern\nbauen",
+          "after": "2\nKann Land Verbesserungen auf Feldern\nbauen"
+        },
+        {
+          "id": "root/5:ConstructionInfoTable/0:Table/3:TextButton/0:Label/draw-0",
+          "before": "Kaufen 160¤",
+          "after": "Kaufen 160"
+        }
+      ],
+      "removed_icon_only_rows": [],
+      "png_dump_pair_byte_identical": true
+    },
+    {
+      "screen": "city-production",
+      "language": "English",
+      "parent_candidate_sha256": "ac1dc72abf8a05cfc457aaf9eacd0776103dd23f2ed1677e29f339f1c0d48939",
+      "candidate_sha256": "0ba99cbf005b97399cc8f172ebedee3e13f17a2183c1760d6ae719f1305a34f7",
+      "rows_before": 42,
+      "primary_before": 12,
+      "rows_after": 42,
+      "primary_after": 17,
+      "moved_to_primary": 5,
+      "text_changed_rows": 8,
+      "icon_only_rows_removed": 0,
+      "diagnostic_before": 30,
+      "diagnostic_after": 25,
+      "moved_rows": [
+        {
+          "id": "root/2:Table/1:Table/0:TextButton/0:Label/draw-0",
+          "before": "Buy 160¤",
+          "after": "Buy 160",
+          "warnings": [
+            "icon_glyph:a4",
+            "source_unavailable"
+          ]
+        },
+        {
+          "id": "root/3:Table/0:AutoScrollPane/0:Table/0:Table/0:ExpanderTab/1:Table/0:Table/3:Table/3:ColorMarkupLabel/draw-0",
+          "before": "Requires at least 2 population",
+          "after": "Requires at least 2 population",
+          "warnings": [
+            "markup_input",
+            "source_unavailable"
+          ]
+        },
+        {
+          "id": "root/5:ConstructionInfoTable/0:Table/1:Label/draw-0",
+          "before": "Worker\n31⚙ 8⏳",
+          "after": "Worker\n31 8",
+          "warnings": [
+            "icon_glyph:2699",
+            "icon_glyph:23f3",
+            "source_unavailable"
+          ]
+        },
+        {
+          "id": "root/5:ConstructionInfoTable/0:Table/2:Label/draw-0",
+          "before": "2➡\nCan build Land improvements on tiles",
+          "after": "2\nCan build Land improvements on tiles",
+          "warnings": [
+            "icon_glyph:27a1",
+            "source_unavailable"
+          ]
+        },
+        {
+          "id": "root/5:ConstructionInfoTable/0:Table/3:TextButton/0:Label/draw-0",
+          "before": "Buy 160¤",
+          "after": "Buy 160",
+          "warnings": [
+            "icon_glyph:a4",
+            "source_unavailable"
+          ]
+        }
+      ],
+      "changed_text": [
+        {
+          "id": "root/2:Table/1:Table/0:TextButton/0:Label/draw-0",
+          "before": "Buy 160¤",
+          "after": "Buy 160"
+        },
+        {
+          "id": "root/3:Table/0:AutoScrollPane/0:Table/0:Table/0:ExpanderTab/1:Table/0:Table/1:Table/2:Table/1:Table/0:Label/draw-0",
+          "before": "31⚙ 8⏳",
+          "after": "31 8"
+        },
+        {
+          "id": "root/3:Table/0:AutoScrollPane/0:Table/0:Table/0:ExpanderTab/1:Table/0:Table/3:Table/2:Table/1:Table/0:Label/draw-0",
+          "before": "47⚙ 8⏳",
+          "after": "47 8"
+        },
+        {
+          "id": "root/3:Table/0:AutoScrollPane/0:Table/0:Table/0:ExpanderTab/1:Table/0:Table/5:Table/2:Table/1:Table/0:Label/draw-0",
+          "before": "11⚙ 3⏳",
+          "after": "11 3"
+        },
+        {
+          "id": "root/3:Table/0:AutoScrollPane/0:Table/0:Table/0:ExpanderTab/1:Table/0:Table/7:Table/2:Table/1:Table/0:Label/draw-0",
+          "before": "17⚙ 5⏳",
+          "after": "17 5"
+        },
+        {
+          "id": "root/5:ConstructionInfoTable/0:Table/1:Label/draw-0",
+          "before": "Worker\n31⚙ 8⏳",
+          "after": "Worker\n31 8"
+        },
+        {
+          "id": "root/5:ConstructionInfoTable/0:Table/2:Label/draw-0",
+          "before": "2➡\nCan build Land improvements on tiles",
+          "after": "2\nCan build Land improvements on tiles"
+        },
+        {
+          "id": "root/5:ConstructionInfoTable/0:Table/3:TextButton/0:Label/draw-0",
+          "before": "Buy 160¤",
+          "after": "Buy 160"
+        }
+      ],
+      "removed_icon_only_rows": [],
+      "png_dump_pair_byte_identical": true
+    },
+    {
+      "screen": "city-state-diplomacy",
+      "language": "German",
+      "parent_candidate_sha256": "22b4af9097f01ce66e0757e8f975d3d7fc4f7e31416fdb54e76b0df788693d9c",
+      "candidate_sha256": "263267c2c5ca7e158b2ddd4571a4cf284554fb354039cd84ae69352361c668eb",
+      "rows_before": 17,
+      "primary_before": 14,
+      "rows_after": 17,
+      "primary_after": 17,
+      "moved_to_primary": 3,
+      "text_changed_rows": 2,
+      "icon_only_rows_removed": 0,
+      "diagnostic_before": 3,
+      "diagnostic_after": 0,
+      "moved_rows": [
+        {
+          "id": "root/1:SplitPaneCenteringLeftSide/1:Table/0:AutoScrollPane/0:Table/6:ColorMarkupLabel/draw-0",
+          "before": "Liefert militärische Einheiten alle ≈20 Runden",
+          "after": "Liefert militärische Einheiten alle ≈20 Runden",
+          "warnings": [
+            "markup_input"
+          ]
+        },
+        {
+          "id": "root/1:SplitPaneCenteringLeftSide/1:Table/0:AutoScrollPane/0:Table/8:ColorMarkupLabel/draw-0",
+          "before": "Liefert militärische Einheiten alle ≈17 Runden",
+          "after": "Liefert militärische Einheiten alle ≈17 Runden",
+          "warnings": [
+            "markup_input"
+          ]
+        },
+        {
+          "id": "root/1:SplitPaneCenteringLeftSide/1:Table/0:AutoScrollPane/0:Table/9:Label/draw-0",
+          "before": "Belgrad ist in der Lage Konquistador zu liefern, sobald Ritterlichkeit erforscht ist.",
+          "after": "Belgrad ist in der Lage Konquistador zu liefern, sobald Ritterlichkeit erforscht ist.",
+          "warnings": [
+            "icon_glyph:e23e",
+            "icon_glyph:e0c9",
+            "icon_glyph:e1c6"
+          ]
+        }
+      ],
+      "changed_text": [
+        {
+          "id": "root/1:SplitPaneCenteringLeftSide/1:Table/0:AutoScrollPane/0:Table/1:Label/draw-0",
+          "before": "Typ:  Militaristisch",
+          "after": "Typ: Militaristisch"
+        },
+        {
+          "id": "root/1:SplitPaneCenteringLeftSide/1:Table/0:AutoScrollPane/0:Table/2:Label/draw-0",
+          "before": "Persönlichkeit:  Freundlich",
+          "after": "Persönlichkeit: Freundlich"
+        }
+      ],
+      "removed_icon_only_rows": [],
+      "png_dump_pair_byte_identical": true
+    },
+    {
+      "screen": "city-state-diplomacy",
+      "language": "English",
+      "parent_candidate_sha256": "0100a6deb7aff814d5db4a8a52645a3ddc657f09bb69cc336a931378e1ba4fbf",
+      "candidate_sha256": "ac3452d557fbfa916192cb6b62980046b512ac887e3489d36114f2fbf7978f84",
+      "rows_before": 17,
+      "primary_before": 14,
+      "rows_after": 17,
+      "primary_after": 17,
+      "moved_to_primary": 3,
+      "text_changed_rows": 2,
+      "icon_only_rows_removed": 0,
+      "diagnostic_before": 3,
+      "diagnostic_after": 0,
+      "moved_rows": [
+        {
+          "id": "root/1:SplitPaneCenteringLeftSide/1:Table/0:AutoScrollPane/0:Table/6:ColorMarkupLabel/draw-0",
+          "before": "Provides military units every ≈20 turns",
+          "after": "Provides military units every ≈20 turns",
+          "warnings": [
+            "markup_input",
+            "source_unavailable"
+          ]
+        },
+        {
+          "id": "root/1:SplitPaneCenteringLeftSide/1:Table/0:AutoScrollPane/0:Table/8:ColorMarkupLabel/draw-0",
+          "before": "Provides military units every ≈17 turns",
+          "after": "Provides military units every ≈17 turns",
+          "warnings": [
+            "markup_input",
+            "source_unavailable"
+          ]
+        },
+        {
+          "id": "root/1:SplitPaneCenteringLeftSide/1:Table/0:AutoScrollPane/0:Table/9:Label/draw-0",
+          "before": "Belgrade is able to provide Conquistador once Chivalry is researched.",
+          "after": "Belgrade is able to provide Conquistador once Chivalry is researched.",
+          "warnings": [
+            "icon_glyph:e23e",
+            "icon_glyph:e0c9",
+            "icon_glyph:e1c6",
+            "source_unavailable"
+          ]
+        }
+      ],
+      "changed_text": [
+        {
+          "id": "root/1:SplitPaneCenteringLeftSide/1:Table/0:AutoScrollPane/0:Table/1:Label/draw-0",
+          "before": "Type:  Militaristic",
+          "after": "Type: Militaristic"
+        },
+        {
+          "id": "root/1:SplitPaneCenteringLeftSide/1:Table/0:AutoScrollPane/0:Table/2:Label/draw-0",
+          "before": "Personality:  Friendly",
+          "after": "Personality: Friendly"
+        }
+      ],
+      "removed_icon_only_rows": [],
+      "png_dump_pair_byte_identical": true
+    },
+    {
+      "screen": "civilopedia",
+      "language": "German",
+      "parent_candidate_sha256": "c950df2f80b7d4b3acf9aa4df872937712bbc5958e8f1676d30348622959645e",
+      "candidate_sha256": "108fe4ea252b8ed166b5e84f52f8d4aa8a2f86097259bf813a943fb427c3ab84",
+      "rows_before": 17,
+      "primary_before": 15,
+      "rows_after": 17,
+      "primary_after": 15,
+      "moved_to_primary": 0,
+      "text_changed_rows": 0,
+      "icon_only_rows_removed": 0,
+      "diagnostic_before": 2,
+      "diagnostic_after": 2,
+      "moved_rows": [],
+      "changed_text": [],
+      "removed_icon_only_rows": [],
+      "png_dump_pair_byte_identical": true
+    },
+    {
+      "screen": "civilopedia",
+      "language": "English",
+      "parent_candidate_sha256": "f999aae45ee90bd2d22836879903cc44e65a9d217b012269265f72e8399481c0",
+      "candidate_sha256": "391a42b180d9b6520301a07a3da62ef399a9476f0b62b24bd129d16e5d99393f",
+      "rows_before": 22,
+      "primary_before": 16,
+      "rows_after": 22,
+      "primary_after": 16,
+      "moved_to_primary": 0,
+      "text_changed_rows": 0,
+      "icon_only_rows_removed": 0,
+      "diagnostic_before": 6,
+      "diagnostic_after": 6,
+      "moved_rows": [],
+      "changed_text": [],
+      "removed_icon_only_rows": [],
+      "png_dump_pair_byte_identical": true
+    },
+    {
+      "screen": "empire-stats",
+      "language": "German",
+      "parent_candidate_sha256": "69590d2b3cfaf9cc460452f3fd26fd9afaf12eccf0d64ba593f4b1674b22ba3f",
+      "candidate_sha256": "62db40d738870fbaa823fcc376cc00062b49aa0d81da99f92df8fd46a81151fc",
+      "rows_before": 54,
+      "primary_before": 31,
+      "rows_after": 54,
+      "primary_after": 36,
+      "moved_to_primary": 5,
+      "text_changed_rows": 5,
+      "icon_only_rows_removed": 0,
+      "diagnostic_before": 23,
+      "diagnostic_after": 18,
+      "moved_rows": [
+        {
+          "id": "root/1:TabbedPager/3:LinkedScrollPane/0:StatsOverviewTab/0:Table/0:Label/draw-0",
+          "before": "⌣Zufriedenheit",
+          "after": "Zufriedenheit",
+          "warnings": [
+            "icon_glyph:2323"
+          ]
+        },
+        {
+          "id": "root/1:TabbedPager/3:LinkedScrollPane/0:StatsOverviewTab/1:Table/0:Table/0:Label/draw-0",
+          "before": "¤Gold",
+          "after": "Gold",
+          "warnings": [
+            "icon_glyph:a4"
+          ]
+        },
+        {
+          "id": "root/1:TabbedPager/3:LinkedScrollPane/0:StatsOverviewTab/2:Table/0:Label/draw-0",
+          "before": "⍾Wissenschaft",
+          "after": "Wissenschaft",
+          "warnings": [
+            "icon_glyph:237e"
+          ]
+        },
+        {
+          "id": "root/1:TabbedPager/3:LinkedScrollPane/0:StatsOverviewTab/3:Table/0:Label/draw-0",
+          "before": "♪Kultur",
+          "after": "Kultur",
+          "warnings": [
+            "icon_glyph:266a"
+          ]
+        },
+        {
+          "id": "root/1:TabbedPager/3:LinkedScrollPane/0:StatsOverviewTab/4:Table/0:Label/draw-0",
+          "before": "☮Glaube",
+          "after": "Glaube",
+          "warnings": [
+            "icon_glyph:262e"
+          ]
+        }
+      ],
+      "changed_text": [
+        {
+          "id": "root/1:TabbedPager/3:LinkedScrollPane/0:StatsOverviewTab/0:Table/0:Label/draw-0",
+          "before": "⌣Zufriedenheit",
+          "after": "Zufriedenheit"
+        },
+        {
+          "id": "root/1:TabbedPager/3:LinkedScrollPane/0:StatsOverviewTab/1:Table/0:Table/0:Label/draw-0",
+          "before": "¤Gold",
+          "after": "Gold"
+        },
+        {
+          "id": "root/1:TabbedPager/3:LinkedScrollPane/0:StatsOverviewTab/2:Table/0:Label/draw-0",
+          "before": "⍾Wissenschaft",
+          "after": "Wissenschaft"
+        },
+        {
+          "id": "root/1:TabbedPager/3:LinkedScrollPane/0:StatsOverviewTab/3:Table/0:Label/draw-0",
+          "before": "♪Kultur",
+          "after": "Kultur"
+        },
+        {
+          "id": "root/1:TabbedPager/3:LinkedScrollPane/0:StatsOverviewTab/4:Table/0:Label/draw-0",
+          "before": "☮Glaube",
+          "after": "Glaube"
+        }
+      ],
+      "removed_icon_only_rows": [],
+      "png_dump_pair_byte_identical": true
+    },
+    {
+      "screen": "empire-stats",
+      "language": "English",
+      "parent_candidate_sha256": "1dd5d137a5e722fd4d99070b9dbbc69b1c195f134aaa2eb6a57be6f237aca995",
+      "candidate_sha256": "a422ceae53363ad7b5633d0ce900317da060a49f956ffedec35c1e92f0f61023",
+      "rows_before": 54,
+      "primary_before": 31,
+      "rows_after": 54,
+      "primary_after": 36,
+      "moved_to_primary": 5,
+      "text_changed_rows": 5,
+      "icon_only_rows_removed": 0,
+      "diagnostic_before": 23,
+      "diagnostic_after": 18,
+      "moved_rows": [
+        {
+          "id": "root/1:TabbedPager/3:LinkedScrollPane/0:StatsOverviewTab/0:Table/0:Label/draw-0",
+          "before": "⌣Happiness",
+          "after": "Happiness",
+          "warnings": [
+            "icon_glyph:2323",
+            "source_unavailable"
+          ]
+        },
+        {
+          "id": "root/1:TabbedPager/3:LinkedScrollPane/0:StatsOverviewTab/1:Table/0:Table/0:Label/draw-0",
+          "before": "¤Gold",
+          "after": "Gold",
+          "warnings": [
+            "icon_glyph:a4",
+            "source_unavailable"
+          ]
+        },
+        {
+          "id": "root/1:TabbedPager/3:LinkedScrollPane/0:StatsOverviewTab/2:Table/0:Label/draw-0",
+          "before": "⍾Science",
+          "after": "Science",
+          "warnings": [
+            "icon_glyph:237e",
+            "source_unavailable"
+          ]
+        },
+        {
+          "id": "root/1:TabbedPager/3:LinkedScrollPane/0:StatsOverviewTab/3:Table/0:Label/draw-0",
+          "before": "♪Culture",
+          "after": "Culture",
+          "warnings": [
+            "icon_glyph:266a",
+            "source_unavailable"
+          ]
+        },
+        {
+          "id": "root/1:TabbedPager/3:LinkedScrollPane/0:StatsOverviewTab/4:Table/0:Label/draw-0",
+          "before": "☮Faith",
+          "after": "Faith",
+          "warnings": [
+            "icon_glyph:262e",
+            "source_unavailable"
+          ]
+        }
+      ],
+      "changed_text": [
+        {
+          "id": "root/1:TabbedPager/3:LinkedScrollPane/0:StatsOverviewTab/0:Table/0:Label/draw-0",
+          "before": "⌣Happiness",
+          "after": "Happiness"
+        },
+        {
+          "id": "root/1:TabbedPager/3:LinkedScrollPane/0:StatsOverviewTab/1:Table/0:Table/0:Label/draw-0",
+          "before": "¤Gold",
+          "after": "Gold"
+        },
+        {
+          "id": "root/1:TabbedPager/3:LinkedScrollPane/0:StatsOverviewTab/2:Table/0:Label/draw-0",
+          "before": "⍾Science",
+          "after": "Science"
+        },
+        {
+          "id": "root/1:TabbedPager/3:LinkedScrollPane/0:StatsOverviewTab/3:Table/0:Label/draw-0",
+          "before": "♪Culture",
+          "after": "Culture"
+        },
+        {
+          "id": "root/1:TabbedPager/3:LinkedScrollPane/0:StatsOverviewTab/4:Table/0:Label/draw-0",
+          "before": "☮Faith",
+          "after": "Faith"
+        }
+      ],
+      "removed_icon_only_rows": [],
+      "png_dump_pair_byte_identical": true
+    },
+    {
+      "screen": "new-game",
+      "language": "German",
+      "parent_candidate_sha256": "222c2ebadd13b7948c62e1994a0f33cc7146996c289c2f3661d775c8500b8421",
+      "candidate_sha256": "c5d520333a75422b9af7620a0fc30181bfa03b2bc8798023b9c169c5abfdb1e2",
+      "rows_before": 52,
+      "primary_before": 38,
+      "rows_after": 52,
+      "primary_after": 38,
+      "moved_to_primary": 0,
+      "text_changed_rows": 1,
+      "icon_only_rows_removed": 0,
+      "diagnostic_before": 14,
+      "diagnostic_after": 14,
+      "moved_rows": [],
+      "changed_text": [
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/6:AutoScrollPane/0:GameOptionsTable/0:Table/8:Table/1:UncivSlider/3:Container/0:Label/draw-0",
+          "before": "500 ✏",
+          "after": "500"
+        }
+      ],
+      "removed_icon_only_rows": [],
+      "png_dump_pair_byte_identical": true
+    },
+    {
+      "screen": "new-game",
+      "language": "English",
+      "parent_candidate_sha256": "244c5f49505bba96588509970ca0ad2a22f24810c03bf9fa4cf93f1d11626711",
+      "candidate_sha256": "3eb0ce992685f7b6396abca08d31216adefcb6b6a92ea77f9ef30f7eefb12bee",
+      "rows_before": 52,
+      "primary_before": 38,
+      "rows_after": 52,
+      "primary_after": 38,
+      "moved_to_primary": 0,
+      "text_changed_rows": 1,
+      "icon_only_rows_removed": 0,
+      "diagnostic_before": 14,
+      "diagnostic_after": 14,
+      "moved_rows": [],
+      "changed_text": [
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/6:AutoScrollPane/0:GameOptionsTable/0:Table/8:Table/1:UncivSlider/3:Container/0:Label/draw-0",
+          "before": "500 ✏",
+          "after": "500"
+        }
+      ],
+      "removed_icon_only_rows": [],
+      "png_dump_pair_byte_identical": true
+    },
+    {
+      "screen": "options-gameplay",
+      "language": "German",
+      "parent_candidate_sha256": "9b14943ce1d8b6b572413f5ced980b1f1b7ea114d5db4e917d7176a93199948b",
+      "candidate_sha256": "d0ab441f692c1462d27dc1d8279311f5846c9af0acec7959c06f8f90fc64944e",
+      "rows_before": 34,
+      "primary_before": 23,
+      "rows_after": 34,
+      "primary_after": 23,
+      "moved_to_primary": 0,
+      "text_changed_rows": 0,
+      "icon_only_rows_removed": 0,
+      "diagnostic_before": 11,
+      "diagnostic_after": 11,
+      "moved_rows": [],
+      "changed_text": [],
+      "removed_icon_only_rows": [],
+      "png_dump_pair_byte_identical": true
+    },
+    {
+      "screen": "options-gameplay",
+      "language": "English",
+      "parent_candidate_sha256": "1f142618d7a160bf4d195f761d11538a29eb1fea18d209af968f003898280afe",
+      "candidate_sha256": "a355f4026b69350b0d8f6677b836bcfce95869e677b53953d34454a1cfa08cee",
+      "rows_before": 34,
+      "primary_before": 24,
+      "rows_after": 34,
+      "primary_after": 24,
+      "moved_to_primary": 0,
+      "text_changed_rows": 0,
+      "icon_only_rows_removed": 0,
+      "diagnostic_before": 10,
+      "diagnostic_after": 10,
+      "moved_rows": [],
+      "changed_text": [],
+      "removed_icon_only_rows": [],
+      "png_dump_pair_byte_identical": true
+    },
+    {
+      "screen": "policy-picker",
+      "language": "German",
+      "parent_candidate_sha256": "d41d8adfb3b6c1b547a586a2aeadfdd9db2d9670e4395066a591ddb42c8a5119",
+      "candidate_sha256": "b7d36420c63897868affe3e7c3034828371ec53c3f1724e6d4d7af28965a94a7",
+      "rows_before": 53,
+      "primary_before": 17,
+      "rows_after": 53,
+      "primary_after": 17,
+      "moved_to_primary": 0,
+      "text_changed_rows": 15,
+      "icon_only_rows_removed": 0,
+      "diagnostic_before": 36,
+      "diagnostic_after": 36,
+      "moved_rows": [],
+      "changed_text": [
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Table/2:Table/0:Table/0:BranchGroup/1:Table/0:Label/draw-0:fragment-2",
+          "before": "+1 ⌣Zufriedenheit in allen Städten",
+          "after": "• +1 Zufriedenheit in allen Städten"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Table/2:Table/0:Table/0:BranchGroup/1:Table/0:Label/draw-0:fragment-4",
+          "before": "+2 ⚙Produktion, +2 ⁂Nahrung, +2",
+          "after": "• +2 Produktion, +2 Nahrung, +2"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Table/2:Table/0:Table/0:BranchGroup/1:Table/0:Label/draw-0:fragment-5",
+          "before": "¤Gold, +2 ⍾Wissenschaft, +2 ♪Kultur in",
+          "after": "Gold, +2 Wissenschaft, +2 Kultur in"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Table/2:Table/1:Table/0:BranchGroup/1:Table/0:Label/draw-0:fragment-3",
+          "before": "-33% Wartungskosten für alle Einheiten",
+          "after": "• -33% Wartungskosten für alle Einheiten"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Table/2:Table/1:Table/0:BranchGroup/1:Table/0:Label/draw-0:fragment-4",
+          "before": "Erhalte beim Erobern einer Stadt sofort",
+          "after": "• Erhalte beim Erobern einer Stadt sofort"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Table/2:Table/1:Table/0:BranchGroup/1:Table/0:Label/draw-0:fragment-5",
+          "before": "10-mal ihre ♪Kultur Produktion als",
+          "after": "10-mal ihre Kultur Produktion als"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Table/2:Table/1:Table/0:BranchGroup/1:Table/0:Label/draw-0:fragment-6",
+          "before": "♪Kultur",
+          "after": "Kultur"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Table/2:Table/2:Table/0:BranchGroup/1:Table/0:Label/draw-0:fragment-2",
+          "before": "+25% Große Persönlichkeiten",
+          "after": "• +25% Große Persönlichkeiten"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Table/2:Table/2:Table/0:BranchGroup/1:Table/0:Label/draw-0:fragment-5",
+          "before": "+100% Ertrag von jedem Große",
+          "after": "• +100% Ertrag von jedem Große"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Table/2:Table/3:Table/0:BranchGroup/1:Table/0:Label/draw-0:fragment-2",
+          "before": "+15% ⍾Wissenschaft solange die",
+          "after": "• +15% Wissenschaft solange die"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Table/2:Table/3:Table/0:BranchGroup/1:Table/0:Label/draw-0:fragment-5",
+          "before": "2 kostenlose Technologie(n)",
+          "after": "• 2 kostenlose Technologie(n)"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Table/2:Table/3:Table/0:BranchGroup/1:Table/0:Label/draw-0:fragment-6",
+          "before": "Darf Großer Wissenschaftler Einheiten",
+          "after": "• Darf Großer Wissenschaftler Einheiten"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Table/2:Table/4:Table/0:BranchGroup/1:Table/0:Label/draw-0:fragment-2",
+          "before": "+25% ¤Gold in der",
+          "after": "• +25% Gold in der"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Table/2:Table/4:Table/0:BranchGroup/1:Table/0:Label/draw-0:fragment-5",
+          "before": "Alle Handelsposten",
+          "after": "• Alle Handelsposten"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Table/2:Table/4:Table/0:BranchGroup/1:Table/0:Label/draw-0:fragment-6",
+          "before": "geben +1 ¤Gold",
+          "after": "geben +1 Gold"
+        }
+      ],
+      "removed_icon_only_rows": [],
+      "png_dump_pair_byte_identical": true
+    },
+    {
+      "screen": "policy-picker",
+      "language": "English",
+      "parent_candidate_sha256": "652d67cc5873d28071a89f6a89e4be4c891017e54ed8b625aefaa04f8844b6a5",
+      "candidate_sha256": "013483b1c7c07f44a45d6a418cd857278434b105589dab1e76ba93efabf42a3c",
+      "rows_before": 53,
+      "primary_before": 17,
+      "rows_after": 53,
+      "primary_after": 17,
+      "moved_to_primary": 0,
+      "text_changed_rows": 16,
+      "icon_only_rows_removed": 0,
+      "diagnostic_before": 36,
+      "diagnostic_after": 36,
+      "moved_rows": [],
+      "changed_text": [
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Table/2:Table/0:Table/0:BranchGroup/1:Table/0:Label/draw-0:fragment-2",
+          "before": "+1 ⌣Happiness in all cities",
+          "after": "• +1 Happiness in all cities"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Table/2:Table/0:Table/0:BranchGroup/1:Table/0:Label/draw-0:fragment-4",
+          "before": "+2 ⚙Production, +2 ⁂Food,",
+          "after": "• +2 Production, +2 Food,"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Table/2:Table/0:Table/0:BranchGroup/1:Table/0:Label/draw-0:fragment-5",
+          "before": "+2 ¤Gold, +2 ⍾Science, +2",
+          "after": "+2 Gold, +2 Science, +2"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Table/2:Table/0:Table/0:BranchGroup/1:Table/0:Label/draw-0:fragment-6",
+          "before": "♪Culture in all cities",
+          "after": "Culture in all cities"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Table/2:Table/1:Table/0:BranchGroup/1:Table/0:Label/draw-0:fragment-2",
+          "before": "-33% maintenance costs for",
+          "after": "• -33% maintenance costs for"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Table/2:Table/1:Table/0:BranchGroup/1:Table/0:Label/draw-0:fragment-4",
+          "before": "Upon capturing a city,",
+          "after": "• Upon capturing a city,"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Table/2:Table/1:Table/0:BranchGroup/1:Table/0:Label/draw-0:fragment-5",
+          "before": "receive 10 times its ♪Culture",
+          "after": "receive 10 times its Culture"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Table/2:Table/1:Table/0:BranchGroup/1:Table/0:Label/draw-0:fragment-6",
+          "before": "production as ♪Culture",
+          "after": "production as Culture"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Table/2:Table/2:Table/0:BranchGroup/1:Table/0:Label/draw-0:fragment-2",
+          "before": "+25% Great Person",
+          "after": "• +25% Great Person"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Table/2:Table/2:Table/0:BranchGroup/1:Table/0:Label/draw-0:fragment-5",
+          "before": "+100% Yield from every",
+          "after": "• +100% Yield from every"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Table/2:Table/3:Table/0:BranchGroup/1:Table/0:Label/draw-0:fragment-2",
+          "before": "+15% ⍾Science while the",
+          "after": "• +15% Science while the"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Table/2:Table/3:Table/0:BranchGroup/1:Table/0:Label/draw-0:fragment-5",
+          "before": "2 Free Technologies",
+          "after": "• 2 Free Technologies"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Table/2:Table/3:Table/0:BranchGroup/1:Table/0:Label/draw-0:fragment-6",
+          "before": "May buy Great Scientist",
+          "after": "• May buy Great Scientist"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Table/2:Table/4:Table/0:BranchGroup/1:Table/0:Label/draw-0:fragment-2",
+          "before": "+25% ¤Gold in capital",
+          "after": "• +25% Gold in capital"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Table/2:Table/4:Table/0:BranchGroup/1:Table/0:Label/draw-0:fragment-4",
+          "before": "+1 ¤Gold from every",
+          "after": "• +1 Gold from every"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Table/2:Table/4:Table/0:BranchGroup/1:Table/0:Label/draw-0:fragment-6",
+          "before": "+100% Gold from Great",
+          "after": "• +100% Gold from Great"
+        }
+      ],
+      "removed_icon_only_rows": [],
+      "png_dump_pair_byte_identical": true
+    },
+    {
+      "screen": "tech-picker",
+      "language": "German",
+      "parent_candidate_sha256": "5f2ebdb15bb406c1f4bf7d022586fc7297ff30b51a391bd0a4d28b1d36b1b0f0",
+      "candidate_sha256": "6e95247e3c0368bff8eebe172649921ea10f0a46b8b495ca9769a35457b88411",
+      "rows_before": 35,
+      "primary_before": 14,
+      "rows_after": 35,
+      "primary_after": 15,
+      "moved_to_primary": 1,
+      "text_changed_rows": 14,
+      "icon_only_rows_removed": 0,
+      "diagnostic_before": 21,
+      "diagnostic_after": 20,
+      "moved_rows": [
+        {
+          "id": "root/1:PickerPane/0:SplitPane/1:Table/2:VerticalGroup/0:TextButton/0:Label/draw-0",
+          "before": "Bogenschießen erforschen\n(0/24)",
+          "after": "Bogenschießen erforschen\n(0/24)",
+          "warnings": [
+            "icon_glyph:e1ae",
+            "source_unavailable"
+          ]
+        }
+      ],
+      "changed_text": [
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/82:Table/0:TechButton/1:Actor/2:Label/draw-0",
+          "before": "6⏳",
+          "after": "6"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/83:Table/0:TechButton/1:Actor/2:Label/draw-0",
+          "before": "10⏳",
+          "after": "10"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/84:Table/0:TechButton/1:Actor/2:Label/draw-0",
+          "before": "19⏳",
+          "after": "19"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/118:Table/0:TechButton/1:Actor/2:Label/draw-0",
+          "before": "6⏳",
+          "after": "6"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/119:Table/0:TechButton/1:Actor/2:Label/draw-0",
+          "before": "10⏳",
+          "after": "10"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/120:Table/0:TechButton/1:Actor/2:Label/draw-0",
+          "before": "19⏳",
+          "after": "19"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/121:Table/0:TechButton/1:Actor/2:Label/draw-0",
+          "before": "31⏳",
+          "after": "31"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/139:Table/0:TechButton/1:Actor/2:Label/draw-0",
+          "before": "31⏳",
+          "after": "31"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/154:Table/0:TechButton/1:Actor/2:Label/draw-0",
+          "before": "6⏳",
+          "after": "6"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/155:Table/0:TechButton/1:Actor/2:Label/draw-0",
+          "before": "10⏳",
+          "after": "10"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/156:Table/0:TechButton/1:Actor/2:Label/draw-0",
+          "before": "19⏳",
+          "after": "19"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/173:Table/0:TechButton/1:Actor/2:Label/draw-0",
+          "before": "10⏳",
+          "after": "10"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/175:Table/0:TechButton/1:Actor/2:Label/draw-0",
+          "before": "31⏳",
+          "after": "31"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/1:Table/1:AutoScrollPane/0:Table/0:DescriptionLabel/draw-0:fragment-1",
+          "before": "Bogenschütze (5†, 7‡)",
+          "after": "• Bogenschütze (5, 7)"
+        }
+      ],
+      "removed_icon_only_rows": [],
+      "png_dump_pair_byte_identical": true
+    },
+    {
+      "screen": "tech-picker",
+      "language": "English",
+      "parent_candidate_sha256": "5bd158ae599fac58f63919f686e8747d631767286afd65941e6824dacffb891a",
+      "candidate_sha256": "95d33c2d825b0f12c9c3fc877707714e09b0457af7d53514d3575991e68d95f3",
+      "rows_before": 35,
+      "primary_before": 14,
+      "rows_after": 35,
+      "primary_after": 15,
+      "moved_to_primary": 1,
+      "text_changed_rows": 14,
+      "icon_only_rows_removed": 0,
+      "diagnostic_before": 21,
+      "diagnostic_after": 20,
+      "moved_rows": [
+        {
+          "id": "root/1:PickerPane/0:SplitPane/1:Table/2:VerticalGroup/0:TextButton/0:Label/draw-0",
+          "before": "Research Archery\n(0/24)",
+          "after": "Research Archery\n(0/24)",
+          "warnings": [
+            "icon_glyph:e1ae",
+            "source_unavailable"
+          ]
+        }
+      ],
+      "changed_text": [
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/82:Table/0:TechButton/1:Actor/2:Label/draw-0",
+          "before": "6⏳",
+          "after": "6"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/83:Table/0:TechButton/1:Actor/2:Label/draw-0",
+          "before": "10⏳",
+          "after": "10"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/84:Table/0:TechButton/1:Actor/2:Label/draw-0",
+          "before": "19⏳",
+          "after": "19"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/118:Table/0:TechButton/1:Actor/2:Label/draw-0",
+          "before": "6⏳",
+          "after": "6"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/119:Table/0:TechButton/1:Actor/2:Label/draw-0",
+          "before": "10⏳",
+          "after": "10"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/120:Table/0:TechButton/1:Actor/2:Label/draw-0",
+          "before": "19⏳",
+          "after": "19"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/121:Table/0:TechButton/1:Actor/2:Label/draw-0",
+          "before": "31⏳",
+          "after": "31"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/139:Table/0:TechButton/1:Actor/2:Label/draw-0",
+          "before": "31⏳",
+          "after": "31"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/154:Table/0:TechButton/1:Actor/2:Label/draw-0",
+          "before": "6⏳",
+          "after": "6"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/155:Table/0:TechButton/1:Actor/2:Label/draw-0",
+          "before": "10⏳",
+          "after": "10"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/156:Table/0:TechButton/1:Actor/2:Label/draw-0",
+          "before": "19⏳",
+          "after": "19"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/173:Table/0:TechButton/1:Actor/2:Label/draw-0",
+          "before": "10⏳",
+          "after": "10"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/0:AutoScrollPane/0:Table/0:Actor/175:Table/0:TechButton/1:Actor/2:Label/draw-0",
+          "before": "31⏳",
+          "after": "31"
+        },
+        {
+          "id": "root/1:PickerPane/0:SplitPane/1:Table/1:AutoScrollPane/0:Table/0:DescriptionLabel/draw-0:fragment-1",
+          "before": "Archer (5†, 7‡)",
+          "after": "• Archer (5, 7)"
+        }
+      ],
+      "removed_icon_only_rows": [],
+      "png_dump_pair_byte_identical": true
+    },
+    {
+      "screen": "victory-status",
+      "language": "German",
+      "parent_candidate_sha256": "cdf2bada8b4061ebb523a34bb51cf0b817ad57b9dc74910a00e1e7209d12101b",
+      "candidate_sha256": "21002b64f8e61c4a089c10b1e7428f11dd527c2eeb14d7c01a4558d0368e11bd",
+      "rows_before": 27,
+      "primary_before": 23,
+      "rows_after": 27,
+      "primary_after": 23,
+      "moved_to_primary": 0,
+      "text_changed_rows": 0,
+      "icon_only_rows_removed": 0,
+      "diagnostic_before": 4,
+      "diagnostic_after": 4,
+      "moved_rows": [],
+      "changed_text": [],
+      "removed_icon_only_rows": [],
+      "png_dump_pair_byte_identical": true
+    },
+    {
+      "screen": "victory-status",
+      "language": "English",
+      "parent_candidate_sha256": "39a14358b4af43749de65a90edd06c36a9be6a4888dccf411e542e2731486c56",
+      "candidate_sha256": "eacf24b102f4287e537ee6c558f8245b1d42f0ceadab5f9cde27efa4bd33f946",
+      "rows_before": 27,
+      "primary_before": 26,
+      "rows_after": 27,
+      "primary_after": 26,
+      "moved_to_primary": 0,
+      "text_changed_rows": 0,
+      "icon_only_rows_removed": 0,
+      "diagnostic_before": 1,
+      "diagnostic_after": 1,
+      "moved_rows": [],
+      "changed_text": [],
+      "removed_icon_only_rows": [],
+      "png_dump_pair_byte_identical": true
+    },
+    {
+      "screen": "world",
+      "language": "German",
+      "parent_candidate_sha256": "4d053a528a559b2d8b334816b78f0da1ca7c4bdeff360c71e2768d1b883a27ff",
+      "candidate_sha256": "d628724e6da8a21c4ba7b998d276c03c89fe08534b8e065733791679a647b880",
+      "rows_before": 33,
+      "primary_before": 13,
+      "rows_after": 33,
+      "primary_after": 17,
+      "moved_to_primary": 4,
+      "text_changed_rows": 7,
+      "icon_only_rows_removed": 0,
+      "diagnostic_before": 20,
+      "diagnostic_after": 16,
+      "moved_rows": [
+        {
+          "id": "root/4:WorldScreenTopBar/1:WorldScreenTopBarResources/0:Table/0:Label/draw-0",
+          "before": "⏳ 1 | 3.940 v. Chr.",
+          "after": "1 | 3.940 v. Chr.",
+          "warnings": [
+            "icon_glyph:23f3",
+            "source_unavailable"
+          ]
+        },
+        {
+          "id": "root/11:TileInfoTable/1:Table/1:Table/0:Label/draw-0",
+          "before": "Ebene",
+          "after": "Ebene",
+          "warnings": [
+            "icon_glyph:e28d"
+          ]
+        },
+        {
+          "id": "root/11:TileInfoTable/1:Table/2:Table/0:Label/draw-0",
+          "before": "Stadtzentrum",
+          "after": "Stadtzentrum",
+          "warnings": [
+            "icon_glyph:e1a9"
+          ]
+        },
+        {
+          "id": "root/11:TileInfoTable/1:Table/3:Table/0:Label/draw-0",
+          "before": "Krieger - Die Osmanen",
+          "after": "Krieger - Die Osmanen",
+          "warnings": [
+            "icon_glyph:e0a2",
+            "icon_glyph:e209",
+            "source_unavailable"
+          ]
+        }
+      ],
+      "changed_text": [
+        {
+          "id": "root/1:WorldMapHolder/0:Group/0:TileGroupMap/11:CityButtonMapLayer/0:Group/0:CityButton/0:DefenceTable/0:Label/draw-0",
+          "before": "†13",
+          "after": "13"
+        },
+        {
+          "id": "root/4:WorldScreenTopBar/0:WorldScreenTopBarStats/0:Table/8:Label/draw-0",
+          "before": "+1 (⏳ 10)",
+          "after": "+1 ( 10)"
+        },
+        {
+          "id": "root/4:WorldScreenTopBar/1:WorldScreenTopBarResources/0:Table/0:Label/draw-0",
+          "before": "⏳ 1 | 3.940 v. Chr.",
+          "after": "1 | 3.940 v. Chr."
+        },
+        {
+          "id": "root/9:UnitTable/1:Table/3:Table/0:Label/draw-0",
+          "before": "➡2/2",
+          "after": "2/2"
+        },
+        {
+          "id": "root/9:UnitTable/1:Table/3:Table/1:Label/draw-0",
+          "before": "†8",
+          "after": "8"
+        },
+        {
+          "id": "root/11:TileInfoTable/0:Table/0:Label/draw-0",
+          "before": "⚙1",
+          "after": "1"
+        },
+        {
+          "id": "root/11:TileInfoTable/0:Table/1:Label/draw-0",
+          "before": "⁂2",
+          "after": "2"
+        }
+      ],
+      "removed_icon_only_rows": [],
+      "png_dump_pair_byte_identical": true
+    },
+    {
+      "screen": "world",
+      "language": "English",
+      "parent_candidate_sha256": "c6e9c7466683b038f3aaa364bb1134d1aa6059654263eb0b95e5cc8619b78715",
+      "candidate_sha256": "67f5c14cb20ae8fa7a0bacef6040b762b80656be0fe342245457537adbe6a043",
+      "rows_before": 33,
+      "primary_before": 13,
+      "rows_after": 33,
+      "primary_after": 17,
+      "moved_to_primary": 4,
+      "text_changed_rows": 7,
+      "icon_only_rows_removed": 0,
+      "diagnostic_before": 20,
+      "diagnostic_after": 16,
+      "moved_rows": [
+        {
+          "id": "root/4:WorldScreenTopBar/1:WorldScreenTopBarResources/0:Table/0:Label/draw-0",
+          "before": "⏳ 1 | 3,940 BC",
+          "after": "1 | 3,940 BC",
+          "warnings": [
+            "icon_glyph:23f3",
+            "source_unavailable"
+          ]
+        },
+        {
+          "id": "root/11:TileInfoTable/1:Table/1:Table/0:Label/draw-0",
+          "before": "Plains",
+          "after": "Plains",
+          "warnings": [
+            "icon_glyph:e28d",
+            "source_unavailable"
+          ]
+        },
+        {
+          "id": "root/11:TileInfoTable/1:Table/2:Table/0:Label/draw-0",
+          "before": "City center",
+          "after": "City center",
+          "warnings": [
+            "icon_glyph:e1a9",
+            "source_unavailable"
+          ]
+        },
+        {
+          "id": "root/11:TileInfoTable/1:Table/3:Table/0:Label/draw-0",
+          "before": "Warrior - The Ottomans",
+          "after": "Warrior - The Ottomans",
+          "warnings": [
+            "icon_glyph:e0a2",
+            "icon_glyph:e209",
+            "source_unavailable"
+          ]
+        }
+      ],
+      "changed_text": [
+        {
+          "id": "root/1:WorldMapHolder/0:Group/0:TileGroupMap/11:CityButtonMapLayer/0:Group/0:CityButton/0:DefenceTable/0:Label/draw-0",
+          "before": "†13",
+          "after": "13"
+        },
+        {
+          "id": "root/4:WorldScreenTopBar/0:WorldScreenTopBarStats/0:Table/8:Label/draw-0",
+          "before": "+1 (⏳ 10)",
+          "after": "+1 ( 10)"
+        },
+        {
+          "id": "root/4:WorldScreenTopBar/1:WorldScreenTopBarResources/0:Table/0:Label/draw-0",
+          "before": "⏳ 1 | 3,940 BC",
+          "after": "1 | 3,940 BC"
+        },
+        {
+          "id": "root/9:UnitTable/1:Table/3:Table/0:Label/draw-0",
+          "before": "➡2/2",
+          "after": "2/2"
+        },
+        {
+          "id": "root/9:UnitTable/1:Table/3:Table/1:Label/draw-0",
+          "before": "†8",
+          "after": "8"
+        },
+        {
+          "id": "root/11:TileInfoTable/0:Table/0:Label/draw-0",
+          "before": "⚙1",
+          "after": "1"
+        },
+        {
+          "id": "root/11:TileInfoTable/0:Table/1:Label/draw-0",
+          "before": "⁂2",
+          "after": "2"
+        }
+      ],
+      "removed_icon_only_rows": [],
+      "png_dump_pair_byte_identical": true
+    }
+  ],
+  "provider_requests": 0,
+  "spend_usd": 0,
+  "totals": {
+    "rows_before": 733,
+    "primary_before": 405,
+    "rows_after": 733,
+    "primary_after": 441,
+    "moved_to_primary": 36,
+    "text_changed_rows": 105,
+    "icon_only_rows_removed": 0,
+    "diagnostic_before": 328,
+    "diagnostic_after": 292
+  }
+}

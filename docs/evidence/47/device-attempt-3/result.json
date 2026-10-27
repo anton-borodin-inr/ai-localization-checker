@@ -1,0 +1,163 @@
+{
+  "status": "completed",
+  "checks": [
+    {
+      "check": "cold-v1",
+      "request": "i47-diag-78ba3557bc0d407888e7bd8e4ad463e4-0",
+      "protocol_version": 1,
+      "lines": [
+        "[GLThread 53] L10N_SCREEN_PANES tech-picker request=i47-diag-78ba3557bc0d407888e7bd8e4ad463e4-0 panes=tech-tree,description",
+        "[GLThread 53] L10N_SCREEN_READY tech-picker request=i47-diag-78ba3557bc0d407888e7bd8e4ad463e4-0 frames=2"
+      ],
+      "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\n",
+      "terminal": "READY",
+      "elapsed_seconds": 1.998891833005473,
+      "readiness": {
+        "events": [
+          "[GLThread 53] L10N_SCREEN_PANES tech-picker request=i47-diag-78ba3557bc0d407888e7bd8e4ad463e4-0 panes=tech-tree,description",
+          "[GLThread 53] L10N_SCREEN_READY tech-picker request=i47-diag-78ba3557bc0d407888e7bd8e4ad463e4-0 frames=2"
+        ],
+        "panes": [
+          "tech-tree",
+          "description"
+        ],
+        "frames": 2
+      },
+      "images": [
+        {
+          "file": "cold-v1-0.png",
+          "sha256": "386641974edb33edae4f38e4b186fb4cd1d684730e3fc43adfd35052e52a63c3",
+          "rgba_sha256": "8b2d74c23959e568fddfbf9e7c8f15a8da5aa603dfc8e4fa6d7877b74d7efc37"
+        },
+        {
+          "file": "cold-v1-1.png",
+          "sha256": "386641974edb33edae4f38e4b186fb4cd1d684730e3fc43adfd35052e52a63c3",
+          "rgba_sha256": "8b2d74c23959e568fddfbf9e7c8f15a8da5aa603dfc8e4fa6d7877b74d7efc37"
+        }
+      ],
+      "status": "observed"
+    },
+    {
+      "check": "warm-v2-after-v1",
+      "request": "i47-diag-78ba3557bc0d407888e7bd8e4ad463e4-1",
+      "protocol_version": 2,
+      "lines": [
+        "[GLThread 53] L10N_SCREEN_PANES tech-picker request=i47-diag-78ba3557bc0d407888e7bd8e4ad463e4-1 panes=tech-tree,description",
+        "[GLThread 53] L10N_SCREEN_DUMP tech-picker request=i47-diag-78ba3557bc0d407888e7bd8e4ad463e4-1 file=files/l10n-hook/i47-diag-78ba3557bc0d407888e7bd8e4ad463e4-1.json sha256=1d6e5c2e7b62e3007445ea846d1afe3ba726530b4d0a5ae3ef86e73c6cd59fdb",
+        "[GLThread 53] L10N_SCREEN_READY tech-picker request=i47-diag-78ba3557bc0d407888e7bd8e4ad463e4-1 frames=2"
+      ],
+      "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\n",
+      "terminal": "READY",
+      "elapsed_seconds": 0.8477377919480205,
+      "readiness": {
+        "events": [
+          "[GLThread 53] L10N_SCREEN_PANES tech-picker request=i47-diag-78ba3557bc0d407888e7bd8e4ad463e4-1 panes=tech-tree,description",
+          "[GLThread 53] L10N_SCREEN_DUMP tech-picker request=i47-diag-78ba3557bc0d407888e7bd8e4ad463e4-1 file=files/l10n-hook/i47-diag-78ba3557bc0d407888e7bd8e4ad463e4-1.json sha256=1d6e5c2e7b62e3007445ea846d1afe3ba726530b4d0a5ae3ef86e73c6cd59fdb",
+          "[GLThread 53] L10N_SCREEN_READY tech-picker request=i47-diag-78ba3557bc0d407888e7bd8e4ad463e4-1 frames=2"
+        ],
+        "panes": [
+          "tech-tree",
+          "description"
+        ],
+        "frames": 2,
+        "dump": {
+          "file": "files/l10n-hook/i47-diag-78ba3557bc0d407888e7bd8e4ad463e4-1.json",
+          "sha256": "1d6e5c2e7b62e3007445ea846d1afe3ba726530b4d0a5ae3ef86e73c6cd59fdb"
+        }
+      },
+      "dump_sha256": "1d6e5c2e7b62e3007445ea846d1afe3ba726530b4d0a5ae3ef86e73c6cd59fdb",
+      "images": [
+        {
+          "file": "warm-v2-after-v1-0.png",
+          "sha256": "386641974edb33edae4f38e4b186fb4cd1d684730e3fc43adfd35052e52a63c3",
+          "rgba_sha256": "8b2d74c23959e568fddfbf9e7c8f15a8da5aa603dfc8e4fa6d7877b74d7efc37"
+        },
+        {
+          "file": "warm-v2-after-v1-1.png",
+          "sha256": "386641974edb33edae4f38e4b186fb4cd1d684730e3fc43adfd35052e52a63c3",
+          "rgba_sha256": "8b2d74c23959e568fddfbf9e7c8f15a8da5aa603dfc8e4fa6d7877b74d7efc37"
+        }
+      ],
+      "status": "observed"
+    },
+    {
+      "check": "cold-v2",
+      "request": "i47-diag-78ba3557bc0d407888e7bd8e4ad463e4-2",
+      "protocol_version": 2,
+      "lines": [
+        "[GLThread 53] L10N_SCREEN_PANES tech-picker request=i47-diag-78ba3557bc0d407888e7bd8e4ad463e4-2 panes=tech-tree,description",
+        "[GLThread 53] L10N_SCREEN_DUMP tech-picker request=i47-diag-78ba3557bc0d407888e7bd8e4ad463e4-2 file=files/l10n-hook/i47-diag-78ba3557bc0d407888e7bd8e4ad463e4-2.json sha256=1d6e5c2e7b62e3007445ea846d1afe3ba726530b4d0a5ae3ef86e73c6cd59fdb",
+        "[GLThread 53] L10N_SCREEN_READY tech-picker request=i47-diag-78ba3557bc0d407888e7bd8e4ad463e4-2 frames=2"
+      ],
+      "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\n",
+      "terminal": "READY",
+      "elapsed_seconds": 2.3036577499005944,
+      "readiness": {
+        "events": [
+          "[GLThread 53] L10N_SCREEN_PANES tech-picker request=i47-diag-78ba3557bc0d407888e7bd8e4ad463e4-2 panes=tech-tree,description",
+          "[GLThread 53] L10N_SCREEN_DUMP tech-picker request=i47-diag-78ba3557bc0d407888e7bd8e4ad463e4-2 file=files/l10n-hook/i47-diag-78ba3557bc0d407888e7bd8e4ad463e4-2.json sha256=1d6e5c2e7b62e3007445ea846d1afe3ba726530b4d0a5ae3ef86e73c6cd59fdb",
+          "[GLThread 53] L10N_SCREEN_READY tech-picker request=i47-diag-78ba3557bc0d407888e7bd8e4ad463e4-2 frames=2"
+        ],
+        "panes": [
+          "tech-tree",
+          "description"
+        ],
+        "frames": 2,
+        "dump": {
+          "file": "files/l10n-hook/i47-diag-78ba3557bc0d407888e7bd8e4ad463e4-2.json",
+          "sha256": "1d6e5c2e7b62e3007445ea846d1afe3ba726530b4d0a5ae3ef86e73c6cd59fdb"
+        }
+      },
+      "dump_sha256": "1d6e5c2e7b62e3007445ea846d1afe3ba726530b4d0a5ae3ef86e73c6cd59fdb",
+      "images": [
+        {
+          "file": "cold-v2-0.png",
+          "sha256": "386641974edb33edae4f38e4b186fb4cd1d684730e3fc43adfd35052e52a63c3",
+          "rgba_sha256": "8b2d74c23959e568fddfbf9e7c8f15a8da5aa603dfc8e4fa6d7877b74d7efc37"
+        },
+        {
+          "file": "cold-v2-1.png",
+          "sha256": "386641974edb33edae4f38e4b186fb4cd1d684730e3fc43adfd35052e52a63c3",
+          "rgba_sha256": "8b2d74c23959e568fddfbf9e7c8f15a8da5aa603dfc8e4fa6d7877b74d7efc37"
+        }
+      ],
+      "status": "observed"
+    },
+    {
+      "check": "warm-v1-after-v2",
+      "request": "i47-diag-78ba3557bc0d407888e7bd8e4ad463e4-3",
+      "protocol_version": 1,
+      "lines": [
+        "[GLThread 53] L10N_SCREEN_PANES tech-picker request=i47-diag-78ba3557bc0d407888e7bd8e4ad463e4-3 panes=tech-tree,description",
+        "[GLThread 53] L10N_SCREEN_READY tech-picker request=i47-diag-78ba3557bc0d407888e7bd8e4ad463e4-3 frames=2"
+      ],
+      "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\n",
+      "terminal": "READY",
+      "elapsed_seconds": 0.6257902500219643,
+      "readiness": {
+        "events": [
+          "[GLThread 53] L10N_SCREEN_PANES tech-picker request=i47-diag-78ba3557bc0d407888e7bd8e4ad463e4-3 panes=tech-tree,description",
+          "[GLThread 53] L10N_SCREEN_READY tech-picker request=i47-diag-78ba3557bc0d407888e7bd8e4ad463e4-3 frames=2"
+        ],
+        "panes": [
+          "tech-tree",
+          "description"
+        ],
+        "frames": 2
+      },
+      "images": [
+        {
+          "file": "warm-v1-after-v2-0.png",
+          "sha256": "386641974edb33edae4f38e4b186fb4cd1d684730e3fc43adfd35052e52a63c3",
+          "rgba_sha256": "8b2d74c23959e568fddfbf9e7c8f15a8da5aa603dfc8e4fa6d7877b74d7efc37"
+        },
+        {
+          "file": "warm-v1-after-v2-1.png",
+          "sha256": "386641974edb33edae4f38e4b186fb4cd1d684730e3fc43adfd35052e52a63c3",
+          "rgba_sha256": "8b2d74c23959e568fddfbf9e7c8f15a8da5aa603dfc8e4fa6d7877b74d7efc37"
+        }
+      ],
+      "status": "observed"
+    }
+  ]
+}

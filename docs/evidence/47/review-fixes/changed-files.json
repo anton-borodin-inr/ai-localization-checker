@@ -1,0 +1,601 @@
+{
+  "base": "1d8c1c64e19036beaef3b9a60b86920bad09eccf",
+  "files": [
+    {
+      "status": "M",
+      "file": "docs/decisions.md"
+    },
+    {
+      "status": "M",
+      "file": "docs/engine-text-reference.md"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/checker-checks.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/checker-diff-check.txt"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/checker-format.txt"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/checker-pytest.txt"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/checker-ruff.txt"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/deferred-pixel-investigation.md"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-1/after-abort-preservation.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-1/android-crash.txt"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-1/approved-device-plan.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-1/authorization.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-1/capture-abort.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-1/capture-diagnostic-log.txt"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-1/capture-exit.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-1/capture-summary.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-1/capture.txt"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-1/emulator-prepare.txt"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-1/emulator-start.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-1/evidence-receipt.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-1/install-result.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-1/postinstall-verification.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-1/report.md"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-2/before-legacy-preservation.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-2/candidate-diagnostics.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-2/capture.txt"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-2/evidence-receipt.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-2/issue-47-device-plan-2.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-2/issue-47-device-plan-2.md"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-2/real-review-ui-smoke.json"
+    },
+    {
+      "status": "M",
+      "file": "docs/evidence/47/device-attempt-2/report.md"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-2/review-hashes.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-3/authorization.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-3/device-plan.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-3/diagnostic-runner.sha256"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-3/evidence-receipt.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-3/execution-result.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-3/output-readback.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-3/report.md"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-3/runner.txt"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-4/analysis.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-4/authorization.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-4/captures.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-4/data-checks.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-4/device-plan.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-4/evidence-receipt.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-4/execution-result.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-4/final-preservation.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-4/old-build.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-4/report.md"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-4/restore_current_target_apk-result.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-4/restored-build.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-4/result.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-4/runner.txt"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-4/temporary_reference_debug_downgrade-result.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-5/analysis.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-5/authorization.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-5/captures.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-5/cpu-comparison.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-5/data-checks.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-5/device-plan.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-5/diagnostic-build.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-5/evidence-receipt.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-5/execution-result.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-5/install_diagnostic_apk-result.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-5/report.md"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-5/restore_current_target_apk-result.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-5/restored-build.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-5/result.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/device-attempt-5/runner.txt"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/diagnostic-host/evidence-receipt.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/diagnostic-host/focused-tests-attempt-1.log.gz"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/diagnostic-host/focused-tests.log.gz"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/diagnostic-host/fork-apk-badging.txt"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/diagnostic-host/fork-apk-signing.txt"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/diagnostic-host/fork-lint-results-debug.xml"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/diagnostic-host/fork-sample-verification.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/diagnostic-host/fork-test-summary.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/diagnostic-host/host-checks.log.gz"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/diagnostic-host/initial-output-snapshot-build.log.gz"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/diagnostic-host/parent-host-validation.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/diagnostic-host/parent-sample-validation.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/diagnostic-host/parent-verification.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/diagnostic-host/proposed-device-plan.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/diagnostic-host/report.md"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/fork-apk-badging.txt"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/fork-apk-signing.txt"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/fork-evidence.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/fork-host-checks.txt.gz"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/fork-host-verification.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/fork-lint-results-debug.xml"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/fork-sample-validation.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/fork-test-summary.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/offline-report.md"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/pixel-diagnosis-host/affected-glyphs.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/pixel-diagnosis-host/artifact-preservation.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/pixel-diagnosis-host/cache-ab-attempt-1.log.gz"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/pixel-diagnosis-host/cache-ab-attempt-2.log.gz"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/pixel-diagnosis-host/cache-ab-result.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/pixel-diagnosis-host/cache-ab.log.gz"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/pixel-diagnosis-host/diagnosis.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/pixel-diagnosis-host/evidence-receipt.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/pixel-diagnosis-host/pixel-comparisons.jsonl"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/pixel-diagnosis-host/png-metadata.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/pixel-diagnosis-host/replay-inputs.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/pixel-diagnosis-host/report.md"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/pixel-diagnosis-host/source-audit.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/pixel-summary.md"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/replacement-host/apk-content-comparison.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/replacement-host/checker-checks.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/replacement-host/checker-format.txt"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/replacement-host/checker-pytest.txt"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/replacement-host/checker-ruff.txt"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/replacement-host/fork-prior-artifact-hashes.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/replacement-host/fork-regex-audit.md"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/replacement-host/fork-sample.texts.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/replacement-host/fork-version-allocation.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/replacement-host/report.md"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/report.md"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/review-fixes/archive-check.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/review-fixes/candidate-changes.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/review-fixes/candidate-independent-check.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/review-fixes/changed-files.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/review-fixes/checks.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/review-fixes/diff-check.txt"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/review-fixes/focused-tests.txt"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/review-fixes/fork-branch-split.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/review-fixes/format.txt"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/review-fixes/pytest.txt"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/review-fixes/regression-before-fix.txt.gz"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/review-fixes/regression-log-receipt.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/review-fixes/ruff.txt"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/review-fixes/scope-audit.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/shared-path-host/diagnosis.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/shared-path-host/evidence-receipt.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/shared-path-host/loading-window-attempt-1.log.gz"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/shared-path-host/loading-window-ownership-only.log.gz"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/shared-path-host/loading-window-result.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/shared-path-host/loading-window-unguarded-mechanism.log.gz"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/shared-path-host/loading-window.log.gz"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/shared-path-host/original-apk-badging.txt.gz"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/shared-path-host/original-apk-signing.txt.gz"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/shared-path-host/original-apk.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/shared-path-host/phase-3-inputs.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/shared-path-host/prior-evidence-preservation.json"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/shared-path-host/report.md"
+    },
+    {
+      "status": "D",
+      "file": "docs/evidence/47/shared-path-host/shared-source-audit.json"
+    },
+    {
+      "status": "M",
+      "file": "src/l10n_checker/text_reference.py"
+    },
+    {
+      "status": "M",
+      "file": "tests/test_text_dump.py"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "raw_sha256": "2a238263b1efcef2c5d1421423647cff376b899b486243149f0d60b9d20c2c62",
+  "gzip_sha256": "3cdab4743720ad2198520da6d0c1080e1316dff59ec00460a9aa29ef8317abb0",
+  "decompressed_byte_identical": true,
+  "reason": "Raw pytest assertion output has trailing spaces; preserve exact bytes via lossless gzip rather than normalize evidence."
+}

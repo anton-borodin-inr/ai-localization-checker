@@ -53,7 +53,7 @@ class Screen(StrictModel):
 
 class Manifest(StrictModel):
     schema_version: Literal[1]
-    protocol_version: Literal[1]
+    protocol_version: Literal[1, 2]
     build: Build
     resolution: Annotated[
         list[Annotated[int, Field(gt=0)]], Field(min_length=2, max_length=2)

@@ -1,0 +1,25 @@
+{
+  "status": "passed",
+  "confirmed_screens": 20,
+  "rows": 712,
+  "primary": 441,
+  "diagnostic": 271,
+  "empty_rows_retained_verbatim_separately": 21,
+  "diagnostic_bullets_preserved": 25,
+  "all_nonempty_rows_exactly_match_reviewed_r2": true,
+  "all_source_r2_files_match_original_zip": true,
+  "image_dump_pair_bytes_unchanged": true,
+  "all_approval_candidate_reference_hashes_verified": true,
+  "all_human_timing_values_explicitly_null": true,
+  "final_zip_matches_directory": true,
+  "repository_worktrees_clean": true,
+  "repository_heads": {
+    "checker": "952daa290cd0ba5877d4c4a1589f7dfde96d74c9",
+    "Unciv": "b534a8ae67c390412984869c7a03b168d532c36c"
+  },
+  "legacy_browser_importer_invoked": false,
+  "D025_scroll_checks": "pending",
+  "device_commands": 0,
+  "provider_requests": 0,
+  "spend_usd": 0
+}

@@ -1,0 +1,30 @@
+{
+  "command": [
+    "env",
+    "PYTHONPATH=src",
+    "uv",
+    "run",
+    "--offline",
+    "--cache-dir",
+    "/private/tmp/issue47-uv-cache",
+    "l10n-capture",
+    "--manifest",
+    "fixtures/stage2/screens-v2.json",
+    "--serial",
+    "emulator-5554",
+    "--lang",
+    "en",
+    "--lang",
+    "de",
+    "--repeat",
+    "2",
+    "--timeout",
+    "90",
+    "--device-plan",
+    "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/device-phase-2/capture-device-plan.json",
+    "--output-dir",
+    "data/issue-47/capture-approved-2"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 96.13802337506786
+}

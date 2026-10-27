@@ -1,0 +1,761 @@
+{
+  "base": "63b65347b328363f2fdfd51a345a805a6e8c17f9",
+  "files": [
+    {
+      "status": "M",
+      "file": "docs/decisions.md"
+    },
+    {
+      "status": "A",
+      "file": "docs/engine-text-reference.md"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/checker-wheel.txt"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/device-attempt-2/against-1271045.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/device-attempt-2/authorization.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/device-attempt-2/capture-device-plan.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/device-attempt-2/capture-exit.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/device-attempt-2/capture-summary.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/device-attempt-2/execution-ledger.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/device-attempt-2/final-preservation.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/device-attempt-2/freeze-analysis.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/device-attempt-2/install-result.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/device-attempt-2/legacy-device-test.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/device-attempt-2/legacy-device-test.txt"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/device-attempt-2/lifecycle-result.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/device-attempt-2/ordinary-visual-inspection.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/device-attempt-2/postinstall-verification.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/device-attempt-2/primer-result.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/device-attempt-2/report.md"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/device-attempt-2/tech-picker-pixel-deltas.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/device-attempt-3/analysis.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/device-attempt-3/final-preservation.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/device-attempt-3/result.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/device-attempt-5/final-preservation.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/fork-fixed-host-draw-sample.texts.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/fork-host-draw-sample.texts.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/fork-synthetic-sample.texts.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/manual-acceptance/README.md"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/manual-acceptance/issue-47-civilopedia-de-ready-20261026.png"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/manual-acceptance/issue-47-civilopedia-manual-handoff-20261026.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/manual-acceptance/issue-47-civilopedia-scroll-check-20261026.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/manual-acceptance/issue-47-d025-manual-checks-20261026.md"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/manual-acceptance/issue-47-victory-status-de-ready-20261026.png"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/manual-acceptance/issue-47-victory-status-manual-handoff-20261026.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/manual-acceptance/issue-47-victory-status-scroll-check-20261026.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/pixel-summary.md"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/publication/accepted-artifacts.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/publication/changed-files.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/publication/checks.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/publication/diff-check.txt"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/publication/fork-diff-check.txt"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/publication/format.txt"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/publication/hook-tests-follow-up.md"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/publication/pytest.txt"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/publication/ruff.txt"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/publication/scope.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/README.md"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/archive-files-sha256.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/chat-authorization.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/city-production__de/approval.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/city-production__de/initial-candidate.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/city-production__de/reference.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/city-production__de/reviewed-candidate.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/city-production__de/unresolved-diagnostics.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/city-production__en/approval.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/city-production__en/initial-candidate.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/city-production__en/reference.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/city-production__en/reviewed-candidate.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/city-production__en/unresolved-diagnostics.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/city-state-diplomacy__de/approval.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/city-state-diplomacy__de/initial-candidate.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/city-state-diplomacy__de/reference.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/city-state-diplomacy__de/reviewed-candidate.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/city-state-diplomacy__de/unresolved-diagnostics.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/city-state-diplomacy__en/approval.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/city-state-diplomacy__en/initial-candidate.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/city-state-diplomacy__en/reference.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/city-state-diplomacy__en/reviewed-candidate.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/city-state-diplomacy__en/unresolved-diagnostics.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/civilopedia__de/approval.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/civilopedia__de/initial-candidate.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/civilopedia__de/reference.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/civilopedia__de/reviewed-candidate.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/civilopedia__de/unresolved-diagnostics.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/civilopedia__en/approval.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/civilopedia__en/initial-candidate.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/civilopedia__en/reference.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/civilopedia__en/reviewed-candidate.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/civilopedia__en/unresolved-diagnostics.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/confirmed-reference-set.zip"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/empire-stats__de/approval.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/empire-stats__de/initial-candidate.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/empire-stats__de/reference.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/empire-stats__de/reviewed-candidate.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/empire-stats__de/unresolved-diagnostics.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/empire-stats__en/approval.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/empire-stats__en/initial-candidate.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/empire-stats__en/reference.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/empire-stats__en/reviewed-candidate.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/empire-stats__en/unresolved-diagnostics.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/new-game__de/approval.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/new-game__de/initial-candidate.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/new-game__de/reference.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/new-game__de/reviewed-candidate.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/new-game__de/unresolved-diagnostics.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/new-game__en/approval.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/new-game__en/initial-candidate.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/new-game__en/reference.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/new-game__en/reviewed-candidate.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/new-game__en/unresolved-diagnostics.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/options-gameplay__de/approval.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/options-gameplay__de/initial-candidate.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/options-gameplay__de/reference.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/options-gameplay__de/reviewed-candidate.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/options-gameplay__de/unresolved-diagnostics.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/options-gameplay__en/approval.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/options-gameplay__en/initial-candidate.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/options-gameplay__en/reference.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/options-gameplay__en/reviewed-candidate.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/options-gameplay__en/unresolved-diagnostics.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/policy-picker__de/approval.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/policy-picker__de/initial-candidate.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/policy-picker__de/reference.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/policy-picker__de/reviewed-candidate.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/policy-picker__de/unresolved-diagnostics.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/policy-picker__en/approval.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/policy-picker__en/initial-candidate.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/policy-picker__en/reference.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/policy-picker__en/reviewed-candidate.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/policy-picker__en/unresolved-diagnostics.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/reference-index.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/tech-picker__de/approval.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/tech-picker__de/initial-candidate.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/tech-picker__de/reference.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/tech-picker__de/reviewed-candidate.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/tech-picker__de/unresolved-diagnostics.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/tech-picker__en/approval.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/tech-picker__en/initial-candidate.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/tech-picker__en/reference.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/tech-picker__en/reviewed-candidate.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/tech-picker__en/unresolved-diagnostics.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/unresolved-diagnostics-index.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/validation.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/victory-status__de/approval.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/victory-status__de/initial-candidate.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/victory-status__de/reference.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/victory-status__de/reviewed-candidate.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/victory-status__de/unresolved-diagnostics.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/victory-status__en/approval.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/victory-status__en/initial-candidate.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/victory-status__en/reference.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/victory-status__en/reviewed-candidate.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/victory-status__en/unresolved-diagnostics.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/world__de/approval.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/world__de/initial-candidate.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/world__de/reference.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/world__de/reviewed-candidate.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/world__de/unresolved-diagnostics.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/world__en/approval.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/world__en/initial-candidate.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/world__en/reference.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/world__en/reviewed-candidate.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/reference-confirmation/world__en/unresolved-diagnostics.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/replacement-host/fork-apk-badging.txt"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/replacement-host/fork-apk-signing.txt"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/replacement-host/fork-focused-after-fix.log.gz"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/replacement-host/fork-host-checks.log.gz"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/replacement-host/fork-host-verification.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/replacement-host/fork-lint-results-debug.xml"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/replacement-host/fork-regression-before-fix.log.gz"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/replacement-host/fork-regression-before-fix.xml"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/replacement-host/fork-test-summary.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/report.md"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/review-fixes/archive-check.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/review-fixes/candidate-changes.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/review-fixes/candidate-independent-check.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/review-fixes/changed-files.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/review-fixes/checks.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/review-fixes/diff-check.txt"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/review-fixes/focused-tests.txt"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/review-fixes/fork-branch-split.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/review-fixes/format.txt"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/review-fixes/pytest.txt"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/review-fixes/regression-before-fix.txt.gz"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/review-fixes/regression-log-receipt.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/review-fixes/ruff.txt"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/review-fixes/scope-audit.json"
+    },
+    {
+      "status": "A",
+      "file": "docs/evidence/47/wheel-inspection.json"
+    },
+    {
+      "status": "A",
+      "file": "fixtures/stage2/screens-v2.json"
+    },
+    {
+      "status": "M",
+      "file": "pyproject.toml"
+    },
+    {
+      "status": "M",
+      "file": "src/l10n_checker/hook.py"
+    },
+    {
+      "status": "A",
+      "file": "src/l10n_checker/reference_cli.py"
+    },
+    {
+      "status": "A",
+      "file": "src/l10n_checker/reference_page.py"
+    },
+    {
+      "status": "A",
+      "file": "src/l10n_checker/reference_review.js"
+    },
+    {
+      "status": "M",
+      "file": "src/l10n_checker/screen_capture.py"
+    },
+    {
+      "status": "M",
+      "file": "src/l10n_checker/screen_manifest.py"
+    },
+    {
+      "status": "A",
+      "file": "src/l10n_checker/text_dump.py"
+    },
+    {
+      "status": "A",
+      "file": "src/l10n_checker/text_reference.py"
+    },
+    {
+      "status": "A",
+      "file": "tests/test_text_dump.py"
+    }
+  ]
+}

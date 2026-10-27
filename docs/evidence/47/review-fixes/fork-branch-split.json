@@ -1,0 +1,20 @@
+{
+  "approval_date": "2026-10-23",
+  "Antons_answer": "Да, разделить ветки",
+  "production_branch": "feat/47-engine-text-dump",
+  "production_commit": "b534a8ae67c390412984869c7a03b168d532c36c",
+  "diagnostic_branch": "diag/47-render-diagnostics",
+  "diagnostic_commit": "c8eb6fb7e42fc29cdc2b20a813f475d645fbf4be",
+  "production_code_unchanged": true,
+  "worktree_clean": true,
+  "apk_sha256": {
+    "Unciv-1271045-original.apk": "16b6e07eaa8f7ca35b71f361f0bdcceb7015987b60e796d15d2f3b53bb61af1a",
+    "Unciv-1271047-debug.apk": "ecd8c424dc09500f32edd075df71903ab64f6ba9c7ba985bc536e80f21e2c438",
+    "Unciv-1271048-debug.apk": "91d9a900f8204880e590de7fb90f0fc15e2aa5cf5d94a3ae77364497d7b0541e",
+    "Unciv-1271049-diagnostic.apk": "cdf597ffc34f8b30cc0f4c2600ba0879851cd8fa0e89967ffa410b5ea9a138f1"
+  },
+  "new_apk_builds": 0,
+  "device_commands": 0,
+  "provider_requests": 0,
+  "spend_usd": 0
+}

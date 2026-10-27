@@ -1,0 +1,28 @@
+{
+  "authorized_by": "Anton",
+  "request_verbatim": "Публикуй",
+  "date": "2026-10-26",
+  "checker_base": "63b65347b328363f2fdfd51a345a805a6e8c17f9",
+  "fork_base": "877b0dc2ee706dbbdb4a17e14b4522408d197390",
+  "fork_production_commit": "b534a8ae67c390412984869c7a03b168d532c36c",
+  "diagnostic_commit_excluded": "c8eb6fb7e42fc29cdc2b20a813f475d645fbf4be",
+  "decision_numbers": {
+    "D-040": "additive protocol v2",
+    "D-041": "candidate units / human confirmation",
+    "D-042": "same-build non-interference / recorded cross-build differences"
+  },
+  "decision_status": "Proposed",
+  "accepted_decision_prefix_byte_identical": true,
+  "rebase": "git rebase origin/main: already up to date; no reviewed commit rewritten",
+  "reference_archive_sha256": "70db55a62819fc7e913af051626c268703517ccf07b0c23d515e185f99dccd51",
+  "reference_screens": 20,
+  "primary": 441,
+  "diagnostic": 271,
+  "unresolved_diagnostic_rows_retained": 21,
+  "review_time": "not_recorded",
+  "D025": "both passed by Anton, German 1271048",
+  "new_device_commands": 0,
+  "new_apk_builds": 0,
+  "provider_requests": 0,
+  "spend_usd": 0
+}

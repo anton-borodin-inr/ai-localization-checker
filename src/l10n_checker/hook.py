@@ -10,9 +10,10 @@ import time
 import uuid
 
 from l10n_checker.capture import ACTIVITY, CaptureError, Device
+from l10n_checker.text_dump import canonical_bytes
 
 EVENT = re.compile(
-    r"\bL10N_SCREEN_(PANES|READY|ERROR) ([A-Za-z0-9._-]+) "
+    r"\bL10N_SCREEN_(PANES|READY|ERROR|DUMP) ([A-Za-z0-9._-]+) "
     r"request=([A-Za-z0-9._-]+)(?: (.*))?$"
 )
 
@@ -97,9 +98,18 @@ class Logcat:
         self.process.stdout.close()
 
 
-def wait_terminal(log, screen: str, request: str, panes: set[str], deadline: float):
+def wait_terminal(
+    log,
+    screen: str,
+    request: str,
+    panes: set[str],
+    deadline: float,
+    protocol_version: int = 1,
+):
     events = []
     actual = None
+    dump = None
+    dump_error = None
     while True:
         try:
             line = log.next_line(deadline)
@@ -115,6 +125,18 @@ def wait_terminal(log, screen: str, request: str, panes: set[str], deadline: flo
         if kind == "PANES":
             match = re.fullmatch(r"panes=(.*)", details)
             actual = match[1].split(",") if match and match[1] else []
+        elif kind == "DUMP":
+            if protocol_version == 1:
+                continue
+            match = re.fullmatch(r"file=(\S+) sha256=([a-f0-9]{64})", details)
+            if (
+                dump is not None
+                or not match
+                or match[1] != f"files/l10n-hook/{request}.json"
+            ):
+                dump_error = "invalid_or_duplicate_dump_event"
+            else:
+                dump = {"file": match[1], "sha256": match[2]}
         elif kind == "ERROR":
             raise HookFailure(details, terminal=True, events=events)
         elif kind == "READY":
@@ -129,7 +151,14 @@ def wait_terminal(log, screen: str, request: str, panes: set[str], deadline: flo
             frames = re.fullmatch(r"frames=(\d+)", details)
             if frames is None or int(frames[1]) < 2:
                 raise HookFailure("invalid_ready_frames", terminal=True, events=events)
-            return {"events": events, "panes": actual, "frames": int(frames[1])}
+            result = {"events": events, "panes": actual, "frames": int(frames[1])}
+            if protocol_version == 2:
+                if dump_error or dump is None:
+                    raise HookFailure(
+                        dump_error or "missing_dump_event", terminal=True, events=events
+                    )
+                result["dump"] = dump
+            return result
 
 
 def request_screen(
@@ -139,14 +168,22 @@ def request_screen(
     state: dict,
     timeout_s: float,
     log_factory=Logcat,
+    *,
+    protocol_version: int = 1,
 ):
     if re.fullmatch(r"[A-Za-z0-9._-]{1,64}", request) is None:
         raise CaptureError("Invalid D-038 request id")
     if re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*", screen) is None:
         raise CaptureError("Invalid D-038 screen id")
-    payload = json.dumps(
-        state, ensure_ascii=False, allow_nan=False, separators=(",", ":")
-    ).encode()
+    if type(protocol_version) is not int or protocol_version not in (1, 2):
+        raise CaptureError("Unsupported hook protocol version")
+    payload = (
+        canonical_bytes(state)
+        if protocol_version == 2
+        else json.dumps(
+            state, ensure_ascii=False, allow_nan=False, separators=(",", ":")
+        ).encode()
+    )
     encoded = base64.b64encode(payload).decode("ascii")
     panes = set(state["scroll"]) | set(state["scroll_to"])
     # All three extras contain shell-safe tokens; no raw JSON or source names
@@ -154,7 +191,7 @@ def request_screen(
     try:
         with log_factory(device) as log:
             deadline = time.monotonic() + timeout_s
-            started = device.shell(
+            arguments = [
                 "am",
                 "start",
                 "-W",
@@ -169,10 +206,15 @@ def request_screen(
                 "--es",
                 "l10n_state_b64",
                 encoded,
-            )
+            ]
+            if protocol_version == 2:
+                arguments += ["--es", "l10n_protocol", "2"]
+            started = device.shell(*arguments)
             if "Status: ok" not in started:
                 raise HookFailure("am_start_failed", terminal=False, events=[started])
-            result = wait_terminal(log, screen, request, panes, deadline)
+            result = wait_terminal(
+                log, screen, request, panes, deadline, protocol_version
+            )
             result["am_start"] = started
             return result
     except HookFailure:

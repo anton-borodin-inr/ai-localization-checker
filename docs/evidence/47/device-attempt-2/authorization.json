@@ -1,0 +1,7 @@
+{
+  "plan_file": "outputs/issue-47-device-plan-2.json",
+  "plan_sha256": "b5b78e4262618b992330cd16c1638b413a58a8dd085536eb801c7c9561de62f8",
+  "user_reply": "Подтверждаю",
+  "scope": "Exact revised device plan 2, including one 1271048 install, primer, capture, lifecycle, legacy test and specified recovery",
+  "recorded_at_utc": "2026-10-22T12:59:31.798409+00:00"
+}

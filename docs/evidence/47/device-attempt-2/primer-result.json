@@ -1,0 +1,213 @@
+{
+  "status": "passed",
+  "checks": [
+    {
+      "check": "v1-compatibility",
+      "request": "i47-66ac1a0468f962d64057241bfc44f5e5-lc-0",
+      "screen": "tech-picker",
+      "command": [
+        "/Users/antonborodin/Library/Android/sdk/platform-tools/adb",
+        "-s",
+        "emulator-5554",
+        "shell",
+        "am",
+        "start",
+        "-n",
+        "com.unciv.app/.AndroidLauncher",
+        "--es",
+        "l10n_screen",
+        "tech-picker",
+        "--es",
+        "l10n_request",
+        "i47-66ac1a0468f962d64057241bfc44f5e5-lc-0",
+        "--es",
+        "l10n_state_b64",
+        "eyJzY2hlbWFfdmVyc2lvbiI6MSwic2F2ZSI6Imlzc3VlLTgtcGFpciIsInNlbGVjdGlvbiI6eyJ0ZWNobm9sb2d5IjoiQXJjaGVyeSJ9LCJ0YWIiOm51bGwsImV4cGFuZGVkX3NlY3Rpb25zIjpbXSwic2Nyb2xsIjp7fSwic2Nyb2xsX3RvIjp7InRlY2gtdHJlZSI6eyJ0ZWNobm9sb2d5IjoiTWluaW5nIiwiYWxpZ24iOiJ2aXNpYmxlIn0sImRlc2NyaXB0aW9uIjp7ImVkZ2UiOiJzdGFydCIsImFsaWduIjoidmlzaWJsZSJ9fSwiY2FtZXJhIjpudWxsLCJuZXdfZ2FtZSI6bnVsbH0="
+      ],
+      "lines": [
+        "[GLThread 53] L10N_SCREEN_PANES tech-picker request=i47-66ac1a0468f962d64057241bfc44f5e5-lc-0 panes=tech-tree,description",
+        "[GLThread 53] L10N_SCREEN_READY tech-picker request=i47-66ac1a0468f962d64057241bfc44f5e5-lc-0 frames=2"
+      ],
+      "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\n",
+      "terminal": "READY",
+      "result": {
+        "events": [
+          "[GLThread 53] L10N_SCREEN_PANES tech-picker request=i47-66ac1a0468f962d64057241bfc44f5e5-lc-0 panes=tech-tree,description",
+          "[GLThread 53] L10N_SCREEN_READY tech-picker request=i47-66ac1a0468f962d64057241bfc44f5e5-lc-0 frames=2"
+        ],
+        "panes": [
+          "tech-tree",
+          "description"
+        ],
+        "frames": 2
+      },
+      "terminal_elapsed_seconds": 15.01983412494883,
+      "status": "passed"
+    },
+    {
+      "check": "forced-construction-failure",
+      "request": "i47-66ac1a0468f962d64057241bfc44f5e5-lc-1",
+      "screen": "city-production",
+      "command": [
+        "/Users/antonborodin/Library/Android/sdk/platform-tools/adb",
+        "-s",
+        "emulator-5554",
+        "shell",
+        "am",
+        "start",
+        "-n",
+        "com.unciv.app/.AndroidLauncher",
+        "--es",
+        "l10n_screen",
+        "city-production",
+        "--es",
+        "l10n_request",
+        "i47-66ac1a0468f962d64057241bfc44f5e5-lc-1",
+        "--es",
+        "l10n_state_b64",
+        "eyJjYW1lcmEiOm51bGwsImV4cGFuZGVkX3NlY3Rpb25zIjpbIlVuaXRzIl0sIm5ld19nYW1lIjpudWxsLCJzYXZlIjoiaXNzdWUtOC1wYWlyIiwic2NoZW1hX3ZlcnNpb24iOjEsInNjcm9sbCI6e30sInNjcm9sbF90byI6eyJjb25zdHJ1Y3Rpb25zIjp7ImFsaWduIjoidmlzaWJsZSIsImNvbnN0cnVjdGlvbiI6IldvcmtlciJ9LCJwYW5lLTAiOnsiYWxpZ24iOiJ2aXNpYmxlIiwiZWRnZSI6ImNlbnRlciJ9LCJwcm9kdWN0aW9uLXF1ZXVlIjp7ImFsaWduIjoidmlzaWJsZSIsImVkZ2UiOiJzdGFydCJ9fSwic2VsZWN0aW9uIjp7ImNpdHkiOnsibmFtZSI6IklzdGFuYnVsIiwib3duZXIiOiJUaGUgT3R0b21hbnMifSwiY29uc3RydWN0aW9uIjoiV29ya2VyIn0sInRhYiI6bnVsbH0K",
+        "--es",
+        "l10n_protocol",
+        "2",
+        "--es",
+        "l10n_fault",
+        "construction-background"
+      ],
+      "lines": [
+        "[GLThread 53] L10N_SCREEN_ERROR city-production request=i47-66ac1a0468f962d64057241bfc44f5e5-lc-1 reason=forced_construction_background_failure"
+      ],
+      "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\n",
+      "terminal": "ERROR",
+      "error": "reason=forced_construction_background_failure",
+      "events": [
+        "[GLThread 53] L10N_SCREEN_ERROR city-production request=i47-66ac1a0468f962d64057241bfc44f5e5-lc-1 reason=forced_construction_background_failure"
+      ],
+      "terminal_elapsed_seconds": 3.963085165945813,
+      "freeze_observation": {
+        "frames": [
+          {
+            "gfxinfo_sha256": "1dc23172e759576f8c83cfca4c9ab0936e375920d3984e77b5ea6bec2d759b4f",
+            "sf_layer": "SurfaceView[com.unciv.app/com.unciv.app.AndroidLauncher](BLAST)#288",
+            "sf_latency_sha256": "b47f04566e63c144d740e5212d00296c1a4d5aacac39c072eac51eea0a9e3377"
+          },
+          {
+            "gfxinfo_sha256": "924ccfcf4caf78f171659c9650a195da5a3b403172deb2dfe0738af12729b6c2",
+            "sf_layer": "SurfaceView[com.unciv.app/com.unciv.app.AndroidLauncher](BLAST)#288",
+            "sf_latency_sha256": "b47f04566e63c144d740e5212d00296c1a4d5aacac39c072eac51eea0a9e3377"
+          }
+        ],
+        "images": [
+          {
+            "file": "primer-1-0.png",
+            "size": [
+              2400,
+              1080
+            ],
+            "sha256": "c48d1fd29f060710211395af845143b5b4c1971e8af497f07257afd4ba8771f1",
+            "rgba_sha256": "0ab40847a1facceebd91502dde925b5a8c2a32132ca699e40cc5a522b83a2dba"
+          },
+          {
+            "file": "primer-1-1.png",
+            "size": [
+              2400,
+              1080
+            ],
+            "sha256": "c48d1fd29f060710211395af845143b5b4c1971e8af497f07257afd4ba8771f1",
+            "rgba_sha256": "0ab40847a1facceebd91502dde925b5a8c2a32132ca699e40cc5a522b83a2dba"
+          }
+        ],
+        "pixels_identical": true
+      },
+      "status": "passed"
+    },
+    {
+      "check": "recovery-and-font-reset",
+      "request": "i47-66ac1a0468f962d64057241bfc44f5e5-lc-2",
+      "screen": "tech-picker",
+      "command": [
+        "/Users/antonborodin/Library/Android/sdk/platform-tools/adb",
+        "-s",
+        "emulator-5554",
+        "shell",
+        "am",
+        "start",
+        "-n",
+        "com.unciv.app/.AndroidLauncher",
+        "--es",
+        "l10n_screen",
+        "tech-picker",
+        "--es",
+        "l10n_request",
+        "i47-66ac1a0468f962d64057241bfc44f5e5-lc-2",
+        "--es",
+        "l10n_state_b64",
+        "eyJjYW1lcmEiOm51bGwsImV4cGFuZGVkX3NlY3Rpb25zIjpbXSwibmV3X2dhbWUiOm51bGwsInNhdmUiOiJpc3N1ZS04LXBhaXIiLCJzY2hlbWFfdmVyc2lvbiI6MSwic2Nyb2xsIjp7fSwic2Nyb2xsX3RvIjp7ImRlc2NyaXB0aW9uIjp7ImFsaWduIjoidmlzaWJsZSIsImVkZ2UiOiJzdGFydCJ9LCJ0ZWNoLXRyZWUiOnsiYWxpZ24iOiJ2aXNpYmxlIiwidGVjaG5vbG9neSI6Ik1pbmluZyJ9fSwic2VsZWN0aW9uIjp7InRlY2hub2xvZ3kiOiJBcmNoZXJ5In0sInRhYiI6bnVsbH0K",
+        "--es",
+        "l10n_protocol",
+        "2"
+      ],
+      "lines": [
+        "[GLThread 53] L10N_SCREEN_PANES tech-picker request=i47-66ac1a0468f962d64057241bfc44f5e5-lc-2 panes=tech-tree,description",
+        "[GLThread 53] L10N_SCREEN_DUMP tech-picker request=i47-66ac1a0468f962d64057241bfc44f5e5-lc-2 file=files/l10n-hook/i47-66ac1a0468f962d64057241bfc44f5e5-lc-2.json sha256=1d6e5c2e7b62e3007445ea846d1afe3ba726530b4d0a5ae3ef86e73c6cd59fdb",
+        "[GLThread 53] L10N_SCREEN_READY tech-picker request=i47-66ac1a0468f962d64057241bfc44f5e5-lc-2 frames=2"
+      ],
+      "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\n",
+      "terminal": "READY",
+      "result": {
+        "events": [
+          "[GLThread 53] L10N_SCREEN_PANES tech-picker request=i47-66ac1a0468f962d64057241bfc44f5e5-lc-2 panes=tech-tree,description",
+          "[GLThread 53] L10N_SCREEN_DUMP tech-picker request=i47-66ac1a0468f962d64057241bfc44f5e5-lc-2 file=files/l10n-hook/i47-66ac1a0468f962d64057241bfc44f5e5-lc-2.json sha256=1d6e5c2e7b62e3007445ea846d1afe3ba726530b4d0a5ae3ef86e73c6cd59fdb",
+          "[GLThread 53] L10N_SCREEN_READY tech-picker request=i47-66ac1a0468f962d64057241bfc44f5e5-lc-2 frames=2"
+        ],
+        "panes": [
+          "tech-tree",
+          "description"
+        ],
+        "frames": 2,
+        "dump": {
+          "file": "files/l10n-hook/i47-66ac1a0468f962d64057241bfc44f5e5-lc-2.json",
+          "sha256": "1d6e5c2e7b62e3007445ea846d1afe3ba726530b4d0a5ae3ef86e73c6cd59fdb"
+        }
+      },
+      "terminal_elapsed_seconds": 0.8719258341006935,
+      "dump_sha256": "1d6e5c2e7b62e3007445ea846d1afe3ba726530b4d0a5ae3ef86e73c6cd59fdb",
+      "freeze_observation": {
+        "frames": [
+          {
+            "gfxinfo_sha256": "8de36e8393ea9de1e9845291bcec85dd4f0712d21a8baaa08fc450cc8f49d726",
+            "sf_layer": "SurfaceView[com.unciv.app/com.unciv.app.AndroidLauncher](BLAST)#288",
+            "sf_latency_sha256": "a63e9d6bd82b2516d08e4702b5c8e2e240de77f6319fc7f93a1dccc47d663e70"
+          },
+          {
+            "gfxinfo_sha256": "08c15d1ac5dca03b92a8a28f842e565947aa17104556eae2606dd608586f8bb3",
+            "sf_layer": "SurfaceView[com.unciv.app/com.unciv.app.AndroidLauncher](BLAST)#288",
+            "sf_latency_sha256": "a63e9d6bd82b2516d08e4702b5c8e2e240de77f6319fc7f93a1dccc47d663e70"
+          }
+        ],
+        "images": [
+          {
+            "file": "primer-2-0.png",
+            "size": [
+              2400,
+              1080
+            ],
+            "sha256": "386641974edb33edae4f38e4b186fb4cd1d684730e3fc43adfd35052e52a63c3",
+            "rgba_sha256": "8b2d74c23959e568fddfbf9e7c8f15a8da5aa603dfc8e4fa6d7877b74d7efc37"
+          },
+          {
+            "file": "primer-2-1.png",
+            "size": [
+              2400,
+              1080
+            ],
+            "sha256": "386641974edb33edae4f38e4b186fb4cd1d684730e3fc43adfd35052e52a63c3",
+            "rgba_sha256": "8b2d74c23959e568fddfbf9e7c8f15a8da5aa603dfc8e4fa6d7877b74d7efc37"
+          }
+        ],
+        "pixels_identical": true
+      },
+      "status": "passed"
+    }
+  ],
+  "capture_template_writes": 0
+}

@@ -1,0 +1,87 @@
+{
+  "checked_at_utc": "2026-10-26T16:04:50.816521+00:00",
+  "scope": "final publication working tree before commit",
+  "prior_reviewed_head": "952daa290cd0ba5877d4c4a1589f7dfde96d74c9",
+  "commands": [
+    {
+      "command": [
+        "uv",
+        "run",
+        "--offline",
+        "--cache-dir",
+        "/private/tmp/issue47-uv-cache",
+        "pytest",
+        "-q",
+        "-rs"
+      ],
+      "exit_code": 0,
+      "seconds": 11.407,
+      "output": "pytest.txt"
+    },
+    {
+      "command": [
+        "uv",
+        "run",
+        "--offline",
+        "--cache-dir",
+        "/private/tmp/issue47-uv-cache",
+        "ruff",
+        "check",
+        "."
+      ],
+      "exit_code": 0,
+      "seconds": 0.088,
+      "output": "ruff.txt"
+    },
+    {
+      "command": [
+        "uv",
+        "run",
+        "--offline",
+        "--cache-dir",
+        "/private/tmp/issue47-uv-cache",
+        "ruff",
+        "format",
+        "--check",
+        "."
+      ],
+      "exit_code": 0,
+      "seconds": 0.031,
+      "output": "format.txt"
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check",
+        "63b6534"
+      ],
+      "exit_code": 0,
+      "seconds": 0.026,
+      "output": "diff-check.txt"
+    },
+    {
+      "repository": "Unciv",
+      "command": [
+        "git",
+        "diff",
+        "--check",
+        "877b0dc..b534a8a"
+      ],
+      "exit_code": 0,
+      "output": "fork-diff-check.txt"
+    }
+  ],
+  "artifact_audit": {
+    "status": "passed",
+    "reference_screens": 20,
+    "primary": 441,
+    "diagnostic": 271,
+    "retained_empty_diagnostics": 21,
+    "accepted_decisions_byte_identical": true,
+    "reviewed_runtime_tests_unchanged": true,
+    "all_accepted_artifact_hashes_verified": true,
+    "both_D025_reports_passed": true
+  },
+  "all_passed": true
+}
