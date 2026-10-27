@@ -114,16 +114,16 @@ def test_missing_expected_carries_expected_text_and_slot_region():
 @pytest.mark.parametrize(("language", "text"), [("de", "Mining"), ("en", "Bergbau")])
 def test_known_other_language(language, text):
     findings, _ = detection(text, language=language)
-    assert [f.defect_type for f in findings] == ["untranslated"]
+    assert [f.defect_type for f in findings] == ["wrong_language"]
 
 
-def test_shared_word_is_not_untranslated():
+def test_shared_word_is_not_wrong_language():
     assert detection("Shared", request="Shared")[0] == []
 
 
-def test_missing_translation_raw_key_is_untranslated():
+def test_missing_translation_source_fallback_is_wrong_language():
     findings, diag = detection("raw_key", request="raw_key")
-    assert findings[0].defect_type == "untranslated"
+    assert findings[0].defect_type == "wrong_language"
     assert diag[0]["rule"] == "source_fallback"
 
 
@@ -314,6 +314,7 @@ def test_run_output_marks_missing_rule_findings(inputs):
         assert run_json["missing_rule_findings"] == expected
         assert result_json["metadata"]["missing_rule_findings"] == expected
         assert run_json["settings"]["version"] == "baseline-v0.1"
+        assert run_json["schema_version"] == 2
 
 
 def test_labels_and_secrets_are_never_opened(inputs, monkeypatch):

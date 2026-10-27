@@ -1,5 +1,6 @@
 import hashlib
 import json
+from pathlib import Path
 
 import pytest
 from pydantic import ValidationError
@@ -9,10 +10,15 @@ from l10n_checker.vision import (
     PROMPT_VERSION,
     SCHEMA_VERSION,
     CheckResult,
+    CheckResultV1,
     Finding,
+    FindingV1,
+    ModelOutput,
     ProviderError,
     ProviderResponse,
     RequestBudget,
+    load_check_result,
+    result_schema_version,
     run_check,
 )
 
@@ -219,3 +225,60 @@ def test_run_record_without_response(screenshot, tmp_path):
     )
     assert not (run_dir / "response_raw.json").exists()
     assert (run_dir / "run.json").exists() and (run_dir / "result.json").exists()
+
+
+V1_RECORD = (
+    Path(__file__).resolve().parents[1]
+    / "docs/evidence/45/run-records/20261021T191152Z-72ce18/result.json"
+)
+
+
+def test_committed_v1_record_still_loads_with_v1_classes():
+    text = V1_RECORD.read_text(encoding="utf-8")
+    result = load_check_result(text)
+    assert type(result) is CheckResultV1
+    assert result.status == "checked"
+    assert {type(f) for f in result.findings} == {FindingV1}
+    assert {f.defect_type for f in result.findings} == {"overlap"}
+    with pytest.raises(ValidationError):
+        CheckResult.model_validate_json(text)
+
+
+@pytest.mark.parametrize("name", ["overlap", "untranslated"])
+def test_v2_model_output_rejects_v1_class_names(name):
+    payload = {
+        "readability": "readable",
+        "unreadable_regions": [],
+        "readability_reason": None,
+        "findings": [{**FINDING, "defect_type": name}],
+    }
+    with pytest.raises(ValidationError):
+        ModelOutput.model_validate_json(json.dumps(payload))
+
+
+def test_sent_schema_lists_only_v2_classes():
+    schema = json.dumps(ModelOutput.model_json_schema())
+    for name in ("overflow", "wrong_language", "truncated_text", "other"):
+        assert f'"{name}"' in schema
+    for name in ("overlap", "untranslated"):
+        assert f'"{name}"' not in schema
+
+
+@pytest.mark.parametrize(
+    ("metadata", "expected"),
+    [
+        ({"schema_version": "v1"}, 1),
+        ({"schema_version": "v2"}, 2),
+        ({"schema_version": 2}, 2),
+        ({}, 1),
+    ],
+    ids=["vision-v1", "vision-v2", "baseline-v2", "baseline-before-d046"],
+)
+def test_result_schema_version(metadata, expected):
+    assert result_schema_version(metadata) == expected
+
+
+@pytest.mark.parametrize("version", ["v3", 3, True, None])
+def test_unknown_result_schema_version_is_rejected(version):
+    with pytest.raises(ValueError):
+        result_schema_version({"schema_version": version})

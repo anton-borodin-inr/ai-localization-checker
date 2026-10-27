@@ -1,6 +1,7 @@
 """Provider-agnostic vision check: one screenshot in, findings or "not checked" out.
 
-Response schema v1 adds readability to the unchanged finding objects.
+Response schema v2 renames the defect classes to the D-044 classes (D-046);
+schema v1 run records stay readable through the V1 models.
 """
 
 import hashlib
@@ -16,11 +17,13 @@ from pydantic import BaseModel, ConfigDict, Field, ValidationError, model_valida
 
 from l10n_checker.capture import png_size
 
-SCHEMA_VERSION = "v1"
+SCHEMA_VERSION = "v2"
 # Bump whenever PROMPT changes.
-PROMPT_VERSION = "v1"
+PROMPT_VERSION = "v2"
 
-DefectType = Literal["truncated_text", "overlap", "untranslated", "other"]
+DefectType = Literal["overflow", "wrong_language", "truncated_text", "other"]
+# Frozen v1 wire classes; only for reading old run records and labels (D-046).
+DefectTypeV1 = Literal["truncated_text", "overlap", "untranslated", "other"]
 Region = Literal[
     "top-left",
     "top",
@@ -36,16 +39,27 @@ Region = Literal[
 PROMPT = """\
 You are a localization QA engineer reviewing one screenshot of a mobile game UI.
 Report localization defects that are visible in the screenshot:
-- truncated_text: text cut off or clipped by its container; a label ending in an \
-ellipsis is truncated_text only when the full text is not visible anywhere else on the same screenshot;
-- overlap: text overlapping other text, icons or the edge of its container;
-- untranslated: text left in a different language than the rest of the UI;
+- overflow: text renders outside the bounds of its own label or field, whether \
+or not it collides with another element; wrapped text, or a container that grows \
+so that its text fits, is not by itself overflow;
+- wrong_language: user-facing text is in a language other than the screen's \
+intended language, including source-language fallback and foreign text in an \
+active translation file; proper names, shared words, symbols and numbers need \
+context and are not wrong_language merely for differing from a dictionary entry;
+- truncated_text: part of a user-facing string is not visible because its label \
+clips or shortens it; a label ending in an ellipsis is truncated_text only when \
+the full text is not visible anywhere else on the same screenshot;
 - other: any other visible localization defect.
 Apply these labeling rules:
 - Text or elements cut off at the edge of a scrollable area (a list, panel or \
 tree) are not defects when the full content becomes visible by scrolling.
-- For technical text, a raw string key or identifier shown instead of translated text is untranslated; \
-a broken placeholder (shown literally or wrongly substituted) is other.
+- A collision between separate widgets, where each text stays inside its own \
+bounds, is other, not overflow.
+- For technical text, a raw string key or identifier that is not text in any \
+language is other; a broken placeholder (shown literally or wrongly substituted) \
+is other. A source-language string shown because its translation is missing is \
+wrong_language.
+- Text too small to read is reported through readability, not as a finding.
 For each defect give the affected text exactly as you see it (text_seen), the \
 coarse screen region on a 3x3 grid (top-left, top, top-right, left, center, \
 right, bottom-left, bottom, bottom-right) and your confidence from 0 to 1.
@@ -65,7 +79,7 @@ An empty findings list means no defects only when readability is readable.
 
 
 class Finding(BaseModel):
-    """A finding with the unchanged D-018 fields."""
+    """A finding with the D-018 fields and the schema v2 classes."""
 
     model_config = ConfigDict(extra="forbid")
 
@@ -73,6 +87,12 @@ class Finding(BaseModel):
     text_seen: str
     region: Region
     confidence: float = Field(ge=0, le=1)
+
+
+class FindingV1(Finding):
+    """A schema v1 finding, read from old run records only."""
+
+    defect_type: DefectTypeV1
 
 
 class ModelOutput(BaseModel):
@@ -94,6 +114,12 @@ class ModelOutput(BaseModel):
         return self
 
 
+class ModelOutputV1(ModelOutput):
+    """Revalidates a saved schema v1 provider response."""
+
+    findings: list[FindingV1]
+
+
 class CheckResult(BaseModel):
     status: Literal["checked", "not_checked"]
     findings: list[Finding]
@@ -107,6 +133,33 @@ class CheckResult(BaseModel):
         if self.status == "checked" and self.reason is not None:
             raise ValueError("checked must not carry a failure reason")
         return self
+
+
+class CheckResultV1(CheckResult):
+    """A result recorded with schema v1 findings."""
+
+    findings: list[FindingV1]
+
+
+def result_schema_version(metadata: dict) -> int:
+    """Finding schema of a run record: 1 or 2.
+
+    Vision records name it "v1"/"v2" (D-036); baseline records carry the integer
+    2 and, before D-046, nothing, which means 1.
+    """
+    version = metadata.get("schema_version", 1)
+    version = {"v1": 1, "v2": 2}.get(version, version)
+    if version not in (1, 2) or isinstance(version, bool):
+        raise ValueError(f"unknown result schema version: {version!r}")
+    return version
+
+
+def load_check_result(text: str) -> CheckResult:
+    """Validate a saved result.json with the finding schema it was written with."""
+    data = json.loads(text)
+    if result_schema_version(data["metadata"]) == 1:
+        return CheckResultV1.model_validate(data)
+    return CheckResult.model_validate(data)
 
 
 ErrorKind = Literal[
