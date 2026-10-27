@@ -388,7 +388,8 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 ## D-040 — Additive hook protocol v2 and rendered text outputs
 
 - **Date:** 2026-10-21
-- **Status:** Proposed
+- **Status:** Accepted
+- **Accepted by:** Anton, 2026-10-27 (approved in the #47 plan on 2026-10-21; implemented and merged in #51)
 - **Decision:** Keep D-038 Accepted for v1 and opt into protocol v2 with `l10n_protocol=2`, retaining state schema v1 and existing events. V2 additionally publishes a deterministic engine text dump and a hash-bearing DUMP event before READY. Bind dump and PNG hashes in capture sidecars; list every temporary/final dump path as a hook output in the separately approved device plan.
 - **Why:** Issue #47 needs build-pinned rendered strings and clipping geometry without deriving references from OCR/model output. A file avoids logcat line-size limits. Request IDs and timing belong to transport provenance, outside deterministic dump bytes. Anton approved the implementation plan on 2026-10-21.
 - **Alternatives considered:** Replace v1 or change D-038 in place (breaks the Accepted contract); log the entire dump (size limits); traverse label strings only (includes undrawn text and hidden ellipsis suffixes).
@@ -397,7 +398,8 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 ## D-041 — Engine candidates, occurrence units and hash-bound human review
 
 - **Date:** 2026-10-21
-- **Status:** Proposed
+- **Status:** Accepted
+- **Accepted by:** Anton, 2026-10-27 (rules approved in the #47 plan; the chat confirmation of the 20 references is recorded under Consequences)
 - **Decision:** Generate unconfirmed D-033-compatible rows from rendered engine draws: preserve occurrences, group only explicit decorative duplicates, retain wrapped/composed logical units, and put partially clipped/uncertain/numeric-only units in diagnostics. Never complete a hidden span from source input. Anton edits/adds/removes units and confirms exact candidate, PNG and dump hashes; record active/elapsed review time per screen.
 - **Why:** Engine source scales reference preparation without inheriting OCR/model omissions, but visibility and unit choices still require human QA ownership. Separating source input from rendered/visible text prevents invisible content from inflating the reference. Anton approved these rules before device results.
 - **Alternatives considered:** Deduplicate strings (loses occurrences); infer composed text from nearby boxes (invents units); use full input for clipped rows (introduces hidden text); automatically accept engine output (removes human confirmation).
@@ -406,8 +408,9 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 ## D-042 — Same-build non-interference and recorded cross-build pixel differences
 
 - **Date:** 2026-10-23
-- **Status:** Proposed
-- **Decision:** For #47, require (1) zero changed pixels between v1 and v2 on the same build, (2) zero changed pixels between repeated captures, and (3) recording any cross-build difference with its changed-pixel count, exclusive bounding box and maximum channel delta, plus a visual check for changes to text or layout. A cross-build difference does not block acceptance by itself. This replaces the approved plan's zero-pixel comparison against 1271045. Anton approved this criterion on 2026-10-23; this decision entry remains Proposed pending coordinated merge.
+- **Status:** Accepted
+- **Accepted by:** Anton, 2026-10-23
+- **Decision:** For #47, require (1) zero changed pixels between v1 and v2 on the same build, (2) zero changed pixels between repeated captures, and (3) recording any cross-build difference with its changed-pixel count, exclusive bounding box and maximum channel delta, plus a visual check for changes to text or layout. A cross-build difference does not block acceptance by itself. This replaces the approved plan's zero-pixel comparison against 1271045. Anton approved this criterion on 2026-10-23.
 - **Why:** 1271048 intentionally changes shared rendering paths (post-READY freeze from #44 fix 4, loading-draw suppression and the font subclass), and font-atlas allocation is incremental. A cross-build zero-pixel gate cannot separate dump interference from these intended changes. Existing checks that isolate the dump passed: v1 and v2 on 1271048 matched in attempt 3, and 20/20 forward/reverse repeats matched in pixels and dump bytes in attempt 2. These are bounded observations, not proof of every rendering path.
 - **Alternatives considered:** Retain zero pixels against 1271045 (the intended lifecycle changes remain, and three device rounds plus a diagnostic APK did not identify a cause); adopt a numeric tolerance (an arbitrary threshold).
 - **Consequences:** Record Tech Picker under D-042: EN 40 pixels, `[751,469,768,484]`, maximum channel delta 1; DE 72 pixels, `[214,239,237,258]`, maximum channel delta 2. Alpha is unchanged; the retained visual check found no change to text or layout. Criteria (1) and (2) are met by existing evidence. The original comparison's exit 2/status `failed` is retained as history, not converted into an identical result. Root-cause investigation stays closed. Post-READY freeze versus continuous redraw in 1271045 is an unisolated hypothesis recorded only for history, not a demonstrated cause. D-038 and D-039 remain Accepted and unchanged. See [the pixel summary](evidence/47/pixel-summary.md) and [the delivery report](evidence/47/report.md). Number D-042 was allocated against main `63b6534` on publication rebase, alongside D-040 and D-041; recheck before merge if main changes.
@@ -415,7 +418,8 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 ## D-043 — Issue 45 dev-screen assignment
 
 - **Date:** 2026-10-21
-- **Status:** Proposed
+- **Status:** Accepted
+- **Accepted by:** Anton, 2026-10-27 (assignment made in issue #45 on 2026-10-21)
 - **Decision:** Assign `tech-picker` and `city-production` to dev, as Anton decided in issue #45 and its task chat. Issue #45 DeepSeek calls are restricted to screenshots of these two source screens.
 - **Why:** Both screens were already explored in Stage 1; their assignment preserves grouped separation and removes no unused source screen from the future hold-out.
 - **Alternatives considered:** Assign either previously explored screen to hold-out (would not provide independent final evidence).
@@ -437,7 +441,8 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 ## D-045 — OCR engine for baseline v1: deferred to the Stage 3 dev set
 
 - **Date:** 2026-10-27
-- **Status:** Proposed
+- **Status:** Accepted
+- **Accepted by:** Anton, 2026-10-27
 - **Decision:** Keep Tesseract T0 (D-030 settings, no preprocessing) as the baseline default. EasyOCR is the leading candidate for baseline v1. The engine and its preprocessing are chosen at Stage 4 by repeating the pre-registered issue #48 grid on the Stage 3 dev set. Only the comparison conclusion is merged; the EasyOCR adapter, the comparison harness and the raw records stay on the archive branch `feat/48-ocr-comparison` (PR #50, closed without merging), and EasyOCR/PyTorch is not added as a dependency now.
 - **Why:** On the #8 trio EasyOCR read 45–47 of 56 reference units versus 35 for Tesseract and produced 26–29 false positives versus 35–40, but took 10–50x longer and needs PyTorch. Three labelled images of one screen with one labelled defect cannot decide the engine, and no configuration read the Mining ellipsis by OCR. See the [issue 48 summary](evidence/48/README.md).
 - **Alternatives considered:** Merge the full comparison with EasyOCR as a default dependency (heavy dependency for an unaccepted candidate); merge only the engine switch with EasyOCR as an optional dependency (code without a decision to use it yet); adopt E2 now, as proposed in PR #50 (its only TP came from a source-derived `missing` candidate, and its reading equals E0's at 4x the runtime).
