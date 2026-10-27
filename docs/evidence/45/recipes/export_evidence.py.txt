@@ -1,0 +1,89 @@
+"""Publish original issue-45 captures and run diagnostics; no device/provider calls."""
+
+import html
+import json
+from pathlib import Path
+import shutil
+
+ROOT = Path(__file__).resolve().parent
+CHECKER = ROOT / "checker"
+EVIDENCE = CHECKER / "docs/evidence/45"
+OUTPUT = ROOT.parent / "outputs"
+design = json.loads((EVIDENCE / "probe-design.json").read_text())
+verified = json.loads((EVIDENCE / "apk-verification.json").read_text())
+
+for source in sorted((CHECKER / "data/issue-45/captures").iterdir()):
+    if (source / "capture-audit.json").is_file():
+        shutil.copytree(source, EVIDENCE / "captures" / source.name, dirs_exist_ok=True)
+for source in (CHECKER / "data/issue-45/install-audits").glob("*.json"):
+    target = EVIDENCE / "install-audits" / source.name
+    target.parent.mkdir(exist_ok=True)
+    shutil.copyfile(source, target)
+
+figures = []
+for audit_path in sorted((EVIDENCE / "captures").glob("*/capture-audit.json")):
+    audit = json.loads(audit_path.read_text())
+    for item in audit["captures"]:
+        if not item.get("png"):
+            continue
+        relative = str((audit_path.parent / item["png"]).relative_to(EVIDENCE))
+        title = f"{item['screen']} / {item['language']} / {audit['plan']['variant']}"
+        figures.append(f'<figure><figcaption>{html.escape(title)}</figcaption><a href="{relative}"><img src="{relative}" alt="{html.escape(title)}"></a><code>{item["sha256"]}</code></figure>')
+page = '<!doctype html><html lang="en"><meta charset="utf-8"><title>Issue 45 exploratory captures</title><style>body{font:16px system-ui;background:#161b22;color:#e6edf3;margin:2rem}img{width:100%;height:auto}figure{margin:2rem 0}code{font-size:12px;overflow-wrap:anywhere}</style><h1>Issue 45 exploratory captures</h1><p>Exploration only. No labels, ground truth or evaluation data. Clean controls have no injected translation mutation; this is not a human clean-label declaration.</p>' + ''.join(figures) + '</html>'
+(EVIDENCE / "gallery.html").write_text(page)
+public = OUTPUT / "issue-45-progress"
+public.mkdir(exist_ok=True)
+shutil.copytree(EVIDENCE / "captures", public / "captures", dirs_exist_ok=True)
+(public / "gallery.html").write_text(page)
+
+ledger = json.loads((EVIDENCE / "api-ledger.json").read_text())
+summary = []
+for entry in ledger["runs"]:
+    if "run_id" not in entry:
+        continue
+    folder = EVIDENCE / "run-records" / entry["run_id"]
+    result = json.loads((folder / "result.json").read_text())
+    raw = json.loads((folder / "response_raw.json").read_text()) if (folder / "response_raw.json").exists() else None
+    try:
+        diagnostic = json.loads(raw["choices"][0]["message"]["content"])
+    except (ValueError, KeyError, TypeError, IndexError):
+        diagnostic = None
+    summary.append({
+        "run_id": entry["run_id"], "image": Path(entry["image"]).name,
+        "status": result["status"], "reason": result["reason"],
+        "checked_findings": result["findings"],
+        "raw_model_output_diagnostic_only_if_not_checked": diagnostic,
+        "readability": result["metadata"]["readability"],
+        "unreadable_regions": result["metadata"]["unreadable_regions"],
+        "readability_reason": result["metadata"]["readability_reason"],
+        "requests_sent": entry["requests_sent"], "usage": entry["usage"],
+        "estimated_cost": entry["estimated_cost"],
+    })
+(EVIDENCE / "run-summary.json").write_text(json.dumps(summary, indent=2, ensure_ascii=False) + "\n")
+lines = ["# Issue 45 run diagnostics", "", "Exploration only; raw observations from not_checked runs are never checked findings.", "", "| Run id | Image | Status | Readability | Checked findings | Raw diagnostic findings |", "|---|---|---|---|---|---|"]
+for row in summary:
+    diagnostic = row["raw_model_output_diagnostic_only_if_not_checked"] or {}
+    def cell(value):
+        return json.dumps(value, ensure_ascii=False).replace("|", "\\|").replace("\n", " ")
+    lines.append(f"| {row['run_id']} | {row['image']} | {row['status']} | {row['readability']} | {cell(row['checked_findings'])} | {cell(diagnostic.get('findings'))} |")
+(EVIDENCE / "run-summary.md").write_text("\n".join(lines) + "\n")
+for name in ("api-ledger.json", "run-summary.json", "run-summary.md", "observations.json"):
+    if (EVIDENCE / name).exists():
+        shutil.copyfile(EVIDENCE / name, public / name)
+
+for variant, record in zip(design["variants"], verified, strict=True):
+    folder = OUTPUT / "issue-45-device-gates" / variant["id"]
+    folder.mkdir(parents=True, exist_ok=True)
+    install = json.loads((EVIDENCE / f"device-plans/install-{variant['id']}.json").read_text())
+    capture = json.loads((EVIDENCE / f"device-plans/{variant['id']}.json").read_text())
+    for source, target in ((f"install-{variant['id']}.json", "install.json"), (f"{variant['id']}.json", "capture.json")):
+        shutil.copyfile(EVIDENCE / "device-plans" / source, folder / target)
+    text = f"# Issue 45: {variant['id']} device gate\n\nPrepared exact operations; permission is recorded separately in the task chat.\n\n"
+    text += f"Install {install['to_version_code']} in place of {install['from_version_code']}, without uninstall or clear data. Independently verify versionCode/APK SHA-256 and exact original settings/all saves before and after.\n\n"
+    text += f"APK SHA-256: `{record['apk_sha256']}`. Fork commit: `{record['fork_commit']}`.\n\n"
+    for mutation in variant["mutations"]:
+        text += f"- `{mutation['file']}`: `{mutation['key']}`; original {json.dumps(mutation['original'], ensure_ascii=False)}, mutated {json.dumps(mutation['mutated'], ensure_ascii=False)}.\n"
+    text += f"\nCapture {variant['screen']} in {', '.join(variant['languages'])} after matching D-038 READY, using exact frozen templates and state. Explicit settings writes: {len(capture['app_data_operations'])}, including final restoration of original bytes. No save write. Verify all saves unchanged.\n\n"
+    text += f"Install-plan SHA-256: `{record['install_plan_sha256']}`.\n\nCapture-plan SHA-256: `{record['capture_plan_sha256']}`.\n"
+    (folder / "approval.md").write_text(text)
+print(f"Exported {len(figures)} original screenshots and {len(summary)} recorded runs.")

@@ -1,0 +1,28 @@
+{
+  "id": "c662cd07-94ea-4af3-958c-40ad1b0f611f",
+  "object": "chat.completion",
+  "created": 1792609916,
+  "model": "deepseek-flash",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\"readability\":\"partial\",\"unreadable_regions\":[\"top-left\",\"top\",\"top-right\",\"left\",\"center\",\"right\",\"bottom-left\",\"bottom\",\"bottom-right\"],\"readability_reason\":\"Several labels are overlapped by the round-count text, making parts of the technology names unreadable.\",\"findings\":[{\"defect_type\":\"overlap\",\"text_seen\":\"Tierhaltung\",\"region\":\"left\",\"confidence\":0.9},{\"defect_type\":\"overlap\",\"text_seen\":\"Bogenschießen\",\"region\":\"left\",\"confidence\":0.9},{\"defect_type\":\"overlap\",\"text_seen\":\"Bergbau\",\"region\":\"left\",\"confidence\":0.9},{\"defect_type\":\"overlap\",\"text_seen\":\"Fallens\",\"region\":\"center\",\"confidence\":0.9},{\"defect_type\":\"overlap\",\"text_seen\":\"Das Rad\",\"region\":\"center\",\"confidence\":0.9},{\"defect_type\":\"overlap\",\"text_seen\":\"Mauerbau\",\"region\":\"center\",\"confidence\":0.9},{\"defect_type\":\"overlap\",\"text_seen\":\"Bronzebearbeitung\",\"region\":\"center\",\"confidence\":0.9},{\"defect_type\":\"overlap\",\"text_seen\":\"Reiten\",\"region\":\"right\",\"confidence\":0.9},{\"defect_type\":\"overlap\",\"text_seen\":\"Mathematik\",\"region\":\"right\",\"confidence\":0.9},{\"defect_type\":\"overlap\",\"text_seen\":\"Baukunst\",\"region\":\"right\",\"confidence\":0.9},{\"defect_type\":\"overlap\",\"text_seen\":\"Währung\",\"region\":\"right\",\"confidence\":0.9},{\"defect_type\":\"overlap\",\"text_seen\":\"Ingenieurwesen\",\"region\":\"right\",\"confidence\":0.9},{\"defect_type\":\"overlap\",\"text_seen\":\"Eisenbearbeitung\",\"region\":\"right\",\"confidence\":0.9},{\"defect_type\":\"overlap\",\"text_seen\":\"Schrift\",\"region\":\"top\",\"confidence\":0.9},{\"defect_type\":\"overlap\",\"text_seen\":\"Drama und\",\"region\":\"top-right\",\"confidence\":0.9}]}"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1836,
+    "completion_tokens": 447,
+    "total_tokens": 2283,
+    "prompt_tokens_details": {
+      "cached_tokens": 1664
+    },
+    "prompt_cache_hit_tokens": 1664,
+    "prompt_cache_miss_tokens": 172
+  },
+  "system_fingerprint": "e72d3c7f663d3e1383b00b3884cb4501"
+}

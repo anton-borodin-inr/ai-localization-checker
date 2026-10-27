@@ -1,0 +1,138 @@
+"""Build translation-only fork commits in a dedicated build session; never install."""
+
+import hashlib
+import json
+import os
+from pathlib import Path
+import shutil
+import subprocess
+import time
+
+ROOT = Path(__file__).resolve().parent
+FORK = ROOT / "unciv-probe"
+EVIDENCE = ROOT / "checker/docs/evidence/45"
+BUILD_DIR = ROOT / "checker/data/issue-45/builds"
+DESIGN = json.loads((EVIDENCE / "probe-design.json").read_text())
+BASE = DESIGN["fork_base"]
+FILES = [f"android/assets/jsons/translations/{name}.properties" for name in ("English", "German")]
+
+
+def git(*arguments):
+    return subprocess.check_output(["git", *arguments], cwd=FORK)
+
+
+def sha(data):
+    return hashlib.sha256(data).hexdigest()
+
+
+def write_json(path, value):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(value, indent=2, ensure_ascii=False) + "\n")
+
+
+def mutate(base, changes):
+    text = base.decode()
+    for change in changes:
+        prefix = change["key"] + " = "
+        lines = text.splitlines(keepends=True)
+        found = [i for i, line in enumerate(lines) if line.startswith(prefix)]
+        if change["original"] is None:
+            assert not found
+            assert change["mutated"] is not None
+            if not text.endswith("\n"):
+                text += "\n"
+            text += prefix + change["mutated"] + "\n"
+        else:
+            assert len(found) == 1
+            index = found[0]
+            assert lines[index].rstrip("\r\n") == prefix + change["original"]
+            lines[index] = "" if change["mutated"] is None else prefix + change["mutated"] + "\n"
+            text = "".join(lines)
+    return text.encode()
+
+
+BUILD_DIR.mkdir(parents=True, exist_ok=True)
+baseline = {path: git("show", f"{BASE}:{path}") for path in FILES}
+assert not git("status", "--porcelain").strip(), "Fork must be clean before build session"
+records = json.loads((EVIDENCE / "builds.json").read_text()) if (EVIDENCE / "builds.json").exists() else []
+env = dict(os.environ)
+env.update({
+    "JAVA_HOME": "/Applications/Android Studio.app/Contents/jbr/Contents/Home",
+    "ANDROID_HOME": "/Users/antonborodin/Library/Android/sdk",
+    "GRADLE_USER_HOME": str(ROOT / "gradle-cache"),
+})
+for item in DESIGN["variants"]:
+    folder = BUILD_DIR / item["id"]
+    prior = next((r for r in records if r["variant"] == item["id"]), None)
+    if prior is not None and prior.get("apk_sha256"):
+        assert sha(Path(prior["apk_local_path"]).read_bytes()) == prior["apk_sha256"]
+        continue
+    folder.mkdir(exist_ok=True)
+    for path in FILES:
+        changes = [m for m in item["mutations"] if m["file"] == path]
+        (FORK / path).write_bytes(mutate(baseline[path], changes))
+    changed = set(git("diff", "--name-only", BASE).decode().splitlines())
+    expected = {m["file"] for m in item["mutations"]}
+    assert changed == expected, (changed, expected)
+    git("add", "--", *FILES)
+    if git("diff", "--cached", "--name-only").strip():
+        git("commit", "-m", f"test: probe {item['id']} through translations only")
+    commit = git("rev-parse", "HEAD").decode().strip()
+    assert not git("status", "--porcelain").strip()
+    command = [
+        "./gradlew", "--no-daemon", "--console=plain",
+        "-I", str(EVIDENCE / "version-code.init.gradle"),
+        f"-Pissue45VersionCode={item['version_code']}", ":android:assembleDebug",
+    ]
+    print(f"BUILD {item['id']} versionCode={item['version_code']} commit={commit}", flush=True)
+    started = time.monotonic()
+    attempt_number = len(list(folder.glob("build*.txt"))) + 1
+    log_path = folder / f"build-attempt-{attempt_number}.txt"
+    with log_path.open("wb") as log:
+        process = subprocess.run(command, cwd=FORK, env=env, stdout=log, stderr=subprocess.STDOUT)
+    record = {
+        "variant": item["id"], "version_code": item["version_code"], "fork_commit": commit,
+        "fork_base": BASE, "command": command,
+        "build_environment": {k: env[k] for k in ("JAVA_HOME", "ANDROID_HOME", "GRADLE_USER_HOME")},
+        "build_override_sha256": sha((EVIDENCE / "version-code.init.gradle").read_bytes()),
+        "translation_diff": git("diff", BASE, "HEAD", "--", *FILES).decode(),
+        "translation_files": {p: sha((FORK / p).read_bytes()) for p in FILES},
+        "exit_code": process.returncode, "wall_seconds": round(time.monotonic() - started, 3),
+        "attempt": attempt_number,
+    }
+    if prior is not None:
+        record["previous_attempts"] = [*prior.get("previous_attempts", []), {
+            k: prior[k] for k in ("attempt", "exit_code", "wall_seconds") if k in prior
+        }]
+    write_json(folder / "build.json", record)
+    if prior is not None:
+        records[records.index(prior)] = record
+    else:
+        records.append(record)
+    write_json(EVIDENCE / "builds.json", records)
+    if process.returncode:
+        print(log_path.read_text()[-7000:], flush=True)
+        raise SystemExit(process.returncode)
+    apks = list((FORK / "android/build/outputs/apk/debug").glob("*.apk"))
+    assert len(apks) == 1, apks
+    destination = folder / f"com.unciv.app_{item['version_code']}.apk"
+    shutil.copyfile(apks[0], destination)
+    record["apk_sha256"] = sha(destination.read_bytes())
+    record["apk_bytes"] = destination.stat().st_size
+    record["apk_local_path"] = str(destination)
+    aapt = "/Users/antonborodin/Library/Android/sdk/build-tools/36.0.0/aapt"
+    badging = subprocess.check_output([aapt, "dump", "badging", str(destination)]).decode()
+    assert f"versionCode='{item['version_code']}'" in badging
+    assert "package: name='com.unciv.app'" in badging
+    (folder / "badging.txt").write_text(badging)
+    signature = subprocess.check_output([
+        "/Users/antonborodin/Library/Android/sdk/build-tools/36.0.0/apksigner",
+        "verify", "--print-certs", str(destination),
+    ], env=env).decode()
+    (folder / "signature.txt").write_text(signature)
+    record["signature"] = signature
+    write_json(folder / "build.json", record)
+    write_json(EVIDENCE / "builds.json", records)
+    print(f"BUILT {item['id']} SHA-256={record['apk_sha256']}", flush=True)
+
+print("All probes built and verified; no APK installed.", flush=True)

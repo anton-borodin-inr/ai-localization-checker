@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "save": "issue-8-pair",
+  "selection": {
+    "city": {
+      "owner": "The Ottomans",
+      "name": "Istanbul"
+    },
+    "construction": "Worker"
+  },
+  "tab": null,
+  "expanded_sections": [
+    "Units"
+  ],
+  "scroll": {},
+  "scroll_to": {
+    "pane-0": {
+      "edge": "center",
+      "align": "visible"
+    },
+    "production-queue": {
+      "edge": "start",
+      "align": "visible"
+    },
+    "constructions": {
+      "construction": "Worker",
+      "align": "visible"
+    }
+  },
+  "camera": null,
+  "new_game": null
+}

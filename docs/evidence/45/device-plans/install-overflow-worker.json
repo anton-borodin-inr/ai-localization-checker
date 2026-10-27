@@ -1,0 +1,23 @@
+{
+  "issue": 45,
+  "variant": "overflow-worker",
+  "from_version_code": "1271451",
+  "from_apk_sha256": "3c2fb477958f8ccc96135d2f12966978b105e57e60eef2b6e2da291affd4c19c",
+  "to_version_code": "1271452",
+  "to_apk_sha256": "72f6577cd598627f781c3baea7717806436529f249d94d346531d766098af8bb",
+  "target_apk": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-45-https-github-com/work/checker/data/issue-45/builds/overflow-worker/com.unciv.app_1271452.apk",
+  "certificate_sha256": "b4752f8cee80842f55883ca2a9b62ca75c898df5a1b7cefd63959ba1b8fecb99",
+  "command": [
+    "adb",
+    "-s",
+    "emulator-5554",
+    "install",
+    "-r",
+    "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-45-https-github-com/work/checker/data/issue-45/builds/overflow-worker/com.unciv.app_1271452.apk"
+  ],
+  "no_uninstall_or_clear_data": true,
+  "preconditions": "installed from-build/hash, settings byte equality and complete save inventory must match the pre-task backup",
+  "after_install": "independently verify installed to-build/hash, original settings bytes/metadata and all saves; no app launch",
+  "app_data_overwrites": 0,
+  "capture_is_a_separate_named_block": true
+}

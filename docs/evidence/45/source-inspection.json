@@ -1,0 +1,131 @@
+{
+  "scope": "These two screens and their ordinary label/action helpers, not every Unciv widget. No source was modified. Negative font-fitting finding is bounded to this scope.",
+  "files": [
+    {
+      "file": "core/src/com/unciv/ui/screens/pickerscreens/TechButton.kt",
+      "base_commit": "877b0dc2ee706dbbdb4a17e14b4522408d197390",
+      "sha256": "4a1056bf4f8f13d12adb39e9ba6c17bb65701bbdc42f0cc0804a7485b08d3b81",
+      "observation": "Title: fixed font size 14, no wrap and ellipsis; turns: fixed font size 14, right alignment, 40-unit cell.",
+      "snippets": [
+        {
+          "first_line": 28,
+          "last_line": 38,
+          "source": "    internal val text = \"\".toLabel().apply {\n        wrap = false\n        setFontSize(14)\n        setAlignment(Align.left)\n        setEllipsis(true)\n    }\n\n    internal val turns = \"\".toLabel().apply {\n        setFontSize(14)\n        setAlignment(Align.right)\n    }"
+        },
+        {
+          "first_line": 76,
+          "last_line": 78,
+          "source": "\n        rightSide.add(text).width(140f).top().left().padRight(15f)\n        rightSide.add(turns).width(40f).top().left().padRight(10f).row()"
+        }
+      ]
+    },
+    {
+      "file": "core/src/com/unciv/ui/screens/pickerscreens/TechPickerScreen.kt",
+      "base_commit": "877b0dc2ee706dbbdb4a17e14b4522408d197390",
+      "sha256": "88295bd45ea0c51967a0e2f01f7d6600bfc639d4eca3b4970dea416c961e0a1d",
+      "observation": "Turn number/hourglass concatenation; selected-technology action passes the translated label to pick().",
+      "snippets": [
+        {
+          "first_line": 245,
+          "last_line": 262,
+          "source": "            if (isResearched && techName != Constants.futureTech) {\n                techButton.text.color = colorFromRGB(154, 98, 16)\n            }\n\n            if (!isResearched || techName == Constants.futureTech) {\n                techButton.turns.setText(turnsToTech[techName] + \"${Fonts.turn}\".tr())\n            }\n\n            techButton.text.setText(techName.tr(true))\n        }\n\n        addConnectingLines()\n\n        addOrderIndicators()\n    }\n\n    private fun addConnectingLines() {\n        techTable.pack() // required for the table to have the button positions set, so topTable.stageToLocalCoordinates will be correct"
+        },
+        {
+          "first_line": 462,
+          "last_line": 465,
+          "source": "        if (tempTechsToResearch.any()) {\n            val label = \"Research [${tempTechsToResearch[0]}]\".tr()\n            val techProgression = getTechProgressLabel(tempTechsToResearch)\n            pick(\"${label}\\n${techProgression}\")"
+        }
+      ]
+    },
+    {
+      "file": "core/src/com/unciv/ui/screens/pickerscreens/PickerPane.kt",
+      "base_commit": "877b0dc2ee706dbbdb4a17e14b4522408d197390",
+      "sha256": "3d3d78de56450ccc6eb88194df1fd003ab11612f2909307ba1f8f3be28a26583",
+      "observation": "Action is an ordinary TextButton; content-driven layout and a scrollable wrapped description. No text-length-dependent font scaling in this file.",
+      "snippets": [
+        {
+          "first_line": 32,
+          "last_line": 35,
+          "source": "    val rightSideButton = \"\".toTextButton()\n\n    private val screenSplit = 0.85f\n    private val maxBottomTableHeight = 150f     // about 7 lines of normal text"
+        },
+        {
+          "first_line": 49,
+          "last_line": 70,
+          "source": "    init {\n        bottomTable.add(closeButton).pad(10f)\n\n        descriptionLabel.wrap = true\n        val descriptionWithPad = Table()\n        descriptionWithPad.add(descriptionLabel).pad(10f).grow()\n        descriptionScroll = AutoScrollPane(descriptionWithPad, BaseScreen.skin)\n        bottomTable.add(descriptionScroll).grow()\n\n        rightSideButton.disable()\n        rightSideGroup.addActor(rightSideButton)\n\n        bottomTable.add(rightSideGroup).pad(10f).right()\n\n        scrollPane.setScrollingDisabled(disableScroll, disableScroll)  // lock scrollPane\n        if (disableScroll) scrollPane.clearListeners()  // remove focus capture of AutoScrollPane too\n        add(splitPane).expand().fill()\n    }\n\n    override fun layout() {\n        super.layout()\n        bottomTable.height = bottomTable.height.coerceAtMost(maxBottomTableHeight)"
+        },
+        {
+          "first_line": 79,
+          "last_line": 83,
+          "source": "    /** Sets the text of the [rightSideButton] (does not autotranslate) and enables it if it's the player's turn */\n    fun pick(rightButtonText: String) {\n        if (GUI.isMyTurn()) rightSideButton.enable()\n        rightSideButton.setText(rightButtonText)\n    }"
+        }
+      ]
+    },
+    {
+      "file": "core/src/com/unciv/ui/screens/pickerscreens/PickerScreen.kt",
+      "base_commit": "877b0dc2ee706dbbdb4a17e14b4522408d197390",
+      "sha256": "f1de3f28d35daa5d999bf408c87edebef191e7569d50c977a33dad035952d92b",
+      "observation": "Delegates action text and enablement to PickerPane; no text-length-dependent font fitting.",
+      "snippets": [
+        {
+          "first_line": 17,
+          "last_line": 23,
+          "source": "    protected val descriptionScroll by pickerPane::descriptionScroll\n    /** @see PickerPane.rightSideGroup */\n    val rightSideGroup by pickerPane::rightSideGroup\n    /** @see PickerPane.rightSideButton */\n    val rightSideButton by pickerPane::rightSideButton\n\n    /** @see PickerPane.topTable */"
+        },
+        {
+          "first_line": 55,
+          "last_line": 64,
+          "source": "    /** Enables the [rightSideButton]. See [pick] for a way to set the text. */\n    fun setRightSideButtonEnabled(enabled: Boolean) {\n        pickerPane.setRightSideButtonEnabled(enabled)\n    }\n\n    /** Sets the text of the [rightSideButton] and enables it if it's the player's turn */\n    fun pick(rightButtonText: String) {\n        pickerPane.pick(rightButtonText)\n    }\n}"
+        }
+      ]
+    },
+    {
+      "file": "core/src/com/unciv/ui/screens/cityscreen/ConstructionInfoTable.kt",
+      "base_commit": "877b0dc2ee706dbbdb4a17e14b4522408d197390",
+      "sha256": "efcd61e77b24eb3a1af201871290e137c285909e4a720e8be7b54e89fb04dcff",
+      "observation": "Selected title is a plain Label and the table packs; description wraps with stage-relative width. Long title can grow its table.",
+      "snippets": [
+        {
+          "first_line": 60,
+          "last_line": 94,
+          "source": "    private fun updateSelectedConstructionTable(construction: IConstruction) {\n        val cityConstructions = cityView.constructions\n\n        //val selectedConstructionTable = Table()\n        selectedConstructionTable.run {\n            pad(10f)\n\n            add(ImageGetter.getConstructionPortrait(construction.name, 50f).apply {\n                val link = (construction as? IRulesetObject)?.makeLink() ?: return@apply\n                if (link.isEmpty()) return@apply\n                touchable = Touchable.enabled\n                this.onClick {\n                    cityScreen.openCivilopedia(link)\n                }\n            }).pad(5f)\n\n            var buildingText = construction.name.tr(hideIcons = true)\n            val specialConstruction = PerpetualConstruction.perpetualConstructionsMap[construction.name]\n\n            buildingText += specialConstruction?.let { cityView.getProductionTooltip(it) }\n                    ?: cityConstructions.getTurnsToConstructionString(construction)\n\n            add(Label(buildingText, BaseScreen.skin)).expandX().row()  // already translated\n\n            val description = when (construction) {\n                is BaseUnit -> cityView.getUnitDescription(construction)\n                is Building -> cityView.getBuildingDescription(construction)\n                is StatConversion -> construction.description.replace(\"[rate]\", \"[${cityView.getConversionRate(construction)}]\").tr()\n                is PerpetualConstruction -> construction.description.tr()\n                else -> \"\"  // Should never happen\n            }\n\n            val descriptionLabel = Label(description, BaseScreen.skin)  // already translated\n            descriptionLabel.wrap = true\n            add(descriptionLabel).colspan(2).width(cityScreen.stage.width / if(cityScreen.isCrampedPortrait()) 3 else 4)"
+        }
+      ]
+    },
+    {
+      "file": "core/src/com/unciv/ui/screens/cityscreen/CityConstructionsTable.kt",
+      "base_commit": "877b0dc2ee706dbbdb4a17e14b4522408d197390",
+      "sha256": "2ec428c07f1d96f9a35880a5d9063cb74ef0cf5bd605b9102e6f70241e1a2027",
+      "observation": "List construction name uses a wrapped ordinary Label.",
+      "snippets": [
+        {
+          "first_line": 524,
+          "last_line": 542,
+          "source": "        val icon = ImageGetter.getConstructionPortrait(construction.name, 40f)\n        pickConstructionButton.add(getProgressBar(construction.name)).padRight(5f)\n        pickConstructionButton.add(icon).padRight(10f)\n\n        val constructionTable = Table().apply { isTransform = false }\n        val resourceTable = Table().apply { isTransform = false }\n\n        val textColor = if (constructionButtonDTO.rejectionReason == null) Color.WHITE else Color.RED\n\n        val statIcons = if (construction is Building)\n            \" \" + Stat.entries.filter { cityView.isStatRelated(it, construction) }.map { it.character }.joinToString(\"\")\n        else \"\"\n\n        val constructionNameText = \"${construction.name.tr(hideIcons = true)}$statIcons\"\n\n        constructionTable.add(constructionNameText.toLabel(fontColor = textColor, hideIcons = true).apply { wrap=true })\n            .width(cityScreen.stage.width/5).expandX().left().row()\n\n        resourceTable.add(constructionButtonDTO.buttonText.toLabel()).expandX().left()"
+        }
+      ]
+    },
+    {
+      "file": "core/src/com/unciv/ui/components/extensions/Scene2dExtensions.kt",
+      "base_commit": "877b0dc2ee706dbbdb4a17e14b4522408d197390",
+      "sha256": "8e55fec3750cacaecc5658c344f2ed37e41db72f7ce2b3bd9cd332994cc11caa",
+      "observation": "toTextButton constructs ordinary TextButton; toLabel and setFontSize set a fixed scale from the requested font size, not from string length.",
+      "snippets": [
+        {
+          "first_line": 291,
+          "last_line": 295,
+          "source": "/** Translate a [String] and make a [TextButton] widget from it */\nfun String.toTextButton(style: TextButtonStyle? = null, hideIcons: Boolean = false): TextButton {\n    val text = this.tr(hideIcons)\n    return if (style == null) TextButton(text, BaseScreen.skin) else TextButton(text, style)\n}"
+        },
+        {
+          "first_line": 349,
+          "last_line": 367,
+          "source": "/** Translate a [String] and make a [Label] widget from it with a specified font color and size */\nfun String.toLabel(fontColor: Color = Color.WHITE,\n                    fontSize: Int = Constants.defaultFontSize,\n                    alignment: Int = Align.left,\n                    hideIcons: Boolean = false): Label {\n    // We don't want to use setFontSize and setFontColor because they set the font,\n    //  which means we need to rebuild the font cache which means more memory allocation.\n    var labelStyle = BaseScreen.skin.get(Label.LabelStyle::class.java)\n    if (fontColor != Color.WHITE || fontSize != Constants.defaultFontSize) { // if we want the default we don't need to create another style\n        labelStyle = Label.LabelStyle(labelStyle) // clone this to another\n        labelStyle.fontColor = fontColor\n        if (fontSize != Constants.defaultFontSize) labelStyle.font = Fonts.font\n    }\n    val translatedText = this.tr(hideIcons) \n    return Label(translatedText, labelStyle).apply {\n        setFontScale(fontSize / Fonts.ORIGINAL_FONT_SIZE)\n        setAlignment(alignment)\n    }\n}"
+        },
+        {
+          "first_line": 391,
+          "last_line": 397,
+          "source": "/** Sets the font size on a [Label] and returns it to allow chaining */\nfun Label.setFontSize(size: Int): Label {\n    style = Label.LabelStyle(style)\n    style.font = Fonts.font\n    @Suppress(\"UsePropertyAccessSyntax\") setStyle(style)\n    setFontScale(size / Fonts.ORIGINAL_FONT_SIZE)\n    return this"
+        }
+      ]
+    }
+  ]
+}

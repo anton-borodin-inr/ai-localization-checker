@@ -1,0 +1,50 @@
+[
+  {
+    "path": "build-evidence/placeholder-city/build-attempt-1.txt",
+    "raw_sha256": "920329b3434d79785d7c9cf927717ed686258f9820995f7243f29634df95c925",
+    "normalized_sha256": "183e317a512f47f1feb40c8d4be159d0016ff97b7ad220da01fa1cf60bc542be",
+    "normalization": "strip trailing line whitespace only; raw local data/build logs retained"
+  },
+  {
+    "path": "build-evidence/truncation-mining/build-attempt-1.txt",
+    "raw_sha256": "e831db78301345dc5be03771c28b5255d6915a03bdee573bc9806afbe9361d9c",
+    "normalized_sha256": "b04d93f7710bc00f412abbce29587c36636a8f705aa41d57b01cf113fa9c645f",
+    "normalization": "strip trailing line whitespace only; raw local data/build logs retained"
+  },
+  {
+    "path": "build-evidence/overflow-turns/build-attempt-2.txt",
+    "raw_sha256": "aa397dfd1ebdf529f01dfc3a63c4c3c7ce633570e5fd3caea79f92f0913b2433",
+    "normalized_sha256": "6dd96837a8e1e0baf89a778823254b7be280e4fa1b068c91128e59a883aee799",
+    "normalization": "strip trailing line whitespace only; raw local data/build logs retained"
+  },
+  {
+    "path": "build-evidence/small-text-tech/build-attempt-1.txt",
+    "raw_sha256": "45c2709029b2fabec9e4925ca5b0f9445238314a1df7897d306ee8ca24ac8559",
+    "normalized_sha256": "69747850b4893e76b0dbceeb49befb4d866a05907b683d32478827842a4e2189",
+    "normalization": "strip trailing line whitespace only; raw local data/build logs retained"
+  },
+  {
+    "path": "build-evidence/overflow-worker/build-attempt-1.txt",
+    "raw_sha256": "0a4ffcefe54734619a213876ed235f86aa360a6a2cbfe2401c48b2718e45e38a",
+    "normalized_sha256": "0b3d6df0317521ccb8934e7e0ad645c070531a849aeed388b21d97827f02feb3",
+    "normalization": "strip trailing line whitespace only; raw local data/build logs retained"
+  },
+  {
+    "path": "build-evidence/wrong-language-foreign/build-attempt-1.txt",
+    "raw_sha256": "2643872c2b1e08e327bb7b52f52224a12556e0d102cefb5bf21711e7969b5eca",
+    "normalized_sha256": "733fa48984e9787f8ac6694112efc3e5c81c58b0e0a23e1efdd6707457cf8705",
+    "normalization": "strip trailing line whitespace only; raw local data/build logs retained"
+  },
+  {
+    "path": "build-evidence/wrong-language-fallback/build-attempt-1.txt",
+    "raw_sha256": "3823ff75775b931fdbecfcf037d93db810d395e2401b7e4d35d11d75a8d75242",
+    "normalized_sha256": "ca3a663c53c2a49b60abc29eaef93fcdf637e0b5b1dd07a4dab00975d5a8fa21",
+    "normalization": "strip trailing line whitespace only; raw local data/build logs retained"
+  },
+  {
+    "path": "build-evidence/placeholder-tech/build-attempt-1.txt",
+    "raw_sha256": "668b55e3dde7a2257c7ac3391107cef5a99a7952869a360491deab6f54f4a270",
+    "normalized_sha256": "1d29e893cb37cff3a852481cad1552dff232a636596e206767ec94d3285c3c67",
+    "normalization": "strip trailing line whitespace only; raw local data/build logs retained"
+  }
+]

@@ -1,0 +1,34 @@
+{
+  "status": "hook_smoke_passed",
+  "explicit_settings_writes": 0,
+  "save_writes": 0,
+  "before": {
+    "version_code": "1271045",
+    "apk_sha256": "16b6e07eaa8f7ca35b71f361f0bdcceb7015987b60e796d15d2f3b53bb61af1a",
+    "settings_sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7",
+    "settings_stat": "10196:10196:600:873",
+    "settings_byte_identical": true,
+    "all_saves_unchanged": true,
+    "external_file_count": 4
+  },
+  "command": [
+    "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-45-https-github-com/work/checker/.venv/bin/python",
+    "-m",
+    "pytest",
+    "--run-device",
+    "tests/test_hook_device.py",
+    "-q"
+  ],
+  "pytest_exit_code": 0,
+  "after": {
+    "version_code": "1271045",
+    "apk_sha256": "16b6e07eaa8f7ca35b71f361f0bdcceb7015987b60e796d15d2f3b53bb61af1a",
+    "settings_sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7",
+    "settings_stat": "10196:10196:600:873",
+    "settings_byte_identical": true,
+    "all_saves_unchanged": true,
+    "external_file_count": 4
+  },
+  "app_left_stopped": true,
+  "emulator_free": true
+}

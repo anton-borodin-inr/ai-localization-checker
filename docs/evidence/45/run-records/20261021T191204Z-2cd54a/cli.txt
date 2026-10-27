@@ -1,0 +1,2 @@
+/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-45-https-github-com/work/checker/data/runs/20261021T191204Z-2cd54a
+not_checked: unreadable_text: partial, ["top-right"], Several tech tree labels have overlapping text making them partially unreadable.

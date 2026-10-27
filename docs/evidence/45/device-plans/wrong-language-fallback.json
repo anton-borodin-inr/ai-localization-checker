@@ -1,0 +1,42 @@
+{
+  "issue": 45,
+  "variant": "wrong-language-fallback",
+  "screens": [
+    "tech-picker"
+  ],
+  "languages": [
+    "de"
+  ],
+  "version_code": "1271453",
+  "apk_sha256": "aeb2fd93648ed7d8044b9762153701a5c09cc0e1de188a2090c4034e93410268",
+  "original_settings_sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7",
+  "original_settings_stat": "10196:10196:600:873",
+  "save_file_writes": 0,
+  "installs_in_this_capture_command": 0,
+  "device_operations": [
+    "force-stop before every settings write; run-as, never adb root",
+    "cold D-038 hook launch for the first screen of each language, with matching READY",
+    "unique Android log barrier and request id per screen",
+    "full unchanged 2400x1080 SDK adb screenshots after READY",
+    "force-stop and restore original settings in finally; independent readback",
+    "verify the complete external save-file inventory before and after"
+  ],
+  "app_data_operations": [
+    {
+      "operation": "replace_settings",
+      "language": "de",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "397ddd96452874b01d9f096311049c0d076492297d557a9fb7c3d2abf1f3cdea",
+      "bytes": 2125
+    },
+    {
+      "operation": "restore_original_settings",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7"
+    }
+  ],
+  "inputs": {
+    "inputs/settings/de.json": "397ddd96452874b01d9f096311049c0d076492297d557a9fb7c3d2abf1f3cdea",
+    "inputs/states/tech-picker.json": "c6567bc8f3a60c669d551528105f54d7f0372d7f3c0553284777ae4dcf81bb7e"
+  }
+}

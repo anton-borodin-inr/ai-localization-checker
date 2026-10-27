@@ -67,7 +67,7 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 ## D-006 — Scope of v1
 
 - **Date:** 2026-10-17
-- **Status:** Accepted
+- **Status:** Accepted; its count of 1–2 defect types is superseded by D-044
 - **Decision:** v1 uses one provider, one screen resolution, 8–10 screens, 2 languages and 1–2 defect types. Results of v1 are reported as preliminary.
 - **Why:** A finished small version is worth more than an unfinished large one. The source screen is the unit of the dev / hold-out split (D-010), so more screens matter more than more languages.
 - **Alternatives considered:** 5 screens × 5 languages with several providers; moved to extensions.
@@ -186,7 +186,7 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 ## D-020 — Candidate v1 defect types after Unciv source research
 
 - **Date:** 2026-10-19
-- **Status:** Accepted
+- **Status:** Accepted; its class list and deferral of `overlap` are superseded by D-044
 - **Decision:** Require both `untranslated` and `truncated_text` as the two v1 classes; defer `overlap`. Keep the D-018 schema unchanged.
 - **Why:** **source:** Unciv 4.22.10 / 1271 falls back to original text for missing translations and supports ellipsis on selected titles. **observed:** The English/Russian main-menu check confirmed language switching and wider buttons with fitting text. **assumption — evaluation rationale:** Truncation is the class where a vision model can add value over the OCR + translation-table baseline; untranslated alone risks a slice where the model cannot be shown to beat that baseline. Requiring both classes makes that comparison part of v1; it does not claim superiority before measurement. Evidence and pinned links are in [the research document](unciv-text-rendering.md).
 - **Alternatives considered:** **assumption:** An untranslated-only slice (insufficient opportunity to demonstrate vision-model value over the baseline); overlap as a third class (deferred, outside D-006's two-class selection); deciding that all ellipsis or scroll-hidden text is defective here (deferred to Anton's label definitions).
@@ -411,3 +411,25 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 - **Why:** 1271048 intentionally changes shared rendering paths (post-READY freeze from #44 fix 4, loading-draw suppression and the font subclass), and font-atlas allocation is incremental. A cross-build zero-pixel gate cannot separate dump interference from these intended changes. Existing checks that isolate the dump passed: v1 and v2 on 1271048 matched in attempt 3, and 20/20 forward/reverse repeats matched in pixels and dump bytes in attempt 2. These are bounded observations, not proof of every rendering path.
 - **Alternatives considered:** Retain zero pixels against 1271045 (the intended lifecycle changes remain, and three device rounds plus a diagnostic APK did not identify a cause); adopt a numeric tolerance (an arbitrary threshold).
 - **Consequences:** Record Tech Picker under D-042: EN 40 pixels, `[751,469,768,484]`, maximum channel delta 1; DE 72 pixels, `[214,239,237,258]`, maximum channel delta 2. Alpha is unchanged; the retained visual check found no change to text or layout. Criteria (1) and (2) are met by existing evidence. The original comparison's exit 2/status `failed` is retained as history, not converted into an identical result. Root-cause investigation stays closed. Post-READY freeze versus continuous redraw in 1271045 is an unisolated hypothesis recorded only for history, not a demonstrated cause. D-038 and D-039 remain Accepted and unchanged. See [the pixel summary](evidence/47/pixel-summary.md) and [the delivery report](evidence/47/report.md). Number D-042 was allocated against main `63b6534` on publication rebase, alongside D-040 and D-041; recheck before merge if main changes.
+
+## D-043 — Issue 45 dev-screen assignment
+
+- **Date:** 2026-10-21
+- **Status:** Proposed
+- **Decision:** Assign `tech-picker` and `city-production` to dev, as Anton decided in issue #45 and its task chat. Issue #45 DeepSeek calls are restricted to screenshots of these two source screens.
+- **Why:** Both screens were already explored in Stage 1; their assignment preserves grouped separation and removes no unused source screen from the future hold-out.
+- **Alternatives considered:** Assign either previously explored screen to hold-out (would not provide independent final evidence).
+- **Consequences:** All issue #45 probe captures remain exploratory under D-024, never labels, ground truth or evaluation data. This entry does not assign the other eight source screens or change D-006/D-020. Any class proposal follows the probe evidence and remains Anton-owned.
+
+## D-044 — v1 defect classes after translation-only probes
+
+- **Date:** 2026-10-21
+- **Status:** Accepted
+- **Accepted by:** Anton, 2026-10-27, with the definitions below as proposed
+- **Decision:** Use three primary semantic classes for v1: `overflow`, `wrong_language` and `truncated_text`. This supersedes only D-006's count of 1–2 defect types and D-020's class list/deferral of overlap. The definitions below are the label definitions for v1; Anton may refine boundary cases when labels are written in Stage 3.
+  - `overflow`: text renders outside the bounds assigned to its own label or field, whether or not it collides with another element. Wrapping or a growing container with fitting text is not evidence of this mechanism; a collision between separate widgets must be distinguished from own-bounds overflow.
+  - `wrong_language`: visible user-facing text is in a language other than the screen's intended language, including source-language fallback and foreign text in an active translation file. Legitimate proper names, shared words, symbols and numbers require context and are not classified merely for differing from a dictionary entry.
+  - `truncated_text`: part of a user-facing string is unavailable on the screenshot because its label clips or shortens it, with D-023's full-text-elsewhere exception for ellipsis and D-025's scroll-viewport exclusion retained.
+- **Why:** [Issue 45 evidence](evidence/45/report.md) reproduces counter-cell overflow with collisions in both languages; foreign-language strings and English fallback; literal placeholders by two translation paths; and Mining ellipsis in both languages. The Worker title grows/wraps instead of overflowing its own bounds, but the enlarged panel collides with other controls. Neither the long Worker title nor the long Research action reproduces text-length-dependent font shrinking. These are bounded observations on two dev screens, not measured detector quality. The model's misses or returned class names do not decide which UI mechanisms exist.
+- **Alternatives considered:** Keep only the two D-020 classes (leaves a reproduced layout mechanism outside the primary scope); use `overlap` as the new semantic class (does not cover collision-free own-bounds overflow and conflates it with separate-widget collisions); make placeholders a fourth primary class now (D-027 already retains them as `other` with notes); add unreadably small text without a reproduced example (insufficient evidence here).
+- **Consequences:** A separate scoped task must settle wire/label naming and compatibility: the frozen schema still emits `overlap`, `untranslated`, `truncated_text` and `other`, with no `overflow` or `wrong_language` wire class. Issue #45 changed no prompt, schema, labels, matching, metrics, baseline or accepted rule. D-027 remains binding: raw keys use `untranslated` with a note, broken placeholders use `other` with a note; a dedicated technical-text class remains deferred. Separate-widget collision and unreadably small text are retained as diagnostics/future candidates, not silently folded into `overflow`. All other parts of D-006, D-010, D-023, D-024 and D-025 remain unchanged.

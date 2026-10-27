@@ -1,0 +1,132 @@
+{
+  "plan": {
+    "issue": 45,
+    "variant": "placeholder-city",
+    "screens": [
+      "city-production"
+    ],
+    "languages": [
+      "de",
+      "en"
+    ],
+    "version_code": "1271456",
+    "apk_sha256": "72a40a263c02d4e7c0553080d9f861f24eb7d83373e1403f9166e0adcbe14960",
+    "original_settings_sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7",
+    "original_settings_stat": "10196:10196:600:873",
+    "save_file_writes": 0,
+    "installs_in_this_capture_command": 0,
+    "device_operations": [
+      "force-stop before every settings write; run-as, never adb root",
+      "cold D-038 hook launch for the first screen of each language, with matching READY",
+      "unique Android log barrier and request id per screen",
+      "full unchanged 2400x1080 SDK adb screenshots after READY",
+      "force-stop and restore original settings in finally; independent readback",
+      "verify the complete external save-file inventory before and after"
+    ],
+    "app_data_operations": [
+      {
+        "operation": "replace_settings",
+        "language": "de",
+        "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+        "sha256": "397ddd96452874b01d9f096311049c0d076492297d557a9fb7c3d2abf1f3cdea",
+        "bytes": 2125
+      },
+      {
+        "operation": "replace_settings",
+        "language": "en",
+        "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+        "sha256": "853e1a055177314c866ae4427e697adeb6f79cab051d31bff0d6160b149c1776",
+        "bytes": 2126
+      },
+      {
+        "operation": "restore_original_settings",
+        "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+        "sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7"
+      }
+    ],
+    "inputs": {
+      "inputs/settings/de.json": "397ddd96452874b01d9f096311049c0d076492297d557a9fb7c3d2abf1f3cdea",
+      "inputs/settings/en.json": "853e1a055177314c866ae4427e697adeb6f79cab051d31bff0d6160b149c1776",
+      "inputs/states/city-production.json": "29b7adc75fda2b3db0bbcb72f24753cfa064b4d9c047e34def59acae9e8ec6b3"
+    }
+  },
+  "captures": [
+    {
+      "screen": "city-production",
+      "language": "de",
+      "status": "captured",
+      "request_id": "i45-placeholder-city-de-798743807497",
+      "hook": {
+        "events": [
+          "[GLThread 54] L10N_SCREEN_PANES city-production request=i45-placeholder-city-de-798743807497 panes=pane-0,production-queue,constructions",
+          "[GLThread 54] L10N_SCREEN_READY city-production request=i45-placeholder-city-de-798743807497 frames=2"
+        ],
+        "panes": [
+          "pane-0",
+          "production-queue",
+          "constructions"
+        ],
+        "frames": 2,
+        "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\nStatus: ok\nLaunchState: COLD\nActivity: com.unciv.app/.AndroidLauncher\nTotalTime: 740\nWaitTime: 742\nComplete\n"
+      },
+      "png": "city-production__de__2400x1080__probe-placeholder-city__1271456.png",
+      "sha256": "7e15e9b5cfe0bb3f1caf64a77f4b942c242ca13b20cf211156d13039c60f6095",
+      "bytes": 453783
+    },
+    {
+      "screen": "city-production",
+      "language": "en",
+      "status": "captured",
+      "request_id": "i45-placeholder-city-en-295f33aa9f68",
+      "hook": {
+        "events": [
+          "[GLThread 53] L10N_SCREEN_PANES city-production request=i45-placeholder-city-en-295f33aa9f68 panes=pane-0,production-queue,constructions",
+          "[GLThread 53] L10N_SCREEN_READY city-production request=i45-placeholder-city-en-295f33aa9f68 frames=2"
+        ],
+        "panes": [
+          "pane-0",
+          "production-queue",
+          "constructions"
+        ],
+        "frames": 2,
+        "am_start": "Starting: Intent { cmp=com.unciv.app/.AndroidLauncher (has extras) }\nStatus: ok\nLaunchState: COLD\nActivity: com.unciv.app/.AndroidLauncher\nTotalTime: 465\nWaitTime: 467\nComplete\n"
+      },
+      "png": "city-production__en__2400x1080__probe-placeholder-city__1271456.png",
+      "sha256": "b0b169a2e11f68d7968e269958ff77502d84887b1aac148b460892f12586ca73",
+      "bytes": 424979
+    }
+  ],
+  "app_data_operations": [
+    {
+      "operation": "apply_de",
+      "sha256": "397ddd96452874b01d9f096311049c0d076492297d557a9fb7c3d2abf1f3cdea",
+      "attempted": true,
+      "transfer": "adb shell -T run-as tee",
+      "readback_sha256": "397ddd96452874b01d9f096311049c0d076492297d557a9fb7c3d2abf1f3cdea",
+      "readback_bytes": 2125,
+      "readback_verified": true
+    },
+    {
+      "operation": "apply_en",
+      "sha256": "853e1a055177314c866ae4427e697adeb6f79cab051d31bff0d6160b149c1776",
+      "attempted": true,
+      "transfer": "adb shell -T run-as tee",
+      "readback_sha256": "853e1a055177314c866ae4427e697adeb6f79cab051d31bff0d6160b149c1776",
+      "readback_bytes": 2126,
+      "readback_verified": true
+    },
+    {
+      "operation": "restore_original_settings",
+      "sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7",
+      "attempted": true,
+      "transfer": "adb shell -T run-as tee",
+      "readback_sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7",
+      "readback_bytes": 873,
+      "readback_verified": true
+    }
+  ],
+  "status": "captured",
+  "settings_restored_byte_identical": true,
+  "all_saves_unchanged": true,
+  "app_left_stopped": true
+}

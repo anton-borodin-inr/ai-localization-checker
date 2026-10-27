@@ -1,0 +1,405 @@
+{
+  "capture_blocks": [
+    {
+      "block": "clean",
+      "status": "failed",
+      "settings_write_attempts": 2,
+      "settings_operations": [
+        {
+          "operation": "apply_de",
+          "sha256": "397ddd96452874b01d9f096311049c0d076492297d557a9fb7c3d2abf1f3cdea",
+          "attempted": true
+        },
+        {
+          "operation": "restore_original_settings",
+          "sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7",
+          "attempted": true,
+          "readback_verified": true
+        }
+      ],
+      "all_saves_unchanged": true
+    },
+    {
+      "block": "clean-retry-2",
+      "status": "captured",
+      "settings_write_attempts": 3,
+      "settings_operations": [
+        {
+          "operation": "apply_de",
+          "sha256": "397ddd96452874b01d9f096311049c0d076492297d557a9fb7c3d2abf1f3cdea",
+          "attempted": true,
+          "transfer": "adb shell -T run-as tee",
+          "readback_sha256": "397ddd96452874b01d9f096311049c0d076492297d557a9fb7c3d2abf1f3cdea",
+          "readback_bytes": 2125,
+          "readback_verified": true
+        },
+        {
+          "operation": "apply_en",
+          "sha256": "853e1a055177314c866ae4427e697adeb6f79cab051d31bff0d6160b149c1776",
+          "attempted": true,
+          "transfer": "adb shell -T run-as tee",
+          "readback_sha256": "853e1a055177314c866ae4427e697adeb6f79cab051d31bff0d6160b149c1776",
+          "readback_bytes": 2126,
+          "readback_verified": true
+        },
+        {
+          "operation": "restore_original_settings",
+          "sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7",
+          "attempted": true,
+          "transfer": "adb shell -T run-as tee",
+          "readback_sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7",
+          "readback_bytes": 873,
+          "readback_verified": true
+        }
+      ],
+      "all_saves_unchanged": true
+    },
+    {
+      "block": "overflow-turns",
+      "status": "captured",
+      "settings_write_attempts": 3,
+      "settings_operations": [
+        {
+          "operation": "apply_de",
+          "sha256": "397ddd96452874b01d9f096311049c0d076492297d557a9fb7c3d2abf1f3cdea",
+          "attempted": true,
+          "transfer": "adb shell -T run-as tee",
+          "readback_sha256": "397ddd96452874b01d9f096311049c0d076492297d557a9fb7c3d2abf1f3cdea",
+          "readback_bytes": 2125,
+          "readback_verified": true
+        },
+        {
+          "operation": "apply_en",
+          "sha256": "853e1a055177314c866ae4427e697adeb6f79cab051d31bff0d6160b149c1776",
+          "attempted": true,
+          "transfer": "adb shell -T run-as tee",
+          "readback_sha256": "853e1a055177314c866ae4427e697adeb6f79cab051d31bff0d6160b149c1776",
+          "readback_bytes": 2126,
+          "readback_verified": true
+        },
+        {
+          "operation": "restore_original_settings",
+          "sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7",
+          "attempted": true,
+          "transfer": "adb shell -T run-as tee",
+          "readback_sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7",
+          "readback_bytes": 873,
+          "readback_verified": true
+        }
+      ],
+      "all_saves_unchanged": true
+    },
+    {
+      "block": "overflow-worker",
+      "status": "captured",
+      "settings_write_attempts": 3,
+      "settings_operations": [
+        {
+          "operation": "apply_de",
+          "sha256": "397ddd96452874b01d9f096311049c0d076492297d557a9fb7c3d2abf1f3cdea",
+          "attempted": true,
+          "transfer": "adb shell -T run-as tee",
+          "readback_sha256": "397ddd96452874b01d9f096311049c0d076492297d557a9fb7c3d2abf1f3cdea",
+          "readback_bytes": 2125,
+          "readback_verified": true
+        },
+        {
+          "operation": "apply_en",
+          "sha256": "853e1a055177314c866ae4427e697adeb6f79cab051d31bff0d6160b149c1776",
+          "attempted": true,
+          "transfer": "adb shell -T run-as tee",
+          "readback_sha256": "853e1a055177314c866ae4427e697adeb6f79cab051d31bff0d6160b149c1776",
+          "readback_bytes": 2126,
+          "readback_verified": true
+        },
+        {
+          "operation": "restore_original_settings",
+          "sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7",
+          "attempted": true,
+          "transfer": "adb shell -T run-as tee",
+          "readback_sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7",
+          "readback_bytes": 873,
+          "readback_verified": true
+        }
+      ],
+      "all_saves_unchanged": true
+    },
+    {
+      "block": "placeholder-city",
+      "status": "captured",
+      "settings_write_attempts": 3,
+      "settings_operations": [
+        {
+          "operation": "apply_de",
+          "sha256": "397ddd96452874b01d9f096311049c0d076492297d557a9fb7c3d2abf1f3cdea",
+          "attempted": true,
+          "transfer": "adb shell -T run-as tee",
+          "readback_sha256": "397ddd96452874b01d9f096311049c0d076492297d557a9fb7c3d2abf1f3cdea",
+          "readback_bytes": 2125,
+          "readback_verified": true
+        },
+        {
+          "operation": "apply_en",
+          "sha256": "853e1a055177314c866ae4427e697adeb6f79cab051d31bff0d6160b149c1776",
+          "attempted": true,
+          "transfer": "adb shell -T run-as tee",
+          "readback_sha256": "853e1a055177314c866ae4427e697adeb6f79cab051d31bff0d6160b149c1776",
+          "readback_bytes": 2126,
+          "readback_verified": true
+        },
+        {
+          "operation": "restore_original_settings",
+          "sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7",
+          "attempted": true,
+          "transfer": "adb shell -T run-as tee",
+          "readback_sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7",
+          "readback_bytes": 873,
+          "readback_verified": true
+        }
+      ],
+      "all_saves_unchanged": true
+    },
+    {
+      "block": "placeholder-tech",
+      "status": "captured",
+      "settings_write_attempts": 3,
+      "settings_operations": [
+        {
+          "operation": "apply_de",
+          "sha256": "397ddd96452874b01d9f096311049c0d076492297d557a9fb7c3d2abf1f3cdea",
+          "attempted": true,
+          "transfer": "adb shell -T run-as tee",
+          "readback_sha256": "397ddd96452874b01d9f096311049c0d076492297d557a9fb7c3d2abf1f3cdea",
+          "readback_bytes": 2125,
+          "readback_verified": true
+        },
+        {
+          "operation": "apply_en",
+          "sha256": "853e1a055177314c866ae4427e697adeb6f79cab051d31bff0d6160b149c1776",
+          "attempted": true,
+          "transfer": "adb shell -T run-as tee",
+          "readback_sha256": "853e1a055177314c866ae4427e697adeb6f79cab051d31bff0d6160b149c1776",
+          "readback_bytes": 2126,
+          "readback_verified": true
+        },
+        {
+          "operation": "restore_original_settings",
+          "sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7",
+          "attempted": true,
+          "transfer": "adb shell -T run-as tee",
+          "readback_sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7",
+          "readback_bytes": 873,
+          "readback_verified": true
+        }
+      ],
+      "all_saves_unchanged": true
+    },
+    {
+      "block": "small-text-tech",
+      "status": "captured",
+      "settings_write_attempts": 3,
+      "settings_operations": [
+        {
+          "operation": "apply_de",
+          "sha256": "397ddd96452874b01d9f096311049c0d076492297d557a9fb7c3d2abf1f3cdea",
+          "attempted": true,
+          "transfer": "adb shell -T run-as tee",
+          "readback_sha256": "397ddd96452874b01d9f096311049c0d076492297d557a9fb7c3d2abf1f3cdea",
+          "readback_bytes": 2125,
+          "readback_verified": true
+        },
+        {
+          "operation": "apply_en",
+          "sha256": "853e1a055177314c866ae4427e697adeb6f79cab051d31bff0d6160b149c1776",
+          "attempted": true,
+          "transfer": "adb shell -T run-as tee",
+          "readback_sha256": "853e1a055177314c866ae4427e697adeb6f79cab051d31bff0d6160b149c1776",
+          "readback_bytes": 2126,
+          "readback_verified": true
+        },
+        {
+          "operation": "restore_original_settings",
+          "sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7",
+          "attempted": true,
+          "transfer": "adb shell -T run-as tee",
+          "readback_sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7",
+          "readback_bytes": 873,
+          "readback_verified": true
+        }
+      ],
+      "all_saves_unchanged": true
+    },
+    {
+      "block": "truncation-mining",
+      "status": "captured",
+      "settings_write_attempts": 3,
+      "settings_operations": [
+        {
+          "operation": "apply_de",
+          "sha256": "397ddd96452874b01d9f096311049c0d076492297d557a9fb7c3d2abf1f3cdea",
+          "attempted": true,
+          "transfer": "adb shell -T run-as tee",
+          "readback_sha256": "397ddd96452874b01d9f096311049c0d076492297d557a9fb7c3d2abf1f3cdea",
+          "readback_bytes": 2125,
+          "readback_verified": true
+        },
+        {
+          "operation": "apply_en",
+          "sha256": "853e1a055177314c866ae4427e697adeb6f79cab051d31bff0d6160b149c1776",
+          "attempted": true,
+          "transfer": "adb shell -T run-as tee",
+          "readback_sha256": "853e1a055177314c866ae4427e697adeb6f79cab051d31bff0d6160b149c1776",
+          "readback_bytes": 2126,
+          "readback_verified": true
+        },
+        {
+          "operation": "restore_original_settings",
+          "sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7",
+          "attempted": true,
+          "transfer": "adb shell -T run-as tee",
+          "readback_sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7",
+          "readback_bytes": 873,
+          "readback_verified": true
+        }
+      ],
+      "all_saves_unchanged": true
+    },
+    {
+      "block": "wrong-language-fallback",
+      "status": "captured",
+      "settings_write_attempts": 2,
+      "settings_operations": [
+        {
+          "operation": "apply_de",
+          "sha256": "397ddd96452874b01d9f096311049c0d076492297d557a9fb7c3d2abf1f3cdea",
+          "attempted": true,
+          "transfer": "adb shell -T run-as tee",
+          "readback_sha256": "397ddd96452874b01d9f096311049c0d076492297d557a9fb7c3d2abf1f3cdea",
+          "readback_bytes": 2125,
+          "readback_verified": true
+        },
+        {
+          "operation": "restore_original_settings",
+          "sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7",
+          "attempted": true,
+          "transfer": "adb shell -T run-as tee",
+          "readback_sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7",
+          "readback_bytes": 873,
+          "readback_verified": true
+        }
+      ],
+      "all_saves_unchanged": true
+    },
+    {
+      "block": "wrong-language-foreign",
+      "status": "captured",
+      "settings_write_attempts": 3,
+      "settings_operations": [
+        {
+          "operation": "apply_de",
+          "sha256": "397ddd96452874b01d9f096311049c0d076492297d557a9fb7c3d2abf1f3cdea",
+          "attempted": true,
+          "transfer": "adb shell -T run-as tee",
+          "readback_sha256": "397ddd96452874b01d9f096311049c0d076492297d557a9fb7c3d2abf1f3cdea",
+          "readback_bytes": 2125,
+          "readback_verified": true
+        },
+        {
+          "operation": "apply_en",
+          "sha256": "853e1a055177314c866ae4427e697adeb6f79cab051d31bff0d6160b149c1776",
+          "attempted": true,
+          "transfer": "adb shell -T run-as tee",
+          "readback_sha256": "853e1a055177314c866ae4427e697adeb6f79cab051d31bff0d6160b149c1776",
+          "readback_bytes": 2126,
+          "readback_verified": true
+        },
+        {
+          "operation": "restore_original_settings",
+          "sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7",
+          "attempted": true,
+          "transfer": "adb shell -T run-as tee",
+          "readback_sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7",
+          "readback_bytes": 873,
+          "readback_verified": true
+        }
+      ],
+      "all_saves_unchanged": true
+    }
+  ],
+  "settings_write_attempts": 28,
+  "save_writes": 0,
+  "uninstall_or_clear_data": 0,
+  "app_replacements": [
+    {
+      "variant": "overflow-turns",
+      "from": "1271045",
+      "to": "1271451",
+      "status": "installed_and_verified",
+      "plan_sha256": "ababc99e6b4d4762bb05ed2fbb5393ae6e51eefa6dcd8b03e46eb6780f205c77"
+    },
+    {
+      "variant": "overflow-turns",
+      "from": "1271045",
+      "to": "1271451",
+      "status": "preflight",
+      "plan_sha256": "ababc99e6b4d4762bb05ed2fbb5393ae6e51eefa6dcd8b03e46eb6780f205c77"
+    },
+    {
+      "variant": "overflow-worker",
+      "from": "1271451",
+      "to": "1271452",
+      "status": "installed_and_verified",
+      "plan_sha256": "ad75ddb3508bdb5a891b6ce977da5d61316e05e687c7bd736dcc09ec187e861c"
+    },
+    {
+      "variant": "placeholder-city",
+      "from": "1271455",
+      "to": "1271456",
+      "status": "installed_and_verified",
+      "plan_sha256": "57c136d529b4053d30c8b3b1b3cbbfb6a4eca9a1264d5f0aee432d8d165ce93f"
+    },
+    {
+      "variant": "placeholder-tech",
+      "from": "1271454",
+      "to": "1271455",
+      "status": "installed_and_verified",
+      "plan_sha256": "aa04378eef5d075516b85daefa7dc47bc23352637e367d45efb57c113bb1439b"
+    },
+    {
+      "variant": "restore-original",
+      "from": "1271458",
+      "to": "1271045",
+      "status": "installed_and_verified",
+      "plan_sha256": "7957b727639e90a26116db7044568e48ecae97d05238269937fe392ad7f4d7db"
+    },
+    {
+      "variant": "small-text-tech",
+      "from": "1271457",
+      "to": "1271458",
+      "status": "installed_and_verified",
+      "plan_sha256": "a387fdd03a136e63c54ac8845014fec18f9e0758b52ff66752ca81d0ac27bad0"
+    },
+    {
+      "variant": "truncation-mining",
+      "from": "1271456",
+      "to": "1271457",
+      "status": "installed_and_verified",
+      "plan_sha256": "952ef6ed3ba0aa79f73345786b9e365b038705426f5c457725fe38f7f47e8052"
+    },
+    {
+      "variant": "wrong-language-fallback",
+      "from": "1271452",
+      "to": "1271453",
+      "status": "installed_and_verified",
+      "plan_sha256": "e2cf296af403f6926c0e8c246c4440fbe56de55e4b90bc04e9704a9fca5e1030"
+    },
+    {
+      "variant": "wrong-language-foreign",
+      "from": "1271453",
+      "to": "1271454",
+      "status": "installed_and_verified",
+      "plan_sha256": "1116b8dd0bd5013a88b097d2f607ce0f7db8b1b366107ebda7dfea912de28e35"
+    }
+  ],
+  "final_restoration_verified": true
+}

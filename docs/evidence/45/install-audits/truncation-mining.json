@@ -1,0 +1,31 @@
+{
+  "plan_sha256": "952ef6ed3ba0aa79f73345786b9e365b038705426f5c457725fe38f7f47e8052",
+  "plan": {
+    "issue": 45,
+    "variant": "truncation-mining",
+    "from_version_code": "1271456",
+    "from_apk_sha256": "72a40a263c02d4e7c0553080d9f861f24eb7d83373e1403f9166e0adcbe14960",
+    "to_version_code": "1271457",
+    "to_apk_sha256": "58d8a3a8ef7ad3d9811c29f96a74ba69c43ec146c0ed3fea76497d98d2632a71",
+    "target_apk": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-45-https-github-com/work/checker/data/issue-45/builds/truncation-mining/com.unciv.app_1271457.apk",
+    "certificate_sha256": "b4752f8cee80842f55883ca2a9b62ca75c898df5a1b7cefd63959ba1b8fecb99",
+    "command": [
+      "adb",
+      "-s",
+      "emulator-5554",
+      "install",
+      "-r",
+      "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-45-https-github-com/work/checker/data/issue-45/builds/truncation-mining/com.unciv.app_1271457.apk"
+    ],
+    "no_uninstall_or_clear_data": true,
+    "preconditions": "installed from-build/hash, settings byte equality and complete save inventory must match the pre-task backup",
+    "after_install": "independently verify installed to-build/hash, original settings bytes/metadata and all saves; no app launch",
+    "app_data_overwrites": 0,
+    "capture_is_a_separate_named_block": true
+  },
+  "status": "installed_and_verified",
+  "adb_output": "Performing Streamed Install\nSuccess\n",
+  "settings_byte_identical": true,
+  "all_saves_unchanged": true,
+  "app_left_stopped": true
+}

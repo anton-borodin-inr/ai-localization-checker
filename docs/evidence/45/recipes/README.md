@@ -1,0 +1,5 @@
+# Operational recipe snapshots
+
+Exact task-local Python sources are retained as `.py.txt` evidence, not additional installed product commands. Their original workspace paths and SHA-256 values are in manifest.json. They used sibling `checker/` and `unciv-probe/` folders under the task's work directory. Build records retain the actual commands and absolute paths. The live backup/capture/check helpers (`issue45_backup.py`, `issue45_capture.py`, `issue45_check.py`) and their focused tests were moved here byte-identically from `scripts/` and `tests/` after review, so one-off task code no longer runs in the project test suite.
+
+Do not rerun prepare_design.py against retained evidence: it initializes the design and ledger. Do not run install/capture recipes without the separate exact-plan device authorization. final_verify.py is prepared for use only after the authorized restoration; its presence does not claim that it has run. Each recipe is retained to audit the operations and provenance of this exploration. No recipe reads, prints or copies the provider key or .env.

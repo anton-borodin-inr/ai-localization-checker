@@ -1,0 +1,15 @@
+{
+  "status": "verified",
+  "version_code": "1271045",
+  "apk_sha256": "16b6e07eaa8f7ca35b71f361f0bdcceb7015987b60e796d15d2f3b53bb61af1a",
+  "settings_sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7",
+  "settings_stat": "10196:10196:600:873",
+  "internal_file_count": 2,
+  "external_file_count": 4,
+  "app_data_writes": 0,
+  "installs": 0,
+  "root_used": false,
+  "readback": "independent bytes/settings and per-file SHA-256/metadata for both archives",
+  "private_backup_retained": true,
+  "app_left_stopped": true
+}

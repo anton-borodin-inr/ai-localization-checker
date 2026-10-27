@@ -1,0 +1,92 @@
+[
+  {
+    "command": "adb -s emulator-5554 emu avd name",
+    "exit_code": 0,
+    "stdout_bytes": 17,
+    "stdout_sha256": "7889d5d267bb155bd6fbb3f6635d168c71960189c955525d64daedca0d9b83cf"
+  },
+  {
+    "command": "adb -s emulator-5554 shell dumpsys package com.unciv.app",
+    "exit_code": 0,
+    "stdout_bytes": 11450,
+    "stdout_sha256": "2b6225e3ce98a98a6c3dbf0bad4357e634e94eef03e576ce83256c09b0aee0dd",
+    "private_stdout": "package.txt"
+  },
+  {
+    "command": "adb -s emulator-5554 shell pm path com.unciv.app",
+    "exit_code": 0,
+    "stdout_bytes": 93,
+    "stdout_sha256": "0c4f584a87f72527e456462d413ca513a93dd283b54b60d8a7b3b09d6310a493"
+  },
+  {
+    "command": "adb -s emulator-5554 exec-out cat '/data/app/~~88Fsc4ANCbgucfACrDF51w==/com.unciv.app-FY9dYkp9p7X1I5QgdFesJw==/base.apk'",
+    "exit_code": 0,
+    "stdout_bytes": 32504496,
+    "stdout_sha256": "16b6e07eaa8f7ca35b71f361f0bdcceb7015987b60e796d15d2f3b53bb61af1a",
+    "private_stdout": "com.unciv.app_1271045.apk"
+  },
+  {
+    "command": "adb -s emulator-5554 shell sha256sum '/data/app/~~88Fsc4ANCbgucfACrDF51w==/com.unciv.app-FY9dYkp9p7X1I5QgdFesJw==/base.apk'",
+    "exit_code": 0,
+    "stdout_bytes": 151,
+    "stdout_sha256": "e50fd13045a1fe0e2ea6cfe1c08450f095f2cdb0d7cd43225b34d261301a3b84"
+  },
+  {
+    "command": "adb -s emulator-5554 shell run-as com.unciv.app id",
+    "exit_code": 0,
+    "stdout_bytes": 325,
+    "stdout_sha256": "8f615986cd1be467f811d65e7f859c63627dee6dacfce43ba9c9e147a8e10253",
+    "private_stdout": "run-as.txt"
+  },
+  {
+    "command": "adb -s emulator-5554 shell am force-stop com.unciv.app",
+    "exit_code": 0,
+    "stdout_bytes": 0,
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "command": "adb -s emulator-5554 exec-out run-as com.unciv.app cat /data/user/0/com.unciv.app/files/GameSettings.json",
+    "exit_code": 0,
+    "stdout_bytes": 873,
+    "stdout_sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7",
+    "private_stdout": "GameSettings.json"
+  },
+  {
+    "command": "adb -s emulator-5554 shell run-as com.unciv.app stat -c %u:%g:%a:%s /data/user/0/com.unciv.app/files/GameSettings.json",
+    "exit_code": 0,
+    "stdout_bytes": 20,
+    "stdout_sha256": "0bdb337ae279f868c0e6b6c047d07d858c5e28fb3e103f81550ee2f3847cf560"
+  },
+  {
+    "command": "adb -s emulator-5554 exec-out run-as com.unciv.app cat /data/user/0/com.unciv.app/files/GameSettings.json",
+    "exit_code": 0,
+    "stdout_bytes": 873,
+    "stdout_sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7"
+  },
+  {
+    "command": "adb -s emulator-5554 exec-out run-as com.unciv.app tar -C /data/user/0/com.unciv.app/files -cf - .",
+    "exit_code": 0,
+    "stdout_bytes": 4608,
+    "stdout_sha256": "2da6b8b4d66f3b9fdc7d7ff795aaef426afd0d133363341abc908d717da000d0",
+    "private_stdout": "internal-files.tar"
+  },
+  {
+    "command": "adb -s emulator-5554 exec-out run-as com.unciv.app tar -C /data/user/0/com.unciv.app/files -cf - .",
+    "exit_code": 0,
+    "stdout_bytes": 4608,
+    "stdout_sha256": "2da6b8b4d66f3b9fdc7d7ff795aaef426afd0d133363341abc908d717da000d0"
+  },
+  {
+    "command": "adb -s emulator-5554 exec-out tar -C /sdcard/Android/data/com.unciv.app/files -cf - .",
+    "exit_code": 0,
+    "stdout_bytes": 479232,
+    "stdout_sha256": "05ed875b5f32fe90173fe5111086cd9df8040db8b247b1d58ea685b35086cbaa",
+    "private_stdout": "external-files.tar"
+  },
+  {
+    "command": "adb -s emulator-5554 exec-out tar -C /sdcard/Android/data/com.unciv.app/files -cf - .",
+    "exit_code": 0,
+    "stdout_bytes": 479232,
+    "stdout_sha256": "05ed875b5f32fe90173fe5111086cd9df8040db8b247b1d58ea685b35086cbaa"
+  }
+]

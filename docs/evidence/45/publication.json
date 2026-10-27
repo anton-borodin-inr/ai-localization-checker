@@ -1,0 +1,26 @@
+{
+  "approval": "Separate explicit task-chat authorization on 2026-10-21 for both normal branch pushes and one checker draft PR; no merge.",
+  "checker": {
+    "repository": "anton-borodin-inr/ai-localization-checker",
+    "branch": "feat/45-defect-type-probes",
+    "initial_published_head": "ff4aad6ca4d6102bb35f5ff059afdfd823160eaf",
+    "remote_sha_independently_verified": true
+  },
+  "fork": {
+    "repository": "anton-borodin-inr/Unciv",
+    "branch": "probe/45-defect-types",
+    "published_head": "10d8c5423921fb875fb7c02fd497bf50c5d368de",
+    "remote_sha_independently_verified": true,
+    "never_merge_into_clean_base": true
+  },
+  "pull_request": {
+    "url": "https://github.com/anton-borodin-inr/ai-localization-checker/pull/49",
+    "number": 49,
+    "draft": true,
+    "state": "open",
+    "merged": false,
+    "independently_fetched_after_creation": true,
+    "attached_to_task": true
+  },
+  "post_publication_update": "Only factual publication bookkeeping in this evidence bundle; no product/source/probe/provider changes."
+}

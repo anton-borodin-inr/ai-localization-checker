@@ -1,0 +1,31 @@
+{
+  "plan_sha256": "aa04378eef5d075516b85daefa7dc47bc23352637e367d45efb57c113bb1439b",
+  "plan": {
+    "issue": 45,
+    "variant": "placeholder-tech",
+    "from_version_code": "1271454",
+    "from_apk_sha256": "fefc72e69244dbed02eb1a43e790f079d58b0b0cd8c901d8b6438dfd80a4f588",
+    "to_version_code": "1271455",
+    "to_apk_sha256": "20825ff10384326f07a59a41f7ab46deb7368a21d5caf153c6c9d8207f2f8a23",
+    "target_apk": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-45-https-github-com/work/checker/data/issue-45/builds/placeholder-tech/com.unciv.app_1271455.apk",
+    "certificate_sha256": "b4752f8cee80842f55883ca2a9b62ca75c898df5a1b7cefd63959ba1b8fecb99",
+    "command": [
+      "adb",
+      "-s",
+      "emulator-5554",
+      "install",
+      "-r",
+      "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-45-https-github-com/work/checker/data/issue-45/builds/placeholder-tech/com.unciv.app_1271455.apk"
+    ],
+    "no_uninstall_or_clear_data": true,
+    "preconditions": "installed from-build/hash, settings byte equality and complete save inventory must match the pre-task backup",
+    "after_install": "independently verify installed to-build/hash, original settings bytes/metadata and all saves; no app launch",
+    "app_data_overwrites": 0,
+    "capture_is_a_separate_named_block": true
+  },
+  "status": "installed_and_verified",
+  "adb_output": "Performing Streamed Install\nSuccess\n",
+  "settings_byte_identical": true,
+  "all_saves_unchanged": true,
+  "app_left_stopped": true
+}

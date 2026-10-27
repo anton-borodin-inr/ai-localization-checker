@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "save": "issue-8-pair",
+  "selection": {
+    "technology": "Archery"
+  },
+  "tab": null,
+  "expanded_sections": [],
+  "scroll": {},
+  "scroll_to": {
+    "tech-tree": {
+      "technology": "Mining",
+      "align": "visible"
+    },
+    "description": {
+      "edge": "start",
+      "align": "visible"
+    }
+  },
+  "camera": null,
+  "new_game": null
+}

@@ -1,0 +1,28 @@
+{
+  "id": "85f22f29-a5ce-4df2-b1c2-49034dfadc4f",
+  "object": "chat.completion",
+  "created": 1792609925,
+  "model": "deepseek-flash",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\"readability\":\"partial\",\"unreadable_regions\":[\"top-right\"],\"readability_reason\":\"Several tech tree labels have overlapping text making them partially unreadable.\",\"findings\":[{\"defect_type\":\"overlap\",\"text_seen\":\"Animal Husbandry\",\"region\":\"left\",\"confidence\":0.9},{\"defect_type\":\"overlap\",\"text_seen\":\"Horseback Riding\",\"region\":\"right\",\"confidence\":0.9},{\"defect_type\":\"overlap\",\"text_seen\":\"Drama and Poetry\",\"region\":\"top-right\",\"confidence\":0.9},{\"defect_type\":\"overlap\",\"text_seen\":\"Bronze Working\",\"region\":\"center\",\"confidence\":0.9}]}"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1836,
+    "completion_tokens": 145,
+    "total_tokens": 1981,
+    "prompt_tokens_details": {
+      "cached_tokens": 1664
+    },
+    "prompt_cache_hit_tokens": 1664,
+    "prompt_cache_miss_tokens": 172
+  },
+  "system_fingerprint": "e72d3c7f663d3e1383b00b3884cb4501"
+}

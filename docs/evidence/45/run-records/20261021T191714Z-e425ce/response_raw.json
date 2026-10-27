@@ -1,0 +1,28 @@
+{
+  "id": "c0f1cc61-2706-4418-843c-d45f22e7a15e",
+  "object": "chat.completion",
+  "created": 1792610235,
+  "model": "deepseek-flash",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\"readability\":\"readable\",\"unreadable_regions\":[],\"readability_reason\":null,\"findings\":[{\"defect_type\":\"truncated_text\",\"text_seen\":\"Worker for terrain development, road construction and improvements to city infrastructure\",\"region\":\"bottom\",\"confidence\":0.9}]}"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1836,
+    "completion_tokens": 63,
+    "total_tokens": 1899,
+    "prompt_tokens_details": {
+      "cached_tokens": 1664
+    },
+    "prompt_cache_hit_tokens": 1664,
+    "prompt_cache_miss_tokens": 172
+  },
+  "system_fingerprint": "e72d3c7f663d3e1383b00b3884cb4501"
+}
