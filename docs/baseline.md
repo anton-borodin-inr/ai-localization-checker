@@ -4,6 +4,8 @@ Issue #12. This is a detector over previously captured PNGs, not a capture or
 evaluation command (D-003). It returns the existing `CheckResult` / `Finding`
 schema. No provider, API key, human label file, emulator or network is needed.
 
+**OCR engine:** Tesseract stays the default until Stage 4; EasyOCR is the leading candidate from the issue #48 comparison (D-045, [summary](evidence/48/README.md)).
+
 ## Dependency and command
 
 **Dependency reason:** Tesseract supplies offline OCR with English and German
