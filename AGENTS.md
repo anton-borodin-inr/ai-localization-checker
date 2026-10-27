@@ -8,7 +8,7 @@ Project rules for coding agents other than Claude Code (for example OpenAI Codex
 
 This is a portfolio project of Anton Borodin (Senior QA / QA Lead). The point is **measured quality and measured benefit for QA**, not "an LLM integration".
 
-**v1 scope:** one provider, one screen resolution, 8–10 screens, 2 languages, 1–2 defect types. Results of v1 are preliminary. Everything else is an extension after v1.
+**v1 scope:** one provider, one screen resolution, 8–10 screens, 2 languages, 3 defect types (`overflow`, `wrong_language`, `truncated_text`; D-044). Results of v1 are preliminary. Everything else is an extension after v1.
 
 **Stages:** 0 environment → 1 vertical slice → 2 screenshot pipeline → 3 labeled dataset → 4 baseline without LLM → 5 vision detector → 6 eval and QA benefit → 7 report and packaging → 8 check on a second app.
 
