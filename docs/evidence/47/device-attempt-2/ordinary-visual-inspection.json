@@ -1,0 +1,19 @@
+{
+  "reviewer": "Codex visual QA (not reference confirmation)",
+  "checks": [
+    {
+      "file": "ordinary-warm-menu.png",
+      "observation": "German main menu visible after warm ordinary launch without hook extras."
+    },
+    {
+      "file": "ordinary-back-1.png",
+      "observation": "Exit confirmation visible with Cancel and Exit controls after first Back."
+    },
+    {
+      "file": "ordinary-back-2.png",
+      "observation": "Exit confirmation dismissed; German main menu visible after second Back."
+    }
+  ],
+  "exit_confirmed": false,
+  "reference_confirmed": false
+}

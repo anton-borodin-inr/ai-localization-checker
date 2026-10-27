@@ -56,7 +56,7 @@ The original metadata is preserved except fields inherently updated by reads/ins
 
 ## Decisions proposed
 
-Two D-0XX entries in docs/decisions.md; numbers assigned at merge:
+Two entries in docs/decisions.md, numbered on merging main: D-043 (dev-screen assignment) and D-044 (proposed v1 classes):
 
 1. Record Anton's assignment of tech-picker and city-production to dev; assign no other screens.
 2. Propose three primary semantic classes, superseding only D-006's type count and D-020's class list/overlap deferral if Anton accepts:

@@ -1,0 +1,1035 @@
+{
+  "archive": "issue-47-pre-review-fixes-evidence.zip",
+  "archive_sha256": "dc1dc857732843e5a1569da47b96a81d702b83494071afdd4f34d63ca460d442",
+  "source_checker_head": "1d8c1c64e19036beaef3b9a60b86920bad09eccf",
+  "original_files": 163,
+  "retained_original_files": 35,
+  "removed_files": 128,
+  "all_archived_byte_identically_before_removal": true,
+  "files": [
+    {
+      "file": "docs/evidence/47/checker-checks.json",
+      "sha256": "6d44d7403d9088793eb3f5342a2ab73f1997adf944bf76104d81ee9ef8c27369",
+      "bytes": 1555,
+      "archive_entry": "checker/docs/evidence/47/checker-checks.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/checker-diff-check.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "archive_entry": "checker/docs/evidence/47/checker-diff-check.txt",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/checker-format.txt",
+      "sha256": "f588c3ec1fb32abdb8a7f97c112d1d59c9392eda79af1d6b7b51577e47f2b2dc",
+      "bytes": 27,
+      "archive_entry": "checker/docs/evidence/47/checker-format.txt",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/checker-pytest.txt",
+      "sha256": "7c45cfbcf9e66bc5922e734ce6d23f1a3fbe34cd5463b2a0150981fed0b103f6",
+      "bytes": 1964,
+      "archive_entry": "checker/docs/evidence/47/checker-pytest.txt",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/checker-ruff.txt",
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+      "bytes": 19,
+      "archive_entry": "checker/docs/evidence/47/checker-ruff.txt",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/deferred-pixel-investigation.md",
+      "sha256": "ad55a0d74f4a0818b6a8c20faf682c857668f8284dc63c8d729a709afa2d380e",
+      "bytes": 4707,
+      "archive_entry": "checker/docs/evidence/47/deferred-pixel-investigation.md",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-1/after-abort-preservation.json",
+      "sha256": "00015a384aa36b0cd29aca42100218731ef40966c4b7bd6e7f51f38619e2a6db",
+      "bytes": 801,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-1/after-abort-preservation.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-1/android-crash.txt",
+      "sha256": "41f66ba146870af275a55664796207bdb3b36c6404201cab66695941dd8c8c6e",
+      "bytes": 4585,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-1/android-crash.txt",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-1/approved-device-plan.json",
+      "sha256": "adf97ce9ec33e3c289c57e13ab7a37308ea2a5c9d33e959365d177e9aaa30261",
+      "bytes": 38556,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-1/approved-device-plan.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-1/authorization.json",
+      "sha256": "6f3efcb55c9de793978ed54616c7e719ed287841670ee68be56a9f2ea63f9e72",
+      "bytes": 376,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-1/authorization.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-1/capture-abort.json",
+      "sha256": "cec2e78fdfef1dfb351ce1204fef346e9e42e4c8ff015074142fa21e17292194",
+      "bytes": 691,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-1/capture-abort.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-1/capture-diagnostic-log.txt",
+      "sha256": "7670ae55abf6b1b632fec017911240db43412122858da257e013fe3b2b43c99c",
+      "bytes": 1327,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-1/capture-diagnostic-log.txt",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-1/capture-exit.json",
+      "sha256": "ec437ca036a170ec67e85bcfe95be2a0de6be52da238ae7325e2723b9427f36d",
+      "bytes": 635,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-1/capture-exit.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-1/capture-summary.json",
+      "sha256": "43460630a7d1a441a4d30f9c0c2de7bd07e7b4703803b9dd13bd69689569ff13",
+      "bytes": 9863,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-1/capture-summary.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-1/capture.txt",
+      "sha256": "63d3846f4b2a1caaf4427732104d5f59c01977372eeb8d68a6e53de9455f4801",
+      "bytes": 2177,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-1/capture.txt",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-1/emulator-prepare.txt",
+      "sha256": "bcd2dba11eb066619b27073b7d579edfabbefec6bf4b0a860f7c4382548b67e9",
+      "bytes": 48,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-1/emulator-prepare.txt",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-1/emulator-start.json",
+      "sha256": "2f077f439b2eb7e04d43f8277844ef487e912f52c4dd44ef6b5eeede5cc34c13",
+      "bytes": 250,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-1/emulator-start.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-1/evidence-receipt.json",
+      "sha256": "1a6bbe166acc343d694593446576c031f16b50c58054d311511c3c3f7c25150b",
+      "bytes": 2258,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-1/evidence-receipt.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-1/install-result.json",
+      "sha256": "88bf1b438ca413e5bb4f17c8b4ecdaf7a13b816db81513539270e356e18d18fb",
+      "bytes": 400,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-1/install-result.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-1/postinstall-verification.json",
+      "sha256": "a338e84219809d685ae0c07eca15a9b50bf89e05093f766d8d09f26aeee60f74",
+      "bytes": 413,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-1/postinstall-verification.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-1/report.md",
+      "sha256": "df3d06bd1e812c3ee039144a6155b6841af4faae02f7814193ca051a158b12a6",
+      "bytes": 6174,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-1/report.md",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-2/before-legacy-preservation.json",
+      "sha256": "82c97248147fe9481c2c5dde294c9352d8c1222488ac763aeb518ee4d55b00e6",
+      "bytes": 1032,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-2/before-legacy-preservation.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-2/candidate-diagnostics.json",
+      "sha256": "2169092b70c391e1fae42da54410964d2b8a548aafa91dc817c0d0da2f45a291",
+      "bytes": 7865,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-2/candidate-diagnostics.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-2/capture.txt",
+      "sha256": "521f7d96c6209dabee6ba1e772c915376bb360e060c861c08c5b3092f6dec756",
+      "bytes": 127,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-2/capture.txt",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-2/evidence-receipt.json",
+      "sha256": "fc530302daf28ba978b8589c1179abb59356997f27f678d0eda02ce1553275e9",
+      "bytes": 2623,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-2/evidence-receipt.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-2/issue-47-device-plan-2.json",
+      "sha256": "b5b78e4262618b992330cd16c1638b413a58a8dd085536eb801c7c9561de62f8",
+      "bytes": 39341,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-2/issue-47-device-plan-2.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-2/issue-47-device-plan-2.md",
+      "sha256": "85d7af76f7a944ee5513d10f3d36c50d8056905d63a04158c0359c5106482355",
+      "bytes": 21520,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-2/issue-47-device-plan-2.md",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-2/real-review-ui-smoke.json",
+      "sha256": "56c93620b2bc096d10f9254cde5acbdbe7039089d1aace98192da8d3826fff86",
+      "bytes": 920,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-2/real-review-ui-smoke.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-2/review-hashes.json",
+      "sha256": "bc08b9dadd1a7f94329827f7b3228cca9cfd445dc1e72e4599ee0ef7f78eb737",
+      "bytes": 8557,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-2/review-hashes.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-3/authorization.json",
+      "sha256": "a8429bf00e83df7aabddea0f87dc187b42ab836717f9769502b061a2b20d6417",
+      "bytes": 482,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-3/authorization.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-3/device-plan.json",
+      "sha256": "ec3cf8f267e7b0770feea342f72852aa73d3448720797d247cd3918ad941fb6e",
+      "bytes": 10176,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-3/device-plan.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-3/diagnostic-runner.sha256",
+      "sha256": "96848695a8ab8558bcbfe41b1da24df4db26faa5301a6550fe9f3fa73f4cd42b",
+      "bytes": 107,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-3/diagnostic-runner.sha256",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-3/evidence-receipt.json",
+      "sha256": "2ba32d87078a93090d36fcbf5d375fa078aa6268c80a7aaae87d1555c176cef0",
+      "bytes": 1061,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-3/evidence-receipt.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-3/execution-result.json",
+      "sha256": "7fa6b36639ee5f6da4a9aa4be66f60905c34eaed94704d45caf1b70668de801a",
+      "bytes": 413,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-3/execution-result.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-3/output-readback.json",
+      "sha256": "1f44272ad6c320ea252fca1959215df5747cd3459ec7ca84936a9b17212d2e0c",
+      "bytes": 1147,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-3/output-readback.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-3/report.md",
+      "sha256": "7d4d543809d4e591fcf2637044b553e5fc03e11bfba61a2681b6cc69e45fbab0",
+      "bytes": 7219,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-3/report.md",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-3/runner.txt",
+      "sha256": "acde6ccb122c33d38a20eebf6d3308332c26e4133c42bb7c5204df5966c0d1a7",
+      "bytes": 86,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-3/runner.txt",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-4/analysis.json",
+      "sha256": "4a314808f57302cf2d7b4a57b7cb3892ed4004071adf4f5fae2728f20a0143c3",
+      "bytes": 10896,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-4/analysis.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-4/authorization.json",
+      "sha256": "fb3e49b3dbf7482101993f11e965e7b4ec27a9f2e9ab44e3e361284a8f8a188e",
+      "bytes": 544,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-4/authorization.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-4/captures.json",
+      "sha256": "435c89de1b5fce1fa57de9027802546ed401f22d8a4f35d025eeccafc6281e73",
+      "bytes": 2949,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-4/captures.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-4/data-checks.json",
+      "sha256": "6e43daec8bbbc950a1e42c6297e718a8c2f41305f8941295c8deeadd9d9d26a7",
+      "bytes": 34849,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-4/data-checks.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-4/device-plan.json",
+      "sha256": "4d8b08cef5077e62551813fe4e55678f352ab6a2ad4be15fd720c23fbf32828a",
+      "bytes": 20237,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-4/device-plan.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-4/evidence-receipt.json",
+      "sha256": "9ce5c17c9cd9446adf63f31268187ac87effaa704bb956d69fca128cf1fca2b9",
+      "bytes": 1489,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-4/evidence-receipt.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-4/execution-result.json",
+      "sha256": "d5acc7869aefd511aa85892f2ba5a4f61dd7f14c282bc1bd3158cc4438e1b88e",
+      "bytes": 520,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-4/execution-result.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-4/final-preservation.json",
+      "sha256": "b02e15ce6d30f5b2105a1cef2804c4415d72f0d40c115af766b877b9595bbc8c",
+      "bytes": 7323,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-4/final-preservation.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-4/old-build.json",
+      "sha256": "6cfe9a3bd14b0673341f274ce739ca2e1600725f07fc1cf59a981f8170b575f7",
+      "bytes": 138,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-4/old-build.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-4/report.md",
+      "sha256": "7f2917e9aed09e80556769ff990ec7168917eb72effa8d9d518994f192b18223",
+      "bytes": 9014,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-4/report.md",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-4/restore_current_target_apk-result.json",
+      "sha256": "9d5d19006e8fdd99e22c0371379cd48e8c95913dbaa531a0b2c72216223c8bfe",
+      "bytes": 391,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-4/restore_current_target_apk-result.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-4/restored-build.json",
+      "sha256": "abcf61f23ce59a34de1d91f6558c4b89eee5955626f9894be860522a8617280c",
+      "bytes": 138,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-4/restored-build.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-4/result.json",
+      "sha256": "4f6520544819e5fe1348d51af0cb4d3070899ee4ef655184d3f21c48d90c19fb",
+      "bytes": 88,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-4/result.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-4/runner.txt",
+      "sha256": "13db065b92a307b6b83ecbc59a149b65128afcc5083d072bb54083cc97e4f51f",
+      "bytes": 14472,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-4/runner.txt",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-4/temporary_reference_debug_downgrade-result.json",
+      "sha256": "b501e0413be348437fc3be8a61954b7865238edc0d526966a657906e730ba477",
+      "bytes": 404,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-4/temporary_reference_debug_downgrade-result.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-5/analysis.json",
+      "sha256": "530b52df5ec4b4bfa91a214b65ae7ac757262b4e5bed6803ad80bc4784a250f9",
+      "bytes": 26454,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-5/analysis.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-5/authorization.json",
+      "sha256": "5d99abb66f3b75a4d7b8e0e278f8df7921732d7bc4c692f30c2bc6c3bca62f8b",
+      "bytes": 622,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-5/authorization.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-5/captures.json",
+      "sha256": "4b3b807cad926a8b5cc654aa65cbd41be4018109f18c83a4c618224c498e93fb",
+      "bytes": 8531,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-5/captures.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-5/cpu-comparison.json",
+      "sha256": "a16f6b68db8af94eaa3e6228726befbaa30886b732c061eaa393f7f5597e573b",
+      "bytes": 3241,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-5/cpu-comparison.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-5/data-checks.json",
+      "sha256": "ed5bfe654408bb3de0b2e1e35ca1c2ecf7c8188d23cf4d4d64a4c54480b756e6",
+      "bytes": 49840,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-5/data-checks.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-5/device-plan.json",
+      "sha256": "301b207483112563fda281da03181f31440a4e7b867a631e19541eefed87aa15",
+      "bytes": 25879,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-5/device-plan.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-5/diagnostic-build.json",
+      "sha256": "4f00d51665d6362cf7522c0bd563ba92d6b8023dbd8695c1802158193ccb1e81",
+      "bytes": 138,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-5/diagnostic-build.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-5/evidence-receipt.json",
+      "sha256": "4e4607326d6dcc32204a5f63dd9d781285fca1e78207893c40d5a9c3eab3af42",
+      "bytes": 1539,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-5/evidence-receipt.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-5/execution-result.json",
+      "sha256": "ad294bc69cb869975412d72b343cc8ff9d4cd7588f875c4969177e01649477c0",
+      "bytes": 557,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-5/execution-result.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-5/install_diagnostic_apk-result.json",
+      "sha256": "cf0ace11a25d71eba59d7947f5ee0061ed80bc397416a3570091409cde988ab1",
+      "bytes": 395,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-5/install_diagnostic_apk-result.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-5/report.md",
+      "sha256": "c3073df77ebda044af9a8695983033c413065a236864c0338919750a8db9fa2d",
+      "bytes": 9593,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-5/report.md",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-5/restore_current_target_apk-result.json",
+      "sha256": "4ad2da97f252ce015337da8fd2274783d04ac82c561c8a5e75a040df56d7345b",
+      "bytes": 400,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-5/restore_current_target_apk-result.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-5/restored-build.json",
+      "sha256": "abcf61f23ce59a34de1d91f6558c4b89eee5955626f9894be860522a8617280c",
+      "bytes": 138,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-5/restored-build.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-5/result.json",
+      "sha256": "4f6520544819e5fe1348d51af0cb4d3070899ee4ef655184d3f21c48d90c19fb",
+      "bytes": 88,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-5/result.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/device-attempt-5/runner.txt",
+      "sha256": "1f8960cfb2f0c4a6f74390489d48f60b07fb7ede6b12cb96cec7edba4869ac9d",
+      "bytes": 23124,
+      "archive_entry": "checker/docs/evidence/47/device-attempt-5/runner.txt",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/diagnostic-host/evidence-receipt.json",
+      "sha256": "9d01d2d7efc1e2d1ad8551e064ff064bdd1b289bfbb927711ab83461642a8982",
+      "bytes": 1526,
+      "archive_entry": "checker/docs/evidence/47/diagnostic-host/evidence-receipt.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/diagnostic-host/focused-tests-attempt-1.log.gz",
+      "sha256": "13a73be357e0106b1118c1a1eb4c41d346dc14502160cad6401f7249087dd401",
+      "bytes": 8064,
+      "archive_entry": "checker/docs/evidence/47/diagnostic-host/focused-tests-attempt-1.log.gz",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/diagnostic-host/focused-tests.log.gz",
+      "sha256": "91e8402d449586f270afeb625073bfd19df07f646f2fabccaa6888d7686bcf35",
+      "bytes": 794,
+      "archive_entry": "checker/docs/evidence/47/diagnostic-host/focused-tests.log.gz",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/diagnostic-host/fork-apk-badging.txt",
+      "sha256": "53f04f5ea18e5147b8f9e596ea960e8ff8cbc4fcb75de908c1bf318e202768d4",
+      "bytes": 4760,
+      "archive_entry": "checker/docs/evidence/47/diagnostic-host/fork-apk-badging.txt",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/diagnostic-host/fork-apk-signing.txt",
+      "sha256": "436231b6082eec90856aaf1e5005446dcfe2c50b4d5ce47329a1b66c4ee278d9",
+      "bytes": 8196,
+      "archive_entry": "checker/docs/evidence/47/diagnostic-host/fork-apk-signing.txt",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/diagnostic-host/fork-lint-results-debug.xml",
+      "sha256": "7b0516c5cd4849dabf94bec4fa2639f1ec48d8560bf979b11f49d9acd39a0e20",
+      "bytes": 19171,
+      "archive_entry": "checker/docs/evidence/47/diagnostic-host/fork-lint-results-debug.xml",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/diagnostic-host/fork-sample-verification.json",
+      "sha256": "5d34660ff70b77994717c7ee2100b32395c11c3b6caf750c4769f50e87534164",
+      "bytes": 406,
+      "archive_entry": "checker/docs/evidence/47/diagnostic-host/fork-sample-verification.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/diagnostic-host/fork-test-summary.json",
+      "sha256": "b3526febe4b0a96f78cbbb7a56e759b621c525c9b77b1fe3af5d6730806b6445",
+      "bytes": 2202,
+      "archive_entry": "checker/docs/evidence/47/diagnostic-host/fork-test-summary.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/diagnostic-host/host-checks.log.gz",
+      "sha256": "13947b09a9d319811e9ebefe646faa60b24657d8e1a34a5691d04da359b093ea",
+      "bytes": 1604,
+      "archive_entry": "checker/docs/evidence/47/diagnostic-host/host-checks.log.gz",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/diagnostic-host/initial-output-snapshot-build.log.gz",
+      "sha256": "678c1f50d68d163f82490f402d7e2105b35d830c7b3b09f837c96a0f518f0d9b",
+      "bytes": 382,
+      "archive_entry": "checker/docs/evidence/47/diagnostic-host/initial-output-snapshot-build.log.gz",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/diagnostic-host/parent-host-validation.json",
+      "sha256": "0dd63cfd0749b6c9c1b27a522f4be4256cecee481cb55aa81f255e09b5f04c4b",
+      "bytes": 2007,
+      "archive_entry": "checker/docs/evidence/47/diagnostic-host/parent-host-validation.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/diagnostic-host/parent-sample-validation.json",
+      "sha256": "18b7384068f750220f04b11cc02de8def609ae927a65fc4c2ff18cb2e494bc85",
+      "bytes": 1103,
+      "archive_entry": "checker/docs/evidence/47/diagnostic-host/parent-sample-validation.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/diagnostic-host/parent-verification.json",
+      "sha256": "9f8499fe5c67df12259a610fa51e4343fbc49c24dab853549cf56af17aac356a",
+      "bytes": 781,
+      "archive_entry": "checker/docs/evidence/47/diagnostic-host/parent-verification.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/diagnostic-host/proposed-device-plan.json",
+      "sha256": "301b207483112563fda281da03181f31440a4e7b867a631e19541eefed87aa15",
+      "bytes": 25879,
+      "archive_entry": "checker/docs/evidence/47/diagnostic-host/proposed-device-plan.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/diagnostic-host/report.md",
+      "sha256": "56371b3f5fcce59f575756257749cdbca87769ae864840d9d7e56d65c25c5c56",
+      "bytes": 6845,
+      "archive_entry": "checker/docs/evidence/47/diagnostic-host/report.md",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/fork-apk-badging.txt",
+      "sha256": "79e2fb17542da373e89b9d1e122b74fa94f43f75a3bee21b6232fbe616e79505",
+      "bytes": 4760,
+      "archive_entry": "checker/docs/evidence/47/fork-apk-badging.txt",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/fork-apk-signing.txt",
+      "sha256": "37d8c5e5dcc4906be81e378065a40ae0458806965995f77c14ffaef9d8481147",
+      "bytes": 8267,
+      "archive_entry": "checker/docs/evidence/47/fork-apk-signing.txt",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/fork-evidence.json",
+      "sha256": "cfc37d53978c8dcbea46a008973c26ccdfaf2e3a9878e9c8058021314974b250",
+      "bytes": 369,
+      "archive_entry": "checker/docs/evidence/47/fork-evidence.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/fork-host-checks.txt.gz",
+      "sha256": "6f9a4f818aa65895fd8221bd5bd73f5df97d20782dbfb22c365869a9b8f5ffbf",
+      "bytes": 1339,
+      "archive_entry": "checker/docs/evidence/47/fork-host-checks.txt.gz",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/fork-host-verification.json",
+      "sha256": "0d7c5314706fd821b83269cb2b50d201a87e92a28bfcc48f5e35db318432daa3",
+      "bytes": 3529,
+      "archive_entry": "checker/docs/evidence/47/fork-host-verification.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/fork-lint-results-debug.xml",
+      "sha256": "2f33c3f94fe0e90b7606b15605b352257603c2f5be31366223c810ab0065d23e",
+      "bytes": 39157,
+      "archive_entry": "checker/docs/evidence/47/fork-lint-results-debug.xml",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/fork-sample-validation.json",
+      "sha256": "af195ecff9e6ba1c033198f65312c784bdff5f71ac034ef406b8d0e8f0612367",
+      "bytes": 901,
+      "archive_entry": "checker/docs/evidence/47/fork-sample-validation.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/fork-test-summary.json",
+      "sha256": "4b88f04d252c31eace5820e5cc43e729cd8c5c7bd41d64f4af114e5253e61dc5",
+      "bytes": 2097,
+      "archive_entry": "checker/docs/evidence/47/fork-test-summary.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/offline-report.md",
+      "sha256": "de520d30c66e3fc62cf70022ea32d1209b218aa948a56fe956d52e7943437f04",
+      "bytes": 13141,
+      "archive_entry": "checker/docs/evidence/47/offline-report.md",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/pixel-diagnosis-host/affected-glyphs.json",
+      "sha256": "15a337e118f6afea956def054b201d54a3cc671de7feaaf2da6ba8497f976cd6",
+      "bytes": 3885,
+      "archive_entry": "checker/docs/evidence/47/pixel-diagnosis-host/affected-glyphs.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/pixel-diagnosis-host/artifact-preservation.json",
+      "sha256": "cac47462fa73d03980a514e296e02054d04379ded2d747ef5ec4efee52d061ef",
+      "bytes": 2096,
+      "archive_entry": "checker/docs/evidence/47/pixel-diagnosis-host/artifact-preservation.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/pixel-diagnosis-host/cache-ab-attempt-1.log.gz",
+      "sha256": "5b4a33cf9e36f729cb1da29ff040d3c3ff492f848d4ca5003a858b75bc9b4729",
+      "bytes": 1329,
+      "archive_entry": "checker/docs/evidence/47/pixel-diagnosis-host/cache-ab-attempt-1.log.gz",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/pixel-diagnosis-host/cache-ab-attempt-2.log.gz",
+      "sha256": "db2d83f270b1cdca70332905e9f081d253e2f26ec5fa71f61beed44b7e1c7728",
+      "bytes": 165,
+      "archive_entry": "checker/docs/evidence/47/pixel-diagnosis-host/cache-ab-attempt-2.log.gz",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/pixel-diagnosis-host/cache-ab-result.json",
+      "sha256": "bcaff5fce2f5aae9dcc71d60db6adb87fe5fef82d4a0878907b877704954abf4",
+      "bytes": 4498,
+      "archive_entry": "checker/docs/evidence/47/pixel-diagnosis-host/cache-ab-result.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/pixel-diagnosis-host/cache-ab.log.gz",
+      "sha256": "677832246350b5db14ecbf31c6eb040d54f67e47ea53978432f9adcefb2ae227",
+      "bytes": 608,
+      "archive_entry": "checker/docs/evidence/47/pixel-diagnosis-host/cache-ab.log.gz",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/pixel-diagnosis-host/diagnosis.json",
+      "sha256": "d64fc172e240b6f82ffc6ff83bc5f1b063397ad050ffb624ceeac170ceb02226",
+      "bytes": 1704,
+      "archive_entry": "checker/docs/evidence/47/pixel-diagnosis-host/diagnosis.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/pixel-diagnosis-host/evidence-receipt.json",
+      "sha256": "561776c344f615e054d51859e7a20b2cc00764d013796461928fe8f39f516243",
+      "bytes": 2177,
+      "archive_entry": "checker/docs/evidence/47/pixel-diagnosis-host/evidence-receipt.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/pixel-diagnosis-host/pixel-comparisons.jsonl",
+      "sha256": "7d828813a8b9982444df009e9d81e03c4ef884358c65b95feab895b30b2626f4",
+      "bytes": 22146,
+      "archive_entry": "checker/docs/evidence/47/pixel-diagnosis-host/pixel-comparisons.jsonl",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/pixel-diagnosis-host/png-metadata.json",
+      "sha256": "dbba2a1e6d4cc590c4d82831e4531600b9f70ff2530b0d5fd4e03f1f68e50e4b",
+      "bytes": 2797,
+      "archive_entry": "checker/docs/evidence/47/pixel-diagnosis-host/png-metadata.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/pixel-diagnosis-host/replay-inputs.json",
+      "sha256": "4d2dcc4b023f05e6877ae69f8200a653763fbd7a7e4c14779b2e8b3bee9ff518",
+      "bytes": 5360,
+      "archive_entry": "checker/docs/evidence/47/pixel-diagnosis-host/replay-inputs.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/pixel-diagnosis-host/report.md",
+      "sha256": "66eb0ba957f48af17ffc5b5c4b186681d131d08aa72c61bc6f703f219c3d5e13",
+      "bytes": 11140,
+      "archive_entry": "checker/docs/evidence/47/pixel-diagnosis-host/report.md",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/pixel-diagnosis-host/source-audit.json",
+      "sha256": "b20e810ce35ff52f55d3215efe55b13a93ad935e4f3870b4bcaf6129402540cc",
+      "bytes": 2786,
+      "archive_entry": "checker/docs/evidence/47/pixel-diagnosis-host/source-audit.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/replacement-host/apk-content-comparison.json",
+      "sha256": "516fe7972d9a8483b8e85c269fbbe27fe379e242df6645fb34982cc6d5be8dec",
+      "bytes": 342,
+      "archive_entry": "checker/docs/evidence/47/replacement-host/apk-content-comparison.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/replacement-host/checker-checks.json",
+      "sha256": "b8744d8dc060f020ec6bc53fcb845edc29acab4e839399361f82a96eeddb07b8",
+      "bytes": 2038,
+      "archive_entry": "checker/docs/evidence/47/replacement-host/checker-checks.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/replacement-host/checker-format.txt",
+      "sha256": "c0b753c0bfc7a70fc1f8c69d5afa1907a2fb41437df923ecb7ecac4d78676a19",
+      "bytes": 27,
+      "archive_entry": "checker/docs/evidence/47/replacement-host/checker-format.txt",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/replacement-host/checker-pytest.txt",
+      "sha256": "c3bbd4b149eec4df3cf46315d32ad3b0c314b7630b06e03c646f86d002713028",
+      "bytes": 1964,
+      "archive_entry": "checker/docs/evidence/47/replacement-host/checker-pytest.txt",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/replacement-host/checker-ruff.txt",
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+      "bytes": 19,
+      "archive_entry": "checker/docs/evidence/47/replacement-host/checker-ruff.txt",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/replacement-host/fork-prior-artifact-hashes.json",
+      "sha256": "9bd0cdba255d619ac094a621f5691c380672c184ab01f9bfbfec2d196e154e56",
+      "bytes": 836,
+      "archive_entry": "checker/docs/evidence/47/replacement-host/fork-prior-artifact-hashes.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/replacement-host/fork-regex-audit.md",
+      "sha256": "608d2747be13c0f9275402821a8df04182c76bdc38561db5f6c01ab962a23b57",
+      "bytes": 1439,
+      "archive_entry": "checker/docs/evidence/47/replacement-host/fork-regex-audit.md",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/replacement-host/fork-sample.texts.json",
+      "sha256": "fe7355848948e69c3a67e0dcaa74ed6e5f66c938a9113884fab430c02fc1fcf7",
+      "bytes": 991,
+      "archive_entry": "checker/docs/evidence/47/replacement-host/fork-sample.texts.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/replacement-host/fork-version-allocation.json",
+      "sha256": "a248f61ab4928dbd06556b80fa5d244d9090934c8fc130cd52aa44f29564eb27",
+      "bytes": 658,
+      "archive_entry": "checker/docs/evidence/47/replacement-host/fork-version-allocation.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/replacement-host/report.md",
+      "sha256": "95e9e75d58b8f767c6c69a3f1d8ec10297ae70f8b8929c476a423a19242d4797",
+      "bytes": 6887,
+      "archive_entry": "checker/docs/evidence/47/replacement-host/report.md",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/shared-path-host/diagnosis.json",
+      "sha256": "5b83c9ec59cb23a3794f1c7627d2dad90a1f9e8d6007ef439a793a14bd45afe8",
+      "bytes": 3291,
+      "archive_entry": "checker/docs/evidence/47/shared-path-host/diagnosis.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/shared-path-host/evidence-receipt.json",
+      "sha256": "1ec84b407ef7619680ff48b458c2ba94788bd775d01e5e118a9537646a6dff0d",
+      "bytes": 3047,
+      "archive_entry": "checker/docs/evidence/47/shared-path-host/evidence-receipt.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/shared-path-host/loading-window-attempt-1.log.gz",
+      "sha256": "0470d8252b9729b4c2169a25e16f8a617f8c3184e5299a84cb0f1906e3ff9941",
+      "bytes": 319,
+      "archive_entry": "checker/docs/evidence/47/shared-path-host/loading-window-attempt-1.log.gz",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/shared-path-host/loading-window-ownership-only.log.gz",
+      "sha256": "ec2cae27076df6fba1b9110682355fff3e23e05ece460215ab5c594ffe82a9af",
+      "bytes": 1246,
+      "archive_entry": "checker/docs/evidence/47/shared-path-host/loading-window-ownership-only.log.gz",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/shared-path-host/loading-window-result.json",
+      "sha256": "edf7565ed90dd8fbb7a97f4d7833a4089e9932e1851ebbaeb7ed6cfec06c07b4",
+      "bytes": 9757,
+      "archive_entry": "checker/docs/evidence/47/shared-path-host/loading-window-result.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/shared-path-host/loading-window-unguarded-mechanism.log.gz",
+      "sha256": "19e2dbbf7109055f597ca162bd64243d2ab61a35d23d5746c353cd427bcf5663",
+      "bytes": 1048,
+      "archive_entry": "checker/docs/evidence/47/shared-path-host/loading-window-unguarded-mechanism.log.gz",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/shared-path-host/loading-window.log.gz",
+      "sha256": "9a4de47f3975fbe417ae2b35ba0e82fdb4e085d66bf3df2d65413381169cbdc4",
+      "bytes": 1261,
+      "archive_entry": "checker/docs/evidence/47/shared-path-host/loading-window.log.gz",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/shared-path-host/original-apk-badging.txt.gz",
+      "sha256": "2d1649dddf785672c56ca9083e7cb10065c1eb37b66df70b9b1902e017483d10",
+      "bytes": 1137,
+      "archive_entry": "checker/docs/evidence/47/shared-path-host/original-apk-badging.txt.gz",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/shared-path-host/original-apk-signing.txt.gz",
+      "sha256": "33e4058a2ab384f2dd731683e06b1982d49038d55092ed20e3fa037d31269a25",
+      "bytes": 1134,
+      "archive_entry": "checker/docs/evidence/47/shared-path-host/original-apk-signing.txt.gz",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/shared-path-host/original-apk.json",
+      "sha256": "d69a965e4c2c204e425481f393646e7005ffc162037a4015dcaf7f2d3c24a129",
+      "bytes": 618,
+      "archive_entry": "checker/docs/evidence/47/shared-path-host/original-apk.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/shared-path-host/phase-3-inputs.json",
+      "sha256": "5307280d63f681b440d2fbd34377568114a710e1dad9bf468c1cd68b5bab9bfb",
+      "bytes": 43758,
+      "archive_entry": "checker/docs/evidence/47/shared-path-host/phase-3-inputs.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/shared-path-host/prior-evidence-preservation.json",
+      "sha256": "a587904271c247f2155b88e8025a4ec8ec7f75aa986d6088123b0fbebff2b9c6",
+      "bytes": 136,
+      "archive_entry": "checker/docs/evidence/47/shared-path-host/prior-evidence-preservation.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/shared-path-host/report.md",
+      "sha256": "901b85b08144b6497148fd42b0e2e69746fcf990d136fbf03bf053b9a54976a4",
+      "bytes": 17934,
+      "archive_entry": "checker/docs/evidence/47/shared-path-host/report.md",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    },
+    {
+      "file": "docs/evidence/47/shared-path-host/shared-source-audit.json",
+      "sha256": "c41c33eb66edaf96c8d003b54f5b5522d2fb9841ef3e2db7bfe11de52c7bdf5a",
+      "bytes": 729,
+      "archive_entry": "checker/docs/evidence/47/shared-path-host/shared-source-audit.json",
+      "byte_identical": true,
+      "action": "remove_from_branch"
+    }
+  ]
+}

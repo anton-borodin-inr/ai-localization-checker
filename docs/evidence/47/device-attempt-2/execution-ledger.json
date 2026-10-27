@@ -1,0 +1,87 @@
+{
+  "plan_sha256": "b5b78e4262618b992330cd16c1638b413a58a8dd085536eb801c7c9561de62f8",
+  "authorization_file": "authorization.json",
+  "apk_updates": [
+    {
+      "version_code": "1271048",
+      "status": "verified",
+      "evidence": [
+        "install-result.json",
+        "postinstall-verification.json"
+      ]
+    }
+  ],
+  "settings_writes": [
+    {
+      "operation": "replace_settings",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "853e1a055177314c866ae4427e697adeb6f79cab051d31bff0d6160b149c1776",
+      "status": "verified",
+      "language": "en",
+      "pass_number": 1,
+      "source": "capture summary and write/readback journal"
+    },
+    {
+      "operation": "replace_settings",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "397ddd96452874b01d9f096311049c0d076492297d557a9fb7c3d2abf1f3cdea",
+      "status": "verified",
+      "language": "de",
+      "pass_number": 1,
+      "source": "capture summary and write/readback journal"
+    },
+    {
+      "operation": "replace_settings",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "853e1a055177314c866ae4427e697adeb6f79cab051d31bff0d6160b149c1776",
+      "status": "verified",
+      "language": "en",
+      "pass_number": 2,
+      "source": "capture summary and write/readback journal"
+    },
+    {
+      "operation": "replace_settings",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "397ddd96452874b01d9f096311049c0d076492297d557a9fb7c3d2abf1f3cdea",
+      "status": "verified",
+      "language": "de",
+      "pass_number": 2,
+      "source": "capture summary and write/readback journal"
+    },
+    {
+      "operation": "restore_original_settings",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7",
+      "status": "verified",
+      "source": "capture summary and write/readback journal"
+    },
+    {
+      "operation": "legacy_real_capture_apply_english",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "99f9b6b293c1e6268d6d18891805872e1546c177775680f2718e8c206dcb4b23",
+      "payload_source": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/device-phase-1/legacy-english-payload.json",
+      "status": "verified_by_successful_device_test",
+      "source": "legacy-device-test.txt and unchanged capture.unciv_language implementation; no separate per-write trace for legacy pytest"
+    },
+    {
+      "operation": "legacy_real_capture_restore_original",
+      "path": "/data/user/0/com.unciv.app/files/GameSettings.json",
+      "sha256": "7fc6dff53a9ff0b1a87e75c530edcf98fc000ee3dfa6f04d6feccd7085f9bfa7",
+      "status": "verified_by_successful_device_test",
+      "source": "legacy-device-test.txt and unchanged capture.unciv_language implementation; no separate per-write trace for legacy pytest"
+    }
+  ],
+  "additional_contingent_original_restoration_used": false,
+  "save_writes": [],
+  "published_hook_finals": 43,
+  "retained_temporary_outputs": 0,
+  "request_count": 49,
+  "capture_requests": 40,
+  "lifecycle_requests": 9,
+  "new_request_retries": 0,
+  "ordinary_back_events": 2,
+  "no_uninstall_clear_downgrade_or_rollback": true,
+  "final_state_evidence": "final-preservation.json",
+  "live_provider_requests": 0,
+  "api_spend_usd": 0
+}

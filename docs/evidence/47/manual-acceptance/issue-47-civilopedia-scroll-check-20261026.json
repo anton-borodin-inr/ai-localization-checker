@@ -1,0 +1,33 @@
+{
+  "check": "D-025 / Civilopedia category-ribbon scrolling",
+  "status": "passed",
+  "source": "direct_human_user_message",
+  "tested_by": "Anton",
+  "reported_date": "2026-10-26",
+  "recorded_at_utc": "2026-10-26T15:51:19.728535+00:00",
+  "user_report_verbatim": "Проверил скролл во все стороны, все названия категорий видны, читаемы и не обрезаны",
+  "context_from_verified_setup": {
+    "package": "com.unciv.app",
+    "version_code": "1271048",
+    "language": "German",
+    "loaded_save": "issue-8-pair",
+    "category": "Tutorials",
+    "article_source_key": "Differences from Civilization V",
+    "article_display_title": "Unterschiede zu Civilization V",
+    "launch_mode": "ordinary interactive game; continued existing session; no localization-hook extras"
+  },
+  "setup_receipt": "issue-47-civilopedia-manual-handoff-20261026.json",
+  "setup_receipt_sha256": "9c4c972dc31337d7fd96335f9765237f4a053c3bf59325bbe57c58c051a001f4",
+  "observations_reported": {
+    "scrolling_checked": "all directions, as reported by Anton",
+    "all_category_names_accessible": true,
+    "all_category_names_readable": true,
+    "persistent_category_name_clipping_reported": false
+  },
+  "D025_conclusion": "The category ribbon exposes its names fully and legibly by scrolling in the checked German 1271048 state. Accepted D-025 is satisfied for this check.",
+  "scope_limit": "Human report for the prepared German Civilopedia state; no new EN run, pixel comparison or all-screen claim.",
+  "agent_independently_repeated_check": false,
+  "device_operations_this_update": 0,
+  "remaining_D025_checks": [],
+  "decisions_labels_metrics_goldens_changed": false
+}

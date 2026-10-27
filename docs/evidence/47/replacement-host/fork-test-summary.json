@@ -1,0 +1,69 @@
+{
+  "all_tests": {
+    "tests": 957,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 20
+  },
+  "l10n_tests": {
+    "tests": 49,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "skipped_tests": [
+    "com.unciv.logic.TranslationTests.measureTranslateCivilopedia",
+    "com.unciv.logic.TranslationTests.translateAndHashCivilopedia",
+    "com.unciv.logic.TranslationTests.listTranslatedNames",
+    "com.unciv.logic.map.PathfindingTests.shortestPathEvenWhenItsWayMoreTiles[ClassicPathfinding]",
+    "com.unciv.logic.map.PathfindingTests.canPauseBeforeMountainsToCrossWithoutDamage[ClassicPathfinding]",
+    "com.unciv.logic.map.PathfindingTests.getMovementToTilesAtPosition_withNegativeMovement_ReturnsOrigin[ClassicPathfinding]",
+    "com.unciv.logic.map.PathfindingTests.getMovementToTilesAtPosition_mountains_movesTo[AStarPathfinding]",
+    "com.unciv.logic.map.PathfindingTests.getMovementToTilesAtPosition_ocean_movesTo[AStarPathfinding]",
+    "com.unciv.logic.map.PathfindingTests.getMovementToTilesAtPosition_withVirtuallyNoMovement_ReturnsNeighbors[AStarPathfinding]",
+    "com.unciv.view.ViewPurityTest.non-Readonly functions in owned Views always return Boolean",
+    "com.unciv.logic.LoadGameTest.updateVanillaGameString",
+    "com.unciv.logic.LoadGameTest.updateReligionGameString",
+    "com.unciv.logic.LoadGameTest.updateScreenshotGame",
+    "com.unciv.logic.map.ResourceDiversityTest.resourceDiversityAcrossMapSizesAndTypes",
+    "com.unciv.logic.automation.unit.WorkerAutomationTest.should connect small cities with roads despite competing farm tiles",
+    "com.unciv.ui.components.tilegroups.EditorMapHolderMemoryTest.tileGroupMemoryBreakdown",
+    "com.unciv.testing.BasicTests.statMathStressTest",
+    "com.unciv.logic.MediaFinderTests.Sound listing does not include bullshit",
+    "com.unciv.ui.screens.devconsole.DevConsoleTests.listAllCommands",
+    "com.unciv.logic.NextTurnLatencyTest.classMethod"
+  ],
+  "lint_severities": {
+    "Warning": 36
+  },
+  "lint_ids": {
+    "OldTargetApi": 1,
+    "UnusedAttribute": 4,
+    "AndroidGradlePluginVersion": 1,
+    "GradleDependency": 3,
+    "NewerVersionAvailable": 16,
+    "UnusedResources": 2,
+    "TypographyEllipsis": 1,
+    "MonochromeLauncherIcon": 2,
+    "IconDensities": 3,
+    "UseKtx": 3
+  },
+  "samples": {
+    "sample.texts.json": {
+      "path": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/Unciv/build/issue47-fix-evidence/sample.texts.json",
+      "sha256": "fe7355848948e69c3a67e0dcaa74ed6e5f66c938a9113884fab430c02fc1fcf7",
+      "type": "synthetic host sample, not device evidence"
+    },
+    "host-draw-sample.texts.json": {
+      "path": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/Unciv/build/issue47-fix-evidence/host-draw-sample.texts.json",
+      "sha256": "c6193bbdc368dc67899608f681409214e46d46e0ac5e8db4bb7b78f2d670ea95",
+      "type": "synthetic host sample, not device evidence"
+    }
+  },
+  "apk_path": "/Users/antonborodin/Documents/Codex/2026-10-21/task-issue-47-https-github-com/work/Unciv/build/issue47-fix-evidence/Unciv-1271048-debug.apk",
+  "apk_sha256": "91d9a900f8204880e590de7fb90f0fc15e2aa5cf5d94a3ae77364497d7b0541e",
+  "prior_1271047_artifacts_preserved": true,
+  "provider_requests": 0,
+  "provider_cost_usd": 0,
+  "device_commands": 0
+}
