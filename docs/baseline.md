@@ -52,8 +52,9 @@ run. They are not selected by looking at the clean-screen false positives.
   Prefix or absent expectation gives a `truncated_text` candidate.
 - A recognized literal `[placeholder]` gives `other` (D-027). Otherwise an
   exact source-language fallback for a missing German translation gives
-  `untranslated`; an exact known alternative in the other configured language
-  also gives `untranslated` if it differs from the expected string. An
+  `wrong_language`; an exact known alternative in the other configured language
+  also gives `wrong_language` if it differs from the expected string (D-044,
+  D-046). An
   explicitly identical translation is accepted. Unknown OCR words alone are
   not evidence of another language. Rule priority is placeholder, source
   fallback, expected exact match, foreign alternative, prefix, missing.
@@ -125,7 +126,9 @@ Matching, metrics and Anton's golden expectations remain unchanged (D-026).
 Each run stores `result.json`, `run.json`, `diagnostics.json` and, when
 available, `ocr.tsv` and `source-entries.json`. Records include image/source
 hashes, full commit, resolved translations, engine version, traineddata hashes,
-settings, elapsed time and `requests_sent: 0`. Findings and supporting expected
+settings, elapsed time, `requests_sent: 0` and the finding schema as the
+integer `schema_version: 2` (D-046), the same form as label files. Records
+written before D-046 have no `schema_version` and are read as schema 1. Findings and supporting expected
 strings can be traced through diagnostics and source entries. Failing input
 validation may leave only the failure result and basic metadata.
 

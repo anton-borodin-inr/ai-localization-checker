@@ -6,23 +6,31 @@ validated before findings can enter the result (D-013, D-031).
 
 ## Interface
 
-- `l10n_checker.vision` holds response schema v1 (`SCHEMA_VERSION = "v1"`),
-  the detector prompt (`PROMPT_VERSION = "v1"`), `CheckResult`,
+- `l10n_checker.vision` holds response schema v2 (`SCHEMA_VERSION = "v2"`),
+  the detector prompt (`PROMPT_VERSION = "v2"`), `CheckResult`,
   the per-run request cap and the run recorder. It does not talk to any API.
 - `l10n_checker.deepseek` is the only module that talks to the DeepSeek API
   (D-034). It uses httpx.
-- A finding has `defect_type` (`truncated_text`, `overlap`, `untranslated`,
-  `other`), `text_seen`, `region` on a 3×3 grid (`top-left` … `bottom-right`,
-  `center`) and `confidence` in 0..1 (D-018).
+- A finding has `defect_type` (`overflow`, `wrong_language`, `truncated_text`,
+  `other`; D-044, D-046), `text_seen`, `region` on a 3×3 grid (`top-left` …
+  `bottom-right`, `center`) and `confidence` in 0..1 (D-018).
+- Schema v1 run records (`overlap`, `untranslated`, `truncated_text`, `other`)
+  stay readable: `load_check_result` validates a saved `result.json` with
+  `CheckResultV1` / `FindingV1` when its metadata says `schema_version` `"v1"`.
+  New model responses must use the v2 classes; v1 names are `invalid_response`.
 
 ## Labeling and readability
 
-Prompt v1 takes its defect rules from [labeling.md](labeling.md), without
-screen-specific examples: scroll clipping is not a defect when scrolling
-reveals the full content; an ellipsis is a defect only when the full text is
-not visible elsewhere on the same screenshot; a raw key is `untranslated` and
-a broken placeholder is `other`; region uses the centre of the text's bounding
-box. The prompt also explains that readability concerns text inside the visible
+Prompt v2 takes its class definitions (D-044) and defect rules from
+[labeling.md](labeling.md), without screen-specific examples: `overflow` is text
+outside its own label's bounds, and a collision between separate widgets whose
+texts stay inside their own bounds is `other`, not `overflow`; scroll clipping is
+not a defect when scrolling reveals the full content; an ellipsis is a defect
+only when the full text is not visible elsewhere on the same screenshot; a
+source-language string shown for a missing translation is `wrong_language`; a
+raw identifier that is not text in any language and a broken placeholder are
+`other` (D-046); text too small to read goes through readability, never into a
+finding; region uses the centre of the text's bounding box. The prompt also explains that readability concerns text inside the visible
 viewport, not hidden scroll content or icons. Scroll clipping alone does not
 make the visible text unreadable.
 
@@ -67,7 +75,8 @@ and `.netrc` settings from the environment (`trust_env` off).
 
 JSON object mode guarantees JSON but does not enforce a schema. The detector
 prompt is therefore sent unchanged, followed by a format wrapper
-(`deepseek-json-object-v2`) that appends the `ModelOutput` JSON Schema. A change
+(`deepseek-json-object-v3`, bumped for the schema v2 classes) that appends the
+`ModelOutput` JSON Schema. A change
 to the wrapper text or appended schema bumps `WRAPPER_VERSION`; a change to the prompt bumps
 `PROMPT_VERSION`.
 

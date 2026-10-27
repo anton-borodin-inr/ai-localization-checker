@@ -8,9 +8,13 @@ No provider, image access, OCR or translation lookup is performed here.
 ## Matching API
 
 `l10n_checker.matching.match_screen(labels, findings, screen_texts, status="checked",
-config=MatchingConfig())` accepts `Label` objects and existing `vision.Finding`
-objects. Labels include optional `note`, and allow `other` for broken placeholders
-(D-027). Keep raw keys as `untranslated`; the matcher does not infer ground truth.
+config=MatchingConfig(), *, label_schema_version=2, result_schema_version=2)`
+accepts `Label` objects and existing `vision.Finding` objects. Labels include
+optional `note` and use the classes of [labeling.md](labeling.md) (D-044,
+D-046); the matcher does not infer ground truth. `load_labels(label_file)`
+validates a `.labels.json` by its integer `schema_version`: 2 gives `Label`,
+1 gives `LabelV1` with the old classes. Schema v1 results use `FindingV1`. The
+declared versions must match the object types, or `match_screen` raises.
 `screen_texts` must include every visible occurrence, including repeated clean
 text. A false positive about scroll clipping remains a false positive (D-025).
 Inputs are not rewritten. Result indices refer to their original input order,
@@ -142,7 +146,11 @@ before dividing, rather than averaging screen ratios:
 Any zero denominator returns Python `None`. `Metrics.to_dict()` preserves it
 as JSON `null`; it never substitutes zero, one or NaN. `confusion` counts
 `label_type` → `finding_type` for retained matches, including wrong categories
-and `other`. Duplicates contribute only the representative. Hallucinations are
+and `other`. Duplicates contribute only the representative. The classes are
+comparable only when every screen has schema v2 labels and schema v2 results
+(D-046): with any v1 side, `confusion` is `None` (JSON `null`) and
+`confusion_unavailable_reason` names the v1 sides; detection is still scored.
+Old v1 run records are therefore scored for detection only. Hallucinations are
 a subset of FP, not an additional FP penalty.
 
 `not_checked_screens` counts failed/unchecked screens, including those without
