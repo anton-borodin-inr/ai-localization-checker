@@ -147,11 +147,14 @@ def result_schema_version(metadata: dict) -> int:
     Vision records name it "v1"/"v2" (D-036); baseline records carry the integer
     2 and, before D-046, nothing, which means 1.
     """
-    version = metadata.get("schema_version", 1)
-    version = {"v1": 1, "v2": 2}.get(version, version)
-    if version not in (1, 2) or isinstance(version, bool):
-        raise ValueError(f"unknown result schema version: {version!r}")
-    return version
+    if "schema_version" not in metadata:
+        return 1
+    version = metadata["schema_version"]
+    if type(version) is str and version in ("v1", "v2"):
+        return int(version[1])
+    if type(version) is int and version in (1, 2):
+        return version
+    raise ValueError(f"unknown result schema version: {version!r}")
 
 
 def load_check_result(text: str) -> CheckResult:

@@ -60,7 +60,9 @@ def inventory(request="Mining", box=(0, 0, 1, 1)):
 
 def tables(german="Bergbau"):
     return {
-        "en": TranslationTable.parse("Mining = \nShared = Shared\nraw_key = \n"),
+        "en": TranslationTable.parse(
+            "Mining = \nShared = Shared\nResearch complete = \n"
+        ),
         "de": TranslationTable.parse(f"Mining = {german}\nShared = Shared\n"),
     }
 
@@ -122,7 +124,9 @@ def test_shared_word_is_not_wrong_language():
 
 
 def test_missing_translation_source_fallback_is_wrong_language():
-    findings, diag = detection("raw_key", request="raw_key")
+    # A natural-language source string; raw identifiers are `other` (D-046),
+    # which this rule cannot tell apart (docs/baseline.md).
+    findings, diag = detection("Research complete", request="Research complete")
     assert findings[0].defect_type == "wrong_language"
     assert diag[0]["rule"] == "source_fallback"
 

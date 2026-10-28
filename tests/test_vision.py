@@ -278,7 +278,9 @@ def test_result_schema_version(metadata, expected):
     assert result_schema_version(metadata) == expected
 
 
-@pytest.mark.parametrize("version", ["v3", 3, True, None])
+@pytest.mark.parametrize(
+    "version", ["v3", 3, True, None, 2.0, 1.0, "2", [], {}, ["v2"]]
+)
 def test_unknown_result_schema_version_is_rejected(version):
     with pytest.raises(ValueError):
         result_schema_version({"schema_version": version})

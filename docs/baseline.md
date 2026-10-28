@@ -54,7 +54,10 @@ run. They are not selected by looking at the clean-screen false positives.
   exact source-language fallback for a missing German translation gives
   `wrong_language`; an exact known alternative in the other configured language
   also gives `wrong_language` if it differs from the expected string (D-044,
-  D-046). An
+  D-046). The source-fallback rule only checks that the German translation is
+  missing and the source string was read; it cannot tell a raw identifier
+  (labeled `other`, D-046) from natural-language text, so such an identifier
+  would still give `wrong_language`. An
   explicitly identical translation is accepted. Unknown OCR words alone are
   not evidence of another language. Rule priority is placeholder, source
   fallback, expected exact match, foreign alternative, prefix, missing.
