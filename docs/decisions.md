@@ -168,7 +168,7 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 ## D-018 — Draft v0 finding schema
 
 - **Date:** 2026-10-17
-- **Status:** Accepted; its rule that `other` findings never match is superseded by D-026
+- **Status:** Accepted; its rule that `other` findings never match is superseded by D-026; its class list is superseded by D-046
 - **Decision:** A finding has `defect_type` (`truncated_text`, `overlap`, `untranslated`, `other`), `text_seen`, `region` on a 3×3 screen grid and `confidence` in 0..1. The schema is a draft and is finalized in Stage 1.
 - **Why:** The 3×3 grid is the coarse region D-009 needs to separate identical labels without measuring coordinate precision. `other` lets the model report a defect without forcing it into a v1 class; `other` findings never match a label.
 - **Alternatives considered:** Normalized bounding boxes (measure coordinate precision, which D-009 avoids); only the v1 defect types.
@@ -263,7 +263,7 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 ## D-027 — Labeling technical text in v1
 
 - **Date:** 2026-10-19
-- **Status:** Accepted
+- **Status:** Accepted; its raw-key rule (raw key → `untranslated`) is superseded by D-046; the broken-placeholder rule stands
 - **Accepted by:** Anton
 - **Decision:** In v1, a raw string key or identifier shown instead of translated text is labeled `untranslated` with `note` "raw key". A broken placeholder (for example `[amount]` shown literally, or a wrong substitution) is labeled `other` with a note describing it. A separate class for technical text is considered after v1.
 - **Why:** In Unciv, keys are English source strings, so a missing translation shows English text (`untranslated`); raw identifiers are unlikely but possible in other apps. Broken placeholders are possible in Unciv templates and are planned as Stage 3 mutations. D-006 and D-020 keep v1 at two classes; with type-free detection (D-026), a detector that finds such a defect still gets a TP.
@@ -348,7 +348,7 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 ## D-036 — Response schema v1 and labeling prompt v1
 
 - **Date:** 2026-10-20
-- **Status:** Accepted
+- **Status:** Accepted; its class parts (schema/prompt v1 classes and the wrapper version) are superseded by D-046; the readability contract stands
 - **Accepted by:** Anton
 - **Decision:** Implement the D-031 acceptance recorded in issue #35: require `readability` (`readable`, `partial`, `unreadable`), `unreadable_regions` (3×3 cells) and `readability_reason` (string or null) alongside the unchanged D-018 finding objects. Enforce empty regions for `readable` and at least one for `partial`; `unreadable` allows none. Only `readable` produces checked findings; the other two produce `not_checked` with `unreadable_text`, retaining observations only in the raw diagnostic response. Prompt v1 expresses D-023/D-025/D-027 from `labeling.md`, plus the visible-viewport readability contract; response schema is `v1`, and the DeepSeek format wrapper is `deepseek-json-object-v2`.
 - **Why:** Issue #35 explicitly authorizes the schema extension and labeling rules before confirmation calls. An empty defect list cannot establish that the screen was readable. The old detector prompt also lacked the accepted defect boundaries.
@@ -428,7 +428,7 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 ## D-044 — v1 defect classes after translation-only probes
 
 - **Date:** 2026-10-21
-- **Status:** Accepted
+- **Status:** Accepted; the Consequences line keeping raw keys as `untranslated` under D-027 is superseded by D-046
 - **Accepted by:** Anton, 2026-10-27, with the definitions below as proposed
 - **Decision:** Use three primary semantic classes for v1: `overflow`, `wrong_language` and `truncated_text`. This supersedes only D-006's count of 1–2 defect types and D-020's class list/deferral of overlap. The definitions below are the label definitions for v1; Anton may refine boundary cases when labels are written in Stage 3.
   - `overflow`: text renders outside the bounds assigned to its own label or field, whether or not it collides with another element. Wrapping or a growing container with fitting text is not evidence of this mechanism; a collision between separate widgets must be distinguished from own-bounds overflow.
@@ -451,7 +451,8 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 ## D-046 — Schema v2 wire classes, v1 record scoring and technical text under D-044
 
 - **Date:** 2026-10-27
-- **Status:** Proposed
+- **Status:** Accepted
+- **Accepted by:** Anton, 2026-10-29, as proposed
 - **Decision:** The D-044 classes go on the wire. Response schema v2 and prompt v2 use `overflow`, `wrong_language`, `truncated_text` and `other`; the DeepSeek wrapper becomes `deepseek-json-object-v3` because its appended schema changed. Label files move to integer `schema_version` 2 with the same classes, and baseline run metadata records the finding schema as the same integer form (`schema_version: 2`). Schema v1 results and labels still load with their old classes and are never mapped to the new ones. They are scored for detection only (type-free, D-026). The confusion table is reported only when every screen has schema v2 labels and schema v2 results; otherwise it is `null` with a reason naming the v1 sides. Labeling and prompt rules under the new names:
   - In Unciv, a missing translation shows the English source string. This is `wrong_language` (source-language fallback), without a special note.
   - A raw string key or identifier that is not text in any language is `other` with `note` "raw key".
