@@ -47,14 +47,30 @@ def test_dataset_aggregates_file_counts_before_ratios(golden_dataset):
     assert actual["precision"] == tp / (tp + fp)
     assert actual["recall_checked"] == tp / (tp + fn)
     assert actual["recall_all"] == tp / (tp + fn + expected_counts["fn_on_not_checked"])
+    # A case with a v1 side makes the whole dataset's confusion undefined.
+    assert any(case["expected"]["confusion"] is None for case, _ in golden_dataset)
+    assert actual["confusion"] is None
+    assert actual["confusion_unavailable_reason"] == (
+        "classes are comparable only for schema v2 labels and results; got results v1"
+    )
+
+
+def test_v2_cases_aggregate_the_confusion_table(golden_dataset):
+    v2 = [
+        (case, result)
+        for case, result in golden_dataset
+        if case["expected"]["confusion"] is not None
+    ]
+    actual = score_screens(result for _, result in v2).to_dict()
     expected_confusion = Counter()
-    for case, _ in golden_dataset:
+    for case, _ in v2:
         for row in case["expected"]["confusion"]:
             expected_confusion[row["label_type"], row["finding_type"]] += row["count"]
     assert actual["confusion"] == [
         {"label_type": label, "finding_type": finding, "count": count}
         for (label, finding), count in sorted(expected_confusion.items())
     ]
+    assert actual["confusion_unavailable_reason"] is None
 
 
 def test_aggregation_is_independent_of_order_and_scales_counts(golden_dataset):

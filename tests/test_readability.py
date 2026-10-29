@@ -185,8 +185,13 @@ def test_readability_values_are_strict(
     [
         "when the full content becomes visible by scrolling",
         "when the full text is not visible anywhere else on the same screenshot",
-        "a raw string key or identifier shown instead of translated text is untranslated",
+        "a raw string key or identifier that is not text in any language is other",
         "a broken placeholder (shown literally or wrongly substituted) is other",
+        "shown because its translation is missing is wrong_language",
+        "outside the bounds of its own label or field",
+        "including source-language fallback and foreign text in an active translation file",
+        "where each text stays inside its own bounds, is other, not overflow",
+        "Text too small to read is reported through readability, not as a finding",
         "contains the centre of the text's bounding box",
         "Scroll clipping alone does not make the visible text partial or unreadable",
     ],
@@ -195,6 +200,11 @@ def test_readability_values_are_strict(
         "ellipsis",
         "raw-key",
         "placeholder",
+        "missing-translation",
+        "overflow-own-bounds",
+        "wrong-language-scope",
+        "widget-collision",
+        "small-text",
         "region-centre",
         "visible-readability",
     ],
@@ -206,11 +216,11 @@ def test_prompt_carries_labeling_and_readability_rules(rule):
 @pytest.mark.parametrize(
     ("actual", "expected"),
     [
-        (PROMPT_VERSION, "v1"),
-        (SCHEMA_VERSION, "v1"),
-        (WRAPPER_VERSION, "deepseek-json-object-v2"),
+        (PROMPT_VERSION, "v2"),
+        (SCHEMA_VERSION, "v2"),
+        (WRAPPER_VERSION, "deepseek-json-object-v3"),
     ],
     ids=["prompt", "schema", "wrapper"],
 )
-def test_v1_versions_are_recordable(actual, expected):
+def test_v2_versions_are_recordable(actual, expected):
     assert actual == expected

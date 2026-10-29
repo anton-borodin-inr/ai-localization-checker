@@ -266,12 +266,10 @@ restart. Neither method automatically verifies the intended in-game screen.
 
 ## Label format and human files
 
-The proposed format is used by Anton's three committed human label files:
-one `<screenshot-stem>.labels.json` file per screenshot, with integer
-`schema_version` 1, `screenshot` (exact PNG filename), `language` (`en` or `de`)
-and a `labels` array. Each label has `defect_type` (`truncated_text` or `untranslated`),
-`text_expected`, `text_seen`, `region` from the existing 3x3 grid, and an optional
-`note`. Human labels do not need model confidence.
+Anton's three committed human label files for this screen use label
+`schema_version` 1: one `<screenshot-stem>.labels.json` file per screenshot. The
+current format, schema 2 with the D-044 classes, is defined in
+[labeling.md](labeling.md) (D-046). Human labels do not need model confidence.
 
 Use string values for the label's text, region and optional note. The existing
 region values, read left to right and top to bottom, are `top-left`, `top`,

@@ -362,12 +362,12 @@ def detect(inventory: Inventory, tables: dict, language: str, words: list[Word],
         if broken:
             kind, evidence, rule = "other", broken, "literal_placeholder"
         elif exact and missing_translation:
-            kind, evidence, rule = "untranslated", exact, "source_fallback"
+            kind, evidence, rule = "wrong_language", exact, "source_fallback"
         elif exact:
             diagnostics.append({**diag, "rule": "exact", "text_seen": exact[0]})
             continue
         elif foreign_match:
-            kind, evidence, rule = "untranslated", foreign_match, "known_foreign_text"
+            kind, evidence, rule = "wrong_language", foreign_match, "known_foreign_text"
         elif prefix:
             kind, evidence, rule = (
                 "truncated_text",
@@ -405,6 +405,8 @@ def run_baseline(
     started = time.monotonic()
     metadata = {
         "detector": "ocr-translation-baseline",
+        # Finding schema (D-046); the same integer form as label files.
+        "schema_version": 2,
         "settings": SETTINGS,
         "requests_sent": 0,
         "run_id": run_dir.name,

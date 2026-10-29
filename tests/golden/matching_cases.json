@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "source": "Cases and expected values decided by Anton on 2026-10-19 (D-026, D-025, D-023); written down by Claude and checked line by line by Anton. Never change an expected value to make a test pass.",
-  "label_example": "Labels follow docs/labeling.md; findings follow the D-018 finding schema.",
+  "label_example": "Labels follow docs/labeling.md; findings follow the D-018 finding fields with the schema v2 classes (D-046). A case may set label_schema_version or result_schema_version to 1; otherwise both are 2.",
   "null_means": "undefined (zero denominator)",
   "cases": [
     {
@@ -66,7 +66,7 @@
       "findings": [
         {
           "id": "F1",
-          "defect_type": "untranslated",
+          "defect_type": "wrong_language",
           "text_seen": "Bergbau und Erzgew...",
           "region": "center",
           "confidence": 0.9
@@ -92,7 +92,7 @@
         "confusion": [
           {
             "label_type": "truncated_text",
-            "finding_type": "untranslated",
+            "finding_type": "wrong_language",
             "count": 1
           }
         ]
@@ -174,7 +174,7 @@
       "findings": [
         {
           "id": "F1",
-          "defect_type": "untranslated",
+          "defect_type": "wrong_language",
           "text_seen": "Forschung beenden",
           "region": "bottom",
           "confidence": 0.9
@@ -682,14 +682,14 @@
       "labels": [
         {
           "id": "L1",
-          "defect_type": "untranslated",
+          "defect_type": "wrong_language",
           "text_expected": "Nouvelle partie",
           "text_seen": "Neues Spiel",
           "region": "top"
         },
         {
           "id": "L2",
-          "defect_type": "untranslated",
+          "defect_type": "wrong_language",
           "text_expected": "Nouvelles parties",
           "text_seen": "Neue Spiele",
           "region": "center"
@@ -698,14 +698,14 @@
       "findings": [
         {
           "id": "F1",
-          "defect_type": "untranslated",
+          "defect_type": "wrong_language",
           "text_seen": "Neues Spiel",
           "region": "top",
           "confidence": 0.9
         },
         {
           "id": "F2",
-          "defect_type": "untranslated",
+          "defect_type": "wrong_language",
           "text_seen": "Neue Spiel",
           "region": "center",
           "confidence": 0.9
@@ -729,8 +729,8 @@
         "not_checked_screens": 0,
         "confusion": [
           {
-            "label_type": "untranslated",
-            "finding_type": "untranslated",
+            "label_type": "wrong_language",
+            "finding_type": "wrong_language",
             "count": 2
           }
         ],
@@ -744,6 +744,46 @@
             "L2"
           ]
         ]
+      }
+    },
+    {
+      "id": "14_v1_finding_detection_only",
+      "rule": "A schema v1 result is scored for detection only (D-046): a v1 overlap finding at the right text matches a v2 overflow label, and the confusion table is null because the classes are not comparable.",
+      "label_schema_version": 2,
+      "result_schema_version": 1,
+      "labels": [
+        {
+          "id": "L1",
+          "defect_type": "overflow",
+          "text_expected": "Züge: 1234",
+          "text_seen": "Züge: 1234",
+          "region": "top-right"
+        }
+      ],
+      "findings": [
+        {
+          "id": "F1",
+          "defect_type": "overlap",
+          "text_seen": "Züge: 1234",
+          "region": "top-right",
+          "confidence": 0.9
+        }
+      ],
+      "status": "checked",
+      "screen_texts": [
+        "Züge: 1234"
+      ],
+      "expected": {
+        "tp": 1,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall_checked": 1.0,
+        "recall_all": 1.0,
+        "hallucinations": 0,
+        "duplicates_collapsed": 0,
+        "not_checked_screens": 0,
+        "confusion": null
       }
     }
   ]

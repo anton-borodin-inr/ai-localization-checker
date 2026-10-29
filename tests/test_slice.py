@@ -356,3 +356,31 @@ def test_cli_replay_does_not_read_key(tmp_path, prepared, baseline, monkeypatch)
         ],
     )
     assert slice_cli.main() == 0
+
+
+def test_committed_issue_14_v1_bundle_replays_for_detection_only(tmp_path):
+    records = ROOT / "docs/evidence/14/records"
+    committed = pipeline.read(records / "comparison.json")
+    replayed = pipeline.replay(records / "bundle.json", tmp_path / "comparison")
+    detection = (
+        "tp",
+        "fp",
+        "fn",
+        "precision",
+        "recall_checked",
+        "recall_all",
+        "hallucinations",
+        "duplicates_collapsed",
+        "not_checked_screens",
+        "fn_on_not_checked",
+    )
+    pairs = list(zip(committed["rows"], replayed["rows"], strict=True))
+    pairs += [
+        (committed["totals"][name], replayed["totals"][name])
+        for name in committed["totals"]
+    ]
+    for old, new in pairs:
+        assert {k: new[k] for k in detection} == {k: old[k] for k in detection}
+        assert new["confusion"] is None
+        assert "labels v1" in new["confusion_unavailable_reason"]
+        assert "results v1" in new["confusion_unavailable_reason"]

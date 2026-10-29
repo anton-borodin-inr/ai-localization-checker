@@ -60,7 +60,9 @@ def inventory(request="Mining", box=(0, 0, 1, 1)):
 
 def tables(german="Bergbau"):
     return {
-        "en": TranslationTable.parse("Mining = \nShared = Shared\nraw_key = \n"),
+        "en": TranslationTable.parse(
+            "Mining = \nShared = Shared\nResearch complete = \n"
+        ),
         "de": TranslationTable.parse(f"Mining = {german}\nShared = Shared\n"),
     }
 
@@ -114,16 +116,18 @@ def test_missing_expected_carries_expected_text_and_slot_region():
 @pytest.mark.parametrize(("language", "text"), [("de", "Mining"), ("en", "Bergbau")])
 def test_known_other_language(language, text):
     findings, _ = detection(text, language=language)
-    assert [f.defect_type for f in findings] == ["untranslated"]
+    assert [f.defect_type for f in findings] == ["wrong_language"]
 
 
-def test_shared_word_is_not_untranslated():
+def test_shared_word_is_not_wrong_language():
     assert detection("Shared", request="Shared")[0] == []
 
 
-def test_missing_translation_raw_key_is_untranslated():
-    findings, diag = detection("raw_key", request="raw_key")
-    assert findings[0].defect_type == "untranslated"
+def test_missing_translation_source_fallback_is_wrong_language():
+    # A natural-language source string; raw identifiers are `other` (D-046),
+    # which this rule cannot tell apart (docs/baseline.md).
+    findings, diag = detection("Research complete", request="Research complete")
+    assert findings[0].defect_type == "wrong_language"
     assert diag[0]["rule"] == "source_fallback"
 
 
@@ -314,6 +318,7 @@ def test_run_output_marks_missing_rule_findings(inputs):
         assert run_json["missing_rule_findings"] == expected
         assert result_json["metadata"]["missing_rule_findings"] == expected
         assert run_json["settings"]["version"] == "baseline-v0.1"
+        assert run_json["schema_version"] == 2
 
 
 def test_labels_and_secrets_are_never_opened(inputs, monkeypatch):
