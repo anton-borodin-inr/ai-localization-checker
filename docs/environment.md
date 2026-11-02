@@ -139,4 +139,16 @@ scripts/prepare_emulator.sh
 scripts/check_env.sh
 ```
 
-It prints `PASS`/`FAIL` for the JDK, each SDK package, the system image, the AVD settings, the running emulator, `adb root`, the installed Unciv version code, and the display cutout (FAIL if it is still active). It exits 1 if any check fails. Expected versions are at the top of the script and must match this file.
+It prints `PASS`/`FAIL` for the JDK, each SDK package, the system image, the AVD settings, the running emulator, `adb root`, the installed Unciv version code, and the display cutout (FAIL if it is still active). It exits 1 if any check fails. Expected tool and AVD versions are at the top of the script and must match this file.
+
+The expected Unciv version code depends on the stage, and the `unciv-apk` line names where it came from:
+
+| Environment | Command | Expected version code |
+|---|---|---|
+| Stage 2 (current pipeline) | `scripts/check_env.sh` | `build.version_code` of `fixtures/stage2/screens-v2.json` |
+| Another Stage 2 manifest | `scripts/check_env.sh --manifest PATH` | `build.version_code` of that manifest |
+| Stage 0 (F-Droid APK) | `scripts/check_env.sh --version-code 1271` | 1271; no manifest pins this build |
+
+Reading a manifest needs `python3`. Invalid input (both options together, an unknown option, an unreadable manifest, a non-digit version code) exits 2 before any adb call. The check compares the version code only; `l10n-capture` also verifies the manifest's APK hash.
+
+The `adb root` check restarts adbd, so run this only when no capture is in progress.

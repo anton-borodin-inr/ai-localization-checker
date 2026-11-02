@@ -13,8 +13,13 @@ From the repository root:
 ```bash
 uv sync
 scripts/prepare_emulator.sh
-scripts/check_env.sh
+scripts/check_env.sh --version-code 1271
 ```
+
+This checks the Stage 0 APK used on this page. For the Stage 2 hook build, run
+`scripts/check_env.sh` with no options, which expects the build pinned by
+`fixtures/stage2/screens-v2.json`; see
+[Checking the environment](environment.md#checking-the-environment).
 
 Unciv must have been launched once, so that its settings file exists. Then:
 

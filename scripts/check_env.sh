@@ -1,10 +1,14 @@
 #!/usr/bin/env bash
-# Checks the Stage 0 capture environment described in docs/environment.md.
-# Prints PASS/FAIL per item and exits non-zero if any check fails.
+# Checks the capture environment described in docs/environment.md.
+# Prints PASS/FAIL per item and exits 1 if any check fails, or 2 on invalid
+# input before any check runs.
 # Read-only except for the adb-root check, which restarts adbd as root and then
 # back as shell (`adb unroot`).
 #
-# Usage (emulator must be running): scripts/check_env.sh
+# Usage (emulator must be running):
+#   scripts/check_env.sh                   expect the default manifest's build
+#   scripts/check_env.sh --manifest PATH   expect that manifest's build
+#   scripts/check_env.sh --version-code N  expect N (Stage 0: 1271)
 
 set -u
 
@@ -16,9 +20,73 @@ AVD_WIDTH=1080
 AVD_HEIGHT=2400
 AVD_DENSITY=420
 UNCIV_PACKAGE=com.unciv.app
-UNCIV_VERSION_CODE=1271
+DEFAULT_MANIFEST=fixtures/stage2/screens-v2.json
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
+usage_error() {
+    echo "check_env.sh: $1" >&2
+    echo "Usage: scripts/check_env.sh [--manifest PATH | --version-code N]" >&2
+    exit 2
+}
+
+# Prints a manifest's build.version_code, or an error on stderr and exits non-zero.
+manifest_version_code() {
+    python3 -I -c '
+import json, re, sys
+
+try:
+    with open(sys.argv[1], encoding="utf-8") as file:
+        code = json.load(file)["build"]["version_code"]
+except (OSError, ValueError, KeyError, TypeError) as error:
+    sys.exit(f"cannot read build.version_code: {error!r}")
+if not isinstance(code, str) or not re.fullmatch(r"[0-9]+", code):
+    sys.exit(f"invalid build.version_code: {code!r}")
+print(code)
+' "$1"
+}
+
+manifest_given=0
+version_code_given=0
+while (($# > 0)); do
+    case "$1" in
+        --manifest)
+            (($# >= 2)) || usage_error "$1 needs a value"
+            manifest_given=1
+            manifest="$2"
+            shift 2
+            ;;
+        --version-code)
+            (($# >= 2)) || usage_error "$1 needs a value"
+            version_code_given=1
+            expected_version_code="$2"
+            shift 2
+            ;;
+        *) usage_error "unknown argument: $1" ;;
+    esac
+done
+
+if ((manifest_given && version_code_given)); then
+    usage_error "--manifest and --version-code are mutually exclusive"
+fi
+if ((version_code_given)); then
+    [[ "$expected_version_code" =~ ^[0-9]+$ ]] \
+        || usage_error "--version-code must be digits: '$expected_version_code'"
+    expected_source="--version-code"
+else
+    if ((manifest_given)); then
+        manifest_path="$manifest"
+        expected_source="$manifest"
+    else
+        manifest_path="$REPO_ROOT/$DEFAULT_MANIFEST"
+        expected_source="$DEFAULT_MANIFEST"
+    fi
+    command -v python3 >/dev/null \
+        || usage_error "python3 is needed to read '$expected_source'; or pass --version-code"
+    expected_version_code="$(manifest_version_code "$manifest_path")" \
+        || usage_error "bad manifest '$expected_source'"
+fi
+
 ANDROID_HOME="${ANDROID_HOME:-$HOME/Library/Android/sdk}"
 ADB="$ANDROID_HOME/platform-tools/adb"
 SDK_IMAGE_DIR="$ANDROID_HOME/$(echo "$SYSTEM_IMAGE" | tr ';' '/')"
@@ -108,12 +176,12 @@ else
 
     version_code="$("$ADB" -s "$serial" shell dumpsys package "$UNCIV_PACKAGE" 2>/dev/null \
         | grep -m1 -o 'versionCode=[0-9]*' | cut -d= -f2)"
-    if [[ "$version_code" == "$UNCIV_VERSION_CODE" ]]; then
-        pass "unciv-apk" "$UNCIV_PACKAGE versionCode $version_code"
+    if [[ "$version_code" == "$expected_version_code" ]]; then
+        pass "unciv-apk" "$UNCIV_PACKAGE versionCode $version_code (expected from $expected_source)"
     elif [[ -n "$version_code" ]]; then
-        fail "unciv-apk" "$UNCIV_PACKAGE versionCode $version_code, expected $UNCIV_VERSION_CODE"
+        fail "unciv-apk" "$UNCIV_PACKAGE versionCode $version_code, expected $expected_version_code (from $expected_source)"
     else
-        fail "unciv-apk" "$UNCIV_PACKAGE not installed"
+        fail "unciv-apk" "$UNCIV_PACKAGE not installed, expected $expected_version_code (from $expected_source)"
     fi
 
     if cutout_disabled; then
