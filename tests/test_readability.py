@@ -8,7 +8,7 @@ from pydantic import ValidationError
 
 from l10n_checker.deepseek import WRAPPER_VERSION, DeepSeekProvider
 from l10n_checker.vision import (
-    PROMPT,
+    PROMPT_TEMPLATE,
     PROMPT_VERSION,
     SCHEMA_VERSION,
     Finding,
@@ -210,17 +210,17 @@ def test_readability_values_are_strict(
     ],
 )
 def test_prompt_carries_labeling_and_readability_rules(rule):
-    assert rule in PROMPT
+    assert rule in PROMPT_TEMPLATE
 
 
 @pytest.mark.parametrize(
     ("actual", "expected"),
     [
-        (PROMPT_VERSION, "v2"),
+        (PROMPT_VERSION, "v3"),
         (SCHEMA_VERSION, "v2"),
         (WRAPPER_VERSION, "deepseek-json-object-v3"),
     ],
     ids=["prompt", "schema", "wrapper"],
 )
-def test_v2_versions_are_recordable(actual, expected):
+def test_current_versions_are_recordable(actual, expected):
     assert actual == expected

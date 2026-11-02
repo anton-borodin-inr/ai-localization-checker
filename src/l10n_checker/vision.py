@@ -15,11 +15,11 @@ from typing import Any, Literal, Protocol
 
 from pydantic import BaseModel, ConfigDict, Field, ValidationError, model_validator
 
-from l10n_checker.capture import png_size
+from l10n_checker.capture import LANGUAGES, CaptureError, filename, png_size
 
 SCHEMA_VERSION = "v2"
-# Bump whenever PROMPT changes.
-PROMPT_VERSION = "v2"
+# Bump whenever PROMPT_TEMPLATE changes.
+PROMPT_VERSION = "v3"
 
 DefectType = Literal["overflow", "wrong_language", "truncated_text", "other"]
 # Frozen v1 wire classes; only for reading old run records and labels (D-046).
@@ -36,8 +36,9 @@ Region = Literal[
     "bottom-right",
 ]
 
-PROMPT = """\
+PROMPT_TEMPLATE = """\
 You are a localization QA engineer reviewing one screenshot of a mobile game UI.
+The screen's intended language is {language}.
 Report localization defects that are visible in the screenshot:
 - overflow: text renders outside the bounds of its own label or field, whether \
 or not it collides with another element; wrapped text, or a container that grows \
@@ -76,6 +77,27 @@ and findings in every response. Findings from partial or unreadable responses \
 are diagnostic observations only; the screen cannot be checked.
 An empty findings list means no defects only when readability is readable.
 """
+LANGUAGE_LINE = PROMPT_TEMPLATE.splitlines(keepends=True)[1]
+
+
+def screenshot_language(path: Path) -> str:
+    """The language code of a D-003 file name, the only source of the language."""
+    fields = path.stem.split("__")
+    if len(fields) != 5 or filename(*fields) != path.name:
+        raise CaptureError(
+            f"Screenshot must have the D-003 five-field file name: {path.name}"
+        )
+    if fields[1] not in LANGUAGES:
+        raise CaptureError(
+            f"Screenshot file name has no valid language ({', '.join(LANGUAGES)}): "
+            f"{path.name}"
+        )
+    return fields[1]
+
+
+def build_prompt(language: str) -> str:
+    """The detector prompt for a language code."""
+    return PROMPT_TEMPLATE.format(language=LANGUAGES[language])
 
 
 class Finding(BaseModel):
@@ -290,9 +312,11 @@ def run_check(
     retry_delay_s: float = 5.0,
 ) -> tuple[CheckResult, Path]:
     """Check one screenshot and record the run under runs_dir/<run_id>/."""
+    language = screenshot_language(image_path)
     image = image_path.read_bytes()
     width, height = png_size(image)
-    sent_prompt = provider.wrap_prompt(PROMPT)
+    prompt = build_prompt(language)
+    sent_prompt = provider.wrap_prompt(prompt)
     run_id = new_run_id()
     run_dir = runs_dir / run_id
     run_dir.mkdir(parents=True)
@@ -342,8 +366,10 @@ def run_check(
         "readability": output.readability if output else None,
         "unreadable_regions": output.unreadable_regions if output else None,
         "readability_reason": output.readability_reason if output else None,
+        "language": language,
         "prompt_version": PROMPT_VERSION,
-        "prompt_sha256": _sha256(PROMPT.encode()),
+        "prompt_template_sha256": _sha256(PROMPT_TEMPLATE.encode()),
+        "prompt_sha256": _sha256(prompt.encode()),
         "wrapper_version": provider.wrapper_version,
         "sent_prompt_sha256": _sha256(sent_prompt.encode()),
         "settings": provider.settings,
@@ -376,7 +402,7 @@ def run_check(
     def write(name: str, text: str) -> None:
         (run_dir / name).write_text(redact(text, secrets), encoding="utf-8")
 
-    write("prompt.txt", PROMPT)
+    write("prompt.txt", prompt)
     write("prompt_sent.txt", sent_prompt)
     write("run.json", json.dumps(metadata, indent=2, ensure_ascii=False))
     if raw is not None:

@@ -97,6 +97,41 @@ def test_check_reports_not_checked(monkeypatch, capsys, screenshot, tmp_path):
     assert out[1] == "not_checked: timeout: read timed out"
 
 
+def test_check_rejects_file_name_without_language(
+    monkeypatch, capsys, screenshot, tmp_path
+):
+    class NoRequests:
+        def wrap_prompt(self, prompt):
+            raise AssertionError("no prompt may be prepared")
+
+        def generate(self, *args):
+            raise AssertionError("no request may be sent")
+
+    image = tmp_path / "x.png"
+    image.write_bytes(screenshot.read_bytes())
+    runs = tmp_path / "runs"
+    monkeypatch.setenv("DEEPSEEK_API_KEY", "k")
+    monkeypatch.setattr(
+        sys, "argv", ["l10n-check", "--image", str(image), "--runs-dir", str(runs)]
+    )
+    monkeypatch.setattr(cli, "make_provider", lambda key, timeout: NoRequests())
+    monkeypatch.setattr(cli, "output_directory", lambda path: path)
+    assert cli.check_main() == 1
+    output = capsys.readouterr()
+    assert "D-003" in output.err
+    assert "Traceback" not in output.err
+    assert not output.out
+    assert not runs.exists()
+
+
+def test_check_has_no_language_option(monkeypatch, capsys):
+    check_argv(monkeypatch, "--lang", "de")
+    with pytest.raises(SystemExit) as exit_info:
+        cli.check_main()
+    assert exit_info.value.code == 2
+    assert "--lang" in capsys.readouterr().err
+
+
 def test_make_provider_uses_deepseek():
     provider = cli.make_provider("k", 120)
     assert provider.name == "deepseek"

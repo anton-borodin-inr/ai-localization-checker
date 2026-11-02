@@ -11,6 +11,7 @@ import pytest
 
 from l10n_checker import slice as pipeline
 from l10n_checker import slice_cli
+from l10n_checker.capture import CaptureError
 from l10n_checker.deepseek import DeepSeekProvider
 from l10n_checker.vision import CheckResult, new_run_id
 
@@ -251,6 +252,121 @@ def test_replay_checks_raw_response_not_only_result_hash(tmp_path, prepared, bas
     pipeline.write(session / "bundle.json", bundle)
     with pytest.raises(ValueError, match="findings contradict"):
         pipeline.replay(session / "bundle.json", session / "bad")
+
+
+def rewrite_vision_records(session, change_metadata, change_prompt=None):
+    """Rewrite every vision record with consistent hashes, as a real record has."""
+    bundle = pipeline.read(session / "bundle.json")
+    for screen in bundle["screens"]:
+        files = screen["records"]["vision"]
+        paths = {name: session / entry["file"] for name, entry in files.items()}
+        metadata = pipeline.read(paths["run.json"])
+        change_metadata(metadata)
+        if change_prompt:
+            for name, field in (
+                ("prompt.txt", "prompt_sha256"),
+                ("prompt_sent.txt", "sent_prompt_sha256"),
+            ):
+                paths[name].write_text(
+                    change_prompt(paths[name].read_text("utf-8")), encoding="utf-8"
+                )
+                metadata[field] = pipeline.digest(paths[name])
+        pipeline.write(paths["run.json"], metadata)
+        result = pipeline.read(paths["result.json"])
+        result["metadata"] = metadata
+        pipeline.write(paths["result.json"], result)
+        for name, entry in files.items():
+            entry["sha256"] = pipeline.digest(paths[name])
+    pipeline.write(session / "bundle.json", bundle)
+
+
+def without_language_line(prompt):
+    lines = prompt.splitlines(keepends=True)
+    assert lines[1].startswith("The screen's intended language is ")
+    return "".join(lines[:1] + lines[2:])
+
+
+def as_prompt_v2(metadata):
+    metadata["prompt_version"] = "v2"
+    del metadata["language"]
+    del metadata["prompt_template_sha256"]
+
+
+def test_v3_records_replay_and_name_each_screen_language(tmp_path, prepared, baseline):
+    session, sent = execute(tmp_path, prepared, [answer()] * 3)
+    report = pipeline.replay(session / "bundle.json", session / "again")
+    assert report["totals"]["vision"]["requests_sent"] == 3
+    screens = pipeline.read(session / "bundle.json")["screens"]
+    for body, screen in zip(sent, screens, strict=True):
+        name = "German" if "__de__" in screen["image"] else "English"
+        text = body["messages"][0]["content"][1]["text"]
+        assert f"The screen's intended language is {name}.\n" in text
+
+
+def test_synthetic_v2_records_still_replay(tmp_path, prepared, baseline):
+    # No prompt v2 record is committed: these are v3 records rewritten to the v2 shape.
+    session, _ = execute(tmp_path, prepared, [answer()] * 3)
+    original = pipeline.read(session / "comparison.json")
+    rewrite_vision_records(session, as_prompt_v2, without_language_line)
+    report = pipeline.replay(session / "bundle.json", session / "again")
+    assert report["totals"]["vision"] == original["totals"]["vision"]
+
+
+@pytest.mark.parametrize(
+    ("change", "message"),
+    [
+        (lambda m: m.pop("language"), "contradicts the screenshot name"),
+        (lambda m: m.update(language="fr"), "contradicts the screenshot name"),
+        (
+            lambda m: m.update(language={"en": "de", "de": "en"}[m["language"]]),
+            "contradicts the screenshot name",
+        ),
+        (lambda m: m.update(prompt_version="v2"), "Only prompt v3"),
+        (lambda m: m.update(schema_version="v1"), "Unsupported vision record"),
+        (lambda m: m.update(prompt_version="v4"), "Unsupported vision record"),
+        (lambda m: m.update(prompt_version=["v3"]), "Unsupported vision record"),
+    ],
+    ids=[
+        "v3-no-language",
+        "v3-invalid-language",
+        "v3-other-language",
+        "v2-with-language",
+        "v1-prompt-v3",
+        "unknown-prompt",
+        "unhashable-prompt",
+    ],
+)
+def test_replay_rejects_inconsistent_language_records(
+    tmp_path, prepared, baseline, change, message
+):
+    session, _ = execute(tmp_path, prepared, [answer()] * 3)
+    rewrite_vision_records(session, change)
+    with pytest.raises(ValueError, match=message):
+        pipeline.replay(session / "bundle.json", session / "bad")
+
+
+def test_replay_rejects_v3_prompt_without_the_language_line(
+    tmp_path, prepared, baseline
+):
+    session, _ = execute(tmp_path, prepared, [answer()] * 3)
+    rewrite_vision_records(session, lambda _: None, without_language_line)
+    with pytest.raises(ValueError, match="does not name the language"):
+        pipeline.replay(session / "bundle.json", session / "bad")
+
+
+def test_preflight_rejects_file_name_without_language(tmp_path, prepared):
+    shutil.copytree(FINAL, tmp_path / "images")
+    (tmp_path / "images" / "a__fr__2400x1080__clean__1271001.png").write_bytes(b"png")
+    with pytest.raises(CaptureError, match="no valid language"):
+        pipeline.prepare(
+            tmp_path / "images",
+            tmp_path / "images",
+            REFERENCE,
+            APPROVAL,
+            MANIFEST,
+            INVENTORY,
+            ROOT,
+        )
 
 
 def test_replay_cannot_overwrite_bundle(tmp_path, prepared, baseline):

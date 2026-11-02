@@ -7,7 +7,7 @@ validated before findings can enter the result (D-013, D-031).
 ## Interface
 
 - `l10n_checker.vision` holds response schema v2 (`SCHEMA_VERSION = "v2"`),
-  the detector prompt (`PROMPT_VERSION = "v2"`), `CheckResult`,
+  the detector prompt (`PROMPT_VERSION = "v3"`), `CheckResult`,
   the per-run request cap and the run recorder. It does not talk to any API.
 - `l10n_checker.deepseek` is the only module that talks to the DeepSeek API
   (D-034). It uses httpx.
@@ -19,9 +19,25 @@ validated before findings can enter the result (D-013, D-031).
   `CheckResultV1` / `FindingV1` when its metadata says `schema_version` `"v1"`.
   New model responses must use the v2 classes; v1 names are `invalid_response`.
 
+## Intended language
+
+The screen's intended language comes only from the D-003 file name
+(`screen__lang__res__variant__build.png`); `l10n-check` has no language option.
+The code must be a key of `capture.LANGUAGES` (`en`, `de`). Prompt v3 is prompt
+v2 plus one line after the opening line, so that the `wrong_language` definition
+can be applied:
+
+```text
+The screen's intended language is German.
+```
+
+A file name without the five fields or a valid language is rejected before the
+image is read: no provider request, no run folder, and `l10n-check` exits with
+code 1. The slice pipeline makes the same check in its preflight.
+
 ## Labeling and readability
 
-Prompt v2 takes its class definitions (D-044) and defect rules from
+Prompt v3 takes its class definitions (D-044) and defect rules from
 [labeling.md](labeling.md), without screen-specific examples: `overflow` is text
 outside its own label's bounds, and a collision between separate widgets whose
 texts stay inside their own bounds is `other`, not `overflow`; scroll clipping is
@@ -112,17 +128,24 @@ Every run writes `data/runs/<run_id>/` (`run_id` is `YYYYMMDDTHHMMSSZ-<hex>`):
 
 - `run.json`: provider, requested model and the model name the API returns
   (`model_version`; the API returns only the alias, no immutable revision),
-  `system_fingerprint`, client version, schema, prompt and wrapper versions with
-  the sha256 of the prompt and of the text sent, all request settings, image
+  `system_fingerprint`, client version, `language` (the file name code), schema,
+  prompt and wrapper versions with the sha256 of the prompt template
+  (`prompt_template_sha256`, the same for every language), of the rendered prompt
+  (`prompt_sha256`, per language) and of the text sent, all request settings, image
   path, sha256, size in bytes and pixels, the cap and `requests_sent`, attempts
   with outcome and latency, token usage (prompt, completion, cache hit and miss)
   and `estimated_cost`; validated `readability`, `unreadable_regions` and
   `readability_reason` (all null if no response validated);
-- `prompt.txt`: the detector prompt;
+- `prompt.txt`: the detector prompt, rendered with the language;
 - `prompt_sent.txt`: the exact text sent (prompt plus wrapper);
 - `response_raw.json`: the raw API response, or the HTTP status and body of an
   error response (only when one was received);
 - `result.json`: the `CheckResult`.
+
+Replay accepts these schema/prompt pairs: v1/v1, v2/v2 and v2/v3. A v3 record must
+name the language of its screenshot file name in `language` and in `prompt.txt`;
+v1 and v2 records have no `language` field. No v2 record is committed, so a test
+covers v2 replay with a synthetic record.
 
 `estimated_cost` is computed from the returned usage and the tariff snapshot in
 `deepseek.py` (`TARIFF`: source URL, date, peak rates and the off-peak
@@ -145,7 +168,8 @@ uv run --env-file .env l10n-check --image docs/evidence/8/final/tech-picker__de_
 
 Expected output: the run folder, then `checked: N finding(s)` (exit code 0) or
 `not_checked: <reason>` (exit code 2). Exit code 1 means nothing was sent (no
-key, bad image or runs folder outside `data/`).
+key, a file name without a valid language, bad image or runs folder outside
+`data/`).
 
 The issue #32 confirmation run (three slice screenshots, one request each) is in
 [evidence/32/report.md](evidence/32/report.md).

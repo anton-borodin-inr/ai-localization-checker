@@ -5,8 +5,10 @@ from pathlib import Path
 import pytest
 from pydantic import ValidationError
 
+from l10n_checker.capture import CaptureError
 from l10n_checker.vision import (
-    PROMPT,
+    LANGUAGE_LINE,
+    PROMPT_TEMPLATE,
     PROMPT_VERSION,
     SCHEMA_VERSION,
     CheckResult,
@@ -17,9 +19,11 @@ from l10n_checker.vision import (
     ProviderError,
     ProviderResponse,
     RequestBudget,
+    build_prompt,
     load_check_result,
     result_schema_version,
     run_check,
+    screenshot_language,
 )
 
 FINDING = {
@@ -52,6 +56,7 @@ class FakeProvider:
         self.settings = {"temperature": 0}
         self.outcomes = list(outcomes)
         self.calls = 0
+        self.prompts = []
 
     def wrap_prompt(self, prompt):
         return prompt
@@ -61,6 +66,7 @@ class FakeProvider:
 
     def generate(self, image, mime_type, prompt):
         self.calls += 1
+        self.prompts.append(prompt)
         outcome = self.outcomes.pop(0)
         if isinstance(outcome, Exception):
             raise outcome
@@ -201,11 +207,12 @@ def test_run_record(screenshot, tmp_path):
         "result.json",
         "run.json",
     ]
-    assert (run_dir / "prompt.txt").read_text() == PROMPT
-    assert (run_dir / "prompt_sent.txt").read_text() == PROMPT
+    prompt = build_prompt("en")
+    assert (run_dir / "prompt.txt").read_text() == prompt
+    assert (run_dir / "prompt_sent.txt").read_text() == prompt
     run = json.loads((run_dir / "run.json").read_text())
     assert run["prompt_version"] == PROMPT_VERSION
-    assert run["prompt_sha256"] == hashlib.sha256(PROMPT.encode()).hexdigest()
+    assert run["prompt_sha256"] == hashlib.sha256(prompt.encode()).hexdigest()
     assert run["sent_prompt_sha256"] == run["prompt_sha256"]
     assert run["wrapper_version"] is None
     assert run["image"]["bytes"] == screenshot.stat().st_size
@@ -284,3 +291,88 @@ def test_result_schema_version(metadata, expected):
 def test_unknown_result_schema_version_is_rejected(version):
     with pytest.raises(ValueError):
         result_schema_version({"schema_version": version})
+
+
+# sha256 of the prompt v2 text at cf26da5, the commit before prompt v3.
+PROMPT_V2_SHA256 = "0220d7afee936d30e037dfdead65adf5430bbf38a3fae8a9ade3f9ce2b1fb795"
+
+
+@pytest.mark.parametrize(
+    ("code", "name"), [("en", "English"), ("de", "German")], ids=["en", "de"]
+)
+def test_prompt_without_the_language_line_is_prompt_v2(code, name):
+    line = f"The screen's intended language is {name}.\n"
+    prompt = build_prompt(code)
+    assert prompt.count(line) == 1
+    assert prompt.splitlines(keepends=True)[1] == line
+    assert hashlib.sha256(prompt.replace(line, "").encode()).hexdigest() == (
+        PROMPT_V2_SHA256
+    )
+
+
+def test_template_has_only_the_language_field():
+    assert LANGUAGE_LINE == "The screen's intended language is {language}.\n"
+    assert PROMPT_TEMPLATE.count("{") == PROMPT_TEMPLATE.count("}") == 1
+
+
+@pytest.mark.parametrize(
+    ("code", "name"), [("en", "English"), ("de", "German")], ids=["en", "de"]
+)
+def test_file_name_language_is_sent_and_recorded(screenshot, tmp_path, code, name):
+    image = tmp_path / f"main-menu__{code}__4x2__original__1.png"
+    image.write_bytes(screenshot.read_bytes())
+    provider = FakeProvider(model_output())
+    _, run_dir = check(provider, image, tmp_path)
+    assert provider.prompts == [build_prompt(code)]
+    assert f"The screen's intended language is {name}.\n" in provider.prompts[0]
+    run = json.loads((run_dir / "run.json").read_text())
+    assert run["language"] == code
+    assert run["prompt_sha256"] == (
+        hashlib.sha256(provider.prompts[0].encode()).hexdigest()
+    )
+    assert run["prompt_template_sha256"] == (
+        hashlib.sha256(PROMPT_TEMPLATE.encode()).hexdigest()
+    )
+    result = json.loads((run_dir / "result.json").read_text())
+    assert result["metadata"]["language"] == code
+
+
+def test_only_the_rendered_hash_differs_between_languages(screenshot, tmp_path):
+    runs = []
+    for code in ("en", "de"):
+        image = tmp_path / f"main-menu__{code}__4x2__original__1.png"
+        image.write_bytes(screenshot.read_bytes())
+        _, run_dir = check(FakeProvider(model_output()), image, tmp_path)
+        runs.append(json.loads((run_dir / "run.json").read_text()))
+    assert runs[0]["prompt_template_sha256"] == runs[1]["prompt_template_sha256"]
+    assert runs[0]["prompt_sha256"] != runs[1]["prompt_sha256"]
+
+
+BAD_NAMES = [
+    "x.png",
+    "main-menu__en.png",
+    "main-menu__en__4x2__original.png",
+    "main-menu__en__4x2__original__1__extra.png",
+    "main-menu____4x2__original__1.png",
+    "main-menu__fr__4x2__original__1.png",
+    "main-menu__DE__4x2__original__1.png",
+    "main-menu__de__4x2__original__1.PNG",
+    "main-menu__de__4x2__original__1.jpg",
+]
+
+
+@pytest.mark.parametrize("name", BAD_NAMES)
+def test_screenshot_language_rejects_invalid_names(name):
+    with pytest.raises(CaptureError):
+        screenshot_language(Path(name))
+
+
+@pytest.mark.parametrize("name", BAD_NAMES)
+def test_invalid_language_fails_before_any_request(screenshot, tmp_path, name):
+    image = tmp_path / name
+    image.write_bytes(screenshot.read_bytes())
+    provider = FakeProvider(model_output())
+    with pytest.raises(CaptureError):
+        check(provider, image, tmp_path)
+    assert provider.calls == 0
+    assert not (tmp_path / "runs").exists()
