@@ -1,6 +1,6 @@
 # Labeling rules
 
-Labels are written by Anton by looking at the whole screenshot and comparing what is visible with the translation source. They are never derived from detector output (D-012). Each rule below was decided by Anton; the decisions are recorded in D-023, [D-025](decisions.md#d-025--labeling-rules-scroll-clipping-and-region), [D-027](decisions.md#d-027--labeling-technical-text-in-v1), [D-044](decisions.md#d-044--v1-defect-classes-after-translation-only-probes) and D-046.
+Labels are written by Anton by looking at the whole screenshot and comparing what is visible with the translation source. They are never derived from detector output (D-012). Each rule below was decided by Anton; the decisions are recorded in D-023, [D-025](decisions.md#d-025--labeling-rules-scroll-clipping-and-region), [D-027](decisions.md#d-027--labeling-technical-text-in-v1), [D-044](decisions.md#d-044--v1-defect-classes-after-translation-only-probes), D-046 and D-047.
 
 ## File format
 
@@ -30,7 +30,7 @@ An empty `labels` array means that Anton reviewed the whole screenshot and found
 - **Missing translation (D-046):** in Unciv the keys are English source strings, so a missing translation shows English text; this is `wrong_language` (source-language fallback), without a special note.
 - **Technical text (D-027, D-046):** a raw string key or identifier that is not text in any language (for example `TECH_MINING_NAME`) is `other` with `note` "raw key"; a broken placeholder (for example `[amount]` shown literally, or a wrong substitution) is `other` with a note describing it.
 - **Separate-widget collision (D-046):** separate widgets that collide while each text stays inside its own bounds are `other` with `note` "widget collision", never `overflow`.
-- **Text too small to read** is not a v1 class and is not labeled as `overflow`.
+- **Text too small to read (D-047):** text that Anton cannot read on the screenshot at 100% zoom is not labeled in v1, in any class. Small text that Anton can read is labeled normally: a defect on it (for example `truncated_text` or `wrong_language`) gets an ordinary label. A screenshot whose only issue is unreadable small text is reviewed with an empty `labels` array.
 
 ## Region
 

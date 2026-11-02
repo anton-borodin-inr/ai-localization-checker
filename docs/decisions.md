@@ -463,6 +463,15 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 - **Alternatives considered:** Keep the v1 wire names and map them in code; map `untranslated` → `wrong_language` for old records; keep D-027's raw key → `wrong_language` with note "raw key"; leave collisions unlabelled; derive classification only from a caller-passed flag (rejected in review: availability follows from the label and result schema versions).
 - **Consequences:** Supersedes these parts only: D-018's class list (`truncated_text`, `overlap`, `untranslated`, `other`); the class parts of D-036 (schema/prompt v1 classes and the wrapper version; readability is unchanged); D-027's raw key → `untranslated` rule (its broken-placeholder rule is unchanged); and the line in D-044's Consequences that keeps raw keys as `untranslated` under D-027. On acceptance, those entries' statuses get a note naming the superseded part. Golden case 14 (approved by Anton) covers v1 detection-only scoring. The committed issue 14 bundle and the issue 45 records stay schema v1. Prompt v2 quality is not measured here; it is checked on a model in a separately budgeted task.
 
+## D-047 — Text too small to read is not labeled in v1
+
+- **Date:** 2026-11-02
+- **Status:** Proposed
+- **Decision:** Text that Anton cannot read on the screenshot at 100% zoom is not labeled in v1, in any class. Small text that Anton can read is labeled normally: a defect on it (for example `truncated_text` or `wrong_language`) gets an ordinary label. A screenshot whose only issue is unreadable small text is reviewed with an empty `labels` array.
+- **Why:** Decided by Anton in issue #56. A label with no readable `text_seen` cannot be matched by text (D-026). Neither detector may produce a finding for such text: prompt v2 sends it to readability (D-046) and OCR cannot read it. Such labels would be guaranteed FN that say nothing about detector quality. D-044 also keeps unreadably small text out of the v1 classes.
+- **Alternatives considered:** A class for unreadably small text (outside the v1 scope, D-044); a label note or a metric exclusion (either would need matching and golden changes for a class that v1 does not have).
+- **Consequences:** D-044 and D-046 are unchanged. Where Stage 3 records observations of unreadable small text for a future class is decided in the Stage 3 labeling task. Scoring does not change, and an empty `labels` array does not guarantee a checked screen: a detector response of `partial` or `unreadable` on such a screen is still `not_checked` (D-036), and any ordinary labels on that screen count in `fn_on_not_checked`. An unmatched finding on such text is still a FP.
+
 ## D-048 — Prompt v3: the intended language comes from the D-003 file name
 
 - **Date:** 2026-11-02
