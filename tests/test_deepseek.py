@@ -18,7 +18,7 @@ from l10n_checker.deepseek import (
     estimate_cost,
     schema_text,
 )
-from l10n_checker.vision import PROMPT, ModelOutput, RequestBudget, run_check
+from l10n_checker.vision import ModelOutput, RequestBudget, build_prompt, run_check
 
 KEY = "test-key-DO-NOT-LEAK"
 FINDING = {
@@ -133,9 +133,11 @@ def test_request_payload_and_settings(screenshot, tmp_path):
     assert url.startswith("data:image/png;base64,")
     assert base64.b64decode(url.split(",", 1)[1]) == screenshot.read_bytes()
     # The detector prompt is sent unchanged, followed by the format wrapper.
-    assert text_part["text"].startswith(PROMPT)
+    prompt = build_prompt("en")
+    assert "The screen's intended language is English.\n" in text_part["text"]
+    assert text_part["text"].startswith(prompt)
     assert text_part["text"].endswith(schema_text())
-    assert (run_dir / "prompt.txt").read_text() == PROMPT
+    assert (run_dir / "prompt.txt").read_text() == prompt
     assert (run_dir / "prompt_sent.txt").read_text() == text_part["text"]
     settings = json.loads((run_dir / "run.json").read_text())["settings"]
     assert settings["image_detail"] == "original"

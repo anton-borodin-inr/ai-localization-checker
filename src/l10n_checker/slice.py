@@ -10,9 +10,11 @@ from pathlib import Path
 from pydantic import ValidationError
 
 from l10n_checker.baseline import resolve_inputs, run_baseline
+from l10n_checker.capture import LANGUAGES
 from l10n_checker.matching import MatchingConfig, load_labels, match_screen
 from l10n_checker.metrics import score_screen, score_screens
 from l10n_checker.vision import (
+    LANGUAGE_LINE,
     CheckResult,
     ModelOutput,
     ModelOutputV1,
@@ -22,6 +24,7 @@ from l10n_checker.vision import (
     new_run_id,
     result_schema_version,
     run_check,
+    screenshot_language,
 )
 
 REFERENCE_SOURCE = "docs/experiments/issue-10/reference-amendment-candidate.json"
@@ -32,6 +35,8 @@ MAX_USD = Decimal("0.10")
 # 8192 assumed input tokens + 4096 capped output tokens cost < $0.008
 # at the frozen peak tariff. Stop on missing usage or an exceeded reservation.
 RESERVE_USD = Decimal("0.01")
+# (schema_version, prompt_version) pairs a vision run record may carry.
+VISION_RECORD_VERSIONS = (("v1", "v1"), ("v2", "v2"), ("v2", "v3"))
 
 
 def digest(path: Path) -> str:
@@ -110,6 +115,7 @@ def prepare(
         raise ValueError("No PNG screenshots in the input folder")
     prepared = []
     for image in images_found:
+        screenshot_language(image)
         matches = [s for s in refs if Path(s["image"]).name == image.name]
         caps = [c for c in captures if c["file"] == image.name]
         if len(matches) != 1 or len(caps) != 1:
@@ -291,10 +297,17 @@ def load_result(root: Path, records: dict, image: dict, detector: str) -> CheckR
     if recorded_name != image["image"]:
         raise ValueError("Run screenshot identity mismatch")
     if detector == "vision":
-        if metadata["schema_version"] not in ("v1", "v2") or (
-            metadata["prompt_version"] != metadata["schema_version"]
-        ):
-            raise ValueError("Vision records need matching prompt/schema v1 or v2")
+        versions = (metadata["schema_version"], metadata["prompt_version"])
+        if versions not in VISION_RECORD_VERSIONS:
+            raise ValueError(f"Unsupported vision record schema/prompt: {versions}")
+        if metadata["prompt_version"] == "v3":
+            if metadata.get("language") != screenshot_language(Path(image["image"])):
+                raise ValueError("Recorded language contradicts the screenshot name")
+            line = LANGUAGE_LINE.format(language=LANGUAGES[metadata["language"]])
+            if line not in checked_file(root, records["prompt.txt"]).read_text("utf-8"):
+                raise ValueError("Recorded prompt does not name the language")
+        elif "language" in metadata:
+            raise ValueError("Only prompt v3 records carry a language")
         if result.status == "checked" and metadata["readability"] != "readable":
             raise ValueError("Only readable vision responses may be checked")
         for filename, field in (
