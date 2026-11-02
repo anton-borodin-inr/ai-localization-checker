@@ -2,6 +2,7 @@
 
 import hashlib
 import json
+from copy import copy
 from pathlib import Path
 from typing import Annotated, Literal
 
@@ -199,6 +200,7 @@ class Inputs:
     def __init__(self, path: Path):
         self.path = path.resolve()
         self.root = self.path.parent
+        self._selection = None
         try:
             data = self.path.read_bytes()
             self.sha256 = digest(data)
@@ -245,6 +247,62 @@ class Inputs:
             raise CaptureError("Languages must be unique entries from the manifest")
         return codes
 
-    def screens(self, language: str, reverse: bool = False) -> list[Screen]:
-        screens = [v for v in self.manifest.screens if (v.id, language) in self.states]
+    def select_screens(
+        self, *, screen_ids: list[str] | None = None, split: str | None = None
+    ) -> "Inputs":
+        """Return a selected view; preserve original manifest bytes and identity."""
+        from l10n_checker.screen_split import ScreenSelection, load_split
+
+        if (screen_ids is None) == (split is None):
+            raise CaptureError("Select exactly one of --split or --screen-id")
+        ids = [s.id for s in self.manifest.screens]
+        partition = load_split(self.root / "split.json", ids)
+        if split is not None:
+            if split not in {"dev", "holdout"}:
+                raise CaptureError("Unknown split; use dev or holdout")
+            requested = getattr(partition, split)
+        else:
+            requested = screen_ids
+        if (
+            not requested
+            or len(set(requested)) != len(requested)
+            or not set(requested) <= set(ids)
+        ):
+            raise CaptureError("Screen IDs must be unique entries from the manifest")
+        result = copy(self)
+        result._selection = ScreenSelection(
+            tuple(s for s in ids if s in requested),
+            split,
+            partition.sha256,
+            bool(set(requested) & set(partition.holdout)),
+        )
+        return result
+
+    def capture_selection(self, languages: list[str]) -> dict:
+        if self._selection is None:
+            raise CaptureError("Manifest capture requires --split or --screen-id")
+        if any(not self.screens(language) for language in languages) or any(
+            not any((s.id, language) in self.states for language in languages)
+            for s in self.screens()
+        ):
+            raise CaptureError(
+                "Screen/language selection contains no eligible captures"
+            )
+        return self._selection.metadata()
+
+    @property
+    def contains_holdout(self) -> bool:
+        if self._selection is None:
+            raise CaptureError("Manifest capture requires --split or --screen-id")
+        return self._selection.contains_holdout
+
+    def screens(
+        self, language: str | None = None, reverse: bool = False
+    ) -> list[Screen]:
+        screens = [
+            v
+            for v in self.manifest.screens
+            if (self._selection is None or v.id in self._selection.screen_ids)
+            and (language is None or (v.id, language) in self.states)
+        ]
         return list(reversed(screens)) if reverse else screens

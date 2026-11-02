@@ -11,19 +11,19 @@ from pathlib import Path
 
 from PIL import Image, ImageChops, ImageDraw
 
+from l10n_checker import capture as capture_module
 from l10n_checker.capture import (
     PACKAGE,
     SETTINGS_PATH,
     CaptureError,
     Device,
     filename,
-    output_directory,
     owner_and_mode,
     png_size,
     unciv_in_foreground,
 )
 from l10n_checker.hook import HookFailure, request_screen
-from l10n_checker.screen_manifest import Inputs, digest
+from l10n_checker.screen_manifest import Inputs, digest, json_bytes
 from l10n_checker.text_dump import canonical_bytes, read_dump, rgba_digest
 
 SAVES_PATH = f"/sdcard/Android/data/{PACKAGE}/files/SaveFiles"
@@ -40,10 +40,44 @@ def write_json(path: Path, value):
     temporary.replace(path)
 
 
+def _is_within_directory(path: Path, directory: Path) -> bool:
+    """Match existing ancestors by identity and missing suffixes literally."""
+    missing = ()
+    while True:
+        try:
+            directory.stat()
+            break
+        except FileNotFoundError:
+            missing = (directory.name, *missing)
+            directory = directory.parent
+    for ancestor in (path, *path.parents):
+        try:
+            if ancestor.samefile(directory):
+                return path.relative_to(ancestor).is_relative_to(Path(*missing))
+        except FileNotFoundError:
+            continue
+    # Other metadata errors propagate rather than treating the path as external.
+    return False
+
+
+def manifest_output_directory(folder: Path, contains_holdout: bool) -> Path:
+    """Resolve only manifest outputs; never relax the shared data-only guard."""
+    if any(path.is_symlink() for path in (folder, *folder.parents)):
+        raise CaptureError("Refusing a symbolic-link run folder or ancestor")
+    folder = folder.resolve()
+    root = capture_module.REPO_ROOT.resolve()
+    if _is_within_directory(root.parent, folder):
+        raise CaptureError("Output folder contains the repository")
+    if _is_within_directory(folder, root):
+        if contains_holdout:
+            raise CaptureError("Holdout screens require an external output folder")
+        data = root / "data"
+        if data.is_symlink() or not _is_within_directory(folder, data):
+            raise CaptureError("Repository output must be inside data/")
+    return folder
+
+
 def new_folder(folder: Path, overwrite: bool) -> Path:
-    if folder.is_symlink():
-        raise CaptureError("Refusing a symbolic-link run folder")
-    folder = output_directory(folder)
     if folder.exists() and any(folder.iterdir()):
         if not overwrite:
             raise CaptureError(
@@ -211,6 +245,8 @@ def prepare_device(
 ) -> dict:
     """Create verified private backups and an exact plan; never write app data."""
     languages = inputs.languages(languages)
+    selection = inputs.capture_selection(languages)
+    folder = manifest_output_directory(folder, inputs.contains_holdout)
     folder = new_folder(folder, False)
     observed = check_build(device, inputs)
     try:
@@ -222,6 +258,7 @@ def prepare_device(
         "mode": "prepare_only",
         "app_data_writes": 0,
         "manifest_sha256": inputs.sha256,
+        "selection": selection,
         "observed_build": observed,
         "backup": snapshot["public"],
         "planned_app_data_operations": planned_operations(
@@ -277,11 +314,11 @@ def gallery(folder: Path, inputs: Inputs, languages: list[str], records: list[di
     width, height = 480, 250
     sheet = Image.new(
         "RGB",
-        (width * len(languages), height * len(inputs.manifest.screens)),
+        (width * len(languages), height * len(inputs.screens())),
         "#20242a",
     )
     draw = ImageDraw.Draw(sheet)
-    for row, screen in enumerate(inputs.manifest.screens):
+    for row, screen in enumerate(inputs.screens()):
         for column, language in enumerate(languages):
             record = selected.get((screen.id, language))
             if record is None:
@@ -321,12 +358,24 @@ def capture_manifest(
     device_plan: Path | None = None,
 ) -> dict:
     languages = inputs.languages(languages)
+    selection = inputs.capture_selection(languages)
+    folder = manifest_output_directory(folder, inputs.contains_holdout)
     v2 = inputs.manifest.protocol_version == 2
-    approved = None
+    approved = {}
+    approved_bytes = b""
+    if device_plan is not None:
+        approved_bytes = device_plan.read_bytes()
+        try:
+            approved = json_bytes(approved_bytes)
+            if not isinstance(approved, dict):
+                raise TypeError("expected a JSON object")
+        except (ValueError, TypeError) as exc:
+            raise CaptureError(f"Invalid device plan: {exc}") from exc
+        if approved.get("selection") != selection:
+            raise CaptureError("Prepared screen selection changed; no device access")
     if v2:
         if device_plan is None:
             raise CaptureError("Protocol v2 requires a prepared exact device plan")
-        approved = json.loads(device_plan.read_bytes())
         outputs = planned_hook_outputs(
             inputs, languages, approved.get("request_namespace", "")
         )
@@ -345,6 +394,7 @@ def capture_manifest(
         "schema_version": 1,
         "status": "running",
         "manifest_sha256": inputs.sha256,
+        "selection": selection,
         "languages": languages,
         "passes": ["forward", "reverse"],
         "records": [],
@@ -398,7 +448,6 @@ def capture_manifest(
                 inputs, languages, digest(snapshot["original"])
             )
             if device_plan is not None:
-                approved = json.loads(device_plan.read_bytes())
                 if (
                     approved.get("manifest_sha256") != inputs.sha256
                     or approved.get("observed_build") != summary["observed_build"]
@@ -410,7 +459,7 @@ def capture_manifest(
                     raise CaptureError(
                         "Device inputs changed since the prepared plan; no app data written"
                     )
-                summary["device_plan_sha256"] = digest(device_plan.read_bytes())
+                summary["device_plan_sha256"] = digest(approved_bytes)
             checkpoint()
             try:
                 for pass_number in (1, 2):

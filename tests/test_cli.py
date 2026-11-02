@@ -1,4 +1,5 @@
 import sys
+from pathlib import Path
 
 import pytest
 
@@ -181,3 +182,28 @@ def test_cli_rejects_unsupported_language(monkeypatch):
     monkeypatch.setattr(cli, "capture", lambda *args: pytest.fail("no capture"))
     with pytest.raises(SystemExit):
         cli.main()
+
+
+@pytest.mark.parametrize("prepare", [False, True])
+def test_manifest_requires_selector_before_device_access(
+    monkeypatch, capsys, tmp_path, prepare
+):
+    from l10n_checker import capture
+
+    monkeypatch.setattr(capture, "REPO_ROOT", tmp_path)
+    manifest = Path(__file__).resolve().parents[1] / "fixtures/stage2/screens.json"
+    folder = tmp_path / "data/run"
+    argv = ["l10n-capture", "--manifest", str(manifest), "--output-dir", str(folder)]
+    if prepare:
+        argv.append("--prepare-only")
+    monkeypatch.setattr(sys, "argv", argv)
+    monkeypatch.setattr(
+        cli.Device,
+        "connect",
+        lambda *_: pytest.fail("device access without a selector"),
+    )
+    with pytest.raises(SystemExit) as error:
+        cli.main()
+    assert error.value.code == 2
+    assert "--split or --screen-id" in capsys.readouterr().err
+    assert not folder.exists()

@@ -7,6 +7,14 @@ def pytest_addoption(parser):
         action="store_true",
         help="Run tests requiring a prepared emulator",
     )
+    parser.addoption(
+        "--capture-device-plan",
+        help="Dev-only manifest device test: separately approved device-plan.json",
+    )
+    parser.addoption(
+        "--capture-output-dir",
+        help="Dev-only manifest device test: fresh external capture folder",
+    )
 
 
 def pytest_collection_modifyitems(config, items):

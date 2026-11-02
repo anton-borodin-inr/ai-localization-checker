@@ -482,3 +482,49 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 - **Why:** D-044 defines `wrong_language` against the screen's intended language, but the model received only the image, so a screen entirely in the wrong language could not be recognized. The file name is already a deterministic capture output (D-003). Issue #58 and Anton's approved plan set these points.
 - **Alternatives considered:** A `--lang` option that must agree with the file name (a second source that only adds a way to disagree); keeping one prompt hash per version (impossible once the prompt differs by language); keeping `prompt_version == schema_version` (would force a schema bump for an unchanged response).
 - **Consequences:** D-046 is not edited. Adding a language to the detector means adding it to `capture.LANGUAGES`. Runs in different languages are compared as using the same frozen prompt through `prompt_template_sha256` rather than `prompt_sha256` (D-036). No prompt v2 record is committed, so v2 replay is covered by a synthetic record; the committed issue 14 v1 bundle replays unchanged. Prompt v3 quality is not measured here and needs a separately budgeted task.
+
+## D-049 — Complete the dev / hold-out assignment of the ten Stage 2 source screens
+
+- **Date:** 2026-11-02
+- **Status:** Proposed
+- **Decision:** Record Anton's issue #57 assignment below. This completes
+  D-043's source-screen assignment and changes no other decision.
+
+| Interface type | dev | hold-out |
+|---|---|---|
+| Choice tree with fixed-size buttons | `tech-picker` (D-043) | `policy-picker` |
+| Game screen with lists | `city-production` (D-043) | `world` |
+| Menu with drop-downs and checkboxes | `options-gameplay` | `new-game` |
+| Tables with numbers | `empire-stats` | `victory-status` |
+| Long texts in panels | `civilopedia` | `city-state-diplomacy` |
+
+- **Why:** Hold-out tests transfer to a similar but unseen interface, and both
+  sets contain every widget type. The prior clean exposure below is recorded
+  explicitly; this does not claim the clean interfaces have never been seen.
+- **Known exposure:** Clean Stage 2 captures and confirmed visible-text
+  references of all five hold-out screens are already committed under
+  `docs/evidence/41`, `docs/evidence/47/reference-confirmation/` and
+  `docs/evidence/47/manual-acceptance/`. They contain no mutations, no labels
+  and no detector or model runs (issue #45 used only the two dev screens).
+  They stay where they are as Stage 2 evidence. From this decision onward,
+  every hold-out mutation, capture, label and run lives only in owner-controlled
+  external storage outside the repository and the dev agent's working folder.
+- **Alternatives considered:** The assignment was fixed by Anton before this
+  task; no screen reassignment is proposed here.
+- **Consequences:** `fixtures/stage2/split.json` is the sole executable
+  split-membership declaration, reusable through `screen_split.load_split`.
+  Manifest capture/preparation require `--split` or repeatable `--screen-id`,
+  with no implicit full-manifest selection. Any selected hold-out ID requires
+  external output, including explicit or mixed IDs; in-repository output is
+  rejected before device access. External manifest outputs and backups stay
+  external; output roots containing the checkout are rejected to protect it
+  from overwrite relocation. Legacy capture and detector/evaluation restrictions
+  are unchanged.
+  The original manifest hash, effective selection and split-file hash bind the
+  device plan. Existing forward/reverse passes and checks apply unchanged to
+  selected screens. Agent-operated capture still requires separate exact-plan
+  approval. See `docs/stage2-capture.md` for dev verification and the owner-only
+  external-capture recipe. Existing manifests, fixture bytes and historical
+  evidence remain unchanged. D-010's grouped, single-use hold-out rules and
+  D-024's exclusion of exploratory images from labels/evaluation still apply;
+  no labels, metric rules or other Accepted decision change.

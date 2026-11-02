@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "dev": [
+    "tech-picker",
+    "city-production",
+    "options-gameplay",
+    "empire-stats",
+    "civilopedia"
+  ],
+  "holdout": [
+    "policy-picker",
+    "world",
+    "new-game",
+    "victory-status",
+    "city-state-diplomacy"
+  ]
+}
