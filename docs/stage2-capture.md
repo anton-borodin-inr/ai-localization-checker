@@ -5,11 +5,11 @@ The current clean-build recipe uses
 v2, APK versionCode 1271048, SHA-256
 `91d9a900f8204880e590de7fb90f0fc15e2aa5cf5d94a3ae77364497d7b0541e`.
 See [engine-text-reference.md](engine-text-reference.md) for PNG/dump pairs.
-The unchanged [`screens.json`](../fixtures/stage2/screens.json) retains protocol
-v1 and versionCode 1271045, SHA-256
-`16b6e07eaa8f7ca35b71f361f0bdcceb7015987b60e796d15d2f3b53bb61af1a`.
-Its protocol is [D-038 at fork merge 877b0dc](https://github.com/anton-borodin-inr/Unciv/blob/877b0dc/docs/l10n-hook.md).
-Both manifests retain the exact D-039 fixtures, states and settings. Both
+Every recipe on this page uses that v2 manifest and build. The legacy v1
+manifest remains supported; its separate build requirements are documented in
+the [fixture notes](../fixtures/stage2/README.md). Do not switch manifests or
+install a legacy APK to follow this page.
+The v2 manifest retains the exact D-039 fixtures, states and settings. Both
 committed saves must already be installed under their exact names/hashes.
 No detector, mutations or labels are part of these capture recipes.
 
@@ -125,8 +125,8 @@ No fixed settle delay is used. The client deadline must exceed the hook's
 60-second readiness timeout.
 
 ERROR records failure and no PNG, then continues. Timeout or uncertain launch
-force-stops the app before another request: superseded requests on 1271045
-have no terminal event (#44). City-construction failures may surface as
+force-stops the app before another request, preserving the existing recovery
+policy from #44. City-construction failures may surface as
 `reason=readiness_timeout` after 60 seconds; preserve that result. Hook changes
 require Anton's new protocol decision, outside this task.
 
