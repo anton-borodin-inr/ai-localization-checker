@@ -486,7 +486,8 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 ## D-049 — Complete the dev / hold-out assignment of the ten Stage 2 source screens
 
 - **Date:** 2026-11-02
-- **Status:** Proposed
+- **Status:** Accepted
+- **Accepted by:** Anton, 2026-11-02, as proposed
 - **Decision:** Record Anton's issue #57 assignment below. This completes
   D-043's source-screen assignment and changes no other decision.
 
