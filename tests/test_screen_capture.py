@@ -25,9 +25,15 @@ FIXTURES = Path(__file__).resolve().parents[1] / "fixtures/stage2"
 ORIGINAL = b'{"language":"German","personal_setting":true}'
 
 
+def all_screen_inputs():
+    """Keep full-ten-screen fake-device coverage with an explicit ID selector."""
+    result = Inputs(FIXTURES / "screens.json")
+    return result.select_screens(screen_ids=[s.id for s in result.manifest.screens])
+
+
 @pytest.fixture
 def inputs():
-    result = Inputs(FIXTURES / "screens.json")
+    result = all_screen_inputs()
     result.manifest = result.manifest.model_copy(update={"resolution": [4, 2]})
     return result
 
@@ -139,7 +145,8 @@ class FakeDevice:
 
 @pytest.fixture
 def run_env(tmp_path, monkeypatch, inputs):
-    monkeypatch.setattr(legacy, "REPO_ROOT", tmp_path)
+    # The full-ten-screen fake batch must also obey external-output policy.
+    monkeypatch.setattr(legacy, "REPO_ROOT", tmp_path / "repo")
     return FakeDevice(inputs), tmp_path / "data/run", inputs
 
 
@@ -628,6 +635,8 @@ def test_cli_manifest_language_is_not_hardcoded(monkeypatch, capsys):
             "l10n-capture",
             "--manifest",
             str(FIXTURES / "screens.json"),
+            "--split",
+            "dev",
             "--output-dir",
             "data/new",
             "--lang",
@@ -653,6 +662,8 @@ def test_cli_rejects_legacy_options_with_manifest(monkeypatch, option):
             "l10n-capture",
             "--manifest",
             "x.json",
+            "--split",
+            "dev",
             "--output-dir",
             "data/new",
             option,

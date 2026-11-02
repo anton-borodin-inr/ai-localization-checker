@@ -9,7 +9,7 @@ from pathlib import Path
 
 import pytest
 from conftest import make_png
-from test_screen_capture import FIXTURES, FakeDevice, FakeLog
+from test_screen_capture import FIXTURES, FakeDevice, FakeLog, all_screen_inputs
 
 from l10n_checker import capture as legacy
 from l10n_checker.capture import CaptureError
@@ -344,8 +344,8 @@ class DumpDevice(FakeDevice):
 
 
 def test_complete_fake_v2_capture_and_changed_dump_failures(tmp_path, monkeypatch):
-    monkeypatch.setattr(legacy, "REPO_ROOT", tmp_path)
-    inputs = Inputs(FIXTURES / "screens.json")
+    monkeypatch.setattr(legacy, "REPO_ROOT", tmp_path / "repo")
+    inputs = all_screen_inputs()
     inputs.manifest = inputs.manifest.model_copy(
         update={"resolution": [4, 2], "protocol_version": 2}
     )
@@ -380,8 +380,8 @@ def test_complete_fake_v2_capture_and_changed_dump_failures(tmp_path, monkeypatc
 
 
 def test_v2_missing_device_plan_has_no_device_access(tmp_path, monkeypatch):
-    monkeypatch.setattr(legacy, "REPO_ROOT", tmp_path)
-    inputs = Inputs(FIXTURES / "screens.json")
+    monkeypatch.setattr(legacy, "REPO_ROOT", tmp_path / "repo")
+    inputs = all_screen_inputs()
     inputs.manifest = inputs.manifest.model_copy(update={"protocol_version": 2})
     device = DumpDevice(inputs)
     with pytest.raises(CaptureError, match="exact device plan"):
@@ -393,8 +393,8 @@ def test_v2_missing_device_plan_has_no_device_access(tmp_path, monkeypatch):
 def test_v2_changed_output_write_plan_is_rejected_before_device_access(
     tmp_path, monkeypatch, change
 ):
-    monkeypatch.setattr(legacy, "REPO_ROOT", tmp_path)
-    inputs = Inputs(FIXTURES / "screens.json")
+    monkeypatch.setattr(legacy, "REPO_ROOT", tmp_path / "repo")
+    inputs = all_screen_inputs()
     inputs.manifest = inputs.manifest.model_copy(update={"protocol_version": 2})
     device = DumpDevice(inputs)
     prepare = tmp_path / "data/prepare"
@@ -455,8 +455,8 @@ def test_v2_transport_canonical_state_and_stale_events():
 def test_dump_nondeterminism_fails_run_even_with_identical_pixels(
     tmp_path, monkeypatch
 ):
-    monkeypatch.setattr(legacy, "REPO_ROOT", tmp_path)
-    inputs = Inputs(FIXTURES / "screens.json")
+    monkeypatch.setattr(legacy, "REPO_ROOT", tmp_path / "repo")
+    inputs = all_screen_inputs()
     inputs.manifest = inputs.manifest.model_copy(
         update={"resolution": [4, 2], "protocol_version": 2}
     )

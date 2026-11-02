@@ -52,6 +52,43 @@ emulator-5554` when more than one emulator is connected. Only
 (D-022), with the documented macOS SDK
 location as the fallback when `ANDROID_HOME` is unset.
 
+## Manifest mode: explicit selection and external output
+
+The Stage 2 manifest mode is separate from the legacy recipe on this page.
+Every `--manifest` command, including `--prepare-only`, requires mutually
+exclusive `--split dev|holdout` or repeatable `--screen-id ID`; there is no
+implicit full-manifest selection or new all-screens flag. Missing selection
+fails before device access. The `split.json` beside the manifest is validated
+for **both** selectors, so explicit IDs cannot bypass split membership checks.
+Screen order comes from the manifest, not the split arrays or option order;
+selected screens alone determine plans, forward/reverse requests, comparisons,
+gallery and contact sheet, with languages still outside the screen loop.
+
+Only manifest mode supports external host output in addition to this checkout's
+`data/`. Other in-repository paths, symlink run folders and symlink ancestors
+are rejected. An output root containing the checkout is rejected too, so
+overwrite cannot move the repository. Filesystem-identity checks cover case
+aliases and existing ancestors of new destinations. Any selection containing a
+hold-out ID, including a mixed explicit-ID selection, requires external output
+for **both preparation and capture**; in-repository output is rejected before
+device access. All host backups, device plans, temporary files and capture
+artifacts stay external
+when external folders are supplied. `--overwrite` preserves the old external
+capture run in an external sibling `.previous-<uuid>` folder. These permissions
+do not change legacy capture, detector or evaluation path restrictions.
+
+The current clean build is v2 / 1271048 (`screens-v2.json`); v1 / 1271045
+(`screens.json`) and its fixtures remain unchanged. Preparation and capture
+bind the original manifest hash, selected IDs/split name and split-file hash,
+as well as the existing device/input checks. Changed inputs need a fresh plan
+and Anton's separate approval of the exact device writes. Agent-operated
+captures require that separate approval; protocol v2 also requires the exact
+`--device-plan` at runtime. See [stage2-capture.md](stage2-capture.md) for dev
+commands using `--split dev` and the **documentation-only** hold-out recipe for
+Anton or a separate owner-controlled session with caller-supplied external
+`$CAPTURE_ROOT`. Coding agents working on dev must not execute that recipe or
+access the protected external hold-out data.
+
 ## What one capture does
 
 The method is the one verified in [#7](unciv-text-rendering.md): write the
@@ -138,14 +175,19 @@ adb unroot
 
 ```bash
 uv run pytest
-uv run pytest --run-device -m device
+uv run pytest --run-device tests/test_capture_device.py
 uv run ruff check . && uv run ruff format --check .
 ```
 
 The first command skips device tests by default and requires no emulator; the
 language step is tested against a fake device. The second
 explicitly captures the English main menu from a prepared device into a unique
-folder under `data/device-tests/`, using `adb root` as described above.
+folder under `data/device-tests/`, using `adb root` as described above. This
+legacy main-menu smoke is not a dev source-screen ID and does not satisfy issue
+#57's manifest verification. For that task use only the scoped dev test and
+approved-plan/output arguments in [stage2-capture.md](stage2-capture.md), after
+offline tests, Anton's emulator release, preparation and separate exact-plan
+approval. The commands here are recipes, not evidence of a device run.
 
 For a negative check, stop the emulator and run:
 

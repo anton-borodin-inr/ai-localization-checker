@@ -27,6 +27,17 @@ def main() -> int:
     mode.add_argument(
         "--manifest", type=Path, help="D-038 manifest: forward and reverse passes."
     )
+    selection = parser.add_mutually_exclusive_group()
+    selection.add_argument(
+        "--split",
+        choices=["dev", "holdout"],
+        help="Manifest mode: select a named split.",
+    )
+    selection.add_argument(
+        "--screen-id",
+        action="append",
+        help="Manifest mode: repeat to select screen IDs.",
+    )
     parser.add_argument(
         "--lang",
         action="append",
@@ -65,6 +76,10 @@ def main() -> int:
         help="Manifest mode: require device/inputs to match this prepared plan before writes.",
     )
     args = parser.parse_args()
+    if args.manifest and args.split is None and args.screen_id is None:
+        parser.error("Manifest mode requires --split or --screen-id")
+    if not args.manifest and (args.split is not None or args.screen_id is not None):
+        parser.error("--split and --screen-id require --manifest")
     sdk = Path(os.environ.get("ANDROID_HOME", str(Path.home() / "Library/Android/sdk")))
     device = Device(sdk / "platform-tools/adb", args.serial)
     if args.manifest:
@@ -76,7 +91,9 @@ def main() -> int:
         from l10n_checker.screen_manifest import Inputs
 
         try:
-            inputs = Inputs(args.manifest)
+            inputs = Inputs(args.manifest).select_screens(
+                screen_ids=args.screen_id, split=args.split
+            )
             if args.prepare_only:
                 prepare_device(device, inputs, args.output_dir, args.lang)
                 print(args.output_dir / "device-plan.json")

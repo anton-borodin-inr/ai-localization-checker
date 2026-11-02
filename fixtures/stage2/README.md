@@ -1,7 +1,63 @@
 # Stage 2 capture inputs
 
 Owned by issue #41 and Proposed D-039. Anton approved these fixtures on
-2026-10-21. They are capture states, not labels or a dataset split.
+2026-10-21. They remain capture states, not labels; issue #57 adds the separate
+source-screen split registry below without changing these fixture bytes.
+
+## Manifest pins and source-screen split
+
+`screens.json` remains protocol v1 / clean versionCode 1271045;
+`screens-v2.json` remains protocol v2 / clean versionCode 1271048. Both retain
+all ten D-039 screens and exactly the same fixture, state and settings files.
+Do not rewrite either manifest into a selected subset or modify the historical
+Stage 2 evidence to implement the split.
+
+`split.json` beside both manifests is the only executable split-membership
+declaration. Its JSON object has integer `schema_version: 1` and `dev` /
+`holdout` arrays of source-screen IDs. The arrays are disjoint, have no repeated
+IDs and cover exactly the ten D-039 source screens:
+
+| Interface type | dev | hold-out |
+|---|---|---|
+| Choice tree with fixed-size buttons | `tech-picker` (D-043) | `policy-picker` |
+| Game screen with lists | `city-production` (D-043) | `world` |
+| Menu with drop-downs and checkboxes | `options-gameplay` | `new-game` |
+| Tables with numbers | `empire-stats` | `victory-status` |
+| Long texts in panels | `civilopedia` | `city-state-diplomacy` |
+
+This completes D-043's assignment: every interface type is represented on both
+sides. Variants stay grouped by source screen under D-010. The shared
+`screen_split.load_split(path, screen_ids)` loader validates the registry for
+capture and future tools; do not hard-code another split-membership list.
+Registry array order is not capture order: the manifest remains authoritative.
+For dev, forward order is `options-gameplay`, `tech-picker`, `city-production`,
+`empire-stats`, `civilopedia`, and the second pass reverses it within each
+language. Languages remain outside the screen loop.
+
+Manifest preparation/capture require mutually exclusive `--split dev|holdout`
+or repeatable `--screen-id ID`; neither selector defaults to all screens.
+The registry is read even for explicit IDs. Any selection containing a
+hold-out ID requires external output in **both** modes, with in-repository
+output rejected before device access. All host outputs remain external when
+external preflight/capture folders are requested; this does not relax legacy
+capture or detector/evaluation restrictions. Preparation and capture bind the
+original manifest hash, selected IDs/split name and split-file hash; changes
+need fresh preparation and Anton's separate exact-plan approval. See
+[the capture recipes](../../docs/stage2-capture.md), including the owner-only,
+documentation-only hold-out recipe using caller-supplied external absolute
+`$CAPTURE_ROOT`. No dev agent is authorized to execute that recipe.
+
+Existing clean Stage 2 captures and confirmed visible-text references of all
+five hold-out screens are already committed under `docs/evidence/41`,
+`docs/evidence/47/reference-confirmation/` and
+`docs/evidence/47/manual-acceptance/`. They contain no mutations, labels or
+detector/model runs and stay where they are as historical Stage 2 evidence.
+Issue #45 used only the two D-043 dev screens, and its explorations remain
+non-labels under D-024. Future hold-out mutations, captures, labels and runs
+belong only in owner-controlled external storage outside the dev agent's
+working folder; this registry does not authorize accessing that storage.
+
+## Unchanged fixture provenance
 
 - `saves/issue-8-pair`: SHA-256
   `9d2a4cd5e1de2b2ae9102a2e6e6d15210e32ae5188c895f84e8a3a6ce19c3b4e`.

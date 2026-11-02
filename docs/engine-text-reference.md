@@ -75,6 +75,50 @@ It reuses every v1 screen/state/settings/save byte and route. Existing device
 results are bound to these exact bytes. A changed build requires a new manifest
 pin and exact-write approval.
 
+## Selected captures after issue #57
+
+New manifest captures require `--split dev|holdout` or repeatable
+`--screen-id ID` (mutually exclusive), including preparation. No selector means
+failure before device access, not a full-manifest run. The `split.json` beside either
+v1 or v2 manifest is validated even for explicit IDs. It alone declares
+executable split membership; source-screen order remains the manifest's order.
+Selected screens alone determine device plans, forward/reverse captures,
+comparisons, gallery and contact sheet, with languages outside the screen loop
+and every existing PNG/dump check retained. A five-screen dev EN/DE v2 run has
+20 PNG/dump pairs and 10 comparisons; that is the scope of the new dev device
+test, not a replacement for the historical 40-pair evidence described above.
+
+Plans and capture summaries bind the original manifest hash, selected IDs/split
+name and split-file hash. A changed registry or selection requires fresh
+preparation and separate exact-plan approval. Agent-operated captures require
+that approval; protocol v2 also requires the exact device plan at runtime.
+See [stage2-capture.md](stage2-capture.md) for the
+`--split dev` recipes and the targeted device-test command.
+
+External output support is limited to manifest mode. External host roots and
+in-repository `data/` are allowed; other in-repository paths, output roots
+containing the checkout, and symlink run folders/ancestors are rejected.
+Containment is filesystem-identity-aware, including case aliases and existing
+ancestors of destinations that have not yet been created.
+A selection containing **any** hold-out ID requires external output for
+preparation and capture, even when selected with `--screen-id`; rejection
+happens before device access. With external preflight/capture folders, all host
+backups, device plans, temporary files and
+artifacts stay external, including the sibling preserved by `--overwrite`.
+Device hook outputs remain the separately approved app-private operations.
+This does not expand legacy capture or detector/evaluation permissions, or
+authorize a dev agent to generate/review future hold-out artifacts. The
+owner-only hold-out recipe uses a caller-supplied external absolute
+`$CAPTURE_ROOT`; it is documentation, not execution evidence.
+
+The clean Stage 2 captures and confirmed visible-text references already
+committed under `docs/evidence/41`, `docs/evidence/47/reference-confirmation/`
+and `docs/evidence/47/manual-acceptance/` remain untouched. They contain no
+mutations, labels or detector/model runs. Issue #45 used only the two D-043 dev
+screens; its probe captures remain exploratory under D-024, never labels,
+ground truth or evaluation data. The split records that known clean exposure;
+it does not erase it or turn confirmed visible-text references into labels.
+
 ## Non-interference checks
 
 Require identical decoded pixels for v1 versus v2 on the same build and for
