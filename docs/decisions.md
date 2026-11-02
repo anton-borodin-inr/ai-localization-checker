@@ -466,7 +466,8 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 ## D-047 — Text too small to read is not labeled in v1
 
 - **Date:** 2026-11-02
-- **Status:** Proposed
+- **Status:** Accepted
+- **Accepted by:** Anton, 2026-11-02, as proposed
 - **Decision:** Text that Anton cannot read on the screenshot at 100% zoom is not labeled in v1, in any class. Small text that Anton can read is labeled normally: a defect on it (for example `truncated_text` or `wrong_language`) gets an ordinary label. A screenshot whose only issue is unreadable small text is reviewed with an empty `labels` array.
 - **Why:** Decided by Anton in issue #56. A label with no readable `text_seen` cannot be matched by text (D-026). Neither detector may produce a finding for such text: prompt v2 sends it to readability (D-046) and OCR cannot read it. Such labels would be guaranteed FN that say nothing about detector quality. D-044 also keeps unreadably small text out of the v1 classes.
 - **Alternatives considered:** A class for unreadably small text (outside the v1 scope, D-044); a label note or a metric exclusion (either would need matching and golden changes for a class that v1 does not have).
@@ -475,7 +476,8 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 ## D-048 — Prompt v3: the intended language comes from the D-003 file name
 
 - **Date:** 2026-11-02
-- **Status:** Proposed
+- **Status:** Accepted
+- **Accepted by:** Anton, 2026-11-02, as proposed
 - **Decision:** The vision prompt names the screen's intended language in one added line, `The screen's intended language is <English name>.`, after the opening line; every other line of prompt v2 is unchanged. The language comes only from the D-003 file name, and `l10n-check` has no language option. A name without the five fields or a language in `capture.LANGUAGES` is rejected before any provider call, with no run record. This is prompt v3 on response schema v2; the wrapper stays `deepseek-json-object-v3`. `run.json` records `language`. `prompt_sha256` and `prompt.txt` now hold the rendered prompt, and the new `prompt_template_sha256` is the same for every language. Replay accepts the schema/prompt pairs v1/v1, v2/v2 and v2/v3; a v3 record must match its file name language, and v1 and v2 records carry no `language`.
 - **Why:** D-044 defines `wrong_language` against the screen's intended language, but the model received only the image, so a screen entirely in the wrong language could not be recognized. The file name is already a deterministic capture output (D-003). Issue #58 and Anton's approved plan set these points.
 - **Alternatives considered:** A `--lang` option that must agree with the file name (a second source that only adds a way to disagree); keeping one prompt hash per version (impossible once the prompt differs by language); keeping `prompt_version == schema_version` (would force a schema bump for an unchanged response).
