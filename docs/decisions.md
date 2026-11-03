@@ -529,3 +529,46 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
   evidence remain unchanged. D-010's grouped, single-use hold-out rules and
   D-024's exclusion of exploratory images from labels/evaluation still apply;
   no labels, metric rules or other Accepted decision change.
+
+## D-050 — Stage 3 mutation density, builder controls and dynamic isolation gate
+
+- **Date:** 2026-11-02
+- **Status:** Proposed
+- **Decision:** Record Anton's issue #59 plan approval with amendments from the
+  task chat. Generate translation-only batch APKs. Empty-patch clean controls
+  come from the same frozen builder as mutated APKs, never stock 1271048.
+  Before production, calibrate one empty-patch build against one single-mutation
+  build across dev screens; any outside-mask RGBA difference stops generation
+  for Anton's decision, with counts, exclusive bounding boxes and maximum
+  channel deltas. No tolerance is authorized.
+  Limit each mutated screenshot to two visible logical occurrences, with at
+  least half of unique mutated screenshots having one occurrence; controls and
+  repeat captures are outside that denominator. Balance the three primary
+  intended classes separately by language; placeholders remain a separate
+  `other` cohort. EN foreign-text injection is valid; EN source fallback is not
+  a wrong-language mechanism.
+- **Why:** Native mod overrides do not remove packaged translations, and the
+  menu hook does not establish a universal mod context. One global key can
+  affect many occurrences. Incremental font-atlas allocation can alter unrelated
+  pixels (D-042), so clean controls and an empirical calibration are necessary.
+- **Alternatives considered:** Stock clean APKs (different builder provenance);
+  assuming every recipe creates one defect; treating source-English fallback as
+  proof that EN cannot show foreign text; requiring a fork layout-metadata
+  extension before any implementation (not required by Anton's amended plan).
+- **Consequences:** The authoritative isolation gate is zero changed RGBA
+  pixels outside matched target masks and no moved/changed unmutated dump
+  element. Use current dump data for a conservative static pre-filter only:
+  different keys, different owning actor paths and separated owner/glyph bounds
+  with a recorded margin. Unknown parent/cell fields are not invented. Dynamic
+  interference splits batches deterministically and retains lineage; a failing
+  singleton or overflow-target qualification stops. Report the dynamic split
+  rate; high rates may motivate a separately approved metadata task.
+  Deliver in three PRs: offline recipes/planner/manifest, separate fork-side
+  builder/session, then device orchestration/verification. The public entry
+  point is dev-only and no future owner runner is implemented here. Device
+  authorization covers only frozen-catalog APK installation and dev captures
+  into the approved output folder with verified backup/restore; another kind
+  of operation requires stopping. This records the task approval but remains
+  Proposed for the decision-log review. It does not edit or supersede D-042's
+  issue-47 criterion or change labels, metrics, the split, or D-012/D-023–025/
+  D-038–044/D-046/D-047/D-049. See [mutation-generator.md](mutation-generator.md).

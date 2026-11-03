@@ -15,6 +15,11 @@ replays matching and metrics offline. Its [issue #14 report](docs/evidence/14/re
 records observations on three variants of one screen, with reference gaps and
 draft conclusions for human review; the numbers are not quality estimates.
 
+Stage 3 [dev mutation planning](docs/mutation-generator.md) is fully offline:
+versioned recipes produce deterministic batch plans and fork-builder requests.
+It does not generate screenshots or labels; builder/device verification is
+delivered separately.
+
 ## Limitations
 
 ## How this was built

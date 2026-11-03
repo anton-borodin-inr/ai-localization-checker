@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "recipe_version": "stage3-v1",
+  "fork_commit": "b534a8ae67c390412984869c7a03b168d532c36c",
+  "recipes": [
+    {
+      "id": "help-overflow-en",
+      "language": "en",
+      "intended_class": "overflow",
+      "mechanism": "lengthen",
+      "operation": "replace",
+      "key": "?",
+      "original": "",
+      "replacement": "Help",
+      "targets": [{"screen": "options-gameplay", "text": "?", "match": "exact"}],
+      "source_evidence": "MainMenuScreen.kt:216-227 and IconCircleGroup.kt:23-29 at the pinned fork: plain 48-unit label resized to 45x45. One full dev occurrence. Source-qualified only; runtime qualification must stop on failure."
+    },
+    {
+      "id": "help-overflow-de",
+      "language": "de",
+      "intended_class": "overflow",
+      "mechanism": "lengthen",
+      "operation": "replace",
+      "key": "?",
+      "original": "?",
+      "replacement": "Hilfe",
+      "targets": [{"screen": "options-gameplay", "text": "?", "match": "exact"}],
+      "source_evidence": "MainMenuScreen.kt:216-227 and IconCircleGroup.kt:23-29 at the pinned fork. One full dev occurrence. Source-qualified only; qualify Hilfe before the longer variant and stop on failure."
+    },
+    {
+      "id": "help-exclamation-overflow-en",
+      "language": "en",
+      "intended_class": "overflow",
+      "mechanism": "lengthen",
+      "operation": "replace",
+      "key": "?",
+      "original": "",
+      "replacement": "Help!",
+      "targets": [{"screen": "options-gameplay", "text": "?", "match": "exact"}],
+      "source_evidence": "Second deterministic length variant of the same source-qualified help-circle target. Qualify Help first; this variant still needs its own runtime gate."
+    },
+    {
+      "id": "help-exclamation-overflow-de",
+      "language": "de",
+      "intended_class": "overflow",
+      "mechanism": "lengthen",
+      "operation": "replace",
+      "key": "?",
+      "original": "?",
+      "replacement": "Hilfe!",
+      "targets": [{"screen": "options-gameplay", "text": "?", "match": "exact"}],
+      "source_evidence": "Second deterministic length variant of the same source-qualified help-circle target. Qualify Hilfe first; this variant still needs its own runtime gate."
+    },
+    {
+      "id": "mining-truncation-en",
+      "language": "en",
+      "intended_class": "truncated_text",
+      "mechanism": "lengthen",
+      "operation": "replace",
+      "key": "Mining",
+      "original": "",
+      "replacement": "Mining and ore extraction",
+      "targets": [{"screen": "tech-picker", "text": "Mining", "match": "exact"}],
+      "source_evidence": "TechPickerScreen.kt:253; TechButton.kt:28-32,77. Issue45 truncation-mining observed this value. Archery remains selected; D-023 and D-025 require runtime/human boundary review. Prior exploration is not production data."
+    },
+    {
+      "id": "mining-truncation-de",
+      "language": "de",
+      "intended_class": "truncated_text",
+      "mechanism": "lengthen",
+      "operation": "replace",
+      "key": "Mining",
+      "original": "Bergbau",
+      "replacement": "Bergbau und Erzgewinnung",
+      "targets": [{"screen": "tech-picker", "text": "Bergbau", "match": "exact"}],
+      "source_evidence": "TechPickerScreen.kt:253; TechButton.kt:28-32,77. Issue45 truncation-mining observed this value. Archery stays selected; no hidden suffix is a visible reference or label."
+    },
+    {
+      "id": "mining-mineral-truncation-en",
+      "language": "en",
+      "intended_class": "truncated_text",
+      "mechanism": "lengthen",
+      "operation": "replace",
+      "key": "Mining",
+      "original": "",
+      "replacement": "Mining and mineral extraction",
+      "targets": [{"screen": "tech-picker", "text": "Mining", "match": "exact"}],
+      "source_evidence": "Second fixed length variant of the known TechButton ellipsis mechanism; runtime qualification is still required."
+    },
+    {
+      "id": "mining-mineral-truncation-de",
+      "language": "de",
+      "intended_class": "truncated_text",
+      "mechanism": "lengthen",
+      "operation": "replace",
+      "key": "Mining",
+      "original": "Bergbau",
+      "replacement": "Bergbau und Mineralgewinnung",
+      "targets": [{"screen": "tech-picker", "text": "Bergbau", "match": "exact"}],
+      "source_evidence": "Second fixed length variant of the known TechButton ellipsis mechanism; runtime qualification is still required."
+    },
+    {
+      "id": "worker-foreign-en",
+      "language": "en",
+      "intended_class": "wrong_language",
+      "mechanism": "foreign_text",
+      "operation": "replace",
+      "key": "Worker",
+      "original": "",
+      "replacement": "Arbeiter",
+      "targets": [{"screen": "city-production", "text": "Worker", "match": "contains"}],
+      "source_evidence": "Issue45 wrong-language-foreign; CityConstructionsTable.kt:550-553 and ConstructionInfoTable.kt:76-82. Two distinct visible logical occurrences, not one recipe-count defect."
+    },
+    {
+      "id": "mining-fallback-de",
+      "language": "de",
+      "intended_class": "wrong_language",
+      "mechanism": "missing_translation",
+      "operation": "remove",
+      "key": "Mining",
+      "original": "Bergbau",
+      "replacement": null,
+      "targets": [{"screen": "tech-picker", "text": "Bergbau", "match": "exact"}],
+      "source_evidence": "Issue45 wrong-language-fallback. Physically remove the packaged German entry; Translations.kt:71-72 falls back to source Mining. An absent mod override would not implement this operation."
+    },
+    {
+      "id": "mining-foreign-de",
+      "language": "de",
+      "intended_class": "wrong_language",
+      "mechanism": "foreign_text",
+      "operation": "replace",
+      "key": "Mining",
+      "original": "Bergbau",
+      "replacement": "Mining",
+      "targets": [{"screen": "tech-picker", "text": "Bergbau", "match": "exact"}],
+      "source_evidence": "Explicit English value in the active German table. Same displayed word as fallback, but distinct mutation provenance: replace, not remove. D-044 intended-language rule; runtime gate required."
+    },
+    {
+      "id": "research-placeholder-en",
+      "language": "en",
+      "intended_class": "other",
+      "mechanism": "placeholder",
+      "operation": "replace",
+      "key": "Research [technology]",
+      "original": "",
+      "replacement": "Research [amount]",
+      "targets": [{"screen": "tech-picker", "text": "Research ", "match": "contains"}],
+      "source_evidence": "Issue45 placeholder-tech; TechPickerScreen.kt:462-465 and TranslationExtensions.kt:148-178. Keep source key, break only the value token. One composed research/progress label."
+    },
+    {
+      "id": "research-placeholder-de",
+      "language": "de",
+      "intended_class": "other",
+      "mechanism": "placeholder",
+      "operation": "replace",
+      "key": "Research [technology]",
+      "original": "[technology] erforschen",
+      "replacement": "[amount] erforschen",
+      "targets": [{"screen": "tech-picker", "text": " erforschen", "match": "contains"}],
+      "source_evidence": "Issue45 placeholder-tech; substitute source placeholder names, leaving unmatched amount literal. This is not Worker literal-token insertion. One composed research/progress label."
+    }
+  ]
+}
