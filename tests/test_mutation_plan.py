@@ -2,6 +2,7 @@
 
 import importlib
 import importlib.util
+from collections import Counter
 from pathlib import Path
 
 import pytest
@@ -388,7 +389,7 @@ def test_interfering_pair_splits_deterministically_and_singleton_failure_stops(
         api().split_after_interference(plan, combined["id"], {"kind": "timeout"})
 
 
-def test_balance_counts_logical_occurrences_per_language_not_recipe_count(tmp_path):
+def test_balance_counts_occurrences_as_a_target_not_a_production_cap(tmp_path):
     kwargs = inputs(tmp_path)
     plan = api().create_plan(**kwargs)
     assert plan["primary_balance"]["en"] == {
@@ -399,7 +400,9 @@ def test_balance_counts_logical_occurrences_per_language_not_recipe_count(tmp_pa
     }
     assert plan["primary_balance"]["de"]["balanced"] is False
     assert "runtime_qualification" in plan["production_blockers"]
-    assert "primary_class_balance" in plan["production_blockers"]
+    assert "primary_class_balance" not in plan["production_blockers"]
+    assert plan["policy"]["primary_class_balance"] == "target_not_cap"
+    assert api().load_plan(canonical_bytes(plan), manifest=MANIFEST) == plan
 
 
 def test_manifest_reader_rejects_patch_tampering_and_success_claims(tmp_path):
@@ -451,7 +454,7 @@ def refresh_wire_derivatives(plan):
     plan["clean_build"]["builder"] = "same_as_mutated_batches"
     plan["density"] = planner._density(plan["batches"])
     plan["primary_balance"] = planner._primary_balance(plan["mutations"])
-    plan["production_blockers"] = planner._blockers(plan["primary_balance"])
+    plan["production_blockers"] = planner._blockers()
     plan["calibration"] = planner._calibration(plan["mutations"])
     plan["static_conflicts"] = planner._static_conflicts(plan["mutations"])
     plan["planned_recipe_class_counts"] = planner._recipe_counts(plan["mutations"])
@@ -985,18 +988,86 @@ def real_inputs(tmp_path):
     }
 
 
-def test_committed_dev_catalog_is_balanced_and_help_has_one_occurrence(tmp_path):
+def test_committed_dev_catalog_covers_all_screens_and_twenty_occurrences(tmp_path):
     plan = api().create_plan(**real_inputs(tmp_path))
+    counts = Counter(
+        (o["screen"], o["language"], m["recipe"]["intended_class"])
+        for m in plan["mutations"].values()
+        for o in m["occurrences"]
+    )
+    assert {(screen, lang) for screen, lang, _ in counts} == {
+        (screen, lang) for screen in registry().dev for lang in ("en", "de")
+    }
+    assert sum(counts.values()) >= 20
+    assert sum(counts.values()) == sum(
+        s["visible_occurrences"] for b in plan["batches"] for s in b["screenshots"]
+    )
+    classes = ("overflow", "wrong_language", "truncated_text", "other")
+    assert {
+        (screen, lang): tuple(counts[screen, lang, kind] for kind in classes)
+        for screen in registry().dev
+        for lang in ("en", "de")
+    } == {
+        ("options-gameplay", "en"): (4, 1, 0, 0),
+        ("options-gameplay", "de"): (4, 2, 0, 0),
+        ("tech-picker", "en"): (0, 1, 2, 1),
+        ("tech-picker", "de"): (0, 2, 2, 1),
+        ("city-production", "en"): (0, 3, 0, 1),
+        ("city-production", "de"): (0, 2, 0, 1),
+        ("empire-stats", "en"): (0, 1, 0, 0),
+        ("empire-stats", "de"): (0, 2, 0, 0),
+        ("civilopedia", "en"): (0, 1, 0, 0),
+        ("civilopedia", "de"): (0, 2, 0, 0),
+    }
+    for screen in registry().dev:
+        for language in ("en", "de"):
+            assert counts[screen, language, "wrong_language"] > 0
     for language in ("en", "de"):
-        assert plan["primary_balance"][language] == {
-            "overflow": 2,
-            "wrong_language": 2,
-            "truncated_text": 2,
-            "balanced": True,
-        }
+        for kind in ("overflow", "wrong_language", "truncated_text"):
+            assert plan["primary_balance"][language][kind] == sum(
+                value
+                for (_, lang, intended), value in counts.items()
+                if lang == language and intended == kind
+            )
         assert plan["density"][language]["share"] >= 0.5
         assert len(plan["mutations"][f"help-overflow-{language}"]["occurrences"]) == 1
+    assert all(
+        s["visible_occurrences"] <= 2 for b in plan["batches"] for s in b["screenshots"]
+    )
     assert len(plan["mutations"]["worker-foreign-en"]["occurrences"]) == 2
     assert "primary_class_balance" not in plan["production_blockers"]
     assert plan["calibration"]["mutation_recipe_id"] == "help-overflow-en"
     assert api().load_plan(canonical_bytes(plan), manifest=MANIFEST) == plan
+
+
+def test_committed_catalog_spreads_qualified_mechanisms_without_claiming_breadth(
+    tmp_path,
+):
+    plan = api().create_plan(**real_inputs(tmp_path))
+    mechanisms = {
+        (o["screen"], o["language"], m["recipe"]["mechanism"])
+        for m in plan["mutations"].values()
+        for o in m["occurrences"]
+    }
+    for screen in registry().dev:
+        for language in ("en", "de"):
+            assert (screen, language, "foreign_text") in mechanisms
+        assert (screen, "de", "missing_translation") in mechanisms
+    for screen in ("tech-picker", "city-production"):
+        for language in ("en", "de"):
+            assert (screen, language, "placeholder") in mechanisms
+    targets = {
+        (o["screen"], o["actor_path"])
+        for m in plan["mutations"].values()
+        if m["recipe"]["intended_class"] == "overflow"
+        for o in m["occurrences"]
+    }
+    assert len(targets) == 3
+    # This is an explicit unresolved qualification shortfall, not a pass for
+    # the requested two-screen breadth or measured overflow.
+    assert {screen for screen, _ in targets} == {"options-gameplay"}
+    for m in plan["mutations"].values():
+        if m["recipe"]["key"] in ("-", "+"):
+            assert m["recipe"]["operation"] == "add"
+            assert m["recipe"]["original"] is None
+            assert len(m["occurrences"]) == 1

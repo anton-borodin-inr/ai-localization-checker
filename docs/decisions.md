@@ -544,9 +544,13 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
   Limit each mutated screenshot to two visible logical occurrences, with at
   least half of unique mutated screenshots having one occurrence; controls and
   repeat captures are outside that denominator. Balance the three primary
-  intended classes separately by language; placeholders remain a separate
-  `other` cohort. EN foreign-text injection is valid; EN source fallback is not
-  a wrong-language mechanism.
+  intended classes separately by language as a target, not a cap or a production
+  blocker; do not cut other classes down to scarce overflow. Anton clarified
+  this in the 2026-11-03 task-chat review, targeting at least 20 visible intended dev
+  occurrences and broader source-screen coverage. Report class/language/screen
+  counts and any unachievable coverage/volume for his decision. Placeholders
+  remain a separate `other` cohort. EN foreign-text injection is valid; EN source
+  fallback is not a wrong-language mechanism.
 - **Why:** Native mod overrides do not remove packaged translations, and the
   menu hook does not establish a universal mod context. One global key can
   affect many occurrences. Incremental font-atlas allocation can alter unrelated

@@ -132,19 +132,17 @@ def _policy():
         "minimum_single_occurrence_share": 0.5,
         "static_margin_px": STATIC_MARGIN_PX,
         "dynamic_gate_is_authoritative": True,
+        "primary_class_balance": "target_not_cap",
     }
 
 
-def _blockers(balance):
-    result = [
+def _blockers():
+    return [
         "runtime_qualification",
         "calibration",
         "frozen_builder_catalog",
         "device_verification",
     ]
-    if not all(v["balanced"] for v in balance.values()):
-        result.append("primary_class_balance")
-    return result
 
 
 def _calibration(mutations):
@@ -325,7 +323,7 @@ def load_plan(raw: bytes, *, manifest: Path) -> dict:
         if (
             value["policy"] != _policy()
             or value["calibration"] != _calibration(mutations)
-            or value["production_blockers"] != _blockers(value["primary_balance"])
+            or value["production_blockers"] != _blockers()
         ):
             raise ValueError("The pending gate contract differs")
         if not _density_ok(value["batches"]):
@@ -665,7 +663,7 @@ def create_plan(
         "policy": _policy(),
         "density": _density(batches),
         "primary_balance": balance,
-        "production_blockers": _blockers(balance),
+        "production_blockers": _blockers(),
         "static_conflicts": _static_conflicts(mutations),
         "split_history": [],
         "planned_recipe_class_counts": _recipe_counts(mutations),
