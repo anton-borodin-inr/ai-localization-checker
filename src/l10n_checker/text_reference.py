@@ -84,8 +84,8 @@ def child(root: Path, name: str) -> Path:
     return path
 
 
-def load_pair(path: Path):
-    pair = read_json(path)
+def load_pair(path: Path, *, pair_bytes: bytes | None = None):
+    pair = json_bytes(pair_bytes) if pair_bytes is not None else read_json(path)
     if pair.get("pair_version") != 1 or pair.get("protocol_version") != 2:
         raise CaptureError("A committed protocol v2 PNG/dump pair is required")
     png = child(path.parent, pair["png"]).read_bytes()
