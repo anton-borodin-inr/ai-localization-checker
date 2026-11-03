@@ -533,7 +533,8 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 ## D-050 — Stage 3 mutation density, builder controls and dynamic isolation gate
 
 - **Date:** 2026-11-02
-- **Status:** Proposed
+- **Status:** Accepted
+- **Accepted by:** Anton, 2026-11-03, as proposed
 - **Decision:** Record Anton's issue #59 plan approval with amendments from the
   task chat. Generate translation-only batch APKs. Empty-patch clean controls
   come from the same frozen builder as mutated APKs, never stock 1271048.
