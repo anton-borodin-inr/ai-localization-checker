@@ -124,6 +124,64 @@ def test_rejects_identical_semantic_edits_with_different_recipe_ids(changes):
         api().load_recipes(canonical_bytes(document(recipe(), alias)))
 
 
+@pytest.mark.parametrize(
+    ("key", "original"),
+    [
+        ("Mining", "Bergbau"),
+        ("Tile yields", "Felderträge"),
+        ("New Game", "Neues Spiel"),
+        ("Check for idle units", "Untätige Einheiten anzeigen"),
+        (
+            "Requires at least [amount] population",
+            "Benötigt mindestens [amount] Bevölkerung",
+        ),
+    ],
+)
+def test_rejects_foreign_value_equivalent_to_same_key_language_fallback(key, original):
+    foreign = recipe(
+        id="foreign-de",
+        language="de",
+        intended_class="wrong_language",
+        mechanism="foreign_text",
+        key=key,
+        original=original,
+        replacement=key,
+    )
+    missing = {
+        **foreign,
+        "id": "missing-de",
+        "mechanism": "missing_translation",
+        "operation": "remove",
+        "replacement": None,
+    }
+    with pytest.raises(CaptureError, match="Equivalent rendered.*same key/language"):
+        api().load_recipes(canonical_bytes(document(foreign, missing)))
+
+
+def test_allows_foreign_text_distinct_from_fallback_and_other_key_language_values():
+    foreign = recipe(
+        id="foreign-de",
+        language="de",
+        intended_class="wrong_language",
+        mechanism="foreign_text",
+        original="Bergbau",
+        replacement="Minage",
+    )
+    missing = {
+        **foreign,
+        "id": "missing-de",
+        "mechanism": "missing_translation",
+        "operation": "remove",
+        "replacement": None,
+    }
+    english = {**foreign, "id": "foreign-en", "language": "en", "original": ""}
+    other_key = {**foreign, "id": "other-key-de", "key": "Another key"}
+    parsed = api().load_recipes(
+        canonical_bytes(document(foreign, missing, english, other_key))
+    )
+    assert len(parsed.recipes) == 4
+
+
 def test_english_foreign_text_and_mismatched_placeholder_are_supported():
     foreign = recipe(
         id="worker-foreign-en",

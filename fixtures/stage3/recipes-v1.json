@@ -25,31 +25,7 @@
       "original": "?",
       "replacement": "Hilfe",
       "targets": [{"screen": "options-gameplay", "text": "?", "match": "exact"}],
-      "source_evidence": "MainMenuScreen.kt:216-227 and IconCircleGroup.kt:23-29 at the pinned fork. One full dev occurrence. Source-qualified only; qualify Hilfe before the longer variant and stop on failure."
-    },
-    {
-      "id": "help-exclamation-overflow-en",
-      "language": "en",
-      "intended_class": "overflow",
-      "mechanism": "lengthen",
-      "operation": "replace",
-      "key": "?",
-      "original": "",
-      "replacement": "Help!",
-      "targets": [{"screen": "options-gameplay", "text": "?", "match": "exact"}],
-      "source_evidence": "Second deterministic length variant of the same source-qualified help-circle target. Qualify Help first; this variant still needs its own runtime gate."
-    },
-    {
-      "id": "help-exclamation-overflow-de",
-      "language": "de",
-      "intended_class": "overflow",
-      "mechanism": "lengthen",
-      "operation": "replace",
-      "key": "?",
-      "original": "?",
-      "replacement": "Hilfe!",
-      "targets": [{"screen": "options-gameplay", "text": "?", "match": "exact"}],
-      "source_evidence": "Second deterministic length variant of the same source-qualified help-circle target. Qualify Hilfe first; this variant still needs its own runtime gate."
+      "source_evidence": "MainMenuScreen.kt:216-227 and IconCircleGroup.kt:23-29 at the pinned fork. One full dev occurrence. Source-qualified only; runtime own-label overflow qualification must stop on failure. No second length variant is used to inflate target diversity."
     },
     {
       "id": "mining-truncation-en",
@@ -76,28 +52,52 @@
       "source_evidence": "TechPickerScreen.kt:253; TechButton.kt:28-32,77. Issue45 truncation-mining observed this value. Archery stays selected; no hidden suffix is a visible reference or label."
     },
     {
-      "id": "mining-mineral-truncation-en",
+      "id": "masonry-truncation-en",
       "language": "en",
       "intended_class": "truncated_text",
       "mechanism": "lengthen",
       "operation": "replace",
-      "key": "Mining",
+      "key": "Masonry",
       "original": "",
-      "replacement": "Mining and mineral extraction",
-      "targets": [{"screen": "tech-picker", "text": "Mining", "match": "exact"}],
-      "source_evidence": "Second fixed length variant of the known TechButton ellipsis mechanism; runtime qualification is still required."
+      "replacement": "Masonry and stone construction",
+      "targets": [{"screen": "tech-picker", "text": "Masonry", "match": "exact"}],
+      "source_evidence": "TechPickerScreen.kt:253 assigns the translated title; TechButton.kt:28-33,77 fixes a non-wrapping font-14 label to width 140 with ellipsis. English.properties:8540 has an empty RHS. One full Masonry title across all dev dumps; Archery remains selected, so no selected-detail full-value copy is introduced. Distinct actor from Mining/Construction. Source-qualified, not observed mutated truncation; D-023/D-025 and isolation remain runtime gates."
     },
     {
-      "id": "mining-mineral-truncation-de",
+      "id": "masonry-truncation-de",
       "language": "de",
       "intended_class": "truncated_text",
       "mechanism": "lengthen",
       "operation": "replace",
-      "key": "Mining",
-      "original": "Bergbau",
-      "replacement": "Bergbau und Mineralgewinnung",
-      "targets": [{"screen": "tech-picker", "text": "Bergbau", "match": "exact"}],
-      "source_evidence": "Second fixed length variant of the known TechButton ellipsis mechanism; runtime qualification is still required."
+      "key": "Masonry",
+      "original": "Mauerarbeiten",
+      "replacement": "Mauerarbeiten und Steinbau",
+      "targets": [{"screen": "tech-picker", "text": "Mauerarbeiten", "match": "exact"}],
+      "source_evidence": "TechPickerScreen.kt:253; TechButton.kt:28-33,77; German.properties:5137. One full Masonry title across all dev dumps, a distinct actor from Mining/Construction. Archery remains selected; no same-screenshot full-value copy was found by source/dump scope qualification. Actual ellipsis, visibility and unchanged unmutated elements must pass runtime review."
+    },
+    {
+      "id": "construction-truncation-en",
+      "language": "en",
+      "intended_class": "truncated_text",
+      "mechanism": "lengthen",
+      "operation": "replace",
+      "key": "Construction",
+      "original": "",
+      "replacement": "Construction and civil engineering",
+      "targets": [{"screen": "tech-picker", "text": "Construction", "match": "exact"}],
+      "source_evidence": "TechPickerScreen.kt:253; TechButton.kt:28-33,77 creates the fixed-width 140 ellipsis path. English.properties:8565 has an empty RHS. One full Construction title across all dev dumps, distinct from Mining/Masonry. Archery stays selected; D-023/D-025 and actual mutated glyph/isolation checks are pending runtime, not inferred labels."
+    },
+    {
+      "id": "construction-truncation-de",
+      "language": "de",
+      "intended_class": "truncated_text",
+      "mechanism": "lengthen",
+      "operation": "replace",
+      "key": "Construction",
+      "original": "Baukunst",
+      "replacement": "Baukunst und Gebäudetechnik",
+      "targets": [{"screen": "tech-picker", "text": "Baukunst", "match": "exact"}],
+      "source_evidence": "TechPickerScreen.kt:253; TechButton.kt:28-33,77; German.properties:5150. One full Construction title across all dev dumps, distinct from Mining/Masonry. Archery remains selected; no same-screenshot full-value copy was found by source/dump qualification. Actual ellipsis, D-023/D-025 boundaries and dynamic isolation remain mandatory."
     },
     {
       "id": "worker-foreign-en",
@@ -131,9 +131,9 @@
       "operation": "replace",
       "key": "Mining",
       "original": "Bergbau",
-      "replacement": "Mining",
+      "replacement": "Minage",
       "targets": [{"screen": "tech-picker", "text": "Bergbau", "match": "exact"}],
-      "source_evidence": "Explicit English value in the active German table. Same displayed word as fallback, but distinct mutation provenance: replace, not remove. D-044 intended-language rule; runtime gate required."
+      "source_evidence": "Authored French Minage in the active German table, not the English fallback Mining. TechPickerScreen.kt:253; TechButton.kt:28-32,77. One full unselected Mining title, with Archery selected. Lookup and target are source-qualified; actual French glyph visibility and isolation remain runtime gates."
     },
     {
       "id": "research-placeholder-en",
@@ -205,7 +205,7 @@
       "original": null,
       "replacement": "Erhöhen",
       "targets": [{"screen": "options-gameplay", "text": "+", "match": "exact"}],
-      "source_evidence": "UncivSlider.kt:87-88,201-220; IconCircleGroup.kt:23-29. Separate increase control with fixed 15x15 own-label bounds, font 18, no wrap/ellipsis. The key is absent in German.properties. One full dev occurrence. This does not supply the missing second overflow screen; runtime qualification remains mandatory."
+      "source_evidence": "UncivSlider.kt:87-88,201-220; IconCircleGroup.kt:23-29. Separate increase control with fixed 15x15 own-label bounds, font 18, no wrap/ellipsis. The key is absent in German.properties. One full dev occurrence. Single-screen overflow coverage is the accepted v1 limitation in D-050; runtime qualification remains mandatory."
     },
     {
       "id": "tile-yields-foreign-en",
@@ -227,9 +227,9 @@
       "operation": "replace",
       "key": "Tile yields",
       "original": "Felderträge",
-      "replacement": "Tile yields",
+      "replacement": "Gains du sol",
       "targets": [{"screen": "empire-stats", "text": "Felderträge", "match": "exact"}],
-      "source_evidence": "StatsOverviewTab.kt:110-115,165-172; German.properties:1606. Explicit English replacement in the active German table. One full empire-stats occurrence, no other dev impact. Distinct edit provenance from removal even if the final word matches fallback; not independent visual-quality evidence. Runtime isolation remains pending."
+      "source_evidence": "StatsOverviewTab.kt:110-115,165-172; German.properties:1606. Authored French Gains du sol replaces the German value and differs from the English fallback Tile yields. One full empire-stats occurrence, no other dev impact. Natural table reflow and actual mutated visibility remain runtime gates."
     },
     {
       "id": "tile-yields-fallback-de",
@@ -263,9 +263,9 @@
       "operation": "replace",
       "key": "New Game",
       "original": "Neues Spiel",
-      "replacement": "New Game",
+      "replacement": "Nouvelle partie",
       "targets": [{"screen": "civilopedia", "text": "Neues Spiel", "match": "exact"}],
-      "source_evidence": "CivilopediaScreen.kt:131-170; German.properties:3174. One full civilopedia entry label; no impact on the separate Start new game backdrop key. Explicit foreign value, not removal. Natural row sizing and translated-name sorting are pending isolation risks; no truncation is asserted."
+      "source_evidence": "CivilopediaScreen.kt:131-170; German.properties:3174. Authored French Nouvelle partie is distinct from the English fallback New Game. One full civilopedia entry; the separate Start new game backdrop key is unaffected. Natural row sizing and translated-name sorting remain dynamic isolation risks; no truncation is asserted."
     },
     {
       "id": "civilopedia-new-game-fallback-de",
@@ -299,9 +299,9 @@
       "operation": "replace",
       "key": "Check for idle units",
       "original": "Untätige Einheiten anzeigen",
-      "replacement": "Check for idle units",
+      "replacement": "Unités inactives",
       "targets": [{"screen": "options-gameplay", "text": "Untätige Einheiten anzeigen", "match": "exact"}],
-      "source_evidence": "GameplayTab.kt:7; OptionsPopupHelpers.kt:91-114; German.properties:931. One full options-gameplay occurrence, no other dev impact. Explicit English value in German; removal is a separate edit mechanism, not extra interface breadth."
+      "source_evidence": "GameplayTab.kt:7; OptionsPopupHelpers.kt:91-114; German.properties:931. Authored French Unités inactives differs from the English fallback Check for idle units. One full options-gameplay occurrence, no other dev impact. Actual visibility and unchanged unmutated checkbox layout remain runtime gates."
     },
     {
       "id": "idle-units-fallback-de",
@@ -335,9 +335,9 @@
       "operation": "replace",
       "key": "Requires at least [amount] population",
       "original": "Benötigt mindestens [amount] Bevölkerung",
-      "replacement": "Requires at least [amount] population",
+      "replacement": "Requiert au moins [amount] habitants",
       "targets": [{"screen": "city-production", "text": "[RED]Benötigt mindestens 2 Bevölkerung[]", "match": "exact"}],
-      "source_evidence": "BaseUnit.kt:251-254; CityConstructionsTable.kt:586-595; ColorMarkupLabel.kt:49-55,126-132; German.properties:2323. One fully visible logical rejection label across all dev screens. Preserve amount substitution and red markup; explicit English is wrong-language, not broken-placeholder other."
+      "source_evidence": "BaseUnit.kt:251-254; CityConstructionsTable.kt:586-595; ColorMarkupLabel.kt:49-55,126-132; German.properties:2323. Authored French Requiert au moins [amount] habitants differs from the English fallback while preserving amount substitution and red markup. One full city-production rejection label; visibility and wrapping/reflow still require runtime isolation."
     },
     {
       "id": "population-requirement-fallback-de",

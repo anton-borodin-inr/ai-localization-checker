@@ -90,21 +90,42 @@ The current catalog plans the following **intended occurrences**, not labels:
 
 | Intended class | EN | DE |
 |---|---|---|
-| `overflow` | `?` -> `Help`, `Help!`; add `-` -> `Decrease`, `+` -> `Increase` | `?` -> `Hilfe`, `Hilfe!`; add `-` -> `Verringern`, `+` -> `Erhöhen` |
-| `truncated_text` | Two fixed Mining length variants | Two fixed Mining length variants |
+| `overflow` | `?` -> `Help`; add `-` -> `Decrease`, `+` -> `Increase` | `?` -> `Hilfe`; add `-` -> `Verringern`, `+` -> `Erhöhen` |
+| `truncated_text` | Mining, Masonry and Construction: three different TechButton titles | Mining, Masonry and Construction: three different TechButton titles |
 | `wrong_language` | Foreign values for Mining, Worker (two widgets), population requirement, idle-unit checkbox, Tile yields and Civilopedia's New Game entry | Packaged deletion and explicit foreign value for Mining, population requirement, idle-unit checkbox, Tile yields and Civilopedia's New Game entry |
 | `other` | Broken Research and population-requirement placeholders | Broken Research and population-requirement placeholders |
 
 All **32 recipes bind 33 intended occurrences** (29 primary, 4 `other`) in the
 existing static dev inventory. This is a pre-runtime count, not 33 observed
-defects or independently labeled examples. Per-screen/language expected counts:
+defects or independently labeled examples. A **distinct target** is the owning
+actor path within one screen/language and intended class, counted once across
+recipes. An **occurrence** is a bound logical mutation occurrence across planned
+variants. The same widget can be a target for different classes; do not sum
+class-specific target counts as unique physical widgets across all classes.
+
+Distinct targets by class × language × screen:
+
+| Screen | Language | overflow | wrong_language | truncated_text | other |
+|---|---|---:|---:|---:|---:|
+| options-gameplay | en | 3 | 1 | 0 | 0 |
+| options-gameplay | de | 3 | 1 | 0 | 0 |
+| tech-picker | en | 0 | 1 | 3 | 1 |
+| tech-picker | de | 0 | 1 | 3 | 1 |
+| city-production | en | 0 | 3 | 0 | 1 |
+| city-production | de | 0 | 1 | 0 | 1 |
+| empire-stats | en | 0 | 1 | 0 | 0 |
+| empire-stats | de | 0 | 1 | 0 | 0 |
+| civilopedia | en | 0 | 1 | 0 | 0 |
+| civilopedia | de | 0 | 1 | 0 | 0 |
+
+Intended occurrences by class × language × screen:
 
 | Screen | Language | overflow | wrong_language | truncated_text | other | Total |
 |---|---|---:|---:|---:|---:|---:|
-| options-gameplay | en | 4 | 1 | 0 | 0 | 5 |
-| options-gameplay | de | 4 | 2 | 0 | 0 | 6 |
-| tech-picker | en | 0 | 1 | 2 | 1 | 4 |
-| tech-picker | de | 0 | 2 | 2 | 1 | 5 |
+| options-gameplay | en | 3 | 1 | 0 | 0 | 4 |
+| options-gameplay | de | 3 | 2 | 0 | 0 | 5 |
+| tech-picker | en | 0 | 1 | 3 | 1 | 5 |
+| tech-picker | de | 0 | 2 | 3 | 1 | 6 |
 | city-production | en | 0 | 3 | 0 | 1 | 4 |
 | city-production | de | 0 | 2 | 0 | 1 | 3 |
 | empire-stats | en | 0 | 1 | 0 | 0 | 1 |
@@ -112,13 +133,41 @@ defects or independently labeled examples. Per-screen/language expected counts:
 | civilopedia | en | 0 | 1 | 0 | 0 | 1 |
 | civilopedia | de | 0 | 2 | 0 | 0 | 2 |
 
-Seed 59 produces 5 batches and 7 builder requests (including empty control and
-standalone calibration), with 18 static-conflict pairs. N never exceeds 2;
-single-occurrence shares are EN 7/11 and DE 12/15. These are planner counts,
-not measured runtime split rates. Explicit-English and removal variants can
-render the same text; distinct provenance does not establish distinct visual
-quality examples. Reassess actual visibility, duplicates and all counts in
-PR (c), rather than treating this table as human labels.
+Seed 59 produces 3 batches and 5 builder requests (including empty control and
+standalone calibration), with 11 static-conflict pairs. N never exceeds 2;
+single-occurrence shares are EN 7/11 and DE 8/13. These are planner counts,
+not measured runtime split rates. Repeated Mining and Help exclamation variants
+were removed: there are exactly three distinct truncation targets and three
+distinct overflow targets per language, each with one recipe per target/class.
+Reassess actual visibility, glyph-level duplicates and all counts in PR (c),
+rather than treating these tables as human labels.
+
+### Same-key/language equivalent-text guard
+
+DE foreign-text values use authored **French** text, not the source-English
+fallback. The capture languages remain EN/DE; no third capture language is added.
+
+| Source key | DE foreign value (French) | DE deletion fallback (English) |
+|---|---|---|
+| `Mining` | `Minage` | `Mining` |
+| `Tile yields` | `Gains du sol` | `Tile yields` |
+| `New Game` | `Nouvelle partie` | `New Game` |
+| `Check for idle units` | `Unités inactives` | `Check for idle units` |
+| `Requires at least [amount] population` | `Requiert au moins [amount] habitants` | `Requires at least [amount] population` |
+
+`RecipeSet` rejects two recipes with the same literal key/language and identical
+effective translated input: packaged deletion resolves to the source key/template;
+add/replace resolves to the literal replacement. This also catches matching
+templates before identical argument substitution. The shared validator is used
+before inventory reads in `create_plan` and again by `load_plan`, so recomputing
+patch/batch hashes cannot admit a fallback/foreign alias. Exact semantic-edit
+uniqueness remains a separate check. Different keys or languages are not merged.
+
+This is a proof of equivalent translation inputs, **not a libGDX rasterizer**.
+Different values may still shorten to identical visible glyphs or differ only
+in markup/shaping; runtime qualification/review must detect those remaining
+duplicates. An offline pass never proves unique pixels or independent quality
+evidence. Original source values/tokens are not normalized or repaired.
 
 Class balance is a target, **not a cap or production blocker**, following Anton's
 2026-11-03 clarification. Do not discard valid wrong-language/truncation cases
@@ -129,7 +178,7 @@ balance, never detector quality. The policy explicitly records
 remain mandatory. Similar variants on one widget do not establish interface
 breadth or independent quality evidence.
 
-### Source-qualified overflow targets and unresolved screen breadth
+### Source-qualified overflow targets and accepted v1 coverage limitation
 
 The main-menu help circle behind Gameplay Options is one fully visible logical
 text occurrence in each dev language. At the pinned fork,
@@ -146,14 +195,17 @@ translation assets, so these recipes use `add` with `original: null`. Each
 has one full logical occurrence per language across the complete dev inventory.
 The libGDX 1.14.2 plain-Label draw path does not clip to these own bounds.
 
-**The requested two-screen overflow breadth is NOT met.** The three distinct
-actor targets (help, decrease, increase) all belong to `options-gameplay`.
-Language/length variants do not add targets. Other dev paths either grow/wrap,
-ellipsize, have only scroll clipping, are not visible, or—in the global
-hourglass case—exceed N. Qualification stops on this breadth point; no scoped
-injection or game/layout change is implemented. The Report lists the checked
-candidates and the owner's options. Do not freeze the builder input as final
-until that outstanding scope decision is resolved.
+**Anton accepted the narrower translation-only v1 coverage on 2026-11-03:**
+three distinct actor targets (help, decrease, increase), all on
+`options-gameplay`, with **no scoped injection**. Language/length variants do
+not add targets. Other dev paths grow/wrap, ellipsize, have only scroll clipping,
+are not visible, or—in the global hourglass case—exceed N. This is a documented
+v1 limitation in D-050, no longer an unresolved two-screen scope decision.
+The same independent qualification procedure may find no qualifying overflow
+target on hold-out; in that case overflow recall there is **undefined**, not
+zero or one. Report that limitation, without fabricating positives, changing
+the injection mechanism or inspecting that cohort in this dev task. Metric
+implementation and the zero-denominator rule are unchanged.
 
 Qualify `Help` and `Hilfe` first, then other overflow singletons. Require actual
 horizontal **own-label** overflow, N compliance, the pixel gate and unchanged
@@ -194,7 +246,8 @@ supported visible bracket-template target was found on the other three paths.
   for own-bounds overflow. No own-label truncator or visible source template
   was found in the selected tab.
 - **Tech Picker:** `TechButton.kt:28-38,77-78` supplies fixed-width ellipsized
-  titles and fixed-width plain counters. Mining qualifies for truncation;
+  titles and fixed-width plain counters. Mining, Masonry and Construction are
+  three distinct, fully visible, unselected truncation targets per language;
   the global counter edit is rejected for its complete visible multiplicity.
 
 These are source-qualified boundaries of the **frozen selected states**, not a
@@ -204,14 +257,22 @@ claim that every possible UI state of a screen has been exhaustively ruled out.
 
 - EN can show `wrong_language` through explicit foreign values. Only the
   source-English missing-entry fallback is inapplicable as wrong-language in EN.
-- A packaged DE deletion is genuine fallback. Replacing its value with English
-  is a distinct foreign-text recipe even when both display the same word.
+- A packaged DE deletion is genuine fallback. Replacing the same key with that
+  English fallback would duplicate its visible input and is rejected, not
+  counted as another case. French values keep the two mechanisms distinct.
   Omission from a mod would expose the packaged German value, not remove it.
 - Research keeps source key `Research [technology]` and changes only the value's
   token to `[amount]`. It is not the Worker literal-token recipe.
-- Mining remains unselected, with Archery selected. D-023's full-text-elsewhere
-  exception and D-025's viewport exclusion must still be checked at qualification
-  and human review. Dump flags do not create labels. D-047 is unchanged.
+- Mining, Masonry and Construction remain unselected, with Archery selected.
+  Their fixed-width 140, font-14 ellipsis path is `TechButton.kt:28-33,77`, fed
+  by `TechPickerScreen.kt:253`. The new literal assets are Masonry EN empty /
+  DE `Mauerarbeiten` (`English.properties:8540`, `German.properties:5137`) and
+  Construction EN empty / DE `Baukunst` (`English.properties:8565`,
+  `German.properties:5150`). Each has one full clean title in the complete dev
+  inventory and no full selected-detail copy. D-023's full-text-elsewhere
+  exception and D-025's viewport exclusion still require actual runtime/human
+  review. Source-qualified is not observed mutated truncation; dump flags do
+  not create labels. D-047 is unchanged.
 
 Selectors use the observed full input only for target binding; actual rendered
 text stays separate. Known key metadata discovers additional occurrences;
@@ -384,12 +445,18 @@ mutated batches independently and require the same total. Controls, unaffected
 screens and forward/reverse repeats add **zero** intended defect occurrences.
 Length variants can add planned occurrences but not distinct interface targets.
 Report both counts; never replace an occurrence total with the number of recipes.
+For each class/language/screen, also group by the owning actor path across
+recipes to report distinct targets. Different mutation mechanisms on one widget
+can produce different occurrences but still represent one target. Reject
+same-key/language equivalent translated inputs before planning; do not inflate
+volume by counting provenance-only aliases of the source fallback.
 
 ### 4. Check the candidate catalog against planner validation
 
 1. Parse the catalog with `mutation_recipes.load_recipes`. It must pass literal
    edit semantics, class/mechanism/operation checks, exact IDs/selectors and
-   duplicate semantic-edit rejection. This parser does **not** verify that the
+   duplicate semantic-edit and equivalent translated-input rejection. This
+   parser does **not** verify that the
    original RHS exists in the fork or that the selected class will manifest;
    source qualification and the builder/runtime checks supply those proofs.
 2. For a dev catalog, run `l10n-mutate plan` with the authoritative manifest,
@@ -422,12 +489,14 @@ Report both counts; never replace an occurrence total with the number of recipes
 
 ### Dev-only worked examples (not a target-selection dependency)
 
-- `Mining` on TechButton illustrates the ellipsis path. Its unselected state
-  avoids a selected-description full-value exception; this does not justify
+- `Mining`, `Masonry` and `Construction` on different TechButtons illustrate the
+  ellipsis path and distinct-target accounting. Their unselected state avoids a
+  selected-description full-value exception; this does not justify
   assuming that every other title shortens, or that scroll clipping is a defect.
 - The Gameplay Options backdrop's `?` -> `Help`/`Hilfe` illustrates a small,
-  source-fixed label without wrapping. Both languages and exclamation variants
-  still represent **one target**; source qualification is not runtime evidence.
+  source-fixed label without wrapping. Both languages refer to the same widget;
+  adding exclamation variants would not add a target. Source qualification is
+  not runtime evidence.
 - `Worker` -> `Arbeiter` in EN illustrates two visible logical widgets from one
   recipe. Its growing/wrapping title is not an overflow or truncation example.
 - `Research [technology]` with an unmatched `[amount]` value token illustrates

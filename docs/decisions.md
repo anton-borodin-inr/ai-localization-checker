@@ -551,6 +551,17 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
   counts and any unachievable coverage/volume for his decision. Placeholders
   remain a separate `other` cohort. EN foreign-text injection is valid; EN source
   fallback is not a wrong-language mechanism.
+  **V1 limitation accepted by Anton on 2026-11-03:** retain translation-only
+  injection with three distinct overflow targets on `options-gameplay` only;
+  no scoped injection is authorized or required. The same qualification
+  procedure may yield no qualifying overflow target on hold-out. In that case,
+  overflow recall there is undefined, not zero or one, and the coverage limit
+  must be reported rather than manufacturing a positive target. This records
+  the limitation without inspecting that cohort or changing metric code.
+  Report distinct targets as well as intended occurrences per class, language
+  and source screen; language/length variants of one widget do not add targets.
+  Equivalent rendered translation inputs on the same key/language are rejected:
+  different edit provenance alone must not duplicate the source-fallback text.
 - **Why:** Native mod overrides do not remove packaged translations, and the
   menu hook does not establish a universal mod context. One global key can
   affect many occurrences. Incremental font-atlas allocation can alter unrelated

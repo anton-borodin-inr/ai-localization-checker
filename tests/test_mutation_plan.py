@@ -165,6 +165,36 @@ def test_recipe_cannot_target_an_excluded_screen(tmp_path):
         api().create_plan(**kwargs)
 
 
+def test_equivalent_rendered_text_is_rejected_before_inventory_reads(
+    tmp_path, monkeypatch
+):
+    foreign = recipe(
+        id="foreign-de",
+        language="de",
+        intended_class="wrong_language",
+        mechanism="foreign_text",
+        original="Bergbau",
+        replacement="Mining",
+    )
+    missing = {
+        **foreign,
+        "id": "missing-de",
+        "mechanism": "missing_translation",
+        "operation": "remove",
+        "replacement": None,
+    }
+    kwargs = inputs(tmp_path, [foreign, missing])
+    original = Path.read_bytes
+
+    def guarded(path):
+        assert path != kwargs["inventory"], "Equivalent-output guard was too late"
+        return original(path)
+
+    monkeypatch.setattr(Path, "read_bytes", guarded)
+    with pytest.raises(CaptureError, match="Equivalent rendered"):
+        api().create_plan(**kwargs)
+
+
 def positioned(text, identity, x, y=20, **changes):
     box = [x, y, x + 40, y + 20]
     fields = {
@@ -458,6 +488,40 @@ def refresh_wire_derivatives(plan):
     plan["calibration"] = planner._calibration(plan["mutations"])
     plan["static_conflicts"] = planner._static_conflicts(plan["mutations"])
     plan["planned_recipe_class_counts"] = planner._recipe_counts(plan["mutations"])
+
+
+def test_manifest_reader_rejects_equivalent_output_even_with_recomputed_hashes(
+    tmp_path,
+):
+    foreign = recipe(
+        id="foreign-de",
+        language="de",
+        intended_class="wrong_language",
+        mechanism="foreign_text",
+        original="Bergbau",
+        replacement="Minage",
+        targets=[{"screen": "tech-picker", "text": "Bergbau", "match": "exact"}],
+    )
+    missing = {
+        **foreign,
+        "id": "missing-de",
+        "mechanism": "missing_translation",
+        "operation": "remove",
+        "replacement": None,
+    }
+    kwargs = inputs(
+        tmp_path,
+        [foreign, missing],
+        {("tech-picker", "de"): [positioned("Bergbau", "root/de-mining", 300)]},
+    )
+    plan = api().create_plan(**kwargs)
+    assert api().load_plan(canonical_bytes(plan), manifest=MANIFEST) == plan
+    mutation = plan["mutations"]["foreign-de"]
+    mutation["recipe"]["replacement"] = "Mining"
+    mutation["patch"] = api().Recipe.model_validate(mutation["recipe"]).patch()
+    refresh_wire_derivatives(plan)
+    with pytest.raises(CaptureError, match="Equivalent rendered"):
+        api().load_plan(canonical_bytes(plan), manifest=MANIFEST)
 
 
 @pytest.mark.parametrize(
@@ -1008,10 +1072,10 @@ def test_committed_dev_catalog_covers_all_screens_and_twenty_occurrences(tmp_pat
         for screen in registry().dev
         for lang in ("en", "de")
     } == {
-        ("options-gameplay", "en"): (4, 1, 0, 0),
-        ("options-gameplay", "de"): (4, 2, 0, 0),
-        ("tech-picker", "en"): (0, 1, 2, 1),
-        ("tech-picker", "de"): (0, 2, 2, 1),
+        ("options-gameplay", "en"): (3, 1, 0, 0),
+        ("options-gameplay", "de"): (3, 2, 0, 0),
+        ("tech-picker", "en"): (0, 1, 3, 1),
+        ("tech-picker", "de"): (0, 2, 3, 1),
         ("city-production", "en"): (0, 3, 0, 1),
         ("city-production", "de"): (0, 2, 0, 1),
         ("empire-stats", "en"): (0, 1, 0, 0),
@@ -1063,11 +1127,79 @@ def test_committed_catalog_spreads_qualified_mechanisms_without_claiming_breadth
         for o in m["occurrences"]
     }
     assert len(targets) == 3
-    # This is an explicit unresolved qualification shortfall, not a pass for
-    # the requested two-screen breadth or measured overflow.
+    # The owner accepted this single-screen v1 limitation in D-050;
+    # it still does not establish measured overflow or two-screen breadth.
     assert {screen for screen, _ in targets} == {"options-gameplay"}
     for m in plan["mutations"].values():
         if m["recipe"]["key"] in ("-", "+"):
             assert m["recipe"]["operation"] == "add"
             assert m["recipe"]["original"] is None
             assert len(m["occurrences"]) == 1
+
+
+def test_committed_catalog_has_distinct_truncation_and_overflow_targets(tmp_path):
+    plan = api().create_plan(**real_inputs(tmp_path))
+    for language in ("en", "de"):
+        truncations = [
+            m
+            for m in plan["mutations"].values()
+            if m["recipe"]["language"] == language
+            and m["recipe"]["intended_class"] == "truncated_text"
+        ]
+        assert {m["recipe"]["key"] for m in truncations} == {
+            "Mining",
+            "Masonry",
+            "Construction",
+        }
+        assert len(truncations) == 3
+        assert (
+            len(
+                {
+                    (o["screen"], o["actor_path"])
+                    for m in truncations
+                    for o in m["occurrences"]
+                }
+            )
+            == 3
+        )
+        overflows = [
+            m
+            for m in plan["mutations"].values()
+            if m["recipe"]["language"] == language
+            and m["recipe"]["intended_class"] == "overflow"
+        ]
+        assert len(overflows) == 3
+        assert {m["recipe"]["key"] for m in overflows} == {"?", "-", "+"}
+
+
+def test_distinct_target_matrix_counts_owning_actors_not_recipe_variants(tmp_path):
+    plan = api().create_plan(**real_inputs(tmp_path))
+    classes = ("overflow", "wrong_language", "truncated_text", "other")
+    targets = {
+        (screen, language, kind): {
+            o["actor_path"]
+            for m in plan["mutations"].values()
+            if m["recipe"]["intended_class"] == kind
+            for o in m["occurrences"]
+            if o["screen"] == screen and o["language"] == language
+        }
+        for screen in registry().dev
+        for language in ("en", "de")
+        for kind in classes
+    }
+    assert {
+        (screen, language): tuple(len(targets[screen, language, c]) for c in classes)
+        for screen in registry().dev
+        for language in ("en", "de")
+    } == {
+        ("options-gameplay", "en"): (3, 1, 0, 0),
+        ("options-gameplay", "de"): (3, 1, 0, 0),
+        ("tech-picker", "en"): (0, 1, 3, 1),
+        ("tech-picker", "de"): (0, 1, 3, 1),
+        ("city-production", "en"): (0, 3, 0, 1),
+        ("city-production", "de"): (0, 1, 0, 1),
+        ("empire-stats", "en"): (0, 1, 0, 0),
+        ("empire-stats", "de"): (0, 1, 0, 0),
+        ("civilopedia", "en"): (0, 1, 0, 0),
+        ("civilopedia", "de"): (0, 1, 0, 0),
+    }

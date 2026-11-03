@@ -106,6 +106,16 @@ class RecipeSet(StrictModel):
         edits = [tuple(r.patch().items()) for r in self.recipes]
         if len(set(edits)) != len(edits):
             raise ValueError("Duplicate semantic recipe edit")
+        # A missing packaged translation renders the source key/template.
+        # Different edit provenance must not duplicate that same visible input.
+        outputs = [
+            (r.language, r.key, r.key if r.operation == "remove" else r.replacement)
+            for r in self.recipes
+        ]
+        if len(set(outputs)) != len(outputs):
+            raise ValueError(
+                "Equivalent rendered translation inputs for same key/language"
+            )
         return self
 
 
