@@ -588,3 +588,41 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
   Proposed for the decision-log review. It does not edit or supersede D-042's
   issue-47 criterion or change labels, metrics, the split, or D-012/D-023–025/
   D-038–044/D-046/D-047/D-049. See [mutation-generator.md](mutation-generator.md).
+
+## D-051 — Narrow AndroidX bookkeeping preservation exception
+
+- **Date:** 2026-11-05
+- **Status:** Proposed
+- **Decision:** Record Anton's explicit task-chat authorization to permit only
+  regular-file content/hash and presence changes at these four package-relative
+  paths in `DATA_ROOTS["private"]`: `files/profileInstalled`,
+  `no_backup/androidx.work.workdb`, `no_backup/androidx.work.workdb-shm`, and
+  `no_backup/androidx.work.workdb-wal`. Record every path's before/after size and
+  SHA-256 (or explicit absence), including unchanged observations. This is pure
+  comparison and evidence recording: never write or restore these files.
+- **Why:** The ProfileInstaller marker and WorkManager database/WAL/SHM are
+  AndroidX bookkeeping, not game state, and may vary at startup. Rendering is
+  independently checked by strict RGBA and engine-dump gates. The exception is
+  specific owner authorization, not an inference that caches/databases in
+  general are safe to ignore.
+- **Alternatives considered:** Keep rejecting these four content/presence
+  deltas (blocks the authorized startup variability); ignore broader directory,
+  database or cache patterns (could hide game-state changes); restore or edit
+  the files (not authorized); relax pixel/layout gates (not authorized).
+- **Consequences:** Settings and saves remain byte-exact. Every other app-data
+  path and existing-file ownership/mode remain strict; directories, symlinks,
+  other roots, prefixes, suffixes and descendants are not exempt. Any unexpected
+  delta stops the run without automatic app-data repair. Preserve complete raw
+  inventory deltas separately from actual exempt and unexpected deltas. Existing
+  declared-new hook-output handling stays unchanged: pre-existing outputs are
+  still strict. Apply the policy to original and per-install backup readbacks,
+  install input/after inventories, capture preflight/before/after inventories,
+  downgrade/reference verification and final restoration. Bind the exact
+  versioned policy and full ledgers in runtime evidence, and recompute them
+  from authenticated inventories during semantic replay; missing, altered or
+  widened policy/ledgers cannot qualify even with recomputed evidence hashes.
+  Historical failed evidence stays readable and nonqualified; never rewrite or
+  promote it under this exception. D-050's zero-outside-mask RGBA and unchanged
+  unmutated-layout gates, forward/reverse repeatability, install/environment
+  controls, labels, metrics and split are unchanged. This entry records the
+  authorization and remains Proposed for decision-log review.

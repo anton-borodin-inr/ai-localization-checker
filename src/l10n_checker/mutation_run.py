@@ -18,6 +18,8 @@ from l10n_checker.mutation_device import (
     install_verified,
     installed_identity,
     inventory_changes,
+    preservation_policy,
+    preservation_report,
     read_app_data,
     save_backup,
 )
@@ -191,17 +193,20 @@ class MutationRun:
         self.restore_error = None
         self.restore_attempted = False
         self.original_inventory = None
+        self.last_inventory = None
         self.allowed_outputs = set()
         self.clean = {}
         self.plan = catalog.plan
         self.journal = {
             "status": "created",
+            "preservation_policy": preservation_policy(),
             "operations": [],
             "live_provider_requests": 0,
             "api_spend_usd": 0,
         }
         self.content = {
-            "mutation_run_version": 1,
+            "mutation_run_version": 2,
+            "preservation_policy": preservation_policy(),
             "status": "not_run",
             "capture_set_qualified": False,
             "labels_created": False,
@@ -263,6 +268,7 @@ class MutationRun:
                 tools=self.tools,
                 folder=folder,
                 environment=self.environment,
+                previous_inventory=self.last_inventory,
             )
             self.journal["operations"].append(
                 {
@@ -272,6 +278,9 @@ class MutationRun:
                 }
             )
             self.needs_restore = True
+            self.last_inventory = json_bytes(
+                (folder / "after/inventory.json").read_bytes()
+            )
             return result
         finally:
             receipt = folder / "install.json"
@@ -332,14 +341,31 @@ class MutationRun:
         if self.original_inventory is not None:
             current = data_inventory(read_app_data(self.device))
             write_json(self.folder / "private/final-inventory.json", current)
+            relative = f"private/reference-{self.counter:03d}-inventory.json"
+            write_json(self.folder / relative, current)
+            prior = preservation_report(self.last_inventory, current)
             changes = inventory_changes(
                 self.original_inventory, current, self.allowed_outputs
             )
             self.journal["restoration_data_changes"] = changes
+            self.journal["restoration_preservation"] = preservation_report(
+                self.original_inventory, current, self.allowed_outputs
+            )
+            self.journal.setdefault("restoration_checks", []).append(
+                {
+                    "inventory": relative,
+                    "allowed_outputs": sorted(self.allowed_outputs),
+                    "prior_preservation": prior,
+                    "preservation": self.journal["restoration_preservation"],
+                }
+            )
+            self.checkpoint()
             require(
-                not changes,
+                not self.journal["restoration_preservation"]["unexpected_changes"]
+                and not prior["unexpected_changes"],
                 "Original app data not restored; backups retained, no repair",
             )
+            self.last_inventory = current
         self.device.unroot()
         self.content["restoration_verified"] = True
         self.restored = True
@@ -363,15 +389,21 @@ class MutationRun:
         environment_check(reference, self.folder / "environment/initial")
         initial = read_app_data(self.device)
         self.original_inventory = data_inventory(initial)
+        self.last_inventory = self.original_inventory
         self.journal["original_backup"] = save_backup(
             self.folder / "private/original", initial
         )
         readback = data_inventory(read_app_data(self.device))
         write_json(self.folder / "private/original-readback.json", readback)
+        self.journal["original_readback_preservation"] = preservation_report(
+            self.original_inventory, readback
+        )
+        self.checkpoint()
         require(
-            readback == self.original_inventory,
+            not self.journal["original_readback_preservation"]["unexpected_changes"],
             "Initial backup changed during readback",
         )
+        self.last_inventory = readback
         self.install(self.catalog.control)
         self.install(self.reference())
         self.needs_restore = False
@@ -387,6 +419,12 @@ class MutationRun:
         (root / "effective-manifest.json").write_bytes(effective.manifest_bytes)
         before = data_inventory(read_app_data(self.device))
         write_json(root / "before-inventory.json", before)
+        preflight = preservation_report(self.last_inventory, before)
+        write_json(root / "preflight-preservation.json", preflight)
+        self.checkpoint()
+        require(
+            not preflight["unexpected_changes"], "Capture preflight app-data change"
+        )
         prepared = prepare_device(
             self.device, effective, root / "prepare", ["en", "de"]
         )
@@ -500,13 +538,22 @@ class MutationRun:
         save_backup(root / "after-capture", after_archives)
         after = data_inventory(after_archives)
         changes = inventory_changes(before, after, allowed)
+        preservation = preservation_report(before, after, allowed)
         self.journal.setdefault("capture_data_checks", []).append(
-            {"batch_id": record["request"]["id"], "changes": changes}
+            {
+                "batch_id": record["request"]["id"],
+                "role": role,
+                "preflight_preservation": preflight,
+                "changes": changes,
+                "preservation": preservation,
+            }
         )
+        self.checkpoint()
         require(
-            not changes,
+            not preservation["unexpected_changes"],
             "Unexpected app-data change during capture",
         )
+        self.last_inventory = after
         require(
             not summary.get("cleanup_errors"),
             "Capture cleanup failed; no dynamic split",
@@ -624,7 +671,7 @@ class MutationRun:
             self.checkpoint()
             # The independent final root binds the manifest, avoiding a hash cycle.
             index = canonical_bytes(
-                {"version": 2, "files": retained_files(self.folder)}
+                {"version": 3, "files": retained_files(self.folder)}
             )
             (self.folder / "evidence-index.json").write_bytes(index)
             self.evidence_sha256 = digest(index)
@@ -942,6 +989,17 @@ def replay_capture_backup(evidence, root, backup, inputs, inventory):
     return digest(settings)
 
 
+def replay_preservation(recorded, before, after, allowed_new=()):
+    """Bind the complete ledger to authenticated inventories and the exact policy."""
+    expected = preservation_report(before, after, allowed_new)
+    require(
+        canonical_bytes(recorded) == canonical_bytes(expected),
+        "Preservation policy/ledger receipt mismatch",
+    )
+    require(not expected["unexpected_changes"], "Unexpected app-data inventory change")
+    return expected
+
+
 def replay_capture(evidence, folder, artifact, role, inputs, screenshots, before):
     identity = artifact["request"]["id"]
     root = capture_directory(folder, identity, role)
@@ -950,10 +1008,11 @@ def replay_capture(evidence, folder, artifact, role, inputs, screenshots, before
         evidence.read(root, "effective-manifest.json") == effective.manifest_bytes,
         "Effective capture manifest receipt mismatch",
     )
-    require(
-        evidence.json(root, "before-inventory.json") == before,
-        "Capture preflight inventory receipt mismatch",
+    actual_before = evidence.json(root, "before-inventory.json")
+    preflight = replay_preservation(
+        evidence.json(root, "preflight-preservation.json"), before, actual_before
     )
+    before = actual_before
     prepared_raw = evidence.read(root, "prepare/device-plan.json")
     prepared = json_bytes(prepared_raw)
     summary = evidence.json(root, "capture/summary.json")
@@ -1109,11 +1168,39 @@ def replay_capture(evidence, folder, artifact, role, inputs, screenshots, before
         "Capture hook outputs already existed",
     )
     after = replay_backup(evidence, root, "after-capture")
+    check = {
+        "batch_id": identity,
+        "role": role,
+        "preflight_preservation": preflight,
+        "changes": inventory_changes(before, after, allowed),
+        "preservation": preservation_report(before, after, allowed),
+    }
     require(
-        not inventory_changes(before, after, allowed),
+        not check["preservation"]["unexpected_changes"],
         "Capture app-data inventory preservation failed",
     )
-    return after, allowed
+    return after, allowed, check
+
+
+def replay_reference_data(evidence, folder, recorded, original, previous, allowed, n):
+    relative = f"private/reference-{n:03d}-inventory.json"
+    current = evidence.json(folder, relative)
+    expected = {
+        "inventory": relative,
+        "allowed_outputs": sorted(allowed),
+        "prior_preservation": preservation_report(previous, current),
+        "preservation": preservation_report(original, current, allowed),
+    }
+    require(
+        canonical_bytes(recorded) == canonical_bytes(expected),
+        "Reference preservation ledger receipt mismatch",
+    )
+    require(
+        not expected["prior_preservation"]["unexpected_changes"]
+        and not expected["preservation"]["unexpected_changes"],
+        "Final reference app-data preservation failed",
+    )
+    return current
 
 
 def replay_operations(evidence, folder, catalog, inputs, value):
@@ -1129,12 +1216,16 @@ def replay_operations(evidence, folder, catalog, inputs, value):
                 "cleanup_errors",
                 "restoration_error",
                 "restoration_error_details",
-                "restoration_data_changes",
             )
         )
         and journal.get("live_provider_requests") == 0
         and journal.get("api_spend_usd") == 0,
         "Unsuccessful operational receipt journal",
+    )
+    require(
+        canonical_bytes(journal.get("preservation_policy"))
+        == canonical_bytes(preservation_policy()),
+        "Preservation policy receipt mismatch",
     )
     reference = inputs.manifest.build.model_dump()
     certificate = catalog.data["signing"]["reference_certificate_sha256"]
@@ -1142,9 +1233,9 @@ def replay_operations(evidence, folder, catalog, inputs, value):
         evidence, folder, "private/original", journal.get("original_backup")
     )
     require("original_backup" in journal, "Missing original backup receipt")
-    require(
-        evidence.json(folder, "private/original-readback.json") == original,
-        "Original backup readback inventory mismatch",
+    original_readback = evidence.json(folder, "private/original-readback.json")
+    replay_preservation(
+        journal.get("original_readback_preservation"), original, original_readback
     )
     replay_installed_apk(
         evidence, folder, "private/initial-apk", reference, certificate
@@ -1169,8 +1260,15 @@ def replay_operations(evidence, folder, catalog, inputs, value):
         "Missing/extra install operations in receipt journal",
     )
     previous = reference
-    previous_inventory = original
+    previous_inventory = original_readback
     allowed_outputs = set()
+    checks = []
+    restoration_checks = journal.get("restoration_checks")
+    require(
+        type(restoration_checks) is list
+        and len(restoration_checks) == (2 if captures else 1),
+        "Missing/extra reference preservation receipts",
+    )
     for n, (operation, artifact) in enumerate(
         zip(operations, expected, strict=True), 1
     ):
@@ -1196,7 +1294,6 @@ def replay_operations(evidence, folder, catalog, inputs, value):
                 str(catalog.path.parent / artifact["apk"]["path"]),
             ]
             and receipt.get("stdout", "").strip().splitlines()[-1:] == ["Success"]
-            and receipt.get("data_changes") == []
             and not receipt.get("error")
             and not receipt.get("error_details"),
             "Unsuccessful install receipt",
@@ -1218,12 +1315,25 @@ def replay_operations(evidence, folder, catalog, inputs, value):
         after = replay_backup(
             evidence, folder, relative + "/after", receipt.get("post_install")
         )
+        readback = evidence.json(folder, relative + "/before-readback.json")
         require(
             "backup" in receipt
             and "post_install" in receipt
-            and before == after == previous_inventory
-            and evidence.json(folder, relative + "/before-readback.json") == before,
+            and receipt.get("data_changes") == inventory_changes(before, after),
             "Install app-data backup preservation/readback mismatch",
+        )
+        require(
+            canonical_bytes(receipt.get("preservation_policy"))
+            == canonical_bytes(preservation_policy()),
+            "Install preservation policy receipt mismatch",
+        )
+        replay_preservation(
+            receipt.get("backup_readback_preservation"), before, readback
+        )
+        replay_preservation(receipt.get("preservation"), before, after)
+        replay_preservation(receipt.get("post_readback_preservation"), readback, after)
+        replay_preservation(
+            receipt.get("input_preservation"), previous_inventory, before
         )
         require(
             receipt.get("environment")
@@ -1232,9 +1342,19 @@ def replay_operations(evidence, folder, catalog, inputs, value):
         )
         previous = build
         previous_inventory = after
+        if n == 2 or (captures and n == len(expected)):
+            previous_inventory = replay_reference_data(
+                evidence,
+                folder,
+                restoration_checks[0 if n == 2 else 1],
+                original,
+                previous_inventory,
+                allowed_outputs,
+                n,
+            )
         if 3 <= n < 3 + len(captures):
             capture_artifact, role = captures[n - 3]
-            previous_inventory, allowed = replay_capture(
+            previous_inventory, allowed, check = replay_capture(
                 evidence,
                 folder,
                 capture_artifact,
@@ -1244,21 +1364,27 @@ def replay_operations(evidence, folder, catalog, inputs, value):
                 after,
             )
             allowed_outputs.update(allowed)
-    checks = journal.get("capture_data_checks", [])
+            checks.append(check)
     require(
-        checks
-        == [{"batch_id": r["request"]["id"], "changes": []} for r, _ in captures],
+        canonical_bytes(journal.get("capture_data_checks", []))
+        == canonical_bytes(checks),
         "Missing/failed capture inventory receipt",
     )
     final_inventory = evidence.json(folder, "private/final-inventory.json")
     require(
-        final_inventory == previous_inventory
-        and not inventory_changes(original, final_inventory, allowed_outputs),
+        final_inventory == previous_inventory,
         "Final reference app-data inventory/readback mismatch",
     )
     require(
-        journal.get("restoration_data_changes") == [],
+        journal.get("restoration_data_changes")
+        == inventory_changes(original, final_inventory, allowed_outputs),
         "Missing final reference data receipt",
+    )
+    replay_preservation(
+        journal.get("restoration_preservation"),
+        original,
+        final_inventory,
+        allowed_outputs,
     )
     replay_installed_apk(evidence, folder, "private/final-apk", reference, certificate)
     return original
@@ -1324,7 +1450,7 @@ def verify_run(folder, catalog, inputs, *, evidence_sha256):
     require(
         set(index) == {"version", "files"}
         and type(index["version"]) is int
-        and index["version"] in {1, 2}
+        and index["version"] in {1, 2, 3}
         and type(index["files"]) is dict,
         "Unsupported evidence index",
     )
@@ -1344,15 +1470,22 @@ def verify_run(folder, catalog, inputs, *, evidence_sha256):
         "Runtime manifest hash/canonical mismatch",
     )
     require(
-        value["mutation_run_version"] == 1
+        type(value["mutation_run_version"]) is int
+        and value["mutation_run_version"] in {1, 2}
         and value["catalog_sha256"] == catalog.sha256
         and value["labels_created"] is False
         and value["screen_ids"] == catalog.plan["screen_ids"],
         "Runtime provenance/scope mismatch",
     )
     validate_run_claims(value)
+    if value["mutation_run_version"] == 2:
+        require(
+            canonical_bytes(value.get("preservation_policy"))
+            == canonical_bytes(preservation_policy()),
+            "Preservation policy missing or altered",
+        )
     require(
-        index["version"] == 2
+        (index["version"] == 3 and value["mutation_run_version"] == 2)
         or (
             value["capture_set_qualified"] is False
             and value["status"] not in {"qualified", "probe_verified"}

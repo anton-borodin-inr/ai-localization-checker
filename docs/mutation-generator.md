@@ -381,7 +381,9 @@ qualification has succeeded. A failed preservation/calibration run stays failed;
 retain its manifest, backups and operational evidence. The first local device
 attempt stopped on app-data changes after the empty control, before calibration.
 The second full end-to-end run remains required after the first complete run
-and every gate pass. No preservation exception or pixel tolerance is implied.
+and every gate pass. D-051 below records the separately authorized four-file
+preservation exception; no pixel tolerance is implied, and no historical failed
+run is reclassified as successful.
 
 ### Explicit catalog and effective manifests
 
@@ -420,17 +422,57 @@ same authority; independent clones are not separate authorized device owners.
 Before the first replacement, pull/verify the installed APK and compare its
 certificate with the catalog reference. Keep verified private, device-encrypted
 and external app-data backups with file inventories. Installation is only
-`adb install -r -d`; no uninstall. Check exact app-data preservation immediately
-after replacement. A successful actual downgrade back to 1271048 is mandatory
-before captures. A certificate match alone is not this proof.
+`adb install -r -d`; no uninstall. Check app-data preservation immediately after
+replacement under the exact D-051 policy below. A successful actual downgrade
+back to 1271048 is mandatory before captures. A certificate match alone is not
+this proof.
 
 After **each** catalog-artifact installation, run
 `scripts/check_env.sh --version-code <that artifact's actual code>`.
 After restoring 1271048, run the default `scripts/check_env.sh`. Do not skip or
 relax either check. Compare data again after capture and final restoration;
 new exact planned hook outputs are distinct from pre-existing app data. An
-unexpected delta stops the run and retains backups. Do not silently exempt
-database/profile/cache files or repair them without the owner's permission.
+unexpected delta stops the run and retains backups. No broader
+database/profile/cache exception or app-data repair is authorized.
+
+#### D-051: four private-root AndroidX files only
+
+Anton explicitly authorized a narrow comparison-only exception on 2026-11-05,
+recorded as Proposed D-051. The exact package-relative paths are:
+
+- `files/profileInstalled` — ProfileInstaller marker;
+- `no_backup/androidx.work.workdb` — WorkManager database;
+- `no_backup/androidx.work.workdb-shm` — shared-memory sidecar;
+- `no_backup/androidx.work.workdb-wal` — write-ahead log.
+
+Only `DATA_ROOTS["private"]` qualifies (inventory keys start with `private:`).
+The same names in external/device-encrypted roots, prefix/suffix matches,
+descendants, and all other app-data paths stay strict. Only regular-file bytes,
+SHA-256 and absence/creation/deletion may differ. Existing-file uid/gid/mode
+remain exact; directory/symlink substitutions are unexpected. Settings and
+saves stay byte-exact. The code never writes or restores these four files:
+backups/readbacks retain observations, not permission to repair app data.
+
+Every comparison records all four before/after inventory entries, including
+size/hash for present regular files and explicit `null` for absence, even when
+unchanged. Raw `inventory_changes`/install `data_changes`/capture `changes` and
+`restoration_data_changes` are not filtered by D-051. Separate ledgers partition
+actual exempt deltas from unexpected deltas; only an empty unexpected set may
+proceed. Declared-new hook outputs retain their existing separate handling;
+pre-existing hook files are never made mutable by that declaration.
+
+Checks cover original backup readback, continuity into each install, per-install
+backup readback and both before/readback-to-after comparisons, capture preflight
+and before/after, and each reference verification. The readback-to-after check
+keeps metadata strict even for a file first created during the backup readback.
+Probe and final reference inventories/ledgers are retained separately as
+`private/reference-NNN-inventory.json` and journal `restoration_checks`, rather
+than overwriting the probe observation with the final one. Unexpected drift
+between transactions stops before the next install/capture, not only at the end.
+
+This exception addresses AndroidX startup bookkeeping, not game-state or
+rendering variability. D-050's RGBA masks, zero tolerance, unmutated-element
+layout checks, and forward/reverse RGBA/raw-dump equality are unchanged.
 
 The run finalizer restores the exact original reference APK, verifies its
 certificate/hash/version and data, and records cleanup errors separately from
@@ -482,7 +524,21 @@ all screenshot payloads together. The final `evidence-index.json` needs its own
 independently pinned digest; a mutable neighboring checksum is not authority.
 Offline verification must authenticate that root, require complete evidence,
 replay same-build repeatability and cross-build gates, and reject contradictory
-status/qualification flags. The read-only verifier performs no adb operation:
+status/qualification flags.
+
+New evidence uses `mutation_run_version: 2` and evidence-index version `3`,
+with the exact `preservation_policy` in the manifest, journal and install
+receipts. Policy version 1 binds D-051, the four exact private paths, allowed
+changes `bytes`, `sha256`, `presence`, and `app_data_writes: 0` for this exception.
+Every ledger's full observations and delta partition are recomputed from
+authenticated retained inventories (tar inventories are also regenerated).
+Missing/modified/widened policies or ledgers, incomplete observations, and
+recomputed outer hashes do not bypass semantic verification. Dropping or
+downgrading the policy/manifest/index cannot recover a success claim. Pre-policy
+manifest version 1/index versions 1–2 remain inspectable for non-successful
+runs only; historical successful pre-policy evidence is not requalified by this
+verifier. Archived evidence is never rewritten. The following command remains
+read-only with respect to the device:
 
 ```sh
 PYTHONPATH=src uv run l10n-mutate verify \

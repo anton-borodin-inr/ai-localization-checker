@@ -26,6 +26,53 @@ DATA_ROOTS = {
 }
 
 
+ANDROIDX_BOOKKEEPING = (
+    "private:files/profileInstalled",
+    "private:no_backup/androidx.work.workdb",
+    "private:no_backup/androidx.work.workdb-shm",
+    "private:no_backup/androidx.work.workdb-wal",
+)
+
+
+def preservation_policy():
+    """Task-specific owner authorization, not a general cache/database ignore."""
+    return {
+        "decision": "D-051",
+        "version": 1,
+        "regular_file_paths": list(ANDROIDX_BOOKKEEPING),
+        "allowed_changes": ["bytes", "sha256", "presence"],
+        "app_data_writes": 0,
+    }
+
+
+def preservation_report(before, after, allowed_new=()):
+    """Compare only; retain all four observations, including explicit absence."""
+    changes = inventory_changes(before, after, allowed_new)
+
+    def exempt(change):
+        old, new = change["before"], change["after"]
+        return (
+            change["path"] in ANDROIDX_BOOKKEEPING
+            and all(v is None or v.get("type") == "file" for v in (old, new))
+            and (
+                old is None
+                or new is None
+                or {k: v for k, v in old.items() if k not in {"bytes", "sha256"}}
+                == {k: v for k, v in new.items() if k not in {"bytes", "sha256"}}
+            )
+        )
+
+    return {
+        "policy": preservation_policy(),
+        "bookkeeping": [
+            {"path": name, "before": before.get(name), "after": after.get(name)}
+            for name in ANDROIDX_BOOKKEEPING
+        ],
+        "exempt_changes": [c for c in changes if exempt(c)],
+        "unexpected_changes": [c for c in changes if not exempt(c)],
+    }
+
+
 def data_inventory(archives):
     result = {}
     for root, raw in archives.items():
@@ -140,7 +187,15 @@ def installed_identity(device, tools, folder):
 
 
 def install_verified(
-    device, apk, build, certificate_sha256, *, tools, folder, environment
+    device,
+    apk,
+    build,
+    certificate_sha256,
+    *,
+    tools,
+    folder,
+    environment,
+    previous_inventory=None,
 ):
     folder = no_symlinks(folder)
     folder.mkdir(mode=0o700, parents=True, exist_ok=False)
@@ -149,6 +204,7 @@ def install_verified(
         "build": build,
         "status": "preparing",
         "app_data_preserved": False,
+        "preservation_policy": preservation_policy(),
     }
 
     def checkpoint():
@@ -167,10 +223,23 @@ def install_verified(
         before = read_app_data(device)
         journal["backup"] = save_backup(folder / "before", before)
         inventory = data_inventory(before)
+        if previous_inventory is not None:
+            journal["input_preservation"] = preservation_report(
+                previous_inventory, inventory
+            )
+            checkpoint()
+            require(
+                not journal["input_preservation"]["unexpected_changes"],
+                "Unexpected app-data change before install",
+            )
         readback = data_inventory(read_app_data(device))
         write_json(folder / "before-readback.json", readback)
+        journal["backup_readback_preservation"] = preservation_report(
+            inventory, readback
+        )
+        checkpoint()
         require(
-            readback == inventory,
+            not journal["backup_readback_preservation"]["unexpected_changes"],
             "App data changed while verifying backup",
         )
         require(
@@ -197,17 +266,15 @@ def install_verified(
         after = read_app_data(device)
         journal["post_install"] = save_backup(folder / "after", after)
         after_inventory = data_inventory(after)
-        journal["data_changes"] = [
-            {
-                "path": name,
-                "before": inventory.get(name),
-                "after": after_inventory.get(name),
-            }
-            for name in sorted(set(inventory) | set(after_inventory))
-            if inventory.get(name) != after_inventory.get(name)
-        ]
+        journal["data_changes"] = inventory_changes(inventory, after_inventory)
+        journal["preservation"] = preservation_report(inventory, after_inventory)
+        journal["post_readback_preservation"] = preservation_report(
+            readback, after_inventory
+        )
+        checkpoint()
         require(
-            not journal["data_changes"],
+            not journal["preservation"]["unexpected_changes"]
+            and not journal["post_readback_preservation"]["unexpected_changes"],
             "App data preservation failed; no automatic repair",
         )
         journal.update(status="verified", app_data_preserved=True)

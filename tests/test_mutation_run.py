@@ -81,12 +81,12 @@ def synthetic_completed_runtime(tmp_path_factory):
         return stream.getvalue()
 
     saves = archive(inputs.fixtures)
-    archives = {
-        "private": archive({"files/GameSettings.json": settings_raw}),
-        "external": archive(
-            {"files/SaveFiles/" + name: raw for name, raw in inputs.fixtures.items()}
-        ),
-        "device_encrypted": archive({"synthetic": b"unchanged"}),
+    app_files = {
+        "private": {"files/GameSettings.json": settings_raw},
+        "external": {
+            "files/SaveFiles/" + name: raw for name, raw in inputs.fixtures.items()
+        },
+        "device_encrypted": {"synthetic": b"unchanged"},
     }
 
     def snapshot(folder):
@@ -108,11 +108,16 @@ def synthetic_completed_runtime(tmp_path_factory):
     class SyntheticDevice:
         serial = "emulator-5554"
 
-        def __init__(self):
+        def __init__(self, volatile=False, transform=None):
             self.apk = catalog.apk_path(
                 {"apk": catalog.data["reference"]["apk"]}
             ).read_bytes()
             self.calls = []
+            self.volatile, self.transform, self.inventory_number = (
+                volatile,
+                transform,
+                0,
+            )
 
         def run(self, *args):
             self.calls.append(args)
@@ -124,9 +129,25 @@ def synthetic_completed_runtime(tmp_path_factory):
             if args[:2] == ("exec-out", "cat"):
                 return self.apk
             if args[:2] == ("exec-out", "tar"):
-                return archives[
-                    next(name for name, path in DATA_ROOTS.items() if path == args[-2])
-                ]
+                from test_mutation_device import BOOKKEEPING
+
+                name = next(
+                    name for name, path in DATA_ROOTS.items() if path == args[-2]
+                )
+                if name == "private":
+                    self.inventory_number += 1
+                files = dict(app_files[name])
+                if self.volatile and name == "private":
+                    files.update(
+                        {
+                            p: f"synthetic bookkeeping {self.inventory_number}".encode()
+                            for i, p in enumerate(BOOKKEEPING)
+                            if (self.inventory_number + i) % 3 != 0
+                        }
+                    )
+                if self.transform:
+                    self.transform(name, self.inventory_number, files)
+                return archive(files)
             pytest.fail(f"Unexpected synthetic device command: {args}")
 
         def shell(self, *args):
@@ -322,39 +343,36 @@ def synthetic_completed_runtime(tmp_path_factory):
         (folder / "summary.json").write_bytes(canonical_bytes(summary))
         return summary
 
-    device = SyntheticDevice()
-    with pytest.MonkeyPatch.context() as monkeypatch:
-        monkeypatch.setattr(subprocess, "run", native)
-        monkeypatch.setattr(runtime, "prepare_device", prepare)
-        monkeypatch.setattr(runtime, "capture_manifest", capture)
-        run = runtime.MutationRun(
-            catalog,
-            inputs,
-            root / "outputs/synthetic-run",
-            approved_root=root / "outputs",
-            device=device,
-            tools=kwargs["tools"],
-        )
-        result = run.run()
-        probe = runtime.MutationRun(
-            catalog,
-            inputs,
-            root / "outputs/synthetic-probe",
-            approved_root=root / "outputs",
-            device=device,
-            tools=kwargs["tools"],
-        )
-        probe_result = probe.run(probe_only=True)
+    def execute(name, *, volatile=False, transform=None, probe_only=False):
+        device = SyntheticDevice(volatile, transform)
+        with pytest.MonkeyPatch.context() as monkeypatch:
+            monkeypatch.setattr(subprocess, "run", native)
+            monkeypatch.setattr(runtime, "prepare_device", prepare)
+            monkeypatch.setattr(runtime, "capture_manifest", capture)
+            run = runtime.MutationRun(
+                catalog,
+                inputs,
+                root / "outputs" / name,
+                approved_root=root / "outputs",
+                device=device,
+                tools=kwargs["tools"],
+            )
+            result = run.run(probe_only=probe_only)
+        return run, result
+
+    run, result = execute("synthetic-run")
+    probe, probe_result = execute("synthetic-probe", probe_only=True)
     assert result["status"] == "qualified", run.journal
     assert probe_result["status"] == "probe_verified", probe.journal
     assert result["capture_set_qualified"] is True and result["labels_created"] is False
-    assert device.build() == "1271048"
+    assert run.device.build() == probe.device.build() == "1271048"
     assert (
         len(result["screenshots"]) == len(runtime.expected_capture_keys(catalog)) == 60
     )
     return {
         "completed": (run.folder, catalog, inputs, result),
         "probe": (probe.folder, catalog, inputs, probe_result),
+        "execute": execute,
     }
 
 
@@ -368,7 +386,7 @@ def synthetic_runtime(synthetic_completed_runtime, tmp_path, request):
     return target, catalog, inputs, result
 
 
-def reindex_synthetic(folder, version=2):
+def reindex_synthetic(folder, version=3):
     files = {
         str(p.relative_to(folder)): digest(p.read_bytes())
         for p in folder.rglob("*")
@@ -388,6 +406,360 @@ def test_synthetic_successful_orchestration_replays_offline(synthetic_runtime):
         evidence_sha256=digest((folder / "evidence-index.json").read_bytes()),
     )
     assert value["status"] == "qualified" and len(value["screenshots"]) == 60
+
+
+def test_d051_runtime_accepts_only_bookkeeping_at_all_preservation_boundaries(
+    synthetic_completed_runtime,
+):
+    from l10n_checker.mutation_device import preservation_policy, preservation_report
+
+    run, result = synthetic_completed_runtime["execute"]("d051-runtime", volatile=True)
+    assert result["status"] == "qualified", run.journal
+    assert result["preservation_policy"] == preservation_policy()
+    original = json_bytes((run.folder / "private/original/inventory.json").read_bytes())
+    readback = json_bytes((run.folder / "private/original-readback.json").read_bytes())
+    assert run.journal["original_readback_preservation"] == preservation_report(
+        original, readback
+    )
+    final = json_bytes((run.folder / "private/final-inventory.json").read_bytes())
+    assert run.journal["restoration_preservation"] == preservation_report(
+        original, final, run.allowed_outputs
+    )
+    assert run.journal["restoration_data_changes"] == api().inventory_changes(
+        original, final, run.allowed_outputs
+    )
+    assert len(run.journal["capture_data_checks"]) == 3
+    for check in run.journal["capture_data_checks"]:
+        assert check["preservation"]["exempt_changes"] == check["changes"]
+        assert check["changes"] and check["preservation"]["unexpected_changes"] == []
+        assert len(check["preservation"]["bookkeeping"]) == 4
+    assert result["capture_set_qualified"] and result["restoration_verified"]
+
+
+@pytest.fixture(scope="module")
+def d051_completed_runtime(synthetic_completed_runtime):
+    run, result = synthetic_completed_runtime["execute"]("d051-replay", volatile=True)
+    assert result["status"] == "qualified", run.journal
+    _, catalog, inputs, _ = synthetic_completed_runtime["completed"]
+    return run.folder, catalog, inputs, result
+
+
+def test_d051_replay_recomputes_authorized_drift_from_inventories(
+    d051_completed_runtime,
+):
+    folder, catalog, inputs, result = d051_completed_runtime
+    caught = None
+    replay = None
+    try:
+        replay = api().verify_run(
+            folder, catalog, inputs, evidence_sha256=result["evidence_sha256"]
+        )
+    except CaptureError as exc:
+        caught = exc
+    assert caught is None, (
+        f"D-051 operational replay rejected authorized drift: {caught}"
+    )
+    assert replay is not None
+    assert replay["status"] == "qualified" and replay["mutation_run_version"] == 2
+    assert json_bytes((folder / "evidence-index.json").read_bytes())["version"] == 3
+
+
+@pytest.mark.parametrize("boundary,inventory_number", [("install", 3), ("capture", 13)])
+def test_d051_runtime_stops_on_strict_drift_between_transactions(
+    synthetic_completed_runtime,
+    boundary,
+    inventory_number,
+):
+    def change(root, number, files):
+        if root == "private" and number >= inventory_number:
+            files["files/not-bookkeeping"] = b"unexpected game state"
+
+    run, result = synthetic_completed_runtime["execute"](
+        "d051-gap-" + boundary,
+        volatile=True,
+        transform=change,
+    )
+    assert not result["capture_set_qualified"] and result["status"] in {
+        "failed",
+        "restoration_failed",
+    }
+    assert result["screenshots"] == [], "Strict drift must stop before capturing"
+    installs = [c for c in run.device.calls if c[:3] == ("install", "-r", "-d")]
+    if boundary == "install":
+        assert installs == [], "Prior app-data drift must stop before the next install"
+    else:
+        assert "preflight" in run.journal["error"].lower()
+
+
+def test_d051_retains_every_reference_and_transaction_boundary(d051_completed_runtime):
+    from l10n_checker.mutation_device import preservation_report
+
+    folder, _, _, _ = d051_completed_runtime
+    journal = json_bytes((folder / "journal.json").read_bytes())
+    assert len(journal.get("restoration_checks", [])) == 2, (
+        "Probe restore must not be overwritten"
+    )
+    for operation in journal["operations"]:
+        receipt = json_bytes((folder / operation["receipt"]).read_bytes())
+        assert receipt.get("input_preservation"), (
+            "Missing install input continuity ledger"
+        )
+    for check in journal["capture_data_checks"]:
+        assert check.get("preflight_preservation"), "Missing capture preflight ledger"
+    original = json_bytes((folder / "private/original/inventory.json").read_bytes())
+    for check in journal["restoration_checks"]:
+        current = json_bytes((folder / check["inventory"]).read_bytes())
+        assert check["preservation"] == preservation_report(
+            original, current, check["allowed_outputs"]
+        )
+        assert check["prior_preservation"]["unexpected_changes"] == []
+
+
+@pytest.mark.parametrize("inventory_number", [2, 4, 5, 14, 28])
+@pytest.mark.parametrize("kind", ["settings", "save", "other"])
+def test_d051_bookkeeping_drift_cannot_hide_strict_runtime_changes(
+    synthetic_completed_runtime,
+    inventory_number,
+    kind,
+):
+    root_name = "external" if kind == "save" else "private"
+    target = (
+        "files/GameSettings.json"
+        if kind == "settings"
+        else "files/SaveFiles/unexpected-save"
+        if kind == "save"
+        else "files/other-state"
+    )
+
+    def change(root, number, files):
+        if root == root_name and number >= inventory_number:
+            files[target] = b"unauthorized delta"
+
+    run, result = synthetic_completed_runtime["execute"](
+        f"d051-strict-{inventory_number}-{kind}",
+        volatile=True,
+        transform=change,
+    )
+    assert result["status"] in {"failed", "restoration_failed"}
+    assert not result["capture_set_qualified"]
+    assert not (run.folder / "builder-handoff").exists()
+
+    # Inspect complete ledgers rather than accepting an unrelated operational error.
+    def unexpected(value):
+        if isinstance(value, dict):
+            yield from value.get("unexpected_changes", [])
+            for child in value.values():
+                yield from unexpected(child)
+        elif isinstance(value, list):
+            for child in value:
+                yield from unexpected(child)
+
+    receipts = [
+        json_bytes(p.read_bytes())
+        for p in (run.folder / "private").glob("install-*/install.json")
+    ]
+    assert any(
+        c["path"] == root_name + ":" + target
+        for c in unexpected([run.journal, receipts])
+    )
+
+
+@pytest.fixture
+def d051_runtime_copy(d051_completed_runtime, tmp_path):
+    import shutil
+
+    folder, catalog, inputs, _ = d051_completed_runtime
+    target = tmp_path.resolve() / "d051-evidence"
+    shutil.copytree(folder, target)
+    return target, catalog, inputs
+
+
+@pytest.mark.parametrize(
+    "kind",
+    [
+        "manifest_policy_missing",
+        "manifest_policy_widened",
+        "manifest_policy_bool",
+        "manifest_downgrade",
+        "index_downgrade",
+        "complete_downgrade",
+        "journal_policy",
+        "original_readback",
+        "restoration",
+        "restoration_checks",
+        "capture",
+        "capture_preflight",
+        "install_policy",
+        "install_input",
+        "install_readback",
+        "install_post_readback",
+        "install_ledger",
+        "install_raw",
+        "bookkeeping_row",
+        "ledger_widened",
+    ],
+)
+def test_d051_rehashed_policy_and_ledger_tampering_is_rejected(d051_runtime_copy, kind):
+    folder, catalog, inputs = d051_runtime_copy
+    value = json_bytes((folder / "mutation-manifest.json").read_bytes())
+    journal_path = folder / "journal.json"
+    journal = json_bytes(journal_path.read_bytes())
+    operation = journal["operations"][0]
+    install_path = folder / operation["receipt"]
+    receipt = json_bytes(install_path.read_bytes())
+    version = 3
+    if kind == "manifest_policy_missing":
+        value.pop("preservation_policy")
+    elif kind == "manifest_policy_widened":
+        value["preservation_policy"]["regular_file_paths"].append(
+            "private:files/GameSettings.json"
+        )
+    elif kind == "manifest_policy_bool":
+        value["preservation_policy"]["app_data_writes"] = False
+    elif kind in {"manifest_downgrade", "complete_downgrade"}:
+        value["mutation_run_version"] = 1
+        value.pop("preservation_policy")
+        if kind == "complete_downgrade":
+            version = 2
+    elif kind == "index_downgrade":
+        version = 2
+    elif kind == "journal_policy":
+        journal.pop("preservation_policy")
+    elif kind == "original_readback":
+        journal.pop("original_readback_preservation")
+    elif kind == "restoration":
+        journal["restoration_preservation"]["exempt_changes"] = []
+    elif kind == "restoration_checks":
+        journal["restoration_checks"].pop(0)
+    elif kind == "capture":
+        journal["capture_data_checks"][0]["preservation"]["exempt_changes"] = []
+    elif kind == "capture_preflight":
+        path = next((folder / "artifacts/clean").glob("*/preflight-preservation.json"))
+        ledger = json_bytes(path.read_bytes())
+        ledger["bookkeeping"].pop()
+        path.write_bytes(canonical_bytes(ledger))
+    elif kind.startswith("install_"):
+        field = {
+            "install_policy": "preservation_policy",
+            "install_input": "input_preservation",
+            "install_readback": "backup_readback_preservation",
+            "install_post_readback": "post_readback_preservation",
+            "install_ledger": "preservation",
+        }.get(kind)
+        if field:
+            receipt.pop(field)
+        else:
+            receipt["data_changes"] = []
+    elif kind == "bookkeeping_row":
+        receipt["preservation"]["bookkeeping"].pop()
+    else:
+        receipt["preservation"]["policy"]["allowed_changes"].append("mode")
+    rewrite_synthetic_manifest(folder, value)
+    install_path.write_bytes(canonical_bytes(receipt))
+    operation["sha256"] = digest(canonical_bytes(receipt))
+    journal_path.write_bytes(canonical_bytes(journal))
+    with pytest.raises(
+        CaptureError, match="[Pp]reservation|[Ll]edger|[Ll]egacy|receipt|inventory"
+    ):
+        api().verify_run(
+            folder, catalog, inputs, evidence_sha256=reindex_synthetic(folder, version)
+        )
+
+
+@pytest.mark.parametrize(
+    "kind", ["settings", "save", "other", "mode", "symlink", "external_alias"]
+)
+def test_d051_rehashed_inventories_with_honest_ledgers_still_reject_unexpected_changes(
+    d051_runtime_copy,
+    kind,
+):
+    import io
+    import tarfile
+
+    from l10n_checker.mutation_device import (
+        data_inventory,
+        inventory_changes,
+        preservation_report,
+    )
+
+    folder, catalog, inputs = d051_runtime_copy
+    tx = folder / "private/install-001"
+    journal_path = folder / "journal.json"
+    journal = json_bytes(journal_path.read_bytes())
+    receipt_path = tx / "install.json"
+    receipt = json_bytes(receipt_path.read_bytes())
+    root = "external" if kind in {"save", "external_alias"} else "private"
+    path = tx / "after" / (root + ".tar")
+    target = {
+        "settings": "files/GameSettings.json",
+        "other": "files/not-bookkeeping",
+        "mode": "files/profileInstalled",
+        "symlink": "files/profileInstalled",
+        "external_alias": "files/profileInstalled",
+        "save": "files/SaveFiles/" + next(iter(inputs.fixtures)),
+    }[kind]
+    stream = io.BytesIO()
+    found = False
+    with (
+        tarfile.open(fileobj=io.BytesIO(path.read_bytes())) as source,
+        tarfile.open(fileobj=stream, mode="w") as output,
+    ):
+        for member in source.getmembers():
+            payload = source.extractfile(member)
+            assert payload is not None
+            raw = payload.read()
+            if str(Path(member.name)) == target:
+                found = True
+                if kind == "mode":
+                    member.mode = 0o644
+                elif kind == "symlink":
+                    member.type, member.linkname, member.size = (
+                        tarfile.SYMTYPE,
+                        "elsewhere",
+                        0,
+                    )
+                    raw = b""
+                else:
+                    raw = b"unexpected changed bytes"
+                    member.size = len(raw)
+            output.addfile(member, io.BytesIO(raw))
+        if not found:
+            member = tarfile.TarInfo("./" + target)
+            member.size, member.uid, member.gid, member.mode = 3, 10001, 10001, 0o600
+            output.addfile(member, io.BytesIO(b"new"))
+    path.write_bytes(stream.getvalue())
+    archives = {
+        name: (tx / "after" / (name + ".tar")).read_bytes()
+        for name in ("private", "external", "device_encrypted")
+    }
+    after = data_inventory(archives)
+    (tx / "after/inventory.json").write_bytes(canonical_bytes(after))
+    receipt["post_install"] = {
+        "archives": {
+            name: {"path": name + ".tar", "sha256": digest(raw), "bytes": len(raw)}
+            for name, raw in archives.items()
+        },
+        "inventory_sha256": digest(canonical_bytes(after)),
+    }
+    before = json_bytes((tx / "before/inventory.json").read_bytes())
+    readback = json_bytes((tx / "before-readback.json").read_bytes())
+    receipt["data_changes"] = inventory_changes(before, after)
+    receipt["preservation"] = preservation_report(before, after)
+    receipt["post_readback_preservation"] = preservation_report(readback, after)
+    assert any(
+        c["path"] == root + ":" + target
+        for c in (
+            receipt["preservation"]["unexpected_changes"]
+            + receipt["post_readback_preservation"]["unexpected_changes"]
+        )
+    )
+    receipt_path.write_bytes(canonical_bytes(receipt))
+    journal["operations"][0]["sha256"] = digest(canonical_bytes(receipt))
+    journal_path.write_bytes(canonical_bytes(journal))
+    with pytest.raises(CaptureError, match="Unexpected app-data inventory change"):
+        api().verify_run(
+            folder, catalog, inputs, evidence_sha256=reindex_synthetic(folder)
+        )
 
 
 def test_empty_evidence_index_cannot_skip_verification(synthetic_runtime):
@@ -601,7 +973,7 @@ def test_rehashed_semantic_operational_corruption_is_rejected(synthetic_runtime,
         path.write_bytes(canonical_bytes(value))
     with pytest.raises(
         CaptureError,
-        match="receipt|backup|inventory|install|reference|environment|capture|manifest",
+        match="receipt|backup|inventory|install|reference|environment|capture|manifest|Preservation",
     ):
         api().verify_run(
             folder, catalog, inputs, evidence_sha256=reindex_synthetic(folder)
@@ -922,19 +1294,22 @@ def test_capture_qualification_flag_cannot_disagree_with_status(
         )
 
 
+@pytest.mark.parametrize("index_version", [1, 2])
 def test_failed_legacy_v1_is_inspectable_only_with_an_explicit_index_pin(
     synthetic_runtime,
+    index_version,
 ):
     folder, catalog, inputs, _ = synthetic_runtime
     value = json_bytes((folder / "mutation-manifest.json").read_bytes())
-    value.update(status="failed", capture_set_qualified=False)
+    value.update(status="failed", capture_set_qualified=False, mutation_run_version=1)
+    value.pop("preservation_policy")
     rewrite_synthetic_manifest(folder, value)
     assert (
         api().verify_run(
             folder,
             catalog,
             inputs,
-            evidence_sha256=reindex_synthetic(folder, version=1),
+            evidence_sha256=reindex_synthetic(folder, version=index_version),
         )["status"]
         == "failed"
     )
@@ -945,7 +1320,7 @@ def test_failed_legacy_v1_is_inspectable_only_with_an_explicit_index_pin(
             folder,
             catalog,
             inputs,
-            evidence_sha256=reindex_synthetic(folder, version=1),
+            evidence_sha256=reindex_synthetic(folder, version=index_version),
         )
 
 
@@ -1259,6 +1634,9 @@ def real_capture_runtime(tmp_path, monkeypatch):
     run.folder = tmp_path.resolve() / "run"
     run.folder.mkdir()
     run.inputs, run.device = inputs, device
+    run.last_inventory = api().data_inventory(
+        {"private": archive(), "external": archive()}
+    )
     run.plan = {"mutations": {}, "batches": []}
     run.allowed_outputs, run.clean = set(), {}
     run.content = {

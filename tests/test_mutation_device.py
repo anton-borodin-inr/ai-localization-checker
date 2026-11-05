@@ -268,6 +268,187 @@ def test_runtime_bookkeeping_is_not_silently_exempted_from_preservation():
     ]
 
 
+BOOKKEEPING = (
+    "files/profileInstalled",
+    "no_backup/androidx.work.workdb",
+    "no_backup/androidx.work.workdb-shm",
+    "no_backup/androidx.work.workdb-wal",
+)
+
+
+def file_entry(raw=b"before", **metadata):
+    return {
+        "type": "file",
+        "uid": 10001,
+        "gid": 10001,
+        "mode": 0o600,
+        "bytes": len(raw),
+        "sha256": digest(raw),
+        **metadata,
+    }
+
+
+@pytest.mark.parametrize(
+    "change",
+    [
+        {"uid": 10002},
+        {"gid": 10002},
+        {"mode": 0o644},
+        {"type": "directory"},
+        {"type": "symlink", "target": "elsewhere"},
+    ],
+)
+def test_d051_never_exempts_metadata_or_nonregular_files(change):
+    name = "private:" + BOOKKEEPING[0]
+    before = {name: file_entry()}
+    after = {name: file_entry(b"changed", **change)}
+    raw = api().inventory_changes(before, after)
+    assert api().preservation_report(before, after)["unexpected_changes"] == raw
+    assert api().preservation_report(before, after)["exempt_changes"] == []
+    if change.get("type") in {"directory", "symlink"}:
+        assert api().preservation_report({}, after)["unexpected_changes"]
+        assert api().preservation_report(after, {})["unexpected_changes"]
+
+
+def bookkeeping_archive(value, mode=0o600, present=True):
+    stream = io.BytesIO()
+    with tarfile.open(fileobj=stream, mode="w") as tar:
+        for name, raw in {
+            "files/GameSettings.json": b"exact settings",
+            **{path: value for path in BOOKKEEPING if present},
+        }.items():
+            item = tarfile.TarInfo("./" + name)
+            item.size, item.uid, item.gid = len(raw), 10001, 10001
+            item.mode = mode if name in BOOKKEEPING else 0o600
+            tar.addfile(item, io.BytesIO(raw))
+    return stream.getvalue()
+
+
+def test_d051_install_records_backup_readback_and_install_exemptions(
+    tmp_path, monkeypatch
+):
+    from l10n_checker.screen_manifest import json_bytes
+
+    device, path, build, _ = transaction(tmp_path, monkeypatch)
+    snapshots = [
+        {"private": bookkeeping_archive(raw)}
+        for raw in (b"before", b"readback", b"installed")
+    ]
+    reads = iter(snapshots)
+    monkeypatch.setattr(api(), "read_app_data", lambda device: next(reads))
+    caught = None
+    try:
+        api().install_verified(
+            device,
+            path,
+            build,
+            "a" * 64,
+            tools=None,
+            folder=tmp_path / "tx",
+            environment=lambda build: None,
+        )
+    except CaptureError as exc:
+        caught = exc
+    assert caught is None, f"Authorized bookkeeping drift stopped install: {caught}"
+    result = json_bytes((tmp_path / "tx/install.json").read_bytes())
+    before, readback, after = [api().data_inventory(s) for s in snapshots]
+    assert result["preservation_policy"] == api().preservation_policy()
+    assert result["backup_readback_preservation"] == api().preservation_report(
+        before, readback
+    )
+    assert result["preservation"] == api().preservation_report(before, after)
+    assert result["data_changes"] == api().inventory_changes(before, after)
+    assert len(result["data_changes"]) == 4 and result["app_data_preserved"] is True
+    assert device.calls == [("stop",), ("install", "-r", "-d", str(path))]
+
+
+def test_d051_reports_all_four_files_without_hiding_raw_deltas():
+    assert hasattr(api(), "preservation_report"), "D-051 comparison ledger missing"
+    before = {"private:" + path: file_entry() for path in BOOKKEEPING[:3]}
+    after = {"private:" + path: file_entry(b"after") for path in BOOKKEEPING[:2]}
+    after["private:" + BOOKKEEPING[3]] = file_entry(b"new WAL")
+    report = api().preservation_report(before, after)
+    raw = api().inventory_changes(before, after)
+    assert report["unexpected_changes"] == []
+    assert report["exempt_changes"] == raw and len(raw) == 4
+    assert report["bookkeeping"] == [
+        {
+            "path": "private:" + path,
+            "before": before.get("private:" + path),
+            "after": after.get("private:" + path),
+        }
+        for path in BOOKKEEPING
+    ]
+    assert report["policy"]["decision"] == "D-051"
+    empty = api().preservation_report({}, {})
+    assert all(r["before"] is None and r["after"] is None for r in empty["bookkeeping"])
+    assert empty["exempt_changes"] == empty["unexpected_changes"] == []
+
+
+def test_d051_metadata_of_file_created_at_readback_stays_strict(tmp_path, monkeypatch):
+    from l10n_checker.screen_manifest import json_bytes
+
+    device, path, build, _ = transaction(tmp_path, monkeypatch)
+    snapshots = iter(
+        [
+            {"private": raw}
+            for raw in (
+                bookkeeping_archive(b"before", present=False),
+                bookkeeping_archive(b"readback"),
+                bookkeeping_archive(b"after", mode=0o644),
+            )
+        ]
+    )
+    monkeypatch.setattr(api(), "read_app_data", lambda device: next(snapshots))
+    rejected = False
+    try:
+        api().install_verified(
+            device,
+            path,
+            build,
+            "a" * 64,
+            tools=None,
+            folder=tmp_path / "tx",
+            environment=lambda build: None,
+        )
+    except CaptureError:
+        rejected = True
+    assert rejected, "Creation must not conceal metadata drift after the readback"
+    receipt = json_bytes((tmp_path / "tx/install.json").read_bytes())
+    assert receipt["post_readback_preservation"]["unexpected_changes"]
+
+
+@pytest.mark.parametrize("path", BOOKKEEPING)
+@pytest.mark.parametrize(
+    "alias",
+    [
+        "external:{}",
+        "device_encrypted:{}",
+        "private:{}.tmp",
+        "private:{}/child",
+        "private:prefix/{}",
+    ],
+)
+def test_d051_path_exception_is_exact_and_private_only(path, alias):
+    name = alias.format(path)
+    before, after = {name: file_entry()}, {name: file_entry(b"changed")}
+    report = api().preservation_report(before, after)
+    assert report["unexpected_changes"] == api().inventory_changes(before, after)
+    assert report["exempt_changes"] == []
+
+
+def test_d051_keeps_declared_new_hook_output_semantics():
+    old, new = "private:files/l10n-hook/old.json", "private:files/l10n-hook/new.json"
+    before = {old: file_entry()}
+    after = {old: file_entry(b"changed"), new: file_entry(b"new")}
+    report = api().preservation_report(before, after, {old, new})
+    assert report["unexpected_changes"] == api().inventory_changes(
+        before, after, {old, new}
+    )
+    assert [c["path"] for c in report["unexpected_changes"]] == [old]
+    assert report["exempt_changes"] == []
+
+
 @pytest.mark.parametrize("phase", ["preparing", "install", "environment"])
 def test_native_install_timeout_is_journaled_with_available_output(
     tmp_path, monkeypatch, phase
