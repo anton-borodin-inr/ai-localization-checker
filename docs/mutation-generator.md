@@ -510,6 +510,83 @@ Same-build pass repeatability remains mandatory in addition to cross-build
 isolation. Timeouts and transport failures are operational failures, not observed
 interference or clean results.
 
+### Owner-authorized nonqualifying measurement mode (Proposed D-052)
+
+The separate 2026-11-05 authorization collects the complete diagnostic matrix,
+especially DE, before Anton decides whether to propose a different calibration
+rule. It is **not** a new accepted rule, tolerance or production authorization.
+Use the exact approved catalog path with SHA-256
+`790b21921ca3d4988b6257a6da235817c8b8407b2f029871c74a05598efaf354`, empty control
+`1888080431` and EN-help calibration `1808820362`, and a fresh directory below
+the approved root. The configured entry point checks the catalog and both actual
+versionCodes before constructing a device. Only the existing authorized control,
+calibration and reference APKs are installed; no new build is permitted.
+
+Invoke the existing Python interface explicitly; the ordinary `run` and `probe`
+commands gain no measurement CLI flag and retain their strict behavior:
+
+```python
+from pathlib import Path
+from l10n_checker.mutation_run import run_config
+from l10n_checker.screen_manifest import json_bytes
+
+config = json_bytes(Path("/approved/exact/measurement-config.json").read_bytes())
+result = run_config(config, measurement_only=True)
+assert result["measurement_complete"] is True
+assert result["calibration_status"] == "failed"
+assert result["capture_set_qualified"] is False
+```
+
+Alternatively, **only after separate device approval**, select precisely the new
+device test with the existing approved configuration option:
+
+```sh
+uv run --offline pytest --run-device \
+  tests/test_mutation_integration_device.py::test_real_dev_calibration_measurement \
+  --mutation-device-config "$APPROVED_CONFIG_JSON" -q --tb=short
+```
+
+A passing measurement test means **diagnostic completion, not qualification**.
+The existing `test_real_dev_mutation_generation` still requires a qualified run;
+do not run it under the measurement-only authorization. This interface does not
+combine with `probe_only` or resume. Only the probe, clean capture and calibration
+capture execute; production callbacks are never constructed, and no dynamic
+test, split or builder handoff is emitted.
+
+Apply the same `verify_screen` measurements to all 20 clean/calibration pairs:
+all five dev screens × EN/DE × two passes. Retain exact `passed: false` results,
+RGBA counts, exclusive bounding boxes and maximum channel deltas, target masks,
+occurrence qualification and changed-unmutated-element results. Do not stop at
+the first outside-mask difference and do not manufacture a passing comparison.
+Same-build RGBA/raw-dump repeat differences remain in each role's original
+capture summary. `measurement_captures` links those summaries and reports their
+actual repeatability outcome, including failures after all 20 role captures.
+
+The capture wrapper still uses `fail_fast=True` for native, transport, readiness
+and invalid-pair failures. Operational/cleanup errors, settings/save drift and
+unexpected app-data changes remain fatal, even alongside comparison failures or
+an otherwise complete 20-record summary. D-051 remains exact: four private-root
+regular-file content/presence exceptions, strict existing-file metadata and no
+other delta. Every install/backup/input/readback/post/capture/restoration check,
+serial lock, containment boundary, `install -r -d`, per-artifact actual-version
+environment check and default check after reference `1271048` remain unchanged.
+Final restoration runs even after failure/cancellation and never retries an
+already failed restoration transaction.
+
+Throughout measurement checkpoints and final evidence,
+`measurement_only: true`, `calibration_status: failed` and
+`capture_set_qualified: false` are mandatory, including an all-zero matrix.
+The final status is `failed` (or `restoration_failed`), never normal success.
+`measurement_complete: true` means exactly 40 distinct authorized pairs, 20 per
+role, with downgrade and final restoration verified and no operational error;
+incomplete/error runs remain `false`. The normal manifest/journal and evidence
+index v3 retain the flags. Complete diagnostic replay also checks the original
+safety receipts and repeat observations without treating repeat differences as
+qualification. Flag edits, recomputed outer hashes or deletion of mode markers
+cannot supply missing production evidence or create a qualified run. Historical
+failed evidence remains nonqualified and inspectable, never rewritten. Stop for
+Anton's decision after reporting the full matrix; no labels/evaluation follow.
+
 ### Evidence and split handoff
 
 `mutation-manifest.json` maps every screenshot to state, build/patch identity,

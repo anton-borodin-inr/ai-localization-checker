@@ -343,12 +343,25 @@ def synthetic_completed_runtime(tmp_path_factory):
         (folder / "summary.json").write_bytes(canonical_bytes(summary))
         return summary
 
-    def execute(name, *, volatile=False, transform=None, probe_only=False):
+    def execute(
+        name,
+        *,
+        volatile=False,
+        transform=None,
+        probe_only=False,
+        measurement_only=False,
+        capture_wrapper=None,
+        configure=None,
+    ):
         device = SyntheticDevice(volatile, transform)
         with pytest.MonkeyPatch.context() as monkeypatch:
             monkeypatch.setattr(subprocess, "run", native)
             monkeypatch.setattr(runtime, "prepare_device", prepare)
-            monkeypatch.setattr(runtime, "capture_manifest", capture)
+            monkeypatch.setattr(
+                runtime,
+                "capture_manifest",
+                capture_wrapper(capture) if capture_wrapper else capture,
+            )
             run = runtime.MutationRun(
                 catalog,
                 inputs,
@@ -356,8 +369,14 @@ def synthetic_completed_runtime(tmp_path_factory):
                 approved_root=root / "outputs",
                 device=device,
                 tools=kwargs["tools"],
+                **({"measurement_only": True} if measurement_only else {}),
             )
-            result = run.run(probe_only=probe_only)
+            if configure:
+                configure(run)
+            options = {"probe_only": probe_only}
+            if measurement_only:
+                options["measurement_only"] = True
+            result = run.run(**options)
         return run, result
 
     run, result = execute("synthetic-run")
@@ -406,6 +425,660 @@ def test_synthetic_successful_orchestration_replays_offline(synthetic_runtime):
         evidence_sha256=digest((folder / "evidence-index.json").read_bytes()),
     )
     assert value["status"] == "qualified" and len(value["screenshots"]) == 60
+
+
+def differing_calibration(
+    capture, *, reverse_only=False, roles=("calibration",), dump_only=False
+):
+    """Change PNG/raw-dump bytes with valid provenance for the real verifier."""
+    import io
+
+    from PIL import Image
+
+    from l10n_checker.text_dump import rgba_digest
+
+    def wrapped(device, effective, folder, languages, *, on_pair, variant, **kwargs):
+        assert kwargs["fail_fast"] is True
+
+        def measured(record):
+            if variant in roles and (not reverse_only or record["pass"] == 2):
+                pair_path = folder / record["pair"]
+                pair = json_bytes(pair_path.read_bytes())
+                if dump_only:
+                    dump_path = pair_path.parent / pair["dump"]
+                    raw = dump_path.read_bytes() + b"\n"
+                    dump_path.write_bytes(raw)
+                    pair["dump_sha256"] = record["dump_sha256"] = digest(raw)
+                else:
+                    png_path = pair_path.parent / pair["png"]
+                    with Image.open(io.BytesIO(png_path.read_bytes())) as image:
+                        image = image.convert("RGBA")
+                        pixel = image.getpixel((2399, 1079))
+                        assert isinstance(pixel, tuple)
+                        r, g, b, a = pixel
+                        image.putpixel((2399, 1079), (r ^ 255, g, b, a))
+                        image.save(png_path)
+                    raw = png_path.read_bytes()
+                    for name, value in (
+                        ("png_sha256", digest(raw)),
+                        ("rgba_sha256", rgba_digest(raw)),
+                    ):
+                        pair[name] = record[name] = value
+                pair_path.write_bytes(canonical_bytes(pair))
+            on_pair(record)
+
+        summary = capture(
+            device,
+            effective,
+            folder,
+            languages,
+            on_pair=measured,
+            variant=variant,
+            **kwargs,
+        )
+        if reverse_only and variant in roles:
+            from l10n_checker.screen_capture import compare_pixels
+
+            for comparison in summary["comparisons"]:
+                records = [
+                    r
+                    for r in summary["records"]
+                    if (r["screen"], r["language"])
+                    == (comparison["screen"], comparison["language"])
+                ]
+                comparison.update(compare_pixels(*(folder / r["png"] for r in records)))
+                dumps = [(folder / r["dump"]).read_bytes() for r in records]
+                comparison["dump_status"] = (
+                    "identical" if dumps[0] == dumps[1] else "different"
+                )
+            if dump_only:
+                hashes = {r["request"]: r["dump_sha256"] for r in summary["records"]}
+                for operation in summary["app_data_operations"]:
+                    if operation["operation"] == "hook_output":
+                        operation["sha256"] = hashes[operation["request"]]
+            summary["status"] = "failed"
+            (folder / "summary.json").write_bytes(canonical_bytes(summary))
+        return summary
+
+    return wrapped
+
+
+def test_measurement_continues_all_failed_pairs_without_production(
+    synthetic_completed_runtime,
+):
+    checkpoints = []
+
+    def configure(run):
+        initial = json_bytes((run.folder / "mutation-manifest.json").read_bytes())
+        assert (
+            initial["measurement_only"] is True
+            and initial["measurement_complete"] is False
+        )
+        assert initial["status"] == initial["calibration_status"] == "failed"
+        assert initial["capture_set_qualified"] is False
+        checkpoint = run.checkpoint
+
+        def observed():
+            checkpoint()
+            checkpoints.append(
+                json_bytes((run.folder / "mutation-manifest.json").read_bytes())
+            )
+
+        run.checkpoint = observed
+
+    run, result = synthetic_completed_runtime["execute"](
+        "measurement-differences",
+        measurement_only=True,
+        volatile=True,
+        capture_wrapper=differing_calibration,
+        configure=configure,
+    )
+    assert result["measurement_only"] is True and result["measurement_complete"] is True
+    assert result["status"] == "failed" and result["calibration_status"] == "failed"
+    assert result["capture_set_qualified"] is False
+    assert result["downgrade_verified"] and result["restoration_verified"]
+    assert (
+        result["dynamic_tests"] == [] and not (run.folder / "builder-handoff").exists()
+    )
+    assert len(result["screenshots"]) == 40
+    for role in ("clean", "calibration"):
+        shots = [s for s in result["screenshots"] if s["role"] == role]
+        assert len(shots) == 20
+        assert {(s["screen"], s["language"], s["pass"]) for s in shots} == {
+            (screen, language, n)
+            for screen in run.plan["screen_ids"]
+            for language in ("en", "de")
+            for n in (1, 2)
+        }
+        if role == "calibration":
+            assert all(s["verification"]["passed"] is False for s in shots)
+            assert all(
+                s["verification"]["pixels"]["outside"]["different_pixels"] == 1
+                for s in shots
+            )
+    assert all(
+        s["measurement_only"] is True
+        and s["calibration_status"] == "failed"
+        and s["capture_set_qualified"] is False
+        and s["status"] == "failed"
+        for s in checkpoints
+    )
+    installs = [
+        args for args in run.device.calls if args[:3] == ("install", "-r", "-d")
+    ]
+    assert [Path(args[3]) for args in installs] == [
+        run.catalog.apk_path(record)
+        for record in (
+            run.catalog.control,
+            run.reference(),
+            run.catalog.control,
+            run.catalog.calibration,
+            run.reference(),
+        )
+    ]
+    assert run.device.build() == "1271048"
+    assert (
+        api().verify_run(
+            run.folder,
+            run.catalog,
+            run.inputs,
+            evidence_sha256=result["evidence_sha256"],
+        )["measurement_complete"]
+        is True
+    )
+
+
+@pytest.mark.parametrize("role", ["clean", "calibration"])
+@pytest.mark.parametrize("dump_only", [False, True])
+def test_measurement_retains_repeat_differences_and_completes_both_roles(
+    synthetic_completed_runtime, role, dump_only
+):
+    run, result = synthetic_completed_runtime["execute"](
+        f"measurement-repeat-{role}-{dump_only}",
+        measurement_only=True,
+        capture_wrapper=lambda capture: differing_calibration(
+            capture, reverse_only=True, roles=(role,), dump_only=dump_only
+        ),
+    )
+    assert result["measurement_complete"] is True, run.journal
+    assert result["status"] == result["calibration_status"] == "failed"
+    assert result["capture_set_qualified"] is False and result["restoration_verified"]
+    assert len(result["screenshots"]) == 40
+    assert result["dynamic_tests"] == []
+    measured = next(r for r in result["measurement_captures"] if r["role"] == role)
+    summary = json_bytes((run.folder / measured["summary"]).read_bytes())
+    assert measured["repeatability_passed"] is False
+    assert summary["status"] == "failed" and not summary.get("fatal_error")
+    assert len(summary["records"]) == 20
+    assert all(
+        c["different_pixels"] == (0 if dump_only else 1) for c in summary["comparisons"]
+    )
+    assert all(
+        c["dump_status"] == ("different" if dump_only else "identical")
+        for c in summary["comparisons"]
+    )
+    replay = api().verify_run(
+        run.folder, run.catalog, run.inputs, evidence_sha256=result["evidence_sha256"]
+    )
+    assert replay["measurement_complete"] is True and replay["status"] == "failed"
+
+
+@pytest.fixture(scope="module")
+def synthetic_measurement_runtime(synthetic_completed_runtime):
+    import copy
+
+    class ForbiddenProduction(list):
+        def __iter__(self):
+            raise AssertionError(
+                "Measurement evaluated the production stage collection"
+            )
+
+    def configure(run):
+        run.catalog = copy.copy(run.catalog)
+        run.plan = run.catalog.plan = {**run.plan, "batches": ForbiddenProduction()}
+
+    run, result = synthetic_completed_runtime["execute"](
+        "measurement-zero", measurement_only=True, configure=configure
+    )
+    # All comparisons genuinely pass in this synthetic case; still never qualify.
+    assert result["measurement_complete"] is True
+    assert result["status"] == result["calibration_status"] == "failed"
+    assert result["capture_set_qualified"] is False
+    assert all(
+        s["verification"] is None or s["verification"]["passed"]
+        for s in result["screenshots"]
+    )
+    # Return the unmodified catalog for semantic replay and tampering tests.
+    _, catalog, inputs, _ = synthetic_completed_runtime["completed"]
+    return run.folder, catalog, inputs, result
+
+
+@pytest.mark.parametrize(
+    "marker", ["measurement_only", "measurement_complete", "measurement_captures"]
+)
+def test_measurement_markers_reject_rehashed_success(synthetic_runtime, marker):
+    folder, catalog, inputs, _ = synthetic_runtime
+    value = json_bytes((folder / "mutation-manifest.json").read_bytes())
+    value[marker] = [] if marker == "measurement_captures" else True
+    rewrite_synthetic_manifest(folder, value)
+    with pytest.raises(CaptureError, match="[Mm]easurement"):
+        api().verify_run(
+            folder, catalog, inputs, evidence_sha256=reindex_synthetic(folder)
+        )
+
+
+@pytest.mark.parametrize("flag", ["measurement_only", "measurement_complete"])
+def test_measurement_journal_flags_require_exact_booleans(
+    synthetic_measurement_runtime, tmp_path, flag
+):
+    import shutil
+
+    source, catalog, inputs, _ = synthetic_measurement_runtime
+    folder = tmp_path / "measurement"
+    shutil.copytree(source, folder)
+    path = folder / "journal.json"
+    journal = json_bytes(path.read_bytes())
+    journal[flag] = 1
+    path.write_bytes(canonical_bytes(journal))
+    with pytest.raises(CaptureError, match="[Mm]easurement"):
+        api().verify_run(
+            folder, catalog, inputs, evidence_sha256=reindex_synthetic(folder)
+        )
+
+
+@pytest.mark.parametrize(
+    "tamper", ["qualify", "delete_mode", "delete_all_markers", "partial", "duplicate"]
+)
+def test_measurement_evidence_cannot_be_promoted_or_claim_incomplete_matrix(
+    synthetic_measurement_runtime, tmp_path, tamper
+):
+    import shutil
+
+    source, catalog, inputs, _ = synthetic_measurement_runtime
+    folder = tmp_path / "measurement"
+    shutil.copytree(source, folder)
+    value = json_bytes((folder / "mutation-manifest.json").read_bytes())
+    journal = json_bytes((folder / "journal.json").read_bytes())
+    if tamper in {"qualify", "delete_mode", "delete_all_markers"}:
+        value.update(
+            status="qualified", capture_set_qualified=True, calibration_status="passed"
+        )
+        journal["status"] = "qualified"
+        if tamper == "delete_mode":
+            value.pop("measurement_only")
+        elif tamper == "delete_all_markers":
+            for name in (
+                "measurement_only",
+                "measurement_complete",
+                "measurement_captures",
+            ):
+                value.pop(name, None)
+                journal.pop(name, None)
+            # Even fabricated stage flags cannot supply missing production pairs/receipts.
+            value["dynamic_tests"] = [
+                {"id": b["id"], "recipe_ids": b["recipe_ids"], "split": False}
+                for b in catalog.plan["batches"]
+            ]
+            value["dynamic_split_rate"] = api().split_rate(value["dynamic_tests"])
+    elif tamper == "partial":
+        value["screenshots"].pop()
+    else:
+        value["screenshots"][-1] = value["screenshots"][0]
+    value["observed_occurrence_matrix"] = api().occurrence_matrix(value["screenshots"])
+    (folder / "journal.json").write_bytes(canonical_bytes(journal))
+    rewrite_synthetic_manifest(folder, value)
+    with pytest.raises(CaptureError):
+        api().verify_run(
+            folder, catalog, inputs, evidence_sha256=reindex_synthetic(folder)
+        )
+
+
+@pytest.mark.parametrize(
+    "invalid", [None, "catalog", "control", "calibration", "probe", "resume"]
+)
+def test_measurement_config_binds_owner_scope_before_device(
+    tmp_path, monkeypatch, invalid
+):
+    import subprocess
+    from types import SimpleNamespace
+
+    runtime = api()
+    frozen = "790b21921ca3d4988b6257a6da235817c8b8407b2f029871c74a05598efaf354"
+    screens = [
+        "options-gameplay",
+        "tech-picker",
+        "city-production",
+        "empire-stats",
+        "civilopedia",
+    ]
+    catalog = SimpleNamespace(
+        plan={"screen_ids": screens},
+        control={"build": {"version_code": "1888080431"}},
+        calibration={"build": {"version_code": "1808820362"}},
+    )
+    config: dict[str, str] = dict.fromkeys(
+        ("catalog", "manifest", "recipes", "sdk", "jdk"), str(tmp_path / "synthetic")
+    )
+    config.update(
+        sha256=frozen,
+        serial="emulator-5554",
+        approved_output_root=str(tmp_path / "approved"),
+        output_dir=str(tmp_path / "approved/run"),
+    )
+    if invalid == "catalog":
+        config["sha256"] = "a" * 64
+    elif invalid in {"control", "calibration"}:
+        getattr(catalog, invalid)["build"]["version_code"] = "1271048"
+    elif invalid == "resume":
+        config.update(resume_from="parent", resume_sha256="b" * 64)
+    monkeypatch.setattr(runtime, "read_catalog", lambda *args, **kwargs: catalog)
+    monkeypatch.setattr(
+        runtime,
+        "Inputs",
+        lambda *args, **kwargs: SimpleNamespace(
+            screens=lambda: [SimpleNamespace(id=s) for s in screens]
+        ),
+    )
+    calls = []
+
+    def device(*args):
+        assert invalid is None, "Invalid measurement reached device construction"
+        calls.append("device")
+        return SimpleNamespace(serial="emulator-5554")
+
+    monkeypatch.setattr(runtime, "Device", device)
+    common = tmp_path / "synthetic-common"
+    common.mkdir()
+    monkeypatch.setattr(
+        subprocess,
+        "run",
+        lambda *args, **kwargs: SimpleNamespace(stdout=str(common).encode()),
+    )
+
+    class SyntheticRun:
+        def __init__(self, *args, **kwargs):
+            assert kwargs["measurement_only"] is True
+            self.content = {}
+
+        def checkpoint(self):
+            pass
+
+        def run(self, **kwargs):
+            assert kwargs == {"probe_only": False, "measurement_only": True}
+            calls.append("measurement")
+            return {"measurement_only": True}
+
+    monkeypatch.setattr(runtime, "MutationRun", SyntheticRun)
+    if invalid:
+        with pytest.raises(CaptureError, match="[Mm]easurement"):
+            runtime.run_config(
+                config, measurement_only=True, probe_only=invalid == "probe"
+            )
+        assert calls == []
+    else:
+        assert runtime.run_config(config, measurement_only=True) == {
+            "measurement_only": True
+        }
+        assert calls == ["device", "measurement"]
+
+
+@pytest.mark.parametrize("cleanup_failure", [False, True, "interrupt"])
+def test_measurement_cancellation_retains_primary_and_finalizes_once(
+    synthetic_completed_runtime, cleanup_failure
+):
+    primary = KeyboardInterrupt("owner cancelled measurement")
+    runs, restores = [], []
+
+    def configure(run):
+        runs.append(run)
+        restore = run._restore_once
+
+        def once():
+            restores.append(run.counter)
+            if cleanup_failure and run.counter == 4:
+                if cleanup_failure == "interrupt":
+                    raise KeyboardInterrupt("reference cleanup failed")
+                raise CaptureError("reference cleanup failed")
+            restore()
+
+        run._restore_once = once
+
+    def interrupted(capture):
+        def wrapped(*args, on_pair, variant, **kwargs):
+            def measured(record):
+                on_pair(record)
+                if variant == "calibration":
+                    raise primary
+
+            return capture(*args, on_pair=measured, variant=variant, **kwargs)
+
+        return wrapped
+
+    with pytest.raises(KeyboardInterrupt) as caught:
+        synthetic_completed_runtime["execute"](
+            f"measurement-cancel-{cleanup_failure}",
+            measurement_only=True,
+            configure=configure,
+            capture_wrapper=interrupted,
+        )
+    assert caught.value is primary
+    run = runs[0]
+    assert restores == [2, 4], "One probe restore and one final restore, never a retry"
+    journal = json_bytes((run.folder / "journal.json").read_bytes())
+    value = json_bytes((run.folder / "mutation-manifest.json").read_bytes())
+    assert journal["error_details"]["type"] == "KeyboardInterrupt"
+    assert value["measurement_complete"] is False and value["measurement_only"] is True
+    assert (
+        value["calibration_status"] == "failed" and not value["capture_set_qualified"]
+    )
+    assert value["status"] == ("restoration_failed" if cleanup_failure else "failed")
+    assert value["restoration_verified"] is (not cleanup_failure)
+    assert json_bytes((run.folder / "evidence-index.json").read_bytes())["version"] == 3
+    if cleanup_failure:
+        assert journal["restoration_error"] == "reference cleanup failed"
+        assert journal["cleanup_errors"] and getattr(primary, "cleanup_errors", [])
+    else:
+        assert run.device.build() == "1271048"
+
+
+@pytest.mark.parametrize(
+    "tamper",
+    [
+        "install",
+        "environment",
+        "backup",
+        "ledger",
+        "fatal",
+        "cleanup",
+        "saves",
+        "repeat_claim",
+    ],
+)
+def test_complete_measurement_replays_safety_receipts(
+    synthetic_measurement_runtime, tmp_path, tamper
+):
+    import shutil
+
+    source, catalog, inputs, _ = synthetic_measurement_runtime
+    folder = tmp_path / "measurement"
+    shutil.copytree(source, folder)
+    value = json_bytes((folder / "mutation-manifest.json").read_bytes())
+    if tamper == "install":
+        (folder / "private/install-005/install.json").unlink()
+    elif tamper == "environment":
+        path = folder / "environment/005/receipt.json"
+        receipt = json_bytes(path.read_bytes())
+        receipt["exit_code"] = 1
+        path.write_bytes(canonical_bytes(receipt))
+    elif tamper == "backup":
+        from test_mutation_device import archive
+
+        (folder / "private/original/private.tar").write_bytes(
+            archive(b"altered backup")
+        )
+    elif tamper == "ledger":
+        path = folder / "journal.json"
+        journal = json_bytes(path.read_bytes())
+        journal["restoration_preservation"]["bookkeeping"] = []
+        path.write_bytes(canonical_bytes(journal))
+    elif tamper == "repeat_claim":
+        value["measurement_captures"][0]["repeatability_passed"] = False
+        rewrite_synthetic_manifest(folder, value)
+    else:
+        path = folder / value["measurement_captures"][0]["summary"]
+        summary = json_bytes(path.read_bytes())
+        if tamper == "fatal":
+            summary["fatal_error_details"] = {"type": "TimeoutExpired"}
+        elif tamper == "cleanup":
+            summary["cleanup_errors"] = [{"type": "CaptureError"}]
+        else:
+            summary["saves_unchanged"] = False
+        path.write_bytes(canonical_bytes(summary))
+    with pytest.raises(CaptureError):
+        api().verify_run(
+            folder, catalog, inputs, evidence_sha256=reindex_synthetic(folder)
+        )
+
+
+def test_normal_calibration_still_stops_at_first_failed_pair(
+    synthetic_completed_runtime,
+):
+    run, result = synthetic_completed_runtime["execute"](
+        "normal-first-pixel", capture_wrapper=differing_calibration
+    )
+    assert result["status"] == "failed" and result["capture_set_qualified"] is False
+    assert "measurement_only" not in result and "measurement_complete" not in result
+    assert len(result["screenshots"]) == 21
+    failed = [s for s in result["screenshots"] if s["role"] == "calibration"]
+    assert len(failed) == 1 and failed[0]["verification"]["passed"] is False
+    assert result["dynamic_tests"] == [] and result["restoration_verified"]
+    assert run.device.build() == "1271048"
+
+
+@pytest.mark.parametrize(
+    "fault,role",
+    [
+        ("native", "calibration"),
+        ("cleanup", "calibration"),
+        ("settings", "clean"),
+        ("saves", "calibration"),
+        ("record", "calibration"),
+        ("incomplete", "clean"),
+        ("unavailable", "clean"),
+        ("invalid_pair", "calibration"),
+    ],
+)
+def test_measurement_operational_failures_are_fatal_not_repeat_differences(
+    synthetic_completed_runtime, fault, role
+):
+    def faulty(capture):
+        capture = differing_calibration(capture)
+
+        def wrapped(*args, on_pair, variant, **kwargs):
+            def measured(record):
+                if fault == "invalid_pair" and variant == role:
+                    path = args[2] / record["pair"]
+                    pair = json_bytes(path.read_bytes())
+                    pair["state_sha256"] = "0" * 64
+                    path.write_bytes(canonical_bytes(pair))
+                on_pair(record)
+
+            summary = capture(*args, on_pair=measured, variant=variant, **kwargs)
+            if variant == role:
+                summary["status"] = "failed"
+                if fault == "native":
+                    summary["fatal_error"] = "native timeout after captures"
+                    summary["fatal_error_details"] = {
+                        "type": "TimeoutExpired",
+                        "stderr": "retained native stderr",
+                    }
+                elif fault == "cleanup":
+                    summary["cleanup_errors"] = [
+                        {"type": "CaptureError", "message": "unroot failed"}
+                    ]
+                elif fault == "settings":
+                    summary["settings_restored"] = False
+                elif fault == "saves":
+                    summary["saves_unchanged"] = False
+                elif fault == "record":
+                    summary["records"][-1]["error_details"] = {"type": "CaptureError"}
+                elif fault == "incomplete":
+                    summary["records"].pop()
+                elif fault == "unavailable":
+                    summary["comparisons"][0]["status"] = "unavailable"
+                (args[2] / "summary.json").write_bytes(canonical_bytes(summary))
+            return summary
+
+        return wrapped
+
+    run, result = synthetic_completed_runtime["execute"](
+        f"measurement-fatal-{fault}", measurement_only=True, capture_wrapper=faulty
+    )
+    assert result["status"] == result["calibration_status"] == "failed"
+    assert (
+        result["measurement_complete"] is False
+        and result["capture_set_qualified"] is False
+    )
+    assert result["restoration_verified"] and run.device.build() == "1271048"
+    assert (
+        result["dynamic_tests"] == [] and not (run.folder / "builder-handoff").exists()
+    )
+    assert len(result["screenshots"]) == (
+        20 if role == "clean" or fault == "invalid_pair" else 40
+    )
+    assert run.journal.get("error")
+    if fault in {"native", "cleanup", "record"}:
+        assert run.journal["capture_errors"][-1]["role"] == role
+        if fault == "native":
+            assert (
+                run.journal["capture_errors"][-1]["fatal_error_details"]["stderr"]
+                == "retained native stderr"
+            )
+
+
+@pytest.mark.parametrize("kind", ["settings", "save", "other"])
+def test_measurement_preservation_failure_stops_and_restores_without_repair(
+    synthetic_completed_runtime, kind
+):
+    root_name = "external" if kind == "save" else "private"
+    target = (
+        "files/SaveFiles/unexpected-save"
+        if kind == "save"
+        else "files/GameSettings.json"
+        if kind == "settings"
+        else "files/other-state"
+    )
+
+    def change(root, number, files):
+        # A transient unexpected post-clean observation, not an app-data repair.
+        if root == root_name and number == 14:
+            files[target] = b"unauthorized state"
+
+    run, result = synthetic_completed_runtime["execute"](
+        "measurement-preservation-" + kind,
+        measurement_only=True,
+        volatile=True,
+        transform=change,
+    )
+    assert result["status"] == "failed" and result["measurement_complete"] is False
+    assert (
+        result["calibration_status"] == "failed" and not result["capture_set_qualified"]
+    )
+    assert result["restoration_verified"] and run.device.build() == "1271048"
+    assert len(result["screenshots"]) == 20
+    check = run.journal["capture_data_checks"][-1]
+    assert [entry["path"] for entry in check["preservation"]["unexpected_changes"]] == [
+        root_name + ":" + target
+    ]
+    assert result["dynamic_tests"] == []
+
+
+def test_measurement_rejects_production_capture_before_install(real_capture_runtime):
+    run, record, events = real_capture_runtime
+    run.content.update(measurement_only=True, measurement_complete=False)
+    with pytest.raises(CaptureError, match="authorized control/calibration"):
+        run.capture(record, "mutation", measurement_only=False)
+    assert events == []
 
 
 def test_d051_runtime_accepts_only_bookkeeping_at_all_preservation_boundaries(
@@ -1669,8 +2342,9 @@ def real_capture_runtime(tmp_path, monkeypatch):
 
 
 @pytest.mark.parametrize("after_capture_failure", [False, True])
+@pytest.mark.parametrize("measurement_only", [False, True])
 def test_real_capture_wrapped_timeout_is_checkpointed_in_runtime_journal(
-    real_capture_runtime, monkeypatch, after_capture_failure
+    real_capture_runtime, monkeypatch, after_capture_failure, measurement_only
 ):
     import subprocess
 
@@ -1713,7 +2387,15 @@ def test_real_capture_wrapped_timeout_is_checkpointed_in_runtime_journal(
             return read_data(device)
 
         monkeypatch.setattr(api(), "read_app_data", inventory)
-    result = run.run(probe_only=True)
+    if measurement_only:
+        from types import SimpleNamespace
+
+        run.catalog = SimpleNamespace(control=record, calibration=record)
+        result = run.run(measurement_only=True)
+        assert result["measurement_complete"] is False
+        assert result["calibration_status"] == "failed"
+    else:
+        result = run.run(probe_only=True)
     assert result["status"] == "failed" and not result["capture_set_qualified"]
     assert result["dynamic_tests"] == [] and events == ["install", "restore"]
     assert connects == 2

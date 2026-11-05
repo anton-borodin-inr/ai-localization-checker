@@ -626,3 +626,44 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
   unmutated-layout gates, forward/reverse repeatability, install/environment
   controls, labels, metrics and split are unchanged. This entry records the
   authorization and remains Proposed for decision-log review.
+
+## D-052 — Owner-authorized nonqualifying measurement matrix
+
+- **Date:** 2026-11-05
+- **Status:** Proposed
+- **Decision:** Record Anton's new, measurement-only authorization to compare
+  frozen empty control `1888080431` with the EN-help calibration `1808820362`
+  on all five dev screens, EN and DE, in both forward/reverse passes. Use only
+  catalog SHA-256 `790b21921ca3d4988b6257a6da235817c8b8407b2f029871c74a05598efaf354`
+  at the separately approved exact path and output root. Continue domain
+  comparisons through the complete matrix; retain their actual failed results.
+  Always keep `calibration_status: failed`, `capture_set_qualified: false` and
+  a nonsuccess run status, even if every measured comparison is zero.
+- **Why:** Anton needs the DE evidence and the same measurements for every pair
+  before deciding whether any future calibration-rule proposal is warranted.
+  A first outside-mask failure alone does not supply that full diagnostic matrix.
+- **Alternatives considered:** Repeat the normal first-failure qualification
+  run (does not collect the requested matrix); introduce a tolerance or adopt
+  a new calibration policy (not authorized); build another APK or run production
+  batches (not authorized).
+- **Consequences:** This is not a new accepted calibration rule and does not
+  amend D-050. The default run still stops at its first strict comparison failure.
+  Measurement mode never constructs production callbacks, splits batches or
+  emits builder handoffs, and cannot resume a production run. Preserve exact
+  RGBA counts, exclusive bounding boxes, channel deltas, masks and dump checks
+  for every calibration/control pair, with same-build repeat differences kept
+  as diagnostic failures, never normalized to identical. Native, transport,
+  readiness, invalid-pair, cleanup, settings/save or unexpected app-data errors
+  remain fatal. Only the exact 40-pair scope (20 per role) with verified downgrade
+  and final restoration may set `measurement_complete: true`; it does not imply
+  qualification. The existing serial lock, containment, per-install original/
+  input/readback/post inventories, D-051 exact four-private-file exception,
+  strict metadata and all other preservation checks, `install -r -d`, per-build
+  environment checks, root/unroot and primary/cleanup error retention remain.
+  Restore and verify reference `1271048` at the end, including failure or
+  cancellation; no repeated restoration attempt or app-data repair is authorized.
+  Bind nonqualifying mode/completion flags in the manifest and journal under the
+  normal v3 evidence index. Rehashed flags or deleted mode markers cannot turn
+  a 40-pair diagnostic run into a full qualified run. No labels, evaluation,
+  production, tolerance, new build or policy adoption is authorized. Stop for
+  Anton after the measurement report. See [mutation-generator.md](mutation-generator.md).

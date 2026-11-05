@@ -5,8 +5,15 @@ import os
 import re
 import subprocess
 from pathlib import Path
+from typing import cast
 
-from l10n_checker.capture import REPO_ROOT, SETTINGS_PATH, CaptureError, Device
+from l10n_checker.capture import (
+    REPO_ROOT,
+    SETTINGS_PATH,
+    CaptureError,
+    Device,
+    retain_cleanup,
+)
 from l10n_checker.mutation_catalog import ApkTools, no_symlinks, read_catalog, require
 from l10n_checker.mutation_cli import build_requests
 from l10n_checker.mutation_device import (
@@ -24,7 +31,12 @@ from l10n_checker.mutation_device import (
     save_backup,
 )
 from l10n_checker.mutation_plan import load_plan, split_after_interference
-from l10n_checker.mutation_verify import occurrence_matrix, split_rate, verify_screen
+from l10n_checker.mutation_verify import (
+    compare_rgba,
+    occurrence_matrix,
+    split_rate,
+    verify_screen,
+)
 from l10n_checker.screen_capture import (
     HOOK_DIRECTORY_OPERATION,
     capture_manifest,
@@ -70,12 +82,13 @@ def capture_directory(folder, batch_id, role):
     return contained(folder, f"artifacts/{role}/{batch_id}")
 
 
-def expected_capture_keys(catalog):
+def expected_capture_keys(catalog, *, measurement_only=False):
     roles = [
         (catalog.control["request"]["id"], "clean"),
         (catalog.calibration["request"]["id"], "calibration"),
-        *[(batch["id"], "mutation") for batch in catalog.plan["batches"]],
     ]
+    if not measurement_only:
+        roles += [(batch["id"], "mutation") for batch in catalog.plan["batches"]]
     return {
         (identity, role, screen, language, n)
         for identity, role in roles
@@ -162,7 +175,17 @@ def implementation_hashes():
 
 
 class MutationRun:
-    def __init__(self, catalog, inputs, folder, *, approved_root, device, tools):
+    def __init__(
+        self,
+        catalog,
+        inputs,
+        folder,
+        *,
+        approved_root,
+        device,
+        tools,
+        measurement_only=False,
+    ):
         approved_root = manifest_output_directory(approved_root, False)
         folder = manifest_output_directory(folder, False)
         require(
@@ -229,9 +252,23 @@ class MutationRun:
             "dynamic_split_rate": split_rate([]),
             "density": catalog.plan["density"],
         }
+        if measurement_only:
+            self.content.update(measurement_only=True, measurement_complete=False)
         self.checkpoint()
 
     def checkpoint(self):
+        if self.content.get("measurement_only"):
+            # This mode can never publish a calibration or run success, even at
+            # intermediate/error checkpoints or when every comparison is zero.
+            self.content.update(
+                calibration_status="failed", capture_set_qualified=False
+            )
+            if self.content["status"] != "restoration_failed":
+                self.content["status"] = "failed"
+            self.journal.update(
+                measurement_only=True,
+                measurement_complete=self.content["measurement_complete"],
+            )
         self.content["observed_occurrence_matrix"] = occurrence_matrix(
             self.content["screenshots"]
         )
@@ -411,7 +448,23 @@ class MutationRun:
         self.content["downgrade_verified"] = True
         self.checkpoint()
 
-    def capture(self, record, role):
+    def capture(self, record, role, *, measurement_only=False):
+        measurement_only = measurement_only or self.content.get(
+            "measurement_only", False
+        )
+        if measurement_only:
+            self.content.update(measurement_only=True, measurement_complete=False)
+            self.checkpoint()
+            require(
+                role in {"clean", "calibration"}
+                and record
+                == (
+                    self.catalog.control
+                    if role == "clean"
+                    else self.catalog.calibration
+                ),
+                "Measurement capture accepts only authorized control/calibration artifacts",
+            )
         self.install(record)
         effective = self.inputs.with_build(record["build"])
         root = capture_directory(self.folder, record["request"]["id"], role)
@@ -494,7 +547,7 @@ class MutationRun:
                     failures.append(stable)
             self.content["screenshots"].append(stable)
             self.checkpoint()
-            if failures:
+            if failures and not measurement_only:
                 raise CaptureError("Strict dynamic gate failed; no further captures")
 
         summary = capture_manifest(
@@ -562,6 +615,58 @@ class MutationRun:
             summary.get("settings_restored"),
             "Capture did not restore original settings",
         )
+        if measurement_only:
+            require(
+                not errors
+                and not summary.get("fatal_error")
+                and summary.get("saves_unchanged") is True,
+                "Measurement capture operational failure",
+            )
+            expected = {
+                (screen, language, n)
+                for screen in self.plan["screen_ids"]
+                for language in ("en", "de")
+                for n in (1, 2)
+            }
+            records = summary.get("records", [])
+            actual = [(r["screen"], r["language"], r["pass"]) for r in records]
+            require(
+                len(actual) == len(expected)
+                and set(actual) == expected
+                and all(r.get("status") == "captured" for r in records),
+                "Incomplete measurement capture scope",
+            )
+            comparisons = summary.get("comparisons", [])
+            keys = [(c["screen"], c["language"]) for c in comparisons]
+            require(
+                len(keys) == len(expected) // 2
+                and set(keys) == {(s, language) for s, language, _ in expected}
+                and all(
+                    c.get("status") in {"identical", "different"}
+                    and c.get("dump_status") in {"identical", "different"}
+                    for c in comparisons
+                ),
+                "Incomplete measurement repeat comparisons",
+            )
+            repeatable = all(
+                c["status"] == c["dump_status"] == "identical" for c in comparisons
+            )
+            require(
+                summary.get("status") == ("complete" if repeatable else "failed"),
+                "Measurement summary is not a repeat-only failure",
+            )
+            self.content.setdefault("measurement_captures", []).append(
+                {
+                    "batch_id": record["request"]["id"],
+                    "role": role,
+                    "summary": str(
+                        (capture_root / "summary.json").relative_to(self.folder)
+                    ),
+                    "repeatability_passed": repeatable,
+                }
+            )
+            self.checkpoint()
+            return {"passed": False, "measurement_complete": True}
         if failures:
             if role == "calibration":
                 self.content["calibration_status"] = "failed"
@@ -617,12 +722,49 @@ class MutationRun:
         self.checkpoint()
         return {"passed": True}
 
-    def run(self, *, probe_only=False):
+    def run(self, *, probe_only=False, measurement_only=False):
+        measurement_only = measurement_only or self.content.get(
+            "measurement_only", False
+        )
+        if measurement_only:
+            self.content.update(measurement_only=True, measurement_complete=False)
+        measurement_captured = False
+        primary = None
+        restoration_interrupt = None
         self.content["status"] = "running"
         self.checkpoint()
         try:
+            require(
+                not (measurement_only and probe_only), "Measurement is not probe-only"
+            )
             self.probe()
-            if not probe_only:
+            if measurement_only:
+                # Do not even construct production callbacks in this transaction.
+                for record, role in (
+                    (self.catalog.control, "clean"),
+                    (self.catalog.calibration, "calibration"),
+                ):
+                    require(
+                        self.capture(record, role, measurement_only=True)[
+                            "measurement_complete"
+                        ],
+                        "Incomplete measurement capture",
+                    )
+                actual = [
+                    (r["batch_id"], r["role"], r["screen"], r["language"], r["pass"])
+                    for r in self.content["screenshots"]
+                ]
+                expected = expected_capture_keys(self.catalog, measurement_only=True)
+                require(
+                    len(actual) == len(expected) == 40
+                    and set(actual) == expected
+                    and self.content["dynamic_tests"] == []
+                    and "handoff" not in self.content
+                    and not (self.folder / "builder-handoff").exists(),
+                    "Incomplete measurement matrix or production evidence",
+                )
+                measurement_captured = True
+            elif not probe_only:
                 production = [
                     lambda record=self.catalog.records[batch["id"]]: self.capture(
                         record, "mutation"
@@ -635,10 +777,11 @@ class MutationRun:
                     production,
                     self.restore,
                 )
-            self.content.update(
-                status="probe_verified" if probe_only else "qualified",
-                capture_set_qualified=not probe_only,
-            )
+            if not measurement_only:
+                self.content.update(
+                    status="probe_verified" if probe_only else "qualified",
+                    capture_set_qualified=not probe_only,
+                )
         except (
             CaptureError,
             OSError,
@@ -646,26 +789,51 @@ class MutationRun:
             KeyError,
             subprocess.SubprocessError,
         ) as exc:
+            primary = exc
             self.journal["error"] = str(exc)
             self.journal["error_details"] = failure_details(exc)
             self.journal["cleanup_errors"] = getattr(exc, "cleanup_errors", [])
             if self.content["status"] != "awaiting_builder_approval":
                 self.content["status"] = "failed"
+        except BaseException as exc:
+            if measurement_only:
+                primary = exc
+                self.journal["error"] = str(exc)
+                self.journal["error_details"] = failure_details(exc)
+                self.journal["cleanup_errors"] = getattr(exc, "cleanup_errors", [])
+            raise
         finally:
             try:
                 self.restore()
-            except (
-                CaptureError,
-                OSError,
-                ValueError,
-                subprocess.SubprocessError,
-            ) as exc:
+            except BaseException as exc:
+                expected_cleanup = isinstance(
+                    exc, (CaptureError, OSError, ValueError, subprocess.SubprocessError)
+                )
+                if not measurement_only and not expected_cleanup:
+                    raise
                 self.journal["restoration_error"] = str(exc)
                 self.journal["restoration_error_details"] = failure_details(exc)
+                if measurement_only:
+                    if primary is not None:
+                        retain_cleanup(primary, exc, "Reference restoration")
+                        self.journal["error_details"] = failure_details(primary)
+                        self.journal["cleanup_errors"] = getattr(
+                            primary, "cleanup_errors", []
+                        )
+                    elif not expected_cleanup:
+                        restoration_interrupt = exc
                 self.content.update(
                     status="restoration_failed",
                     restoration_verified=False,
                     capture_set_qualified=False,
+                )
+            if measurement_only:
+                self.content["measurement_complete"] = (
+                    measurement_captured
+                    and self.content["downgrade_verified"] is True
+                    and self.content["restoration_verified"] is True
+                    and "error" not in self.journal
+                    and "restoration_error" not in self.journal
                 )
             self.journal["status"] = self.content["status"]
             self.checkpoint()
@@ -675,6 +843,8 @@ class MutationRun:
             )
             (self.folder / "evidence-index.json").write_bytes(index)
             self.evidence_sha256 = digest(index)
+            if restoration_interrupt is not None:
+                raise restoration_interrupt
         return {**self.content, "evidence_sha256": self.evidence_sha256}
 
 
@@ -754,7 +924,7 @@ def resume_evidence(parent, expected_sha256, catalog, manifest, approved_root):
     }
 
 
-def run_config(config, *, probe_only=False):
+def run_config(config, *, probe_only=False, measurement_only=False):
     fields = {
         "catalog",
         "sha256",
@@ -774,6 +944,15 @@ def run_config(config, *, probe_only=False):
         bool(config.get("resume_from")) == bool(config.get("resume_sha256")),
         "Resume requires both parent path and independent parent SHA-256",
     )
+    if measurement_only:
+        require(
+            measurement_only is True
+            and not probe_only
+            and not config.get("resume_from")
+            and config["sha256"]
+            == "790b21921ca3d4988b6257a6da235817c8b8407b2f029871c74a05598efaf354",
+            "Measurement requires the owner-authorized frozen catalog, without probe/resume",
+        )
     catalog = read_catalog(
         Path(config["catalog"]),
         config["sha256"],
@@ -786,6 +965,13 @@ def run_config(config, *, probe_only=False):
         catalog.plan["screen_ids"] == [s.id for s in inputs.screens()],
         "Mutation command requires complete dev selection",
     )
+    if measurement_only:
+        require(
+            len(catalog.plan["screen_ids"]) == 5
+            and catalog.control["build"]["version_code"] == "1888080431"
+            and catalog.calibration["build"]["version_code"] == "1808820362",
+            "Measurement requires all five dev screens and the two authorized actual build codes",
+        )
     resumed = (
         resume_evidence(
             Path(config["resume_from"]),
@@ -845,10 +1031,14 @@ def run_config(config, *, probe_only=False):
             approved_root=root,
             device=device,
             tools=ApkTools(Path(config["sdk"]), Path(config["jdk"])),
+            **({"measurement_only": True} if measurement_only else {}),
         )
         run.content.update(resumed)
         run.checkpoint()
-        return run.run(probe_only=probe_only)
+        return run.run(
+            probe_only=probe_only,
+            **({"measurement_only": True} if measurement_only else {}),
+        )
 
 
 class RunEvidence:
@@ -1000,7 +1190,17 @@ def replay_preservation(recorded, before, after, allowed_new=()):
     return expected
 
 
-def replay_capture(evidence, folder, artifact, role, inputs, screenshots, before):
+def replay_capture(
+    evidence,
+    folder,
+    artifact,
+    role,
+    inputs,
+    screenshots,
+    before,
+    *,
+    measurement_only=False,
+):
     identity = artifact["request"]["id"]
     root = capture_directory(folder, identity, role)
     effective = inputs.with_build(artifact["build"])
@@ -1017,7 +1217,8 @@ def replay_capture(evidence, folder, artifact, role, inputs, screenshots, before
     prepared = json_bytes(prepared_raw)
     summary = evidence.json(root, "capture/summary.json")
     require(
-        summary.get("status") == "complete"
+        summary.get("status")
+        in ({"complete", "failed"} if measurement_only else {"complete"})
         and summary.get("settings_restored") is True
         and summary.get("saves_unchanged") is True
         and not summary.get("fatal_error")
@@ -1072,6 +1273,13 @@ def replay_capture(evidence, folder, artifact, role, inputs, screenshots, before
         and [(r["screen"], r["language"], r["pass"]) for r in records] == expected_keys,
         "Capture summary receipt records missing/duplicate/out of order",
     )
+    if measurement_only:
+        require(
+            not summary.get("fatal_error_details")
+            and not summary.get("cleanup_errors")
+            and all(not r.get("error_details") for r in cast(list[dict], records)),
+            "Measurement operational/cleanup failure is not repeat evidence",
+        )
     width, height = effective.manifest.resolution
     comparisons = [
         {
@@ -1088,6 +1296,34 @@ def replay_capture(evidence, folder, artifact, role, inputs, screenshots, before
         for language in ("en", "de")
         for screen in effective.screens(language)
     ]
+    if measurement_only:
+        for comparison in comparisons:
+            pair_records = [
+                r
+                for r in cast(list[dict], records)
+                if (r["screen"], r["language"])
+                == (comparison["screen"], comparison["language"])
+            ]
+            pngs = [evidence.read(root / "capture", r["png"]) for r in pair_records]
+            pixels = compare_rgba(pngs[0], pngs[1], [])["total"]
+            count = pixels["different_pixels"]
+            comparison.update(
+                status="different" if count else "identical",
+                different_pixels=count,
+                different_share=count / (width * height),
+                bounding_box=pixels["bounding_box"],
+            )
+            dumps = [evidence.read(root / "capture", r["dump"]) for r in pair_records]
+            comparison["dump_status"] = (
+                "identical" if dumps[0] == dumps[1] else "different"
+            )
+        repeatable = all(
+            c["status"] == c["dump_status"] == "identical" for c in comparisons
+        )
+        require(
+            summary["status"] == ("complete" if repeatable else "failed"),
+            "Measurement repeat-only summary status mismatch",
+        )
     require(
         summary.get("comparisons") == comparisons,
         "Capture repeatability comparisons receipt mismatch",
@@ -1247,7 +1483,14 @@ def replay_operations(evidence, folder, catalog, inputs, value):
         else [
             (catalog.control, "clean"),
             (catalog.calibration, "calibration"),
-            *[(catalog.records[b["id"]], "mutation") for b in catalog.plan["batches"]],
+            *(
+                []
+                if value.get("measurement_only")
+                else [
+                    (catalog.records[b["id"]], "mutation")
+                    for b in catalog.plan["batches"]
+                ]
+            ),
         ]
     )
     reference_record = {"build": reference, "apk": catalog.data["reference"]["apk"]}
@@ -1362,6 +1605,7 @@ def replay_operations(evidence, folder, catalog, inputs, value):
                 inputs,
                 value["screenshots"],
                 after,
+                measurement_only=value.get("measurement_only", False),
             )
             allowed_outputs.update(allowed)
             checks.append(check)
@@ -1392,6 +1636,30 @@ def replay_operations(evidence, folder, catalog, inputs, value):
 
 def validate_run_claims(value):
     """Status and flags are a bidirectional contract, including CLI return codes."""
+    if {"measurement_only", "measurement_complete", "measurement_captures"} & set(
+        value
+    ):
+        require(
+            value.get("measurement_only") is True
+            and type(value.get("measurement_complete")) is bool
+            and value.get("calibration_status") == "failed"
+            and value.get("capture_set_qualified") is False
+            and value.get("status") in {"failed", "restoration_failed"}
+            and value.get("dynamic_tests") == []
+            and "handoff" not in value
+            and all(
+                r.get("role") in {"clean", "calibration"}
+                for r in value.get("screenshots", [])
+            ),
+            "Measurement evidence is strictly nonqualifying",
+        )
+        if value["measurement_complete"]:
+            require(
+                value["status"] == "failed"
+                and value.get("downgrade_verified") is True
+                and value.get("restoration_verified") is True,
+                "Complete measurement requires verified downgrade/restoration",
+            )
     require(
         value.get("status")
         in {
@@ -1478,6 +1746,27 @@ def verify_run(folder, catalog, inputs, *, evidence_sha256):
         "Runtime provenance/scope mismatch",
     )
     validate_run_claims(value)
+    journal = evidence.json(folder, "journal.json")
+    mode_fields = ("measurement_only", "measurement_complete")
+    require(
+        canonical_bytes({name: value[name] for name in mode_fields if name in value})
+        == canonical_bytes(
+            {name: journal[name] for name in mode_fields if name in journal}
+        ),
+        "Measurement flags differ from retained journal",
+    )
+    if value.get("measurement_complete"):
+        actual = [
+            (r["batch_id"], r["role"], r["screen"], r["language"], r["pass"])
+            for r in value["screenshots"]
+        ]
+        expected = expected_capture_keys(catalog, measurement_only=True)
+        require(
+            len(actual) == len(expected) == 40
+            and set(actual) == expected
+            and not (folder / "builder-handoff").exists(),
+            "Complete measurement requires the exact forty-pair matrix",
+        )
     if value["mutation_run_version"] == 2:
         require(
             canonical_bytes(value.get("preservation_policy"))
@@ -1487,12 +1776,15 @@ def verify_run(folder, catalog, inputs, *, evidence_sha256):
     require(
         (index["version"] == 3 and value["mutation_run_version"] == 2)
         or (
-            value["capture_set_qualified"] is False
+            not value.get("measurement_complete")
+            and value["capture_set_qualified"] is False
             and value["status"] not in {"qualified", "probe_verified"}
         ),
         "Legacy evidence is inspectable only, never qualified",
     )
-    if value["status"] in {"qualified", "probe_verified"}:
+    if value["status"] in {"qualified", "probe_verified"} or value.get(
+        "measurement_complete"
+    ):
         require(
             value.get("builder_content_sha256")
             == catalog.data["builder"]["content_sha256"]
@@ -1507,6 +1799,30 @@ def verify_run(folder, catalog, inputs, *, evidence_sha256):
             "Runtime success metadata/provenance mismatch",
         )
         replay_operations(evidence, folder, catalog, inputs, value)
+    if value.get("measurement_complete"):
+        measured = []
+        for artifact, role in (
+            (catalog.control, "clean"),
+            (catalog.calibration, "calibration"),
+        ):
+            root = capture_directory(folder, artifact["request"]["id"], role)
+            summary = evidence.json(root, "capture/summary.json")
+            measured.append(
+                {
+                    "batch_id": artifact["request"]["id"],
+                    "role": role,
+                    "summary": str((root / "capture/summary.json").relative_to(folder)),
+                    "repeatability_passed": all(
+                        c["status"] == c["dump_status"] == "identical"
+                        for c in summary["comparisons"]
+                    ),
+                }
+            )
+        require(
+            canonical_bytes(value.get("measurement_captures"))
+            == canonical_bytes(measured),
+            "Measurement repeatability claims differ from retained receipts",
+        )
     clean = {}
     repeats = {}
     authorized = expected_capture_keys(catalog)
