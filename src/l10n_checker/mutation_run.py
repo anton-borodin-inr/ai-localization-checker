@@ -1,0 +1,1535 @@
+"""Dev-only mutation run, strict gates, immutable handoffs and offline replay."""
+
+import fcntl
+import os
+import re
+import subprocess
+from pathlib import Path
+
+from l10n_checker.capture import REPO_ROOT, SETTINGS_PATH, CaptureError, Device
+from l10n_checker.mutation_catalog import ApkTools, no_symlinks, read_catalog, require
+from l10n_checker.mutation_cli import build_requests
+from l10n_checker.mutation_device import (
+    assert_idle,
+    data_inventory,
+    environment_check,
+    execute_stages,
+    failure_details,
+    install_verified,
+    installed_identity,
+    inventory_changes,
+    read_app_data,
+    save_backup,
+)
+from l10n_checker.mutation_plan import load_plan, split_after_interference
+from l10n_checker.mutation_verify import occurrence_matrix, split_rate, verify_screen
+from l10n_checker.screen_capture import (
+    HOOK_DIRECTORY_OPERATION,
+    capture_manifest,
+    manifest_output_directory,
+    planned_hook_outputs,
+    planned_operations,
+    prepare_device,
+    save_inventory,
+    write_json,
+)
+from l10n_checker.screen_manifest import Inputs, digest, json_bytes
+from l10n_checker.text_dump import canonical_bytes
+from l10n_checker.text_reference import load_pair
+
+
+def contained(root, relative):
+    require(
+        type(relative) is str
+        and relative
+        and not Path(relative).is_absolute()
+        and ".." not in Path(relative).parts,
+        "Unsafe run artifact path",
+    )
+    path = no_symlinks(root / relative)
+    require(path.is_relative_to(root), "Run artifact escapes output")
+    return path
+
+
+def retained_files(folder):
+    """Exact regular-file membership, rejecting symlinks even in unused outputs."""
+    files = {}
+    for path in sorted(folder.rglob("*")):
+        no_symlinks(path)
+        require(path.is_file() or path.is_dir(), "Unsupported run evidence entry")
+        name = str(path.relative_to(folder))
+        if path.is_file() and name != "evidence-index.json":
+            files[name] = digest(path.read_bytes())
+    return files
+
+
+def capture_directory(folder, batch_id, role):
+    require(role in {"clean", "calibration", "mutation"}, "Unknown capture role")
+    return contained(folder, f"artifacts/{role}/{batch_id}")
+
+
+def expected_capture_keys(catalog):
+    roles = [
+        (catalog.control["request"]["id"], "clean"),
+        (catalog.calibration["request"]["id"], "calibration"),
+        *[(batch["id"], "mutation") for batch in catalog.plan["batches"]],
+    ]
+    return {
+        (identity, role, screen, language, n)
+        for identity, role in roles
+        for screen in catalog.plan["screen_ids"]
+        for language in ("en", "de")
+        for n in (1, 2)
+    }
+
+
+def verified_pair(inputs, folder, record):
+    require(
+        record["screen"] in {s.id for s in inputs.screens()}
+        and record["language"] in {"en", "de"}
+        and type(record["pass"]) is int
+        and record["pass"] in {1, 2},
+        "Pair selection outside approved dev scope",
+    )
+    path = contained(folder, record["pair"])
+    raw = path.read_bytes()
+    if "pair_sha256" in record:
+        require(digest(raw) == record["pair_sha256"], "Pair sidecar hash mismatch")
+    pair = json_bytes(raw)
+    state = inputs.states[record["screen"], record["language"]]
+    language = {"en": "English", "de": "German"}[record["language"]]
+    require(
+        pair.get("pair_version") == 1
+        and pair.get("protocol_version") == 2
+        and pair.get("screen") == record["screen"]
+        and pair.get("language") == language
+        and pair.get("build") == inputs.manifest.build.model_dump()
+        and pair.get("state_sha256") == digest(canonical_bytes(state)),
+        "Pair provenance differs from effective manifest",
+    )
+    for key in ("png", "dump"):
+        contained(path.parent, pair[key])
+    loaded = load_pair(path, pair_bytes=raw)
+    require(
+        loaded[3].image_size == inputs.manifest.resolution,
+        "Capture resolution differs from authority",
+    )
+    return loaded
+
+
+def write_handoff(catalog, plan, batch_id, reason, folder, manifest):
+    new = split_after_interference(plan, batch_id, reason)
+    raw = canonical_bytes(new)
+    load_plan(raw, manifest=manifest)
+    requests = canonical_bytes(build_requests(new))
+    folder = no_symlinks(folder)
+    folder.mkdir(parents=True, exist_ok=False)
+    (folder / "plan.json").write_bytes(raw)
+    (folder / "build-requests.json").write_bytes(requests)
+    handoff = {
+        "handoff_version": 1,
+        "parent_catalog_sha256": catalog.sha256,
+        "plan_sha256": digest(raw),
+        "requests_sha256": digest(requests),
+        "builder_content_sha256": catalog.data["builder"]["content_sha256"],
+        "builder_session": "part-b Unciv-59b; owner approval required before any build",
+        "device_authorization_for_new_catalog": "required_before_install",
+        "status": "awaiting_builder_approval",
+    }
+    write_json(folder / "handoff.json", handoff)
+    return new, handoff
+
+
+def implementation_hashes():
+    names = (
+        "mutation_run.py",
+        "mutation_catalog.py",
+        "mutation_device.py",
+        "mutation_verify.py",
+        "mutation_cli.py",
+        "mutation_plan.py",
+        "mutation_recipes.py",
+        "screen_manifest.py",
+        "screen_capture.py",
+        "hook.py",
+        "text_dump.py",
+        "text_reference.py",
+        "capture.py",
+    )
+    return {name: digest((Path(__file__).parent / name).read_bytes()) for name in names}
+
+
+class MutationRun:
+    def __init__(self, catalog, inputs, folder, *, approved_root, device, tools):
+        approved_root = manifest_output_directory(approved_root, False)
+        folder = manifest_output_directory(folder, False)
+        require(
+            folder != approved_root and folder.is_relative_to(approved_root),
+            "Run output must be beneath approved root",
+        )
+        require(
+            inputs.capture_selection(["en", "de"])["screen_ids"]
+            == catalog.plan["screen_ids"]
+            and inputs.source_manifest_sha256
+            == catalog.data["inputs"]["manifest"]["sha256"],
+            "Capture selection/authority differs from catalog",
+        )
+        require(not inputs.contains_holdout, "Mutation entry point accepts dev only")
+        folder.mkdir(mode=0o700, parents=True, exist_ok=False)
+        (folder / "private").mkdir(mode=0o700)
+        (
+            self.folder,
+            self.approved_root,
+            self.catalog,
+            self.inputs,
+            self.device,
+            self.tools,
+        ) = folder, approved_root, catalog, inputs, device, tools
+        self.counter = 0
+        self.needs_restore = False
+        self.restored = False
+        self.restore_error = None
+        self.restore_attempted = False
+        self.original_inventory = None
+        self.allowed_outputs = set()
+        self.clean = {}
+        self.plan = catalog.plan
+        self.journal = {
+            "status": "created",
+            "operations": [],
+            "live_provider_requests": 0,
+            "api_spend_usd": 0,
+        }
+        self.content = {
+            "mutation_run_version": 1,
+            "status": "not_run",
+            "capture_set_qualified": False,
+            "labels_created": False,
+            "catalog_sha256": catalog.sha256,
+            "builder_content_sha256": catalog.data["builder"]["content_sha256"],
+            "toolchain_sha256": catalog.data["toolchain"]["sha256"],
+            "signing": catalog.data["signing"],
+            "source_commit": catalog.data["source_commit"],
+            "source_inputs": catalog.data["inputs"],
+            "implementation_hashes": implementation_hashes(),
+            "screen_ids": catalog.plan["screen_ids"],
+            "languages": ["en", "de"],
+            "passes": ["forward", "reverse"],
+            "screenshots": [],
+            "calibration_status": "not_run",
+            "downgrade_verified": False,
+            "restoration_verified": False,
+            "dynamic_tests": [],
+            "split_history": catalog.plan["split_history"],
+            "dynamic_split_rate": split_rate([]),
+            "density": catalog.plan["density"],
+        }
+        self.checkpoint()
+
+    def checkpoint(self):
+        self.content["observed_occurrence_matrix"] = occurrence_matrix(
+            self.content["screenshots"]
+        )
+        self.content["dynamic_split_rate"] = split_rate(self.content["dynamic_tests"])
+        self.content["screenshots"].sort(
+            key=lambda r: (r["batch_id"], r["pass"], r["language"], r["screen"])
+        )
+        raw = canonical_bytes(self.content)
+        (self.folder / "mutation-manifest.json").write_bytes(raw)
+        (self.folder / "mutation-manifest.sha256").write_text(digest(raw) + "\n")
+        write_json(self.folder / "journal.json", self.journal)
+
+    def environment(self, build):
+        return environment_check(
+            build, self.folder / "environment" / f"{self.counter:03d}"
+        )
+
+    def install(self, record):
+        self.counter += 1
+        folder = self.folder / "private" / f"install-{self.counter:03d}"
+        # Parent is private too; each transaction keeps its own verified backup.
+        folder.parent.mkdir(mode=0o700, exist_ok=True)
+        self.restored = False
+        if record["build"]["version_code"] != "1271048":
+            self.restore_attempted = False
+            self.restore_error = None
+            self.content["restoration_verified"] = False
+        try:
+            result = install_verified(
+                self.device,
+                self.catalog.apk_path(record),
+                record["build"],
+                self.catalog.data["signing"]["reference_certificate_sha256"],
+                tools=self.tools,
+                folder=folder,
+                environment=self.environment,
+            )
+            self.journal["operations"].append(
+                {
+                    "kind": "install",
+                    "receipt": str((folder / "install.json").relative_to(self.folder)),
+                    "sha256": digest(canonical_bytes(result)),
+                }
+            )
+            self.needs_restore = True
+            return result
+        finally:
+            receipt = folder / "install.json"
+            if receipt.exists():
+                state = json_bytes(receipt.read_bytes())
+                if state.get("install_attempted"):
+                    self.needs_restore = True
+                    if (
+                        record["build"]["version_code"] == "1271048"
+                        and state["status"] != "verified"
+                    ):
+                        self.restore_error = state.get(
+                            "error", "Reference restoration failed"
+                        )
+            self.checkpoint()
+
+    def reference(self):
+        return {
+            "apk": self.catalog.data["reference"]["apk"],
+            "build": self.inputs.manifest.build.model_dump(),
+        }
+
+    def restore(self):
+        if self.restored:
+            return
+        require(
+            not self.restore_attempted and self.restore_error is None,
+            "Reference restoration already attempted; stop without retry: "
+            + str(self.restore_error),
+        )
+        self.restore_attempted = True
+        try:
+            self._restore_once()
+        except BaseException as exc:
+            self.restore_error = str(exc)
+            raise
+
+    def _restore_once(self):
+        if self.restored:
+            return
+        require(
+            self.restore_error is None,
+            "Reference restoration already failed; stop without retry: "
+            + str(self.restore_error),
+        )
+        if self.needs_restore:
+            self.install(self.reference())
+        observed = installed_identity(
+            self.device, self.tools, self.folder / "private/final-apk"
+        )
+        require(
+            observed["version_code"] == "1271048"
+            and observed["apk_sha256"] == self.inputs.manifest.build.apk_sha256
+            and observed["certificate_sha256"]
+            == self.catalog.data["signing"]["reference_certificate_sha256"],
+            "Final 1271048 restoration identity failed",
+        )
+        if self.original_inventory is not None:
+            current = data_inventory(read_app_data(self.device))
+            write_json(self.folder / "private/final-inventory.json", current)
+            changes = inventory_changes(
+                self.original_inventory, current, self.allowed_outputs
+            )
+            self.journal["restoration_data_changes"] = changes
+            require(
+                not changes,
+                "Original app data not restored; backups retained, no repair",
+            )
+        self.device.unroot()
+        self.content["restoration_verified"] = True
+        self.restored = True
+        self.checkpoint()
+
+    def probe(self):
+        assert_idle(self.device)
+        observed = installed_identity(
+            self.device, self.tools, self.folder / "private/initial-apk"
+        )
+        reference = self.reference()["build"]
+        require(
+            observed["certificate_sha256"]
+            == self.catalog.data["signing"]["reference_certificate_sha256"],
+            "Starting installed certificate differs from catalog",
+        )
+        require(
+            all(observed[k] == reference[k] for k in ("version_code", "apk_sha256")),
+            "Starting installed package is not pinned 1271048",
+        )
+        environment_check(reference, self.folder / "environment/initial")
+        initial = read_app_data(self.device)
+        self.original_inventory = data_inventory(initial)
+        self.journal["original_backup"] = save_backup(
+            self.folder / "private/original", initial
+        )
+        readback = data_inventory(read_app_data(self.device))
+        write_json(self.folder / "private/original-readback.json", readback)
+        require(
+            readback == self.original_inventory,
+            "Initial backup changed during readback",
+        )
+        self.install(self.catalog.control)
+        self.install(self.reference())
+        self.needs_restore = False
+        self.restore()
+        self.content["downgrade_verified"] = True
+        self.checkpoint()
+
+    def capture(self, record, role):
+        self.install(record)
+        effective = self.inputs.with_build(record["build"])
+        root = capture_directory(self.folder, record["request"]["id"], role)
+        root.mkdir(parents=True, exist_ok=False)
+        (root / "effective-manifest.json").write_bytes(effective.manifest_bytes)
+        before = data_inventory(read_app_data(self.device))
+        write_json(root / "before-inventory.json", before)
+        prepared = prepare_device(
+            self.device, effective, root / "prepare", ["en", "de"]
+        )
+        allowed = {"private:files/l10n-hook"}
+        for output in prepared["planned_hook_output_operations"]:
+            allowed.update("private:" + output[name] for name in ("file", "temporary"))
+        require(
+            not (allowed - {"private:files/l10n-hook"}) & set(before),
+            "Prepared hook output already exists",
+        )
+        self.allowed_outputs.update(allowed)
+        failures = []
+        capture_root = root / "capture"
+        if role == "calibration":
+            ids = [self.plan["calibration"]["mutation_recipe_id"]]
+        elif role == "clean":
+            ids = []
+        else:
+            ids = next(
+                b["recipe_ids"]
+                for b in self.plan["batches"]
+                if b["id"] == record["request"]["id"]
+            )
+        mutations = [self.plan["mutations"][identity] for identity in ids]
+
+        def on_pair(captured):
+            pair, png, _raw, dump = verified_pair(effective, capture_root, captured)
+            key = (captured["screen"], captured["language"], captured["pass"])
+            pair_path = capture_root / captured["pair"]
+            stable = {
+                "batch_id": record["request"]["id"],
+                "role": role,
+                "build": record["build"],
+                "build_identity_sha256": record["build_identity_sha256"],
+                "patch_set_sha256": record["request"]["patch_set_sha256"],
+                "effective_manifest_sha256": effective.sha256,
+                "screen": captured["screen"],
+                "language": captured["language"],
+                "pass": captured["pass"],
+                "state_sha256": pair["state_sha256"],
+                "pair": str(pair_path.relative_to(self.folder)),
+                "pair_sha256": digest(pair_path.read_bytes()),
+                "png_sha256": pair["png_sha256"],
+                "rgba_sha256": pair["rgba_sha256"],
+                "dump_sha256": pair["dump_sha256"],
+                "recipe_ids": ids,
+                "verification": None,
+            }
+            stable["batch_recipe_ids"] = ids
+            stable["recipe_ids"] = [
+                identity
+                for identity in ids
+                if any(
+                    (o["screen"], o["language"]) == key[:2]
+                    for o in self.plan["mutations"][identity]["occurrences"]
+                )
+            ]
+            if role == "clean":
+                self.clean[key] = (png, dump, stable["pair_sha256"])
+            else:
+                clean_png, clean_dump, clean_sha = self.clean[key]
+                verification = verify_screen(
+                    clean_png, png, clean_dump, dump, mutations
+                )
+                stable.update(control_pair_sha256=clean_sha, verification=verification)
+                if not verification["passed"]:
+                    failures.append(stable)
+            self.content["screenshots"].append(stable)
+            self.checkpoint()
+            if failures:
+                raise CaptureError("Strict dynamic gate failed; no further captures")
+
+        summary = capture_manifest(
+            self.device,
+            effective,
+            capture_root,
+            ["en", "de"],
+            device_plan=root / "prepare/device-plan.json",
+            on_pair=on_pair,
+            fail_fast=True,
+            variant=role,
+        )
+        errors = {
+            key: summary[key]
+            for key in ("fatal_error_details", "cleanup_errors")
+            if summary.get(key)
+        }
+        failed_records = [
+            {
+                key: captured[key]
+                for key in ("screen", "language", "pass", "error_details")
+            }
+            for captured in summary.get("records", [])
+            if captured.get("error_details")
+        ]
+        if failed_records:
+            errors["records"] = failed_records
+        if errors:
+            self.journal.setdefault("capture_errors", []).append(
+                {
+                    "batch_id": record["request"]["id"],
+                    "role": role,
+                    "receipt": str(
+                        (capture_root / "summary.json").relative_to(self.folder)
+                    ),
+                    **errors,
+                }
+            )
+            self.checkpoint()
+        after_archives = read_app_data(self.device)
+        save_backup(root / "after-capture", after_archives)
+        after = data_inventory(after_archives)
+        changes = inventory_changes(before, after, allowed)
+        self.journal.setdefault("capture_data_checks", []).append(
+            {"batch_id": record["request"]["id"], "changes": changes}
+        )
+        require(
+            not changes,
+            "Unexpected app-data change during capture",
+        )
+        require(
+            not summary.get("cleanup_errors"),
+            "Capture cleanup failed; no dynamic split",
+        )
+        require(
+            summary.get("settings_restored"),
+            "Capture did not restore original settings",
+        )
+        if failures:
+            if role == "calibration":
+                self.content["calibration_status"] = "failed"
+                self.checkpoint()
+                return {"passed": False}
+            failure = failures[0]
+            v = failure["verification"]
+            kind = (
+                "outside_mask_pixels"
+                if v["pixels"]["outside"]["different_pixels"]
+                else "changed_unmutated_element"
+                if v["changed_unmutated_elements"]
+                else "missing_mutation"
+            )
+            reason = {
+                "kind": kind,
+                "screen": failure["screen"],
+                "language": failure["language"],
+                "pass": failure["pass"],
+                "verification_sha256": digest(canonical_bytes(v)),
+            }
+            require(len(ids) > 1, "Failing singleton stops qualification")
+            self.plan, handoff = write_handoff(
+                self.catalog,
+                self.plan,
+                record["request"]["id"],
+                reason,
+                self.folder / "builder-handoff",
+                self.inputs.path,
+            )
+            self.content["dynamic_tests"].append(
+                {"id": record["request"]["id"], "recipe_ids": ids, "split": True}
+            )
+            self.content.update(
+                status="awaiting_builder_approval",
+                split_history=self.plan["split_history"],
+                density=self.plan["density"],
+                handoff=handoff,
+            )
+            self.checkpoint()
+            raise CaptureError(
+                "Split requires a new catalog: awaiting builder approval"
+            )
+        require(
+            summary["status"] == "complete", "Capture operational/repeatability failure"
+        )
+        if role == "calibration":
+            self.content["calibration_status"] = "passed"
+        elif role == "mutation":
+            self.content["dynamic_tests"].append(
+                {"id": record["request"]["id"], "recipe_ids": ids, "split": False}
+            )
+        self.checkpoint()
+        return {"passed": True}
+
+    def run(self, *, probe_only=False):
+        self.content["status"] = "running"
+        self.checkpoint()
+        try:
+            self.probe()
+            if not probe_only:
+                production = [
+                    lambda record=self.catalog.records[batch["id"]]: self.capture(
+                        record, "mutation"
+                    )
+                    for batch in self.plan["batches"]
+                ]
+                execute_stages(
+                    lambda: self.capture(self.catalog.control, "clean"),
+                    lambda: self.capture(self.catalog.calibration, "calibration"),
+                    production,
+                    self.restore,
+                )
+            self.content.update(
+                status="probe_verified" if probe_only else "qualified",
+                capture_set_qualified=not probe_only,
+            )
+        except (
+            CaptureError,
+            OSError,
+            ValueError,
+            KeyError,
+            subprocess.SubprocessError,
+        ) as exc:
+            self.journal["error"] = str(exc)
+            self.journal["error_details"] = failure_details(exc)
+            self.journal["cleanup_errors"] = getattr(exc, "cleanup_errors", [])
+            if self.content["status"] != "awaiting_builder_approval":
+                self.content["status"] = "failed"
+        finally:
+            try:
+                self.restore()
+            except (
+                CaptureError,
+                OSError,
+                ValueError,
+                subprocess.SubprocessError,
+            ) as exc:
+                self.journal["restoration_error"] = str(exc)
+                self.journal["restoration_error_details"] = failure_details(exc)
+                self.content.update(
+                    status="restoration_failed",
+                    restoration_verified=False,
+                    capture_set_qualified=False,
+                )
+            self.journal["status"] = self.content["status"]
+            self.checkpoint()
+            # The independent final root binds the manifest, avoiding a hash cycle.
+            index = canonical_bytes(
+                {"version": 2, "files": retained_files(self.folder)}
+            )
+            (self.folder / "evidence-index.json").write_bytes(index)
+            self.evidence_sha256 = digest(index)
+        return {**self.content, "evidence_sha256": self.evidence_sha256}
+
+
+def resume_evidence(parent, expected_sha256, catalog, manifest, approved_root):
+    require(
+        ".." not in Path(parent).parts and ".." not in Path(approved_root).parts,
+        "Resume source parent traversal",
+    )
+    parent = no_symlinks(parent).resolve()
+    root = no_symlinks(approved_root).resolve()
+    require(
+        parent != root and parent.is_relative_to(root),
+        "Resume source outside approved root",
+    )
+    previous_raw = contained(parent, "mutation-manifest.json").read_bytes()
+    require(
+        digest(previous_raw) == expected_sha256, "Resume parent manifest hash mismatch"
+    )
+    previous = json_bytes(previous_raw)
+    require(
+        previous_raw == canonical_bytes(previous)
+        and previous["status"] == "awaiting_builder_approval"
+        and previous["labels_created"] is False,
+        "Resume source is not a pending split run",
+    )
+    handoff = previous.get("handoff")
+    sidecar = json_bytes(contained(parent, "builder-handoff/handoff.json").read_bytes())
+    require(
+        type(handoff) is dict and canonical_bytes(sidecar) == canonical_bytes(handoff),
+        "Resume handoff differs from independently pinned parent handoff",
+    )
+    raw = contained(parent, "builder-handoff/plan.json").read_bytes()
+    requests = contained(parent, "builder-handoff/build-requests.json").read_bytes()
+    require(
+        handoff["parent_catalog_sha256"] == previous["catalog_sha256"],
+        "Resume parent catalog mismatch",
+    )
+    require(
+        digest(raw)
+        == handoff["plan_sha256"]
+        == catalog.data["inputs"]["plan"]["sha256"],
+        "New catalog does not bind exact pending split plan",
+    )
+    require(
+        digest(requests)
+        == handoff["requests_sha256"]
+        == catalog.data["inputs"]["requests"]["sha256"],
+        "New catalog does not bind exact pending requests",
+    )
+    load_plan(raw, manifest=manifest)
+    require(
+        catalog.data["builder"]["content_sha256"] == handoff["builder_content_sha256"],
+        "Resume builder identity changed",
+    )
+    parents = {
+        event["parent"]["id"]: event["parent"]["recipe_ids"]
+        for event in catalog.plan["split_history"]
+    }
+    nodes = {
+        **parents,
+        **{batch["id"]: batch["recipe_ids"] for batch in catalog.plan["batches"]},
+    }
+    for test in previous["dynamic_tests"]:
+        require(
+            test["id"] in nodes
+            and test["recipe_ids"] == nodes[test["id"]]
+            and test["split"] is (test["id"] in parents),
+            "Resume dynamic evidence differs from split lineage",
+        )
+    require(
+        previous["dynamic_split_rate"] == split_rate(previous["dynamic_tests"]),
+        "Resume split rate mismatch",
+    )
+    return {
+        "parent_run_sha256": expected_sha256,
+        "dynamic_tests": previous["dynamic_tests"],
+    }
+
+
+def run_config(config, *, probe_only=False):
+    fields = {
+        "catalog",
+        "sha256",
+        "manifest",
+        "recipes",
+        "sdk",
+        "jdk",
+        "output_dir",
+        "approved_output_root",
+    }
+    require(
+        fields <= set(config)
+        and set(config) <= fields | {"serial", "resume_from", "resume_sha256"},
+        "Invalid mutation device configuration",
+    )
+    require(
+        bool(config.get("resume_from")) == bool(config.get("resume_sha256")),
+        "Resume requires both parent path and independent parent SHA-256",
+    )
+    catalog = read_catalog(
+        Path(config["catalog"]),
+        config["sha256"],
+        manifest=Path(config["manifest"]),
+        recipes=Path(config["recipes"]),
+        tools=ApkTools(Path(config["sdk"]), Path(config["jdk"])),
+    )
+    inputs = Inputs(Path(config["manifest"]), split="dev")
+    require(
+        catalog.plan["screen_ids"] == [s.id for s in inputs.screens()],
+        "Mutation command requires complete dev selection",
+    )
+    resumed = (
+        resume_evidence(
+            Path(config["resume_from"]),
+            config["resume_sha256"],
+            catalog,
+            Path(config["manifest"]),
+            Path(config["approved_output_root"]),
+        )
+        if config.get("resume_from")
+        else {}
+    )
+    root = manifest_output_directory(Path(config["approved_output_root"]), False)
+    root.mkdir(parents=True, exist_ok=True)
+    device = Device(Path(config["sdk"]) / "platform-tools/adb", config.get("serial"))
+    if device.serial is None:
+        # Discovery only: no connect/root/install until the shared lock is held.
+        online = [
+            line.split()[0]
+            for line in device.run("devices").decode().splitlines()
+            if re.fullmatch(r"emulator-\d+\s+device", line.strip())
+        ]
+        require(len(online) == 1, "Exactly one emulator required for lock discovery")
+        device.serial = online[0]
+    require(
+        re.fullmatch(r"emulator-\d+", device.serial) is not None,
+        "Invalid emulator serial for device lock",
+    )
+    common = (
+        subprocess.run(
+            ["git", "rev-parse", "--path-format=absolute", "--git-common-dir"],
+            cwd=REPO_ROOT,
+            capture_output=True,
+            timeout=10,
+            check=True,
+        )
+        .stdout.decode()
+        .strip()
+    )
+    locks = no_symlinks(Path(common) / "l10n-mutation-locks")
+    locks.mkdir(mode=0o700, exist_ok=True)
+    descriptor = os.open(
+        no_symlinks(locks / (device.serial + ".lock")),
+        os.O_CREAT | os.O_RDWR | os.O_NOFOLLOW,
+        0o600,
+    )
+    with os.fdopen(descriptor, "rb+") as lock:
+        try:
+            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError as exc:
+            raise CaptureError(
+                "Another mutation run owns this device boundary"
+            ) from exc
+        run = MutationRun(
+            catalog,
+            inputs,
+            Path(config["output_dir"]),
+            approved_root=root,
+            device=device,
+            tools=ApkTools(Path(config["sdk"]), Path(config["jdk"])),
+        )
+        run.content.update(resumed)
+        run.checkpoint()
+        return run.run(probe_only=probe_only)
+
+
+class RunEvidence:
+    """Authenticate bytes at the semantic read, not just an earlier disk scan."""
+
+    def __init__(self, folder, files):
+        self.folder, self.files = folder, files
+
+    def read(self, folder, relative):
+        path = contained(folder, relative)
+        require(path.is_relative_to(self.folder), "Evidence read outside run")
+        name = str(path.relative_to(self.folder))
+        require(
+            name in self.files and path.is_file(),
+            f"Missing operational receipt: {name}",
+        )
+        raw = path.read_bytes()
+        require(digest(raw) == self.files[name], f"Run evidence hash mismatch: {name}")
+        return raw
+
+    def json(self, folder, relative):
+        try:
+            return json_bytes(self.read(folder, relative))
+        except (ValueError, TypeError) as exc:
+            raise CaptureError(f"Invalid operational receipt: {relative}") from exc
+
+
+def replay_backup(evidence, folder, relative, receipt=None):
+    root = contained(folder, relative)
+    inventory = evidence.json(root, "inventory.json")
+    names = {p.stem for p in root.glob("*.tar")}
+    require(
+        {"private", "external"} <= names <= {"private", "external", "device_encrypted"},
+        "Incomplete app-data backup roots",
+    )
+    archives = {name: evidence.read(root, name + ".tar") for name in names}
+    actual = data_inventory(archives)
+    require(inventory == actual, "App-data backup inventory replay mismatch")
+    if receipt is not None:
+        expected = {
+            "archives": {
+                name: {"path": name + ".tar", "sha256": digest(raw), "bytes": len(raw)}
+                for name, raw in archives.items()
+            },
+            "inventory_sha256": digest(canonical_bytes(actual)),
+        }
+        require(receipt == expected, "App-data backup receipt mismatch")
+    return actual
+
+
+def replay_environment(evidence, folder, relative, build):
+    root = contained(folder, relative)
+    receipt = evidence.json(root, "receipt.json")
+    command = [str(REPO_ROOT / "scripts/check_env.sh")]
+    if build["version_code"] != "1271048":
+        command += ["--version-code", build["version_code"]]
+    require(
+        receipt.get("command") == command
+        and receipt.get("build") == build
+        and type(receipt.get("exit_code")) is int
+        and receipt["exit_code"] == 0
+        and "error_details" not in receipt,
+        "Unsuccessful environment receipt",
+    )
+    for stream in ("stdout", "stderr"):
+        require(
+            digest(evidence.read(root, stream + ".txt"))
+            == receipt.get(stream + "_sha256"),
+            "environment log hash mismatch",
+        )
+    return receipt
+
+
+def replay_installed_apk(evidence, folder, relative, build, certificate):
+    # read_catalog authenticated the signed catalog APK. Exact retained bytes
+    # establish the same build/signature without running native tools on replay.
+    require(
+        digest(evidence.read(folder, relative + "/installed.apk"))
+        == build["apk_sha256"],
+        "Installed/reference APK readback mismatch",
+    )
+    return {key: build[key] for key in ("version_code", "apk_sha256")} | {
+        "certificate_sha256": certificate,
+    }
+
+
+def replay_capture_backup(evidence, root, backup, inputs, inventory):
+    require(
+        type(backup) is dict
+        and backup.get("settings_backup") == "private/GameSettings.json"
+        and backup.get("saves_backup") == "private/SaveFiles.tar"
+        and backup.get("save_copies_needed") == [],
+        "Invalid capture backup receipt",
+    )
+    settings = evidence.read(root, backup["settings_backup"])
+    stat = backup.get("settings_stat", "").split()
+    require(
+        len(stat) == 4
+        and all(s.isdigit() for s in stat)
+        and len(settings) == int(stat[3])
+        and type(json_bytes(settings)) is dict
+        and digest(settings) == backup.get("settings_sha256"),
+        "Capture settings backup receipt mismatch",
+    )
+    expected = {
+        "type": "file",
+        "uid": int(stat[0]),
+        "gid": int(stat[1]),
+        "mode": int(stat[2], 8),
+        "bytes": len(settings),
+        "sha256": digest(settings),
+    }
+    require(
+        inventory.get("private:files/GameSettings.json") == expected,
+        "Capture settings inventory mismatch",
+    )
+    raw = evidence.read(root, backup["saves_backup"])
+    data_inventory({"external": raw})  # Validate tar paths/types, never extract.
+    saves = save_inventory(raw)
+    files = {
+        "external:files/SaveFiles/" + str(Path(name)): checksum
+        for name, checksum in saves.items()
+    }
+    require(
+        saves == backup.get("saves")
+        and all(
+            saves.get("./" + name) == digest(raw)
+            for name, raw in inputs.fixtures.items()
+        )
+        and files
+        == {
+            name: entry["sha256"]
+            for name, entry in inventory.items()
+            if name.startswith("external:files/SaveFiles/") and entry["type"] == "file"
+        },
+        "Capture saves backup/inventory mismatch",
+    )
+    return digest(settings)
+
+
+def replay_capture(evidence, folder, artifact, role, inputs, screenshots, before):
+    identity = artifact["request"]["id"]
+    root = capture_directory(folder, identity, role)
+    effective = inputs.with_build(artifact["build"])
+    require(
+        evidence.read(root, "effective-manifest.json") == effective.manifest_bytes,
+        "Effective capture manifest receipt mismatch",
+    )
+    require(
+        evidence.json(root, "before-inventory.json") == before,
+        "Capture preflight inventory receipt mismatch",
+    )
+    prepared_raw = evidence.read(root, "prepare/device-plan.json")
+    prepared = json_bytes(prepared_raw)
+    summary = evidence.json(root, "capture/summary.json")
+    require(
+        summary.get("status") == "complete"
+        and summary.get("settings_restored") is True
+        and summary.get("saves_unchanged") is True
+        and not summary.get("fatal_error")
+        and summary.get("schema_version") == 1
+        and summary.get("languages") == ["en", "de"]
+        and summary.get("passes") == ["forward", "reverse"]
+        and summary.get("live_provider_requests") == 0
+        and summary.get("api_spend_usd") == 0
+        and summary.get("device_plan_sha256") == digest(prepared_raw)
+        and prepared.get("mode") == "prepare_only"
+        and prepared.get("app_data_writes") == 0
+        and re.fullmatch(r"emulator-\d+", prepared.get("serial", "")),
+        "Unsuccessful capture/preparation summary receipt",
+    )
+    settings_sha = replay_capture_backup(
+        evidence, root / "prepare", prepared.get("backup"), effective, before
+    )
+    require(
+        settings_sha
+        == replay_capture_backup(
+            evidence, root / "capture", summary.get("backup"), effective, before
+        ),
+        "Capture settings changed since preparation",
+    )
+    observed = {
+        "version_code": artifact["build"]["version_code"],
+        "apk_sha256": artifact["build"]["apk_sha256"],
+        "density_dpi": effective.manifest.density_dpi,
+    }
+    for receipt in (prepared, summary):
+        require(
+            receipt.get("manifest_sha256") == effective.sha256
+            and receipt.get("selection") == effective.capture_selection(["en", "de"])
+            and receipt.get("observed_build") == observed
+            and receipt.get("planned_app_data_operations")
+            == planned_operations(effective, ["en", "de"], settings_sha),
+            "Capture plan/build/settings receipt mismatch",
+        )
+    outputs = planned_hook_outputs(
+        effective, ["en", "de"], prepared.get("request_namespace", "")
+    )
+    require(
+        prepared.get("planned_hook_output_operations") == outputs
+        and prepared.get("planned_hook_directory_operation")
+        == HOOK_DIRECTORY_OPERATION,
+        "Capture prepared hook operations receipt mismatch",
+    )
+    records = summary.get("records")
+    expected_keys = [(o["screen"], o["language"], o["pass"]) for o in outputs]
+    require(
+        type(records) is list
+        and [(r["screen"], r["language"], r["pass"]) for r in records] == expected_keys,
+        "Capture summary receipt records missing/duplicate/out of order",
+    )
+    width, height = effective.manifest.resolution
+    comparisons = [
+        {
+            "screen": screen.id,
+            "language": language,
+            "status": "identical",
+            "dump_status": "identical",
+            "total_pixels": width * height,
+            "different_pixels": 0,
+            "different_share": 0,
+            "bounding_box": None,
+            "bounding_box_convention": "[left, top, right-exclusive, bottom-exclusive] or null",
+        }
+        for language in ("en", "de")
+        for screen in effective.screens(language)
+    ]
+    require(
+        summary.get("comparisons") == comparisons,
+        "Capture repeatability comparisons receipt mismatch",
+    )
+    mapped = {
+        (r["screen"], r["language"], r["pass"]): r
+        for r in screenshots
+        if (r["batch_id"], r["role"]) == (identity, role)
+    }
+    operations = []
+    for n in (1, 2):
+        for language in ("en", "de"):
+            operations.append(
+                {
+                    "operation": "replace_settings",
+                    "path": SETTINGS_PATH,
+                    "sha256": digest(effective.settings[language]),
+                    "status": "verified",
+                    "language": language,
+                    "pass_number": n,
+                }
+            )
+            for record, output in zip(records, outputs, strict=True):
+                if (record["pass"], record["language"]) != (n, language):
+                    continue
+                key = (record["screen"], record["language"], record["pass"])
+                require(key in mapped, "Capture receipt has no runtime screenshot")
+                shot = mapped[key]
+                pair_path = contained(root / "capture", record["pair"])
+                pair = evidence.json(pair_path.parent, pair_path.name)
+                require(
+                    str(pair_path.relative_to(folder)) == shot["pair"]
+                    and record.get("status") == "captured"
+                    and record.get("request") == output["request"]
+                    and record.get("state") == effective.states[key[:2]]
+                    and all(
+                        record.get(name) == shot[name]
+                        for name in ("png_sha256", "rgba_sha256", "dump_sha256")
+                    )
+                    and contained(root / "capture", record["png"])
+                    == contained(pair_path.parent, pair["png"])
+                    and contained(root / "capture", record["dump"])
+                    == contained(pair_path.parent, pair["dump"]),
+                    "Capture summary pair mapping receipt mismatch",
+                )
+                if not any(
+                    op["operation"] == HOOK_DIRECTORY_OPERATION["operation"]
+                    for op in operations
+                ):
+                    operations.append(
+                        {**HOOK_DIRECTORY_OPERATION, "status": "verified_present"}
+                    )
+                operations.append(
+                    {
+                        "operation": "hook_output",
+                        **output,
+                        "status": "verified",
+                        "sha256": shot["dump_sha256"],
+                    }
+                )
+    operations.append(
+        {
+            "operation": "restore_original_settings",
+            "path": operations[0]["path"],
+            "sha256": settings_sha,
+            "status": "verified",
+        }
+    )
+    require(
+        summary.get("app_data_operations") == operations,
+        "Capture settings/hook operations receipt mismatch",
+    )
+    allowed = {"private:files/l10n-hook"} | {
+        "private:" + o[name] for o in outputs for name in ("file", "temporary")
+    }
+    require(
+        not (allowed - {"private:files/l10n-hook"}) & set(before),
+        "Capture hook outputs already existed",
+    )
+    after = replay_backup(evidence, root, "after-capture")
+    require(
+        not inventory_changes(before, after, allowed),
+        "Capture app-data inventory preservation failed",
+    )
+    return after, allowed
+
+
+def replay_operations(evidence, folder, catalog, inputs, value):
+    journal = evidence.json(folder, "journal.json")
+    require(
+        journal.get("status") == value["status"]
+        and not any(
+            journal.get(key)
+            for key in (
+                "error",
+                "error_details",
+                "capture_errors",
+                "cleanup_errors",
+                "restoration_error",
+                "restoration_error_details",
+                "restoration_data_changes",
+            )
+        )
+        and journal.get("live_provider_requests") == 0
+        and journal.get("api_spend_usd") == 0,
+        "Unsuccessful operational receipt journal",
+    )
+    reference = inputs.manifest.build.model_dump()
+    certificate = catalog.data["signing"]["reference_certificate_sha256"]
+    original = replay_backup(
+        evidence, folder, "private/original", journal.get("original_backup")
+    )
+    require("original_backup" in journal, "Missing original backup receipt")
+    require(
+        evidence.json(folder, "private/original-readback.json") == original,
+        "Original backup readback inventory mismatch",
+    )
+    replay_installed_apk(
+        evidence, folder, "private/initial-apk", reference, certificate
+    )
+    replay_environment(evidence, folder, "environment/initial", reference)
+    captures = (
+        []
+        if value["status"] == "probe_verified"
+        else [
+            (catalog.control, "clean"),
+            (catalog.calibration, "calibration"),
+            *[(catalog.records[b["id"]], "mutation") for b in catalog.plan["batches"]],
+        ]
+    )
+    reference_record = {"build": reference, "apk": catalog.data["reference"]["apk"]}
+    expected = [catalog.control, reference_record, *[r for r, _ in captures]]
+    if captures:
+        expected.append(reference_record)
+    operations = journal.get("operations")
+    require(
+        type(operations) is list and len(operations) == len(expected),
+        "Missing/extra install operations in receipt journal",
+    )
+    previous = reference
+    previous_inventory = original
+    allowed_outputs = set()
+    for n, (operation, artifact) in enumerate(
+        zip(operations, expected, strict=True), 1
+    ):
+        relative = f"private/install-{n:03d}"
+        receipt = evidence.json(folder, relative + "/install.json")
+        build = artifact["build"]
+        require(
+            operation
+            == {
+                "kind": "install",
+                "receipt": relative + "/install.json",
+                "sha256": digest(canonical_bytes(receipt)),
+            }
+            and receipt.get("status") == "verified"
+            and receipt.get("install_attempted") is True
+            and receipt.get("app_data_preserved") is True
+            and receipt.get("build") == build
+            and receipt.get("command")
+            == [
+                "install",
+                "-r",
+                "-d",
+                str(catalog.path.parent / artifact["apk"]["path"]),
+            ]
+            and receipt.get("stdout", "").strip().splitlines()[-1:] == ["Success"]
+            and receipt.get("data_changes") == []
+            and not receipt.get("error")
+            and not receipt.get("error_details"),
+            "Unsuccessful install receipt",
+        )
+        require(
+            receipt.get("previous_build")
+            == replay_installed_apk(
+                evidence, folder, relative + "/before-apk", previous, certificate
+            )
+            and receipt.get("observed_build")
+            == replay_installed_apk(
+                evidence, folder, relative + "/after-apk", build, certificate
+            ),
+            "Install build/signature readback receipt mismatch",
+        )
+        before = replay_backup(
+            evidence, folder, relative + "/before", receipt.get("backup")
+        )
+        after = replay_backup(
+            evidence, folder, relative + "/after", receipt.get("post_install")
+        )
+        require(
+            "backup" in receipt
+            and "post_install" in receipt
+            and before == after == previous_inventory
+            and evidence.json(folder, relative + "/before-readback.json") == before,
+            "Install app-data backup preservation/readback mismatch",
+        )
+        require(
+            receipt.get("environment")
+            == replay_environment(evidence, folder, f"environment/{n:03d}", build),
+            "Install environment receipt mismatch",
+        )
+        previous = build
+        previous_inventory = after
+        if 3 <= n < 3 + len(captures):
+            capture_artifact, role = captures[n - 3]
+            previous_inventory, allowed = replay_capture(
+                evidence,
+                folder,
+                capture_artifact,
+                role,
+                inputs,
+                value["screenshots"],
+                after,
+            )
+            allowed_outputs.update(allowed)
+    checks = journal.get("capture_data_checks", [])
+    require(
+        checks
+        == [{"batch_id": r["request"]["id"], "changes": []} for r, _ in captures],
+        "Missing/failed capture inventory receipt",
+    )
+    final_inventory = evidence.json(folder, "private/final-inventory.json")
+    require(
+        final_inventory == previous_inventory
+        and not inventory_changes(original, final_inventory, allowed_outputs),
+        "Final reference app-data inventory/readback mismatch",
+    )
+    require(
+        journal.get("restoration_data_changes") == [],
+        "Missing final reference data receipt",
+    )
+    replay_installed_apk(evidence, folder, "private/final-apk", reference, certificate)
+    return original
+
+
+def validate_run_claims(value):
+    """Status and flags are a bidirectional contract, including CLI return codes."""
+    require(
+        value.get("status")
+        in {
+            "not_run",
+            "running",
+            "failed",
+            "restoration_failed",
+            "awaiting_builder_approval",
+            "qualified",
+            "probe_verified",
+        }
+        and all(
+            type(value.get(name)) is bool
+            for name in (
+                "capture_set_qualified",
+                "downgrade_verified",
+                "restoration_verified",
+                "labels_created",
+            )
+        )
+        and value["labels_created"] is False
+        and value["capture_set_qualified"] is (value["status"] == "qualified"),
+        "Contradictory runtime status/flag claim",
+    )
+    if value["status"] in {"qualified", "probe_verified"}:
+        require(
+            value["downgrade_verified"] is True
+            and value["restoration_verified"] is True,
+            "Success status requires downgrade/restoration flags",
+        )
+    if value["status"] == "qualified":
+        require(
+            value.get("calibration_status") == "passed",
+            "Incomplete calibration qualification claim",
+        )
+    if value["status"] == "probe_verified":
+        require(
+            value.get("calibration_status") == "not_run"
+            and value.get("screenshots") == []
+            and value.get("dynamic_tests") == [],
+            "Contradictory probe-only proof claim",
+        )
+
+
+def verify_run(folder, catalog, inputs, *, evidence_sha256):
+    """Replay an independently pinned index, never a neighboring checksum's claim."""
+    folder = no_symlinks(folder)
+    index_raw = contained(folder, "evidence-index.json").read_bytes()
+    require(
+        type(evidence_sha256) is str
+        and re.fullmatch("[a-f0-9]{64}", evidence_sha256)
+        and digest(index_raw) == evidence_sha256,
+        "Run evidence root differs from independent SHA-256",
+    )
+    index = json_bytes(index_raw)
+    require(
+        set(index) == {"version", "files"}
+        and type(index["version"]) is int
+        and index["version"] in {1, 2}
+        and type(index["files"]) is dict,
+        "Unsupported evidence index",
+    )
+    require(
+        index["files"] == retained_files(folder)
+        and {"mutation-manifest.json", "mutation-manifest.sha256", "journal.json"}
+        <= set(index["files"]),
+        "Run evidence membership/hash mismatch",
+    )
+    evidence = RunEvidence(folder, index["files"])
+    raw = evidence.read(folder, "mutation-manifest.json")
+    value = json_bytes(raw)
+    require(
+        raw == canonical_bytes(value)
+        and evidence.read(folder, "mutation-manifest.sha256").decode().strip()
+        == digest(raw),
+        "Runtime manifest hash/canonical mismatch",
+    )
+    require(
+        value["mutation_run_version"] == 1
+        and value["catalog_sha256"] == catalog.sha256
+        and value["labels_created"] is False
+        and value["screen_ids"] == catalog.plan["screen_ids"],
+        "Runtime provenance/scope mismatch",
+    )
+    validate_run_claims(value)
+    require(
+        index["version"] == 2
+        or (
+            value["capture_set_qualified"] is False
+            and value["status"] not in {"qualified", "probe_verified"}
+        ),
+        "Legacy evidence is inspectable only, never qualified",
+    )
+    if value["status"] in {"qualified", "probe_verified"}:
+        require(
+            value.get("builder_content_sha256")
+            == catalog.data["builder"]["content_sha256"]
+            and value.get("toolchain_sha256") == catalog.data["toolchain"]["sha256"]
+            and value.get("signing") == catalog.data["signing"]
+            and value.get("source_commit") == catalog.data["source_commit"]
+            and value.get("source_inputs") == catalog.data["inputs"]
+            and value.get("languages") == ["en", "de"]
+            and value.get("passes") == ["forward", "reverse"]
+            and value.get("observed_occurrence_matrix")
+            == occurrence_matrix(value["screenshots"]),
+            "Runtime success metadata/provenance mismatch",
+        )
+        replay_operations(evidence, folder, catalog, inputs, value)
+    clean = {}
+    repeats = {}
+    authorized = expected_capture_keys(catalog)
+    for record in sorted(
+        value["screenshots"],
+        key=lambda r: (
+            r["role"] != "clean",
+            r["batch_id"],
+            r["pass"],
+            r["language"],
+            r["screen"],
+        ),
+    ):
+        require(record["batch_id"] in catalog.records, "Unknown screenshot batch")
+        require(
+            (
+                record["batch_id"],
+                record["role"],
+                record["screen"],
+                record["language"],
+                record["pass"],
+            )
+            in authorized,
+            "Screenshot role/scope differs from plan",
+        )
+        artifact = catalog.records[record["batch_id"]]
+        effective = inputs.with_build(artifact["build"])
+        require(
+            record["build"] == artifact["build"]
+            and record.get("build_identity_sha256") == artifact["build_identity_sha256"]
+            and record.get("patch_set_sha256")
+            == artifact["request"]["patch_set_sha256"]
+            and record["effective_manifest_sha256"] == effective.sha256,
+            "Effective screenshot build identity mapping mismatch",
+        )
+        pair, png, raw_dump, dump = verified_pair(effective, folder, record)
+        repeat_key = (
+            record["batch_id"],
+            record["role"],
+            record["screen"],
+            record["language"],
+        )
+        repeats.setdefault(repeat_key, {})[record["pass"]] = (
+            pair["rgba_sha256"],
+            raw_dump,
+        )
+        require(
+            all(
+                record[key] == pair[key]
+                for key in ("png_sha256", "rgba_sha256", "dump_sha256", "state_sha256")
+            ),
+            "Screenshot hash mapping mismatch",
+        )
+        key = (record["screen"], record["language"], record["pass"])
+        if record["role"] == "clean":
+            require(
+                record["batch_id"] == catalog.control["request"]["id"]
+                and record.get("verification") is None
+                and record.get("recipe_ids") == []
+                and record.get("batch_recipe_ids") == []
+                and key not in clean,
+                "Invalid control mapping",
+            )
+            clean[key] = (png, dump, record["pair_sha256"])
+        else:
+            old, old_dump, old_hash = clean[key]
+            require(
+                record["control_pair_sha256"] == old_hash, "Wrong comparison control"
+            )
+            expected_ids = (
+                [catalog.plan["calibration"]["mutation_recipe_id"]]
+                if record["role"] == "calibration"
+                else next(
+                    b["recipe_ids"]
+                    for b in catalog.plan["batches"]
+                    if b["id"] == record["batch_id"]
+                )
+            )
+            carried = [
+                identity
+                for identity in expected_ids
+                if any(
+                    (o["screen"], o["language"]) == key[:2]
+                    for o in catalog.plan["mutations"][identity]["occurrences"]
+                )
+            ]
+            require(
+                record["batch_recipe_ids"] == expected_ids
+                and record["recipe_ids"] == carried,
+                "Screenshot recipe mapping differs from plan",
+            )
+            expected = verify_screen(
+                old,
+                png,
+                old_dump,
+                dump,
+                [catalog.plan["mutations"][identity] for identity in expected_ids],
+            )
+            require(
+                canonical_bytes(record["verification"]) == canonical_bytes(expected),
+                "Dynamic gate replay mismatch",
+            )
+    require(
+        value["dynamic_split_rate"] == split_rate(value["dynamic_tests"]),
+        "Dynamic split rate mismatch",
+    )
+    if value["capture_set_qualified"]:
+        parents = {
+            event["parent"]["id"]: event["parent"]["recipe_ids"]
+            for event in catalog.plan["split_history"]
+        }
+        batches = {b["id"]: b["recipe_ids"] for b in catalog.plan["batches"]}
+        nodes = {**parents, **batches}
+        stages = [
+            {"id": b["id"], "recipe_ids": b["recipe_ids"], "split": False}
+            for b in catalog.plan["batches"]
+        ]
+        require(
+            value["dynamic_tests"][-len(stages) :] == stages
+            and all(
+                set(test) == {"id", "recipe_ids", "split"}
+                and test["id"] in nodes
+                and test["recipe_ids"] == nodes[test["id"]]
+                and test["split"] is (test["id"] in parents)
+                for test in value["dynamic_tests"]
+            ),
+            "Qualified dynamic production stage gates differ from plan",
+        )
+        require(
+            value["status"] == "qualified"
+            and value["calibration_status"] == "passed"
+            and value["downgrade_verified"]
+            and value["restoration_verified"],
+            "Incomplete qualification claim",
+        )
+        expected = authorized
+        actual = [
+            (r["batch_id"], r["role"], r["screen"], r["language"], r["pass"])
+            for r in value["screenshots"]
+        ]
+        require(
+            len(actual) == len(set(actual)) and set(actual) == expected,
+            "Qualified run has missing/duplicate captures",
+        )
+        require(
+            all(
+                set(passes) == {1, 2} and passes[1] == passes[2]
+                for passes in repeats.values()
+            ),
+            "Forward/reverse RGBA or raw dump repeatability failure",
+        )
+        require(
+            all(
+                r["verification"] is None or r["verification"]["passed"]
+                for r in value["screenshots"]
+            ),
+            "Failed screenshot in qualified run",
+        )
+    return value

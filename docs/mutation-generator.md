@@ -374,6 +374,146 @@ production batches automatically. Preserve operational failures separately;
 report the split rate. A high rate is evidence to discuss a separate fork
 metadata task, not permission to introduce one here.
 
+## Device runtime interface — part (c)
+
+This section describes the part-(c) interface, not a claim that empirical
+qualification has succeeded. A failed preservation/calibration run stays failed;
+retain its manifest, backups and operational evidence. The first local device
+attempt stopped on app-data changes after the empty control, before calibration.
+The second full end-to-end run remains required after the first complete run
+and every gate pass. No preservation exception or pixel tolerance is implied.
+
+### Explicit catalog and effective manifests
+
+Select one catalog by its independently approved full digest and exact path,
+never by a newest-directory search. The initial catalog SHA-256 is
+`790b21921ca3d4988b6257a6da235817c8b8407b2f029871c74a05598efaf354`;
+its builder-content SHA-256 is
+`e9ec71c5bb0d8816bfa84c1eab911e6b7a0d3300d0bc54ae2b8357a058478086`.
+The companion reader contract is the fork's `docs/l10n-apk-builder.md` at
+`3935ffe41ab6876d210a4ad913825f358c44c14e`.
+
+The reader checks canonical catalog/input bytes, every contained file reference,
+the authoritative plan and exact request projection, builder/toolchain/signing
+provenance, native APK signature/package/version/debuggable metadata, actual
+APK translation bytes reconstructed from the original assets and approved
+patches, and invariant payload evidence. It performs no build or install.
+
+Capture `Inputs` selects dev before reading state/fixture payloads. Each artifact
+gets an effective manifest with its verified `build` object; original fixture
+authority and source-manifest hash remain separate. Never edit
+`screens-v2.json`, the split, or the environment checker to match a generated APK.
+
+### Preparation, downgrade proof and preservation
+
+Before using the emulator, check `pgrep -fl l10n-capture` and
+`adb shell pidof com.unciv.app`; an existing capture or app owner means stop.
+Start the existing emulator only as documented in `environment.md` if needed.
+Run the authorized `scripts/prepare_emulator.sh` after startup: the cutout
+overlay is re-enabled by a boot. AVD recreation, wipes and other environment
+changes are not fallbacks. The environment checker requires exactly one online
+emulator; the runtime also serializes device ownership independently of output
+root selection. The per-emulator lock is anchored in the checker's shared Git
+common directory, so linked worktrees and different output roots share the
+same authority; independent clones are not separate authorized device owners.
+
+Before the first replacement, pull/verify the installed APK and compare its
+certificate with the catalog reference. Keep verified private, device-encrypted
+and external app-data backups with file inventories. Installation is only
+`adb install -r -d`; no uninstall. Check exact app-data preservation immediately
+after replacement. A successful actual downgrade back to 1271048 is mandatory
+before captures. A certificate match alone is not this proof.
+
+After **each** catalog-artifact installation, run
+`scripts/check_env.sh --version-code <that artifact's actual code>`.
+After restoring 1271048, run the default `scripts/check_env.sh`. Do not skip or
+relax either check. Compare data again after capture and final restoration;
+new exact planned hook outputs are distinct from pre-existing app data. An
+unexpected delta stops the run and retains backups. Do not silently exempt
+database/profile/cache files or repair them without the owner's permission.
+
+The run finalizer restores the exact original reference APK, verifies its
+certificate/hash/version and data, and records cleanup errors separately from
+the original failure. A failed final readback is not permission to retry
+installation indefinitely or to call full restoration successful merely because
+settings and saves match.
+
+### Operator command examples, not execution evidence
+
+Substitute the approved exact catalog, SDK/JDK and output paths. Every output
+directory must be fresh and below that session's approved root. The commands
+below do not authorize a device operation by themselves.
+
+```sh
+PYTHONPATH=src uv run l10n-mutate probe \
+  --catalog "$CATALOG_JSON" --sha256 "$APPROVED_CATALOG_SHA256" \
+  --manifest fixtures/stage2/screens-v2.json \
+  --recipes fixtures/stage3/recipes-v1.json \
+  --sdk "$SDK" --jdk "$JDK" --serial emulator-5554 \
+  --approved-output-root "$APPROVED_OUTPUT_ROOT" --output-dir "$FRESH_PROBE_DIR"
+
+PYTHONPATH=src uv run l10n-mutate run \
+  --catalog "$CATALOG_JSON" --sha256 "$APPROVED_CATALOG_SHA256" \
+  --manifest fixtures/stage2/screens-v2.json \
+  --recipes fixtures/stage3/recipes-v1.json \
+  --sdk "$SDK" --jdk "$JDK" --serial emulator-5554 \
+  --approved-output-root "$APPROVED_OUTPUT_ROOT" --output-dir "$FRESH_RUN_DIR"
+```
+
+`probe` performs the certificate/backup/replacement/downgrade/restoration proof,
+not captures. `run` repeats the preflight and proof, captures the empty control,
+then the EN-help singleton across all five dev screens, EN/DE and forward/reverse
+passes. Only a successful zero-tolerance calibration permits production batches.
+Same-build pass repeatability remains mandatory in addition to cross-build
+isolation. Timeouts and transport failures are operational failures, not observed
+interference or clean results.
+
+### Evidence and split handoff
+
+`mutation-manifest.json` maps every screenshot to state, build/patch identity,
+effective manifest, pair, PNG, decoded RGBA and dump hashes and records intended
+occurrence qualification, unmutated-element checks, masks/differences, split
+lineage/rate and nonqualified statuses. `observed_occurrence_matrix` excludes
+controls and repeat passes and counts distinct owning targets separately.
+No label files are produced. Intended class is not a human label.
+
+Keep the runtime manifest, journal, installation/backup/environment receipts and
+all screenshot payloads together. The final `evidence-index.json` needs its own
+independently pinned digest; a mutable neighboring checksum is not authority.
+Offline verification must authenticate that root, require complete evidence,
+replay same-build repeatability and cross-build gates, and reject contradictory
+status/qualification flags. The read-only verifier performs no adb operation:
+
+```sh
+PYTHONPATH=src uv run l10n-mutate verify \
+  --catalog "$CATALOG_JSON" --sha256 "$APPROVED_CATALOG_SHA256" \
+  --manifest fixtures/stage2/screens-v2.json \
+  --recipes fixtures/stage3/recipes-v1.json --sdk "$SDK" --jdk "$JDK" \
+  --run-dir "$RUN_DIR" --evidence-sha256 "$PINNED_EVIDENCE_INDEX_SHA256"
+```
+
+Real multi-recipe interference may produce an immutable
+`builder-handoff/{plan.json,build-requests.json,handoff.json}`. It records the
+parent catalog and exact plan/request/builder hashes and deterministic split
+lineage. A failing singleton stops; splitting cannot repair an operational
+failure. The denominator of the split rate is unique dynamically tested
+multi-recipe nodes, not static conflicts or capture repeats; no tested nodes
+means `null`, not a zero success claim.
+
+**Pause before building.** Transfer the exact bundle to the separate part-(b)
+Unciv-59b fork session. Only after owner approval may that session call the fork
+builder with exact plan/request digests and explicitly pinned parent-catalog
+reuse. The new catalog must bind that pending bundle and frozen builder;
+its digest/path needs separate device authorization. Nothing here invokes the
+builder automatically.
+
+Resume uses a fresh run directory, the separately authorized new catalog, and
+`--resume-from "$PARENT_RUN" --resume-sha256 "$PINNED_PARENT_MANIFEST_SHA256"`.
+The pinned parent's embedded handoff is the authority for the sidecar and payloads;
+paths cannot escape the approved root. Preserve prior dynamic tests and lineage
+in the resumed split rate. A successful host replay or synthetic fake-device test
+does not replace the required actual calibration or second end-to-end run.
+
 ## Target-qualification procedure for a later owner session
 
 This procedure starts from source and that session's authorized clean inventory,

@@ -21,7 +21,7 @@ def test_real_dev_manifest_capture(request, monkeypatch):
             "Dev capture needs --capture-device-plan and --capture-output-dir; prepare and obtain separate write approval first"
         )
     manifest = capture_module.REPO_ROOT / "fixtures/stage2/screens-v2.json"
-    inputs = Inputs(manifest).select_screens(split="dev")
+    inputs = Inputs(manifest, split="dev")
     plan_path = Path(plan_option)
     folder = Path(output_option)
     assert not _is_within_directory(
