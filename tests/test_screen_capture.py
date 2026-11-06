@@ -186,6 +186,28 @@ def test_real_fixture_manifest_contract():
         assert state["new_game"]["map_size"] == "Medium"
 
 
+def test_verifier_callback_stops_before_next_capture(run_env):
+    device, folder, inputs = run_env
+
+    def stop(record):
+        assert record["status"] == "captured"
+        raise CaptureError("strict dynamic gate failed")
+
+    summary = capture_manifest(
+        device,
+        inputs,
+        folder,
+        request=device.request,
+        on_pair=stop,
+        fail_fast=True,
+        variant="mutation",
+    )
+    assert summary["status"] == "failed"
+    assert len(summary["records"]) == 1
+    assert summary["settings_restored"] is True
+    assert "__mutation__" in summary["records"][0]["png"]
+
+
 def edited_manifest(tmp_path):
     root = tmp_path / "fixtures"
     shutil.copytree(FIXTURES, root)
@@ -672,3 +694,134 @@ def test_cli_rejects_legacy_options_with_manifest(monkeypatch, option):
     )
     with pytest.raises(SystemExit):
         cli.main()
+
+
+def native_timeout(label):
+    import subprocess
+
+    error = CaptureError(f"synthetic {label} transport failure")
+    error.__cause__ = subprocess.TimeoutExpired(
+        f"synthetic-{label}", 1, f"{label} stdout".encode(), f"{label} stderr".encode()
+    )
+    return error
+
+
+@pytest.mark.parametrize("prepare", [False, True])
+def test_real_capture_backup_unroot_failure_keeps_primary(
+    run_env, monkeypatch, prepare
+):
+    device, folder, inputs = run_env
+    original, cleanup = native_timeout("backup"), native_timeout("unroot")
+
+    def backup(*args):
+        assert args[:3] == ("exec-out", "tar", "-cf")
+        raise original
+
+    def unroot():
+        device.calls.append("unroot")
+        raise cleanup
+
+    monkeypatch.setattr(device, "run", backup)
+    monkeypatch.setattr(device, "unroot", unroot)
+    if prepare:
+        with pytest.raises(CaptureError) as caught:
+            prepare_device(device, inputs, folder)
+        assert caught.value is original
+        details = legacy.failure_details(caught.value)
+    else:
+        summary = capture_manifest(device, inputs, folder, request=device.request)
+        assert summary["status"] == "failed"
+        assert summary["fatal_error"] == str(original)
+        assert json.loads((folder / "summary.json").read_bytes()) == summary
+        details = summary["fatal_error_details"]
+    assert details["cause"]["stdout"] == "backup stdout"
+    assert details["cause"]["stderr"] == "backup stderr"
+    assert details["cleanup_errors"][0]["cause"]["stdout"] == "unroot stdout"
+    assert details["cleanup_errors"][0]["cause"]["stderr"] == "unroot stderr"
+    assert device.calls.count("unroot") == 1 and device.writes == 0
+
+
+@pytest.mark.parametrize("fail_fast", [False, True])
+def test_real_capture_request_failure_retains_simultaneous_cleanup_failures(
+    run_env, monkeypatch, fail_fast
+):
+    device, folder, inputs = run_env
+    original = native_timeout("request")
+    recovery, settings, unroot_error = (
+        native_timeout(label) for label in ("recovery", "settings", "unroot")
+    )
+    stop = device.force_stop
+    write = device.write_file
+    recovery_pending = False
+    requests = 0
+
+    def request(*args):
+        nonlocal recovery_pending, requests
+        requests += 1
+        device.running = recovery_pending = True
+        raise original
+
+    def force_stop():
+        nonlocal recovery_pending
+        stop()
+        if recovery_pending:
+            recovery_pending = False
+            raise recovery
+
+    def write_file(path, data):
+        if data == ORIGINAL:
+            device.calls.append("restore_attempt")
+            raise settings
+        write(path, data)
+
+    def unroot():
+        device.calls.append("unroot")
+        raise unroot_error
+
+    monkeypatch.setattr(device, "force_stop", force_stop)
+    monkeypatch.setattr(device, "write_file", write_file)
+    monkeypatch.setattr(device, "unroot", unroot)
+    summary = capture_manifest(
+        device, inputs, folder, request=request, fail_fast=fail_fast
+    )
+    assert summary["status"] == "failed" and requests == 1
+    assert summary["fatal_error"] == str(original)
+    details = summary["fatal_error_details"]
+    assert details["cause"]["type"] == "TimeoutExpired"
+    assert details["cause"]["stdout"] == "request stdout"
+    assert details["cause"]["stderr"] == "request stderr"
+    assert [e["cause"]["stdout"] for e in summary["cleanup_errors"]] == [
+        "recovery stdout",
+        "settings stdout",
+        "unroot stdout",
+    ]
+    assert summary["cleanup_errors"] == details["cleanup_errors"]
+    assert summary["records"][0]["error_details"]["cause"]["stdout"] == "request stdout"
+    assert not summary.get("settings_restored")
+    assert device.calls.count("restore_attempt") == device.calls.count("unroot") == 1
+    assert json.loads((folder / "summary.json").read_bytes()) == summary
+
+
+def test_real_capture_recovered_native_failure_retains_record_details(run_env):
+    device, folder, inputs = run_env
+    inputs = inputs.select_screens(screen_ids=["tech-picker"])
+    original = native_timeout("request")
+    requests = 0
+
+    def request(*args):
+        nonlocal requests
+        requests += 1
+        if requests == 1:
+            device.running = True
+            raise original
+        assert not device.running or requests > 2
+        return device.request(*args)
+
+    summary = capture_manifest(device, inputs, folder, request=request)
+    assert summary["status"] == "failed" and requests == 4
+    failed = summary["records"][0]
+    assert failed["recovery"] == "force_stopped_before_next_request"
+    assert failed["error_details"]["cause"]["stdout"] == "request stdout"
+    assert failed["error_details"]["cause"]["stderr"] == "request stderr"
+    assert all(r["status"] == "captured" for r in summary["records"][1:])
+    assert summary["settings_restored"] is True and not device.rooted

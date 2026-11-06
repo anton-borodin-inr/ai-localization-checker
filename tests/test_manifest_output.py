@@ -409,7 +409,7 @@ def test_device_verification_rejects_repository_output_before_reading_plan(
     folder = (case_alias(repo) if alias else repo) / "data/new-capture"
     inputs = selected_inputs(2)
     monkeypatch.setattr(legacy, "REPO_ROOT", repo)
-    monkeypatch.setattr(device_test, "Inputs", lambda _: inputs)
+    monkeypatch.setattr(device_test, "Inputs", lambda _, **selection: inputs)
     monkeypatch.setattr(
         cli, "main", lambda: pytest.fail("device access before external-output check")
     )

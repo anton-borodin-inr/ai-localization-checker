@@ -24,6 +24,46 @@ class CaptureError(Exception):
     """An actionable capture failure that is safe to show on the CLI."""
 
 
+def failure_details(exc) -> dict:
+    """Retain operational root causes, including wrapped native timeout output."""
+    details: dict = {"type": type(exc).__name__, "message": str(exc)}
+    for name in ("stdout", "stderr"):
+        output = getattr(exc, name, None)
+        if output is not None:
+            details[name] = (
+                output.decode("utf-8", errors="replace")
+                if isinstance(output, bytes)
+                else str(output)
+            )
+    if exc.__cause__ is not None:
+        details["cause"] = failure_details(exc.__cause__)
+    if getattr(exc, "cleanup_errors", None):
+        details["cleanup_errors"] = exc.cleanup_errors
+    return details
+
+
+def retain_cleanup(original, cleanup, operation="Reference restoration"):
+    original.add_note(f"{operation} also failed: {cleanup}")
+    errors = getattr(original, "cleanup_errors", [])
+    errors.append(failure_details(cleanup))
+    original.cleanup_errors = errors
+
+
+@contextmanager
+def preserve_cleanup(cleanup, operation):
+    """Always attempt cleanup without replacing a primary error or cancellation."""
+    try:
+        yield
+    except BaseException as original:
+        try:
+            cleanup()
+        except BaseException as error:  # noqa: BLE001
+            retain_cleanup(original, error, operation)
+        raise
+    else:
+        cleanup()
+
+
 def filename(screen: str, lang: str, resolution: str, variant: str, build: str) -> str:
     fields = (screen, lang, resolution, variant, build)
     for field in fields:

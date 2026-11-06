@@ -15,6 +15,10 @@ def pytest_addoption(parser):
         "--capture-output-dir",
         help="Dev-only manifest device test: fresh external capture folder",
     )
+    parser.addoption(
+        "--mutation-device-config",
+        help="Approved catalog, dev selection and output-boundary JSON for mutation device tests",
+    )
 
 
 def pytest_collection_modifyitems(config, items):

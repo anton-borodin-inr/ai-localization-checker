@@ -17,9 +17,12 @@ from l10n_checker.capture import (
     SETTINGS_PATH,
     CaptureError,
     Device,
+    failure_details,
     filename,
     owner_and_mode,
     png_size,
+    preserve_cleanup,
+    retain_cleanup,
     unciv_in_foreground,
 )
 from l10n_checker.hook import HookFailure, request_screen
@@ -169,12 +172,12 @@ def backup_device(device: Device, inputs: Inputs, folder: Path) -> dict:
         or save_inventory(read_saves(device)) != inventory
     ):
         raise CaptureError("Save backup/readback mismatch")
-    for fixture in inputs.manifest.fixtures:
+    for name, data in inputs.fixtures.items():
         # Registry names contain no spaces or shell metacharacters.
-        current = inventory.get("./" + fixture.name)
-        if current != fixture.sha256:
+        current = inventory.get("./" + name)
+        if current != digest(data):
             raise CaptureError(
-                f"Device fixture missing or changed: {fixture.name}; no save was copied"
+                f"Device fixture missing or changed: {name}; no save was copied"
             )
     return {
         "original": original,
@@ -249,11 +252,9 @@ def prepare_device(
     folder = manifest_output_directory(folder, inputs.contains_holdout)
     folder = new_folder(folder, False)
     observed = check_build(device, inputs)
-    try:
+    with preserve_cleanup(device.unroot, "Unroot"):
         device.root()
         snapshot = backup_device(device, inputs, folder)
-    finally:
-        device.unroot()
     result = {
         "mode": "prepare_only",
         "app_data_writes": 0,
@@ -356,6 +357,9 @@ def capture_manifest(
     timeout_s=90.0,
     request=request_screen,
     device_plan: Path | None = None,
+    on_pair=None,
+    fail_fast=False,
+    variant="clean",
 ) -> dict:
     languages = inputs.languages(languages)
     selection = inputs.capture_selection(languages)
@@ -438,9 +442,16 @@ def capture_manifest(
         entry["status"] = "verified"
         checkpoint()
 
+    def restore_settings():
+        assert snapshot is not None
+        write_settings(snapshot["original"], "restore_original_settings")
+        if device.stat(SETTINGS_PATH) != snapshot["stat"]:
+            raise CaptureError("Original settings metadata was not restored")
+        summary["settings_restored"] = True
+
     try:
         summary["observed_build"] = check_build(device, inputs)
-        try:
+        with preserve_cleanup(device.unroot, "Unroot"):
             device.root()
             snapshot = backup_device(device, inputs, folder)
             summary["backup"] = snapshot["public"]
@@ -461,7 +472,7 @@ def capture_manifest(
                     )
                 summary["device_plan_sha256"] = digest(approved_bytes)
             checkpoint()
-            try:
+            with preserve_cleanup(restore_settings, "Settings restoration"):
                 for pass_number in (1, 2):
                     for language in languages:
                         payload = inputs.settings[language]
@@ -573,7 +584,7 @@ def capture_manifest(
                                     screen.id,
                                     language,
                                     "x".join(map(str, size)),
-                                    "clean",
+                                    variant,
                                     device.build(),
                                 )
                                 (folder / target).parent.mkdir(exist_ok=True)
@@ -617,18 +628,33 @@ def capture_manifest(
                                     png=str(target),
                                     png_sha256=digest(png),
                                 )
+                                if on_pair is not None:
+                                    on_pair(record)
                             except (CaptureError, OSError) as exc:
-                                record.update(status="failed", reason=str(exc))
+                                record.update(
+                                    status="failed",
+                                    reason=str(exc),
+                                    error_details=failure_details(exc),
+                                )
                                 if isinstance(exc, HookFailure):
                                     record["events"] = exc.events
                                     record["terminal_received"] = exc.terminal
                                 if not isinstance(exc, HookFailure) or not exc.terminal:
                                     # Mandatory after timeout/uncertain launch. No request
                                     # can supersede an unfinished one on build 1271045.
-                                    device.force_stop()
+                                    try:
+                                        device.force_stop()
+                                    except BaseException as cleanup:  # noqa: BLE001
+                                        retain_cleanup(exc, cleanup, "Request recovery")
+                                        record["error_details"] = failure_details(exc)
+                                        checkpoint()
+                                        raise exc
                                     record["recovery"] = (
                                         "force_stopped_before_next_request"
                                     )
+                                if fail_fast:
+                                    checkpoint()
+                                    raise
                             checkpoint()
                         device.force_stop()
                         if device.read_file(SETTINGS_PATH) != payload:
@@ -641,15 +667,12 @@ def capture_manifest(
                     raise CaptureError(
                         "Device saves changed; backups retained, no automatic save overwrite"
                     )
-            finally:
-                write_settings(snapshot["original"], "restore_original_settings")
-                if device.stat(SETTINGS_PATH) != snapshot["stat"]:
-                    raise CaptureError("Original settings metadata was not restored")
-                summary["settings_restored"] = True
-        finally:
-            device.unroot()
     except (CaptureError, OSError, ValueError) as exc:
         summary["fatal_error"] = str(exc)
+        summary["fatal_error_details"] = failure_details(exc)
+        cleanup_errors = getattr(exc, "cleanup_errors", [])
+        if cleanup_errors:
+            summary["cleanup_errors"] = cleanup_errors
     finally:
         by_key = {
             (r["screen"], r["language"], r["pass"]): r for r in summary["records"]

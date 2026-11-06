@@ -352,15 +352,16 @@ Compare decoded RGBA using a versioned mask derived from all matched before/afte
 mutated extents, including overflow glyphs/decorations with fixed outward
 rounding. Never mask a whole parent panel to hide layout reflow. Require:
 
-1. **Zero changed RGBA pixels outside the mask.**
+1. **Zero changed RGBA pixels outside the mask, or the separately proven D-054
+   glyph exception below for fresh normal runs.** Strict v1 measurements remain raw.
 2. **No moved/changed unmutated dump element**, including inside masked areas.
 3. Every intended mutation is visible and within the occurrence limit.
 
 Incremental font-atlas allocation may change unrelated pixels (D-042). If the
-calibration has outside-mask differences, **stop before production** and report
-counts, exclusive bounding boxes and maximum channel deltas. No tolerance,
-font-atlas workaround or gate weakening is authorized. D-042's historical
-cross-build allowance is not itself the mutation gate.
+calibration has outside-mask differences not proven under D-054, **stop before
+production** and report counts, exclusive bounding boxes and maximum channel
+deltas. No general tolerance or font-atlas workaround is authorized. D-042's
+historical cross-build allowance is not itself the mutation gate.
 
 PR (c) retains dev-only EN/DE forward/reverse capture and hash/readiness checks,
 verified backup/restore and frozen-catalog installation. Its authorization is
@@ -373,6 +374,361 @@ Only after successful calibration/qualification may dynamic interference split
 production batches automatically. Preserve operational failures separately;
 report the split rate. A high rate is evidence to discuss a separate fork
 metadata task, not permission to introduce one here.
+
+## Device runtime interface — part (c)
+
+This section describes the part-(c) interface, not a claim that empirical
+qualification has succeeded. A failed preservation/calibration run stays failed;
+retain its manifest, backups and operational evidence. The first local device
+attempt stopped on app-data changes after the empty control, before calibration.
+The second full end-to-end run remains required after the first complete run
+and every gate pass. D-051 below records the separately authorized four-file
+preservation exception; no pixel tolerance is implied, and no historical failed
+run is reclassified as successful.
+
+### Explicit catalog and effective manifests
+
+Select one catalog by its independently approved full digest and exact path,
+never by a newest-directory search. The initial catalog SHA-256 is
+`790b21921ca3d4988b6257a6da235817c8b8407b2f029871c74a05598efaf354`;
+its builder-content SHA-256 is
+`e9ec71c5bb0d8816bfa84c1eab911e6b7a0d3300d0bc54ae2b8357a058478086`.
+The companion reader contract is the fork's `docs/l10n-apk-builder.md` at
+`3935ffe41ab6876d210a4ad913825f358c44c14e`.
+
+The reader checks canonical catalog/input bytes, every contained file reference,
+the authoritative plan and exact request projection, builder/toolchain/signing
+provenance, native APK signature/package/version/debuggable metadata, actual
+APK translation bytes reconstructed from the original assets and approved
+patches, and invariant payload evidence. It performs no build or install.
+
+Capture `Inputs` selects dev before reading state/fixture payloads. Each artifact
+gets an effective manifest with its verified `build` object; original fixture
+authority and source-manifest hash remain separate. Never edit
+`screens-v2.json`, the split, or the environment checker to match a generated APK.
+
+### Preparation, downgrade proof and preservation
+
+Before using the emulator, check `pgrep -fl l10n-capture` and
+`adb shell pidof com.unciv.app`; an existing capture or app owner means stop.
+Start the existing emulator only as documented in `environment.md` if needed.
+Run the authorized `scripts/prepare_emulator.sh` after startup: the cutout
+overlay is re-enabled by a boot. AVD recreation, wipes and other environment
+changes are not fallbacks. The environment checker requires exactly one online
+emulator; the runtime also serializes device ownership independently of output
+root selection. The per-emulator lock is anchored in the checker's shared Git
+common directory, so linked worktrees and different output roots share the
+same authority; independent clones are not separate authorized device owners.
+
+Before the first replacement, pull/verify the installed APK and compare its
+certificate with the catalog reference. Keep verified private, device-encrypted
+and external app-data backups with file inventories. Installation is only
+`adb install -r -d`; no uninstall. Check app-data preservation immediately after
+replacement under the exact D-051 policy below. A successful actual downgrade
+back to 1271048 is mandatory before captures. A certificate match alone is not
+this proof.
+
+After **each** catalog-artifact installation, run
+`scripts/check_env.sh --version-code <that artifact's actual code>`.
+After restoring 1271048, run the default `scripts/check_env.sh`. Do not skip or
+relax either check. Compare data again after capture and final restoration;
+new exact planned hook outputs are distinct from pre-existing app data. An
+unexpected delta stops the run and retains backups. No broader
+database/profile/cache exception or app-data repair is authorized.
+
+#### D-051: four private-root AndroidX files only
+
+Anton explicitly authorized a narrow comparison-only exception on 2026-11-05,
+recorded as Proposed D-051. The exact package-relative paths are:
+
+- `files/profileInstalled` — ProfileInstaller marker;
+- `no_backup/androidx.work.workdb` — WorkManager database;
+- `no_backup/androidx.work.workdb-shm` — shared-memory sidecar;
+- `no_backup/androidx.work.workdb-wal` — write-ahead log.
+
+Only `DATA_ROOTS["private"]` qualifies (inventory keys start with `private:`).
+The same names in external/device-encrypted roots, prefix/suffix matches,
+descendants, and all other app-data paths stay strict. Only regular-file bytes,
+SHA-256 and absence/creation/deletion may differ. Existing-file uid/gid/mode
+remain exact; directory/symlink substitutions are unexpected. Settings and
+saves stay byte-exact. The code never writes or restores these four files:
+backups/readbacks retain observations, not permission to repair app data.
+
+Every comparison records all four before/after inventory entries, including
+size/hash for present regular files and explicit `null` for absence, even when
+unchanged. Raw `inventory_changes`/install `data_changes`/capture `changes` and
+`restoration_data_changes` are not filtered by D-051. Separate ledgers partition
+actual exempt deltas from unexpected deltas; only an empty unexpected set may
+proceed. Declared-new hook outputs retain their existing separate handling;
+pre-existing hook files are never made mutable by that declaration.
+
+Checks cover original backup readback, continuity into each install, per-install
+backup readback and both before/readback-to-after comparisons, capture preflight
+and before/after, and each reference verification. The readback-to-after check
+keeps metadata strict even for a file first created during the backup readback.
+Probe and final reference inventories/ledgers are retained separately as
+`private/reference-NNN-inventory.json` and journal `restoration_checks`, rather
+than overwriting the probe observation with the final one. Unexpected drift
+between transactions stops before the next install/capture, not only at the end.
+
+This exception addresses AndroidX startup bookkeeping, not game-state or
+rendering variability. D-053 separately supersedes only D-050's outside-pixel
+clause; RGBA masks, unmutated-element layout checks and forward/reverse
+RGBA/raw-dump equality remain unchanged. D-054 supersedes only D-053's RGB cap.
+
+The run finalizer restores the exact original reference APK, verifies its
+certificate/hash/version and data, and records cleanup errors separately from
+the original failure. A failed final readback is not permission to retry
+installation indefinitely or to call full restoration successful merely because
+settings and saves match.
+
+### Operator command examples, not execution evidence
+
+Substitute the approved exact catalog, SDK/JDK and output paths. Every output
+directory must be fresh and below that session's approved root. The commands
+below do not authorize a device operation by themselves.
+
+```sh
+PYTHONPATH=src uv run l10n-mutate probe \
+  --catalog "$CATALOG_JSON" --sha256 "$APPROVED_CATALOG_SHA256" \
+  --manifest fixtures/stage2/screens-v2.json \
+  --recipes fixtures/stage3/recipes-v1.json \
+  --sdk "$SDK" --jdk "$JDK" --serial emulator-5554 \
+  --approved-output-root "$APPROVED_OUTPUT_ROOT" --output-dir "$FRESH_PROBE_DIR"
+
+PYTHONPATH=src uv run l10n-mutate run \
+  --catalog "$CATALOG_JSON" --sha256 "$APPROVED_CATALOG_SHA256" \
+  --manifest fixtures/stage2/screens-v2.json \
+  --recipes fixtures/stage3/recipes-v1.json \
+  --sdk "$SDK" --jdk "$JDK" --serial emulator-5554 \
+  --approved-output-root "$APPROVED_OUTPUT_ROOT" --output-dir "$FRESH_RUN_DIR"
+```
+
+`probe` performs the certificate/backup/replacement/downgrade/restoration proof,
+not captures. `run` repeats the preflight and proof, captures the empty control,
+then the EN-help singleton across all five dev screens, EN/DE and forward/reverse
+passes. Only successful calibration under the narrow D-054 rule permits production batches.
+Same-build pass repeatability remains mandatory in addition to cross-build
+isolation. Timeouts and transport failures are operational failures, not observed
+interference or clean results.
+
+### Owner-authorized nonqualifying measurement mode (Proposed D-052)
+
+The separate 2026-11-05 authorization collects the complete diagnostic matrix,
+especially DE, before Anton decides whether to propose a different calibration
+rule. It is **not** a new accepted rule, tolerance or production authorization.
+Use the exact approved catalog path with SHA-256
+`790b21921ca3d4988b6257a6da235817c8b8407b2f029871c74a05598efaf354`, empty control
+`1888080431` and EN-help calibration `1808820362`, and a fresh directory below
+the approved root. The configured entry point checks the catalog and both actual
+versionCodes before constructing a device. Only the existing authorized control,
+calibration and reference APKs are installed; no new build is permitted.
+
+Invoke the existing Python interface explicitly; the ordinary `run` and `probe`
+commands gain no measurement CLI flag. Fresh normal runs use D-054 separately;
+measurement mode retains the original strict, nonqualifying behavior:
+
+```python
+from pathlib import Path
+from l10n_checker.mutation_run import run_config
+from l10n_checker.screen_manifest import json_bytes
+
+config = json_bytes(Path("/approved/exact/measurement-config.json").read_bytes())
+result = run_config(config, measurement_only=True)
+assert result["measurement_complete"] is True
+assert result["calibration_status"] == "failed"
+assert result["capture_set_qualified"] is False
+```
+
+Alternatively, **only after separate device approval**, select precisely the new
+device test with the existing approved configuration option:
+
+```sh
+uv run --offline pytest --run-device \
+  tests/test_mutation_integration_device.py::test_real_dev_calibration_measurement \
+  --mutation-device-config "$APPROVED_CONFIG_JSON" -q --tb=short
+```
+
+A passing measurement test means **diagnostic completion, not qualification**.
+The existing `test_real_dev_mutation_generation` still requires a qualified run;
+do not run it under the measurement-only authorization. This interface does not
+combine with `probe_only` or resume. Only the probe, clean capture and calibration
+capture execute; production callbacks are never constructed, and no dynamic
+test, split or builder handoff is emitted.
+
+Apply the same `verify_screen` measurements to all 20 clean/calibration pairs:
+all five dev screens × EN/DE × two passes. Retain exact `passed: false` results,
+RGBA counts, exclusive bounding boxes and maximum channel deltas, target masks,
+occurrence qualification and changed-unmutated-element results. Do not stop at
+the first outside-mask difference and do not manufacture a passing comparison.
+Same-build RGBA/raw-dump repeat differences remain in each role's original
+capture summary. `measurement_captures` links those summaries and reports their
+actual repeatability outcome, including failures after all 20 role captures.
+
+The capture wrapper still uses `fail_fast=True` for native, transport, readiness
+and invalid-pair failures. Operational/cleanup errors, settings/save drift and
+unexpected app-data changes remain fatal, even alongside comparison failures or
+an otherwise complete 20-record summary. D-051 remains exact: four private-root
+regular-file content/presence exceptions, strict existing-file metadata and no
+other delta. Every install/backup/input/readback/post/capture/restoration check,
+serial lock, containment boundary, `install -r -d`, per-artifact actual-version
+environment check and default check after reference `1271048` remain unchanged.
+Final restoration runs even after failure/cancellation and never retries an
+already failed restoration transaction.
+
+Throughout measurement checkpoints and final evidence,
+`measurement_only: true`, `calibration_status: failed` and
+`capture_set_qualified: false` are mandatory, including an all-zero matrix.
+The final status is `failed` (or `restoration_failed`), never normal success.
+`measurement_complete: true` means exactly 40 distinct authorized pairs, 20 per
+role, with downgrade and final restoration verified and no operational error;
+incomplete/error runs remain `false`. The normal manifest/journal and evidence
+index v3 retain the flags. Complete diagnostic replay also checks the original
+safety receipts and repeat observations without treating repeat differences as
+qualification. Flag edits, recomputed outer hashes or deletion of mode markers
+cannot supply missing production evidence or create a qualified run. Historical
+failed evidence remains nonqualified and inspectable, never rewritten. Stop for
+Anton's decision after reporting the full matrix; no labels/evaluation follow.
+
+### D-054: uncapped RGB with unchanged outside-mask glyph proofs
+
+Anton authorized the rule on 2026-11-05 (Proposed D-053), superseding only
+D-050's outside-mask clause. The pinned D-052 evidence and rationale are in the
+decision entry. On 2026-11-06 Anton authorized Proposed D-054 to supersede only
+D-053's numeric RGB cap, not any other gate or the existing usage pause.
+Larger strings exposed RGB delta 47 across 3,228 glyph-confined pixels affecting
+13 unchanged glyph IDs, unlike the four-glyph calibration's 406 pixels at <=2.
+The rendering cause remains unestablished; glyph attribution is not causal proof.
+The failed D-053 evidence root is
+`0a2dc8504bd749cd6143183ee2a7ef5b1e9b6141fb5fb3005f285bdf64cb5994`, with
+raw-results review SHA-256
+`4072e586a17d72cf00ae74ca337ef6a1e3fe79a165b4b6523f5bfc608b656a10`.
+Never reinterpret that failed run or historical measurement evidence as qualified.
+
+The strict `verify_screen` result stays `mutation-dynamic-v1` and is never edited:
+outside counts, exclusive boxes, channel maxima, mask, intended-occurrence and
+unmutated-group results remain available even when its `passed` is false.
+Each normal screenshot additionally carries `outside_rule` and a separate
+`qualified` result. Controls carry an explicit non-use/control record. Every
+comparison assessment binds the exact versioned policy, identity, mask, raw
+outside measurements, sorted affected before/after draw IDs and actor paths,
+signature/group hashes, and exact-coordinate/before-after-RGBA fingerprints.
+
+All outside changes must fall within genuine **visible per-glyph bounds**, using
+half-open physical pixel-centre membership and intersection with glyph visibility,
+clip, viewport and screen. Hidden/undrawn/zero-alpha glyphs, owner-only bounds,
+aggregate boxes and inferred parents do not qualify. All unmutated ordered groups
+must remain exactly equal under the existing ID exclusions, including secondary
+draws. RGB magnitude has no acceptance cap; alpha delta must still be 0. The
+exact policy is `decision: D054`, `version: 2`, `max_rgb_delta: null`,
+`max_alpha_delta: 0`, with unchanged pixel/repeat criteria. The 0..255 RGB
+statistic range validates physical 8-bit measurements, not an acceptance
+threshold of 47 or 255. No mask expansion, broad image tolerance or PNG
+encoding rule change is introduced.
+
+Pass 1 stays `pending`, `used: false`, `qualified: false`. Only an exact pass-2
+comparison identity/mask, changed coordinate set **and original before/after RGBA
+values** confirms both proofs. Pair bindings identify both controls and both
+mutations. Equal counts/boxes/max deltas alone are insufficient. Missing reverse
+measurements, invalid geometry, any local/repeat failure or changed unmutated
+record cause a fatal STOP, not a split/handoff. Intended mutations and N <=2 still
+must qualify independently. Existing same-build decoded-RGBA and full raw-dump
+equality, operational, settings/save, installation/environment, shared-lock,
+D-051 preservation, cleanup and restoration gates remain mandatory.
+
+`outside_rule_usage` records expected/observed frames, needed/pending/confirmed
+use, unique pairs and expected/observed rates globally and by batch, role,
+language and pass. Clean controls never enter these denominators. Undefined
+zero-denominator rates are `null`. A first partial 1/1 is not an engineering
+pause: its expected batch scope is still normally 20 EN+DE frames. After each
+complete calibration or production batch, **more than 10%** exception use in that
+batch's expected combined EN+DE scope stops before the next batch and recommends
+discussion of a separately approved fork-side alternative. The predeclared
+threshold uses D-052's 2/20 baseline; exactly 10% is not a pause. This remains
+the predeclared agent engineering recommendation, not a new owner-specified
+threshold; D-054 supersedes only the RGB cap. Per-language
+shares are reported independently, not used as a separate 50% cutoff. Future
+batches and controls cannot dilute a broad current batch. No builder/fork change
+is automatic. Invalid captures stop first, even in an incomplete batch.
+
+Fresh normal evidence is run version **4**, index **5**, with exact policy and complete
+usage required. Semantic replay authenticates the retained raw pair/PNG/dump
+bytes at their reads, rederives strict metrics, assessments, IDs, fingerprints,
+paired repeat bindings, qualification and usage, and rejects rehashed alterations,
+deleted proofs/policy/counts and version downgrades. Producer hashes bind both
+`mutation_outside_rule.py` and its executable `mutation_diagnostics.py` dependency.
+Every producer digest must equal the exact current frozen source bytes; matching
+manifest/journal claims alone do not establish authority. D-053 run v3/index 4
+is rejected by the current producer, never silently upgraded. Replay it with
+the exact archived `09acc674516196be2badfae247cc1ff76228fa17` producer without
+rewriting or promoting its evidence. D-052 remains run v2/index v3 and strictly
+nonqualifying; legacy strict failed evidence remains inspectable, without
+promotion. Freeze and review the new producer before
+fresh normal calibration/production, then perform the required second full run
+under separate exact device authorization. Host synthetic tests are not device
+qualification, labels or evaluation.
+
+### Evidence and split handoff
+
+`mutation-manifest.json` maps every screenshot to state, build/patch identity,
+effective manifest, pair, PNG, decoded RGBA and dump hashes and records intended
+occurrence qualification, unmutated-element checks, masks/differences, split
+lineage/rate and nonqualified statuses. `observed_occurrence_matrix` excludes
+controls and repeat passes and counts distinct owning targets separately.
+No label files are produced. Intended class is not a human label.
+
+Keep the runtime manifest, journal, installation/backup/environment receipts and
+all screenshot payloads together. The final `evidence-index.json` needs its own
+independently pinned digest; a mutable neighboring checksum is not authority.
+Offline verification must authenticate that root, require complete evidence,
+replay same-build repeatability and cross-build gates, and reject contradictory
+status/qualification flags.
+
+New normal evidence uses `mutation_run_version: 4` and evidence-index version `5`
+(D-054); D-053 run v3/index 4 requires its exact archived producer as above.
+Nonqualifying measurement keeps run version `2`/index `3`,
+with the exact `preservation_policy` in the manifest, journal and install
+receipts. Policy version 1 binds D-051, the four exact private paths, allowed
+changes `bytes`, `sha256`, `presence`, and `app_data_writes: 0` for this exception.
+Every ledger's full observations and delta partition are recomputed from
+authenticated retained inventories (tar inventories are also regenerated).
+Missing/modified/widened policies or ledgers, incomplete observations, and
+recomputed outer hashes do not bypass semantic verification. Dropping or
+downgrading the policy/manifest/index cannot recover a success claim. Pre-policy
+manifest version 1/index versions 1–2 remain inspectable for non-successful
+runs only; historical successful pre-policy evidence is not requalified by this
+verifier. Archived evidence is never rewritten. The following command remains
+read-only with respect to the device:
+
+```sh
+PYTHONPATH=src uv run l10n-mutate verify \
+  --catalog "$CATALOG_JSON" --sha256 "$APPROVED_CATALOG_SHA256" \
+  --manifest fixtures/stage2/screens-v2.json \
+  --recipes fixtures/stage3/recipes-v1.json --sdk "$SDK" --jdk "$JDK" \
+  --run-dir "$RUN_DIR" --evidence-sha256 "$PINNED_EVIDENCE_INDEX_SHA256"
+```
+
+Real multi-recipe interference may produce an immutable
+`builder-handoff/{plan.json,build-requests.json,handoff.json}`. It records the
+parent catalog and exact plan/request/builder hashes and deterministic split
+lineage. A failing singleton stops; splitting cannot repair an operational
+failure. The denominator of the split rate is unique dynamically tested
+multi-recipe nodes, not static conflicts or capture repeats; no tested nodes
+means `null`, not a zero success claim.
+
+**Pause before building.** Transfer the exact bundle to the separate part-(b)
+Unciv-59b fork session. Only after owner approval may that session call the fork
+builder with exact plan/request digests and explicitly pinned parent-catalog
+reuse. The new catalog must bind that pending bundle and frozen builder;
+its digest/path needs separate device authorization. Nothing here invokes the
+builder automatically.
+
+Resume uses a fresh run directory, the separately authorized new catalog, and
+`--resume-from "$PARENT_RUN" --resume-sha256 "$PINNED_PARENT_MANIFEST_SHA256"`.
+The pinned parent's embedded handoff is the authority for the sidecar and payloads;
+paths cannot escape the approved root. Preserve prior dynamic tests and lineage
+in the resumed split rate. A successful host replay or synthetic fake-device test
+does not replace the required actual calibration or second end-to-end run.
 
 ## Target-qualification procedure for a later owner session
 
@@ -481,8 +837,8 @@ volume by counting provenance-only aliases of the source fallback.
 6. Keep runtime gates pending. Later, use same-builder empty controls, run the
    mandatory empty-vs-single calibration, then qualify each mutation's actual
    glyph/owner behavior, D-023/D-025 boundaries and cross-screen impact. Any
-   outside-mask calibration change stops with counts/bboxes/max deltas; zero
-   tolerance remains binding. A source-qualified overflow that does not visibly
+   outside-mask calibration change not proven by D-054 stops with counts/bboxes/max
+   deltas. A source-qualified overflow that does not visibly
    overflow its own label stops qualification. Only real batch interference
    may trigger deterministic splitting, with the split rate reported. An
    operational error is not interference or a clean result.
