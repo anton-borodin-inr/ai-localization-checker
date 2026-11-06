@@ -734,3 +734,59 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
   or builds. Only a new tested/reviewed frozen producer may perform fresh normal
   calibration/production and the required second full run under the owner's
   exact device authorization. No labels, evaluation or other gate changes.
+
+## D-054 — Remove only D-053's outside-mask RGB magnitude cap
+
+- **Date:** 2026-11-06
+- **Status:** Proposed
+- **Decision:** Record Anton's explicit task-chat authorization to supersede only
+  D-053's numeric RGB cap for fresh normal runs. There is no RGB acceptance
+  threshold: use policy `decision: D054`, `version: 2`, `max_rgb_delta: null`
+  and `max_alpha_delta: 0`. Every outside changed pixel must still lie within
+  genuine visible per-glyph bounds of an unchanged, unmutated dump record and
+  its full unchanged ordered group, with the same text, geometry, clipping,
+  visibility and all previously checked fields. Retain all target exclusions,
+  half-open physical pixel-centre membership, viewport/screen clipping and
+  hidden/undrawn/zero-alpha exclusions. Alpha must be unchanged. The exact pixel
+  coordinates and oriented original before/after RGBA values must reproduce
+  in forward and reverse passes; pass 1 remains pending and unqualified.
+- **Why:** Larger production strings exposed maximum RGB delta 47 across 3,228
+  outside pixels confined to 13 unchanged visible-glyph IDs, unlike the prior
+  four-glyph calibration's 406 pixels with RGB deltas at most 2. Anton chose
+  glyph confinement, unchanged records, exact paired reproduction and complete
+  measurement rather than a magnitude cap. The rendering cause remains
+  **unestablished**; this attribution is not causal proof. The failed D-053 run
+  remains failed and unqualified, independently pinned by evidence root
+  `0a2dc8504bd749cd6143183ee2a7ef5b1e9b6141fb5fb3005f285bdf64cb5994`
+  and raw-results review SHA-256
+  `4072e586a17d72cf00ae74ca337ef6a1e3fe79a165b4b6523f5bfc608b656a10`.
+- **Alternatives considered:** Retain the cap of 2 (not the owner's decision);
+  substitute a cap of 47 or 255 (still a magnitude acceptance threshold);
+  expand masks or accept owner/panel/aggregate bounds, alpha drift, changed
+  records or approximate repeat proof (not authorized); retrospectively qualify
+  the failed run or D-052 diagnostics (not authorized).
+- **Consequences:** Preserve strict `mutation-dynamic-v1` results, including raw
+  `passed: false`, unchanged masks, counts, exclusive bounding boxes and RGBA
+  maxima. Per-screenshot proofs retain actual affected before/after draw IDs,
+  actor paths, unchanged signatures/group hashes and exact pixel/value/pair
+  bindings; usage retains the overall share and all existing scopes. Missing
+  measurement, outside-glyph pixels, changed unmutated records, nonzero alpha
+  or any repeat mismatch is still a fatal STOP, never a split. The physical
+  8-bit RGB statistic range 0..255 is schema validity, not a policy cap.
+  Fresh normal evidence is run version **4**, evidence-index version **5**.
+  Successful current replay requires every producer hash to equal the exact
+  current frozen source bytes, not merely matching manifest/journal claims.
+  D-053 run v3/index 4 must fail closed with the current producer: replay it
+  using the exact archived `09acc674516196be2badfae247cc1ff76228fa17` producer,
+  without rewriting or promoting evidence. Legacy strict failures remain
+  inspectable, and D-052 stays run v2/index 3, strictly nonqualifying.
+  D-053's existing agent-declared engineering pause at **more than 10%** of a
+  completed batch's expected combined EN+DE frames remains unchanged, as do
+  all usage denominators; this is not a new owner-specified threshold.
+  Intended occurrences, N/density, same-build decoded-RGBA/full-raw-dump
+  repeatability, D-051 preservation, installation/environment, shared locks,
+  backup/restoration, cleanup, split and publication/device gates are unchanged.
+  No earlier decision text or status is edited. Only a freshly tested, reviewed
+  and frozen producer may perform new normal calibration/production and the
+  required second complete run under the owner's exact device authorization.
+  No labels, metrics, goldens, fixtures, split, build or other gate changes.

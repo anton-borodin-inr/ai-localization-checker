@@ -441,7 +441,7 @@ class MutationRun:
             "api_spend_usd": 0,
         }
         self.content = {
-            "mutation_run_version": 2 if measurement_only else 3,
+            "mutation_run_version": 2 if measurement_only else 4,
             "preservation_policy": preservation_policy(),
             "status": "not_run",
             "capture_set_qualified": False,
@@ -495,7 +495,7 @@ class MutationRun:
                 measurement_only=True,
                 measurement_complete=self.content["measurement_complete"],
             )
-        if self.content.get("mutation_run_version") == 3:
+        if self.content.get("mutation_run_version") == 4:
             self.content["outside_rule_usage"] = outside_usage(
                 self.catalog, self.content["screenshots"], self.content["status"]
             )
@@ -1134,7 +1134,7 @@ class MutationRun:
             # The independent final root binds the manifest, avoiding a hash cycle.
             index = canonical_bytes(
                 {
-                    "version": 3 if measurement_only else 4,
+                    "version": 3 if measurement_only else 5,
                     "files": retained_files(self.folder),
                 }
             )
@@ -2015,7 +2015,7 @@ def verify_run(folder, catalog, inputs, *, evidence_sha256):
     require(
         set(index) == {"version", "files"}
         and type(index["version"]) is int
-        and index["version"] in {1, 2, 3, 4}
+        and index["version"] in {1, 2, 3, 4, 5}
         and type(index["files"]) is dict,
         "Unsupported evidence index",
     )
@@ -2036,7 +2036,7 @@ def verify_run(folder, catalog, inputs, *, evidence_sha256):
     )
     require(
         type(value["mutation_run_version"]) is int
-        and value["mutation_run_version"] in {1, 2, 3}
+        and value["mutation_run_version"] in {1, 2, 3, 4}
         and value["catalog_sha256"] == catalog.sha256
         and value["labels_created"] is False
         and value["screen_ids"] == catalog.plan["screen_ids"],
@@ -2064,10 +2064,16 @@ def verify_run(folder, catalog, inputs, *, evidence_sha256):
             and not (folder / "builder-handoff").exists(),
             "Complete measurement requires the exact forty-pair matrix",
         )
-    new_rule = value["mutation_run_version"] == 3
+    require(
+        value["mutation_run_version"] != 3 and index["version"] != 4,
+        "Legacy D053 run v3/index 4 cannot use the current producer; replay with "
+        "the exact archived 09acc674516196be2badfae247cc1ff76228fa17 producer, "
+        "without rewriting or promoting evidence",
+    )
+    new_rule = value["mutation_run_version"] == 4
     if new_rule:
         require(
-            not value.get("measurement_only") and index["version"] == 4,
+            not value.get("measurement_only") and index["version"] == 5,
             "Legacy/outside-rule version/index/mode mismatch",
         )
         require(
@@ -2104,7 +2110,7 @@ def verify_run(folder, catalog, inputs, *, evidence_sha256):
             "Preservation policy missing or altered",
         )
     require(
-        (index["version"] == 4 and new_rule)
+        (index["version"] == 5 and new_rule)
         or (
             index["version"] == 3
             and value["mutation_run_version"] == 2

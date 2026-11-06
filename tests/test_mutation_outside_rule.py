@@ -1,4 +1,4 @@
-"""Host-only synthetic proofs for the bounded D053 outside-mask rule."""
+"""Host-only synthetic proofs for D054's uncapped, glyph-confined RGB rule."""
 
 import importlib
 import importlib.util
@@ -15,7 +15,7 @@ from l10n_checker.text_dump import canonical_bytes
 
 def api():
     assert importlib.util.find_spec("l10n_checker.mutation_outside_rule") is not None, (
-        "D053 outside-mask rule missing"
+        "Outside-mask rule missing"
     )
     return importlib.import_module("l10n_checker.mutation_outside_rule")
 
@@ -93,19 +93,23 @@ def test_repeat_rejects_contradictory_raw_statistics_even_with_matching_hashes()
 
 
 @pytest.mark.parametrize("channel", range(4))
-@pytest.mark.parametrize("magnitude", [1, 2, 3])
+@pytest.mark.parametrize("magnitude", [1, 2, 3, 47, 255])
 @pytest.mark.parametrize("sign", [-1, 1])
-def test_each_channel_has_its_own_exact_threshold(channel, magnitude, sign):
-    # Use a midrange alpha to exercise both signs without PNG clamping.
+def test_d054_each_rgb_channel_is_uncapped_but_alpha_stays_exact(
+    channel, magnitude, sign
+):
+    # Start at a channel endpoint to exercise both signs through 255 without clamping.
     import io
 
     from PIL import Image
 
-    image = Image.new("RGBA", (8, 4), (10, 20, 30, 128))
+    original = [10, 20, 30, 128]
+    original[channel] = 255 if sign < 0 else 0
+    image = Image.new("RGBA", (8, 4), tuple(original))
     stream = io.BytesIO()
     image.save(stream, format="PNG")
     first = stream.getvalue()
-    value = [10, 20, 30, 128]
+    value = list(original)
     value[channel] += sign * magnitude
     image.putpixel((1, 1), tuple(value))
     stream = io.BytesIO()
@@ -114,19 +118,23 @@ def test_each_channel_has_its_own_exact_threshold(channel, magnitude, sign):
     d = dump([element()])
     verification = verify_screen(first, second, d, d, [])
     result = api().assess_outside_rule(first, second, d, d, verification)
-    allowed = channel < 3 and magnitude <= 2
+    allowed = channel < 3
     assert result["local_criteria_passed"] is allowed
     assert bool(result["failure_reasons"]) is not allowed
     assert result["outside"] == verification["pixels"]["outside"]
     assert result["rule_needed"] is True
     assert result["measurements_complete"] is True
+    assert verification["passed"] is False
+    assert result["outside"]["max_channel_deltas"][channel] == magnitude
+    repeat = api().verify_outside_repeat(result, deepcopy(result))
+    assert repeat["passed"] is allowed
 
 
 def test_policy_is_exact_and_returns_an_independent_value():
     expected = {
-        "decision": "D053",
-        "version": 1,
-        "max_rgb_delta": 2,
+        "decision": "D054",
+        "version": 2,
+        "max_rgb_delta": None,
         "max_alpha_delta": 0,
         "pixel_criterion": "visible-per-glyph-pixel-centre-half-open",
         "repeat_criterion": "exact-outside-coordinates-and-before-after-RGBA",
@@ -137,11 +145,26 @@ def test_policy_is_exact_and_returns_an_independent_value():
     assert api().outside_rule_policy() == expected
 
 
+@pytest.mark.parametrize("channel", range(3))
+@pytest.mark.parametrize("invalid", [-1, 256, True, 47.0, None, "47"])
+def test_repeat_rejects_nonphysical_or_noninteger_rgb_statistics(channel, invalid):
+    result = assess(changes=[((1, 1), (57, 20, 30, 255))])
+    result["outside"]["max_channel_deltas"][channel] = invalid
+    assert api().verify_outside_repeat(result, deepcopy(result))["passed"] is False
+
+
+@pytest.mark.parametrize("cap", [2, 47, 255])
+def test_repeat_rejects_matching_reintroduced_numeric_policy_caps(cap):
+    result = assess(changes=[((1, 1), (57, 20, 30, 255))])
+    result["policy"]["max_rgb_delta"] = cap
+    assert api().verify_outside_repeat(result, deepcopy(result))["passed"] is False
+
+
 @pytest.mark.parametrize(
     "xy,allowed", [((1, 1), True), ((0, 0), False), ((7, 3), False)]
 )
 def test_only_actual_glyph_not_owner_or_elsewhere_can_cover_a_pixel(xy, allowed):
-    result = assess(changes=[(xy, (11, 20, 30, 255))])
+    result = assess(changes=[(xy, (57, 20, 30, 255))])
     assert result["local_criteria_passed"] is allowed
     assert bool(result["failure_reasons"]) is not allowed
 
@@ -286,7 +309,7 @@ def test_any_changed_full_unmutated_group_fails_even_away_from_pixels(change, pi
         new.pop()
     else:
         new[1], new[2] = new[2], new[1]
-    changes = [((1, 1), (11, 20, 30, 255))] if pixels else []
+    changes = [((1, 1), (57, 20, 30, 255))] if pixels else []
     result = assess(dump(old), dump(new), changes)
     assert result["local_criteria_passed"] is False
     assert "changed_unmutated_groups" in result["failure_reasons"]
@@ -448,13 +471,21 @@ def test_exact_forward_reverse_proof_reports_both_coordinate_and_value_hashes():
     }
 
 
-def test_count_bbox_and_max_delta_collision_does_not_prove_exact_pixel_set():
+@pytest.mark.parametrize("delta", [2, 3, 47, 255])
+def test_count_bbox_and_max_delta_collision_does_not_prove_exact_pixel_set(delta):
     d = dump([element(box=(1, 1, 4, 4))])
+    original = [(xy, (0, 20, 30, 255)) for xy in [(1, 1), (3, 3), (2, 1), (1, 2)]]
     first = assess(
-        d, d, [((x, y), (12, 20, 30, 255)) for x, y in [(1, 1), (3, 3), (2, 1)]]
+        d,
+        d,
+        original + [(xy, (delta, 20, 30, 255)) for xy in [(1, 1), (3, 3), (2, 1)]],
+        first=png(original),
     )
     second = assess(
-        d, d, [((x, y), (12, 20, 30, 255)) for x, y in [(1, 1), (3, 3), (1, 2)]]
+        d,
+        d,
+        original + [(xy, (delta, 20, 30, 255)) for xy in [(1, 1), (3, 3), (1, 2)]],
+        first=png(original),
     )
     assert first["outside"] == second["outside"]
     assert first["local_criteria_passed"] is second["local_criteria_passed"] is True
@@ -463,10 +494,15 @@ def test_count_bbox_and_max_delta_collision_does_not_prove_exact_pixel_set():
     assert "outside_pixel_set_mismatch" in result["failure_reasons"]
 
 
-def test_equal_coordinates_and_deltas_do_not_hide_original_rgba_value_drift():
-    first = assess(changes=[((1, 1), (12, 20, 30, 255))])
+@pytest.mark.parametrize("delta", [2, 3, 47, 255])
+def test_equal_coordinates_and_deltas_do_not_hide_original_rgba_value_drift(delta):
+    first = assess(
+        first=png([((1, 1), (0, 20, 30, 255))]),
+        changes=[((1, 1), (delta, 20, 30, 255))],
+    )
     second = assess(
-        first=png([((1, 1), (20, 20, 30, 255))]), changes=[((1, 1), (22, 20, 30, 255))]
+        first=png([((1, 1), (0, 21, 30, 255))]),
+        changes=[((1, 1), (delta, 21, 30, 255))],
     )
     assert first["outside"] == second["outside"]
     assert first["outside_pixel_set_sha256"] == second["outside_pixel_set_sha256"]
@@ -475,9 +511,11 @@ def test_equal_coordinates_and_deltas_do_not_hide_original_rgba_value_drift():
     assert "outside_pixel_values_mismatch" in result["failure_reasons"]
 
 
-def test_repeat_keeps_before_after_value_orientation_not_just_absolute_delta():
+@pytest.mark.parametrize("delta", [2, 3, 47, 255])
+def test_repeat_keeps_before_after_value_orientation_not_just_absolute_delta(delta):
     d = dump([element()])
-    first, second = png(), png([((1, 1), (12, 20, 30, 255))])
+    first = png([((1, 1), (0, 20, 30, 255))])
+    second = png([((1, 1), (delta, 20, 30, 255))])
     a = api().assess_outside_rule(
         first, second, d, d, verify_screen(first, second, d, d, [])
     )
@@ -562,8 +600,8 @@ def test_repeat_cannot_match_different_comparison_identity_or_mask(field, value)
     assert api().verify_outside_repeat(first, second)["passed"] is False
 
 
-@pytest.mark.parametrize("value", [(13, 20, 30, 255), (10, 20, 30, 254)])
-def test_exactly_repeated_disallowed_local_delta_is_still_disallowed(value):
+@pytest.mark.parametrize("value", [(13, 20, 30, 254), (10, 20, 30, 254)])
+def test_exactly_repeated_alpha_delta_is_still_disallowed(value):
     first = assess(changes=[((1, 1), value)])
     second = assess(changes=[((1, 1), value)])
     assert first["local_criteria_passed"] is second["local_criteria_passed"] is False

@@ -1,4 +1,4 @@
-"""D053's bounded per-comparison exception, separate from strict v1 verification.
+"""D054's glyph-confined per-comparison rule, separate from strict v1 verification.
 
 These measurements do not establish a rendering cause or relax same-build PNG
 or full-dump repeatability. Qualification also requires an exact second-pass proof
@@ -19,9 +19,9 @@ from l10n_checker.text_dump import canonical_bytes
 def outside_rule_policy():
     """Return a fresh, versioned description of the owner-authorized rule."""
     return {
-        "decision": "D053",
-        "version": 1,
-        "max_rgb_delta": 2,
+        "decision": "D054",
+        "version": 2,
+        "max_rgb_delta": None,
         "max_alpha_delta": 0,
         "pixel_criterion": "visible-per-glyph-pixel-centre-half-open",
         "repeat_criterion": "exact-outside-coordinates-and-before-after-RGBA",
@@ -105,8 +105,6 @@ def assess_outside_rule(first_png, second_png, before, after, verification):
     if measured["changed_groups"]:
         failures.append("changed_unmutated_groups")
     deltas = measured["pixel_measurements"]["outside"]["max_channel_deltas"]
-    if any(delta > 2 for delta in deltas[:3]):
-        failures.append("outside_rgb_delta_exceeds_2")
     if deltas[3] != 0:
         failures.append("outside_alpha_delta_nonzero")
     affected = set()
@@ -207,7 +205,8 @@ def _complete_assessment(value):
             and value["rule_needed"] is (count > 0)
             and isinstance(deltas, list)
             and len(deltas) == 4
-            and all(type(n) is int and 0 <= n <= 2 for n in deltas[:3])
+            # Schema validity for measured 8-bit RGB, not an acceptance cap.
+            and all(type(n) is int and 0 <= n <= 255 for n in deltas[:3])
             and type(deltas[3]) is int
             and deltas[3] == 0
         ):
