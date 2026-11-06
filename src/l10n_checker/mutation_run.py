@@ -1,11 +1,14 @@
 """Dev-only mutation run, strict gates, immutable handoffs and offline replay."""
 
 import fcntl
+import io
 import os
 import re
 import subprocess
 from pathlib import Path
 from typing import cast
+
+from PIL import Image
 
 from l10n_checker.capture import (
     REPO_ROOT,
@@ -30,6 +33,11 @@ from l10n_checker.mutation_device import (
     read_app_data,
     save_backup,
 )
+from l10n_checker.mutation_outside_rule import (
+    assess_outside_rule,
+    outside_rule_policy,
+    verify_outside_repeat,
+)
 from l10n_checker.mutation_plan import load_plan, split_after_interference
 from l10n_checker.mutation_verify import (
     compare_rgba,
@@ -48,7 +56,7 @@ from l10n_checker.screen_capture import (
     write_json,
 )
 from l10n_checker.screen_manifest import Inputs, digest, json_bytes
-from l10n_checker.text_dump import canonical_bytes
+from l10n_checker.text_dump import canonical_bytes, load_dump, rgba_digest
 from l10n_checker.text_reference import load_pair
 
 
@@ -98,7 +106,7 @@ def expected_capture_keys(catalog, *, measurement_only=False):
     }
 
 
-def verified_pair(inputs, folder, record):
+def verified_pair(inputs, folder, record, *, evidence=None):
     require(
         record["screen"] in {s.id for s in inputs.screens()}
         and record["language"] in {"en", "de"}
@@ -107,7 +115,9 @@ def verified_pair(inputs, folder, record):
         "Pair selection outside approved dev scope",
     )
     path = contained(folder, record["pair"])
-    raw = path.read_bytes()
+    raw = (
+        path.read_bytes() if evidence is None else evidence.read(folder, record["pair"])
+    )
     if "pair_sha256" in record:
         require(digest(raw) == record["pair_sha256"], "Pair sidecar hash mismatch")
     pair = json_bytes(raw)
@@ -124,7 +134,30 @@ def verified_pair(inputs, folder, record):
     )
     for key in ("png", "dump"):
         contained(path.parent, pair[key])
-    loaded = load_pair(path, pair_bytes=raw)
+    if evidence is None:
+        loaded = load_pair(path, pair_bytes=raw)
+    else:
+        png = evidence.read(path.parent, pair["png"])
+        raw_dump = evidence.read(path.parent, pair["dump"])
+        require(
+            digest(png) == pair["png_sha256"]
+            and rgba_digest(png) == pair["rgba_sha256"]
+            and digest(raw_dump) == pair["dump_sha256"],
+            "Capture pair hash mismatch",
+        )
+        with Image.open(io.BytesIO(png)) as image:
+            size = list(image.size)
+        dump = load_dump(
+            raw_dump,
+            expected={
+                "screen": pair["screen"],
+                "language": pair["language"],
+                "state_sha256": pair["state_sha256"],
+                "image_size": size,
+                "build_version_code": int(pair["build"]["version_code"]),
+            },
+        )
+        loaded = pair, png, raw_dump, dump
     require(
         loaded[3].image_size == inputs.manifest.resolution,
         "Capture resolution differs from authority",
@@ -155,12 +188,192 @@ def write_handoff(catalog, plan, batch_id, reason, folder, manifest):
     return new, handoff
 
 
+def nonpixel_passed(verification):
+    """The exception never substitutes for intended occurrences or layout gates."""
+    return (
+        not verification["changed_unmutated_elements"]
+        and len(verification["occurrences"]) <= 2
+        and all(o["qualified"] is True for o in verification["occurrences"])
+    )
+
+
+def outside_proof(record, assessment=None):
+    return {
+        "assessment": assessment,
+        "repeat_state": "control" if record["role"] == "clean" else "pending",
+        "repeat": None,
+        "pair_binding": None,
+        "used": False,
+    }
+
+
+def measure_outside_record(stable, first_png, second_png, before, after, paired):
+    stable["qualified"] = False
+    stable["outside_rule"] = outside_proof(stable)
+    try:
+        assessment = assess_outside_rule(
+            first_png, second_png, before, after, stable["verification"]
+        )
+        stable["outside_rule"]["assessment"] = assessment
+        require(
+            assessment["measurements_complete"] is True
+            and assessment["local_criteria_passed"] is True,
+            "Outside-rule local measurement failed",
+        )
+        key = (stable["batch_id"], stable["role"], stable["screen"], stable["language"])
+        require((key, stable["pass"]) not in paired, "Duplicate outside-rule pass")
+        paired[key, stable["pass"]] = stable
+        if stable["pass"] == 2:
+            require((key, 1) in paired, "Missing forward outside-rule proof")
+            require(
+                confirm_outside_pair(paired[key, 1], stable),
+                "Outside-rule exact repeat failed",
+            )
+    except (CaptureError, ValueError, KeyError, TypeError) as exc:
+        stable["outside_rule"]["repeat_state"] = "failed"
+        stable["outside_rule"]["error"] = str(exc)
+        return str(exc)
+    return None
+
+
+def confirm_outside_pair(forward, reverse):
+    """Finalize BOTH comparisons only from an exact reverse measurement."""
+    repeat = verify_outside_repeat(
+        forward["outside_rule"]["assessment"], reverse["outside_rule"]["assessment"]
+    )
+    binding = {
+        name: {
+            "pair_sha256": shot["pair_sha256"],
+            "control_pair_sha256": shot["control_pair_sha256"],
+        }
+        for name, shot in (("forward", forward), ("reverse", reverse))
+    }
+    for shot in (forward, reverse):
+        proof = shot["outside_rule"]
+        proof.update(
+            repeat=repeat,
+            pair_binding=binding,
+            repeat_state="confirmed" if repeat["passed"] is True else "failed",
+            used=repeat["passed"] is True
+            and proof["assessment"]["rule_needed"] is True,
+        )
+        shot["qualified"] = repeat["passed"] is True and nonpixel_passed(
+            shot["verification"]
+        )
+    return repeat["passed"] is True
+
+
+def outside_usage(catalog, screenshots, outcome):
+    """Expected batch scope never shrinks to a partial sample or includes controls."""
+    expected = sorted(
+        expected_capture_keys(catalog)
+        - expected_capture_keys(catalog, measurement_only=True)
+    )
+    expected += sorted(
+        k
+        for k in expected_capture_keys(catalog, measurement_only=True)
+        if k[1] == "calibration"
+    )
+    shots = [r for r in screenshots if r["role"] != "clean"]
+
+    def tally(keys, observed):
+        needed = [
+            r
+            for r in observed
+            if r["verification"]["pixels"]["outside"]["different_pixels"] > 0
+        ]
+        used = [r for r in needed if r["outside_rule"]["used"]]
+        pending = [r for r in needed if r["outside_rule"]["repeat_state"] == "pending"]
+        unique = lambda rows: len(
+            {(r["batch_id"], r["role"], r["screen"], r["language"]) for r in rows}
+        )
+        denominator = len(keys)
+        return {
+            "expected_frames": denominator,
+            "observed_frames": len(observed),
+            "needed_frames": len(needed),
+            "used_frames": len(used),
+            "pending_frames": len(pending),
+            "missing_measurement_frames": sum(
+                (r["outside_rule"]["assessment"] or {}).get("measurements_complete")
+                is not True
+                for r in observed
+            ),
+            "expected_unique_pairs": len({k[:4] for k in keys}),
+            "observed_unique_pairs": unique(observed),
+            "used_unique_pairs": unique(used),
+            "needed_share_expected": len(needed) / denominator if denominator else None,
+            "used_share_expected": len(used) / denominator if denominator else None,
+            "used_share_observed": len(used) / len(observed) if observed else None,
+            "complete": len(observed) == denominator,
+        }
+
+    scopes = []
+    dimensions = [
+        (),
+        ("role",),
+        ("language",),
+        ("pass",),
+        ("role", "language"),
+        ("role", "pass"),
+        ("role", "language", "pass"),
+        ("batch_id", "role"),
+        ("batch_id", "role", "language"),
+        ("batch_id", "role", "pass"),
+        ("batch_id", "role", "language", "pass"),
+    ]
+    fields = ("batch_id", "role", "screen", "language", "pass")
+    for dims in dimensions[1:]:
+        for values in sorted(
+            {tuple(k[fields.index(d)] for d in dims) for k in expected}
+        ):
+            selection = dict(zip(dims, values, strict=True))
+            keys = [
+                k
+                for k in expected
+                if all(k[fields.index(d)] == v for d, v in selection.items())
+            ]
+            observed = [
+                r for r in shots if all(r[d] == v for d, v in selection.items())
+            ]
+            scopes.append({**selection, **tally(keys, observed)})
+    pauses = [
+        {
+            "batch_id": s["batch_id"],
+            "role": s["role"],
+            "used_frames": s["used_frames"],
+            "expected_frames": s["expected_frames"],
+            "recommendation": "stop; discuss a separately approved fork-side alternative",
+        }
+        for s in scopes
+        if set(s) >= {"batch_id", "role"}
+        and "language" not in s
+        and "pass" not in s
+        and s["complete"]
+        and s["used_frames"] * 10 > s["expected_frames"]
+    ]
+    return {
+        "version": 1,
+        "engineering_stop": {
+            "greater_than_share": 0.10,
+            "scope": "completed-batch-combined-EN-DE",
+            "controls_excluded": True,
+        },
+        "outcome": outcome,
+        "global": tally(expected, shots),
+        "scopes": scopes,
+        "engineering_pauses": pauses,
+    }
+
+
 def implementation_hashes():
     names = (
         "mutation_run.py",
         "mutation_catalog.py",
         "mutation_device.py",
         "mutation_verify.py",
+        "mutation_outside_rule.py",
+        "mutation_diagnostics.py",
         "mutation_cli.py",
         "mutation_plan.py",
         "mutation_recipes.py",
@@ -228,7 +441,7 @@ class MutationRun:
             "api_spend_usd": 0,
         }
         self.content = {
-            "mutation_run_version": 2,
+            "mutation_run_version": 2 if measurement_only else 3,
             "preservation_policy": preservation_policy(),
             "status": "not_run",
             "capture_set_qualified": False,
@@ -254,10 +467,23 @@ class MutationRun:
         }
         if measurement_only:
             self.content.update(measurement_only=True, measurement_complete=False)
+        else:
+            self.content["outside_rule_policy"] = outside_rule_policy()
+            self.journal["implementation_hashes"] = self.content[
+                "implementation_hashes"
+            ]
         self.checkpoint()
 
     def checkpoint(self):
         if self.content.get("measurement_only"):
+            require(
+                all("outside_rule" not in r for r in self.content["screenshots"]),
+                "Measurement cannot convert existing normal outside-rule evidence",
+            )
+            self.content["mutation_run_version"] = 2
+            self.content.pop("outside_rule_policy", None)
+            self.content.pop("outside_rule_usage", None)
+            self.journal.pop("implementation_hashes", None)
             # This mode can never publish a calibration or run success, even at
             # intermediate/error checkpoints or when every comparison is zero.
             self.content.update(
@@ -268,6 +494,10 @@ class MutationRun:
             self.journal.update(
                 measurement_only=True,
                 measurement_complete=self.content["measurement_complete"],
+            )
+        if self.content.get("mutation_run_version") == 3:
+            self.content["outside_rule_usage"] = outside_usage(
+                self.catalog, self.content["screenshots"], self.content["status"]
             )
         self.content["observed_occurrence_matrix"] = occurrence_matrix(
             self.content["screenshots"]
@@ -452,6 +682,11 @@ class MutationRun:
         measurement_only = measurement_only or self.content.get(
             "measurement_only", False
         )
+        if role == "calibration" and not measurement_only:
+            # Attempted is not not_run: any early exit stays failed until every
+            # calibration gate below has completed, including paired-pass proof.
+            self.content["calibration_status"] = "failed"
+            self.checkpoint()
         if measurement_only:
             self.content.update(measurement_only=True, measurement_complete=False)
             self.checkpoint()
@@ -490,6 +725,9 @@ class MutationRun:
         )
         self.allowed_outputs.update(allowed)
         failures = []
+        outside_fatal = []
+        paired = {}
+        raw_repeats = {}
         capture_root = root / "capture"
         if role == "calibration":
             ids = [self.plan["calibration"]["mutation_recipe_id"]]
@@ -504,8 +742,12 @@ class MutationRun:
         mutations = [self.plan["mutations"][identity] for identity in ids]
 
         def on_pair(captured):
-            pair, png, _raw, dump = verified_pair(effective, capture_root, captured)
+            pair, png, raw_dump, dump = verified_pair(effective, capture_root, captured)
             key = (captured["screen"], captured["language"], captured["pass"])
+            raw_repeats[key] = (pair["rgba_sha256"], raw_dump)
+            raw_repeat_ok = (
+                key[2] == 1 or raw_repeats.get((*key[:2], 1)) == raw_repeats[key]
+            )
             pair_path = capture_root / captured["pair"]
             stable = {
                 "batch_id": record["request"]["id"],
@@ -537,16 +779,36 @@ class MutationRun:
             ]
             if role == "clean":
                 self.clean[key] = (png, dump, stable["pair_sha256"])
+                if not measurement_only:
+                    stable["outside_rule"] = outside_proof(stable)
+                    stable["qualified"] = False
             else:
                 clean_png, clean_dump, clean_sha = self.clean[key]
                 verification = verify_screen(
                     clean_png, png, clean_dump, dump, mutations
                 )
                 stable.update(control_pair_sha256=clean_sha, verification=verification)
-                if not verification["passed"]:
+                if not measurement_only:
+                    error = measure_outside_record(
+                        stable, clean_png, png, clean_dump, dump, paired
+                    )
+                    if error:
+                        outside_fatal.append(error)
+                if (
+                    not verification["passed"]
+                    if measurement_only
+                    else not nonpixel_passed(verification)
+                ):
                     failures.append(stable)
             self.content["screenshots"].append(stable)
             self.checkpoint()
+            if outside_fatal and not measurement_only:
+                raise CaptureError("Fatal outside-rule STOP: " + outside_fatal[0])
+            if not measurement_only:
+                require(
+                    raw_repeat_ok,
+                    "Forward/reverse RGBA or raw dump repeatability failure",
+                )
             if failures and not measurement_only:
                 raise CaptureError("Strict dynamic gate failed; no further captures")
 
@@ -667,6 +929,9 @@ class MutationRun:
             )
             self.checkpoint()
             return {"passed": False, "measurement_complete": True}
+        require(
+            not outside_fatal, "Fatal outside-rule STOP: " + "; ".join(outside_fatal)
+        )
         if failures:
             if role == "calibration":
                 self.content["calibration_status"] = "failed"
@@ -713,6 +978,35 @@ class MutationRun:
         require(
             summary["status"] == "complete", "Capture operational/repeatability failure"
         )
+        require(
+            not errors and summary.get("saves_unchanged") is True,
+            "Capture operational/save failure",
+        )
+        expected = {
+            (s, language, n)
+            for s in self.inputs.capture_selection(["en", "de"])["screen_ids"]
+            for language in ("en", "de")
+            for n in (1, 2)
+        }
+        actual = [
+            (r["screen"], r["language"], r["pass"])
+            for r in self.content["screenshots"]
+            if (r["batch_id"], r["role"]) == (record["request"]["id"], role)
+        ]
+        require(
+            len(actual) == len(expected) and set(actual) == expected,
+            "Missing forward/reverse outside-rule measurement scope",
+        )
+        if role != "clean":
+            require(
+                all(r["qualified"] for r in paired.values()),
+                "Pending outside-rule proof cannot qualify",
+            )
+            self.checkpoint()
+            require(
+                not self.content["outside_rule_usage"]["engineering_pauses"],
+                "Outside-rule engineering pause: >10% of expected batch EN/DE frames; discuss fork-side alternative",
+            )
         if role == "calibration":
             self.content["calibration_status"] = "passed"
         elif role == "mutation":
@@ -839,7 +1133,10 @@ class MutationRun:
             self.checkpoint()
             # The independent final root binds the manifest, avoiding a hash cycle.
             index = canonical_bytes(
-                {"version": 3, "files": retained_files(self.folder)}
+                {
+                    "version": 3 if measurement_only else 4,
+                    "files": retained_files(self.folder),
+                }
             )
             (self.folder / "evidence-index.json").write_bytes(index)
             self.evidence_sha256 = digest(index)
@@ -1718,7 +2015,7 @@ def verify_run(folder, catalog, inputs, *, evidence_sha256):
     require(
         set(index) == {"version", "files"}
         and type(index["version"]) is int
-        and index["version"] in {1, 2, 3}
+        and index["version"] in {1, 2, 3, 4}
         and type(index["files"]) is dict,
         "Unsupported evidence index",
     )
@@ -1739,7 +2036,7 @@ def verify_run(folder, catalog, inputs, *, evidence_sha256):
     )
     require(
         type(value["mutation_run_version"]) is int
-        and value["mutation_run_version"] in {1, 2}
+        and value["mutation_run_version"] in {1, 2, 3}
         and value["catalog_sha256"] == catalog.sha256
         and value["labels_created"] is False
         and value["screen_ids"] == catalog.plan["screen_ids"],
@@ -1767,14 +2064,52 @@ def verify_run(folder, catalog, inputs, *, evidence_sha256):
             and not (folder / "builder-handoff").exists(),
             "Complete measurement requires the exact forty-pair matrix",
         )
-    if value["mutation_run_version"] == 2:
+    new_rule = value["mutation_run_version"] == 3
+    if new_rule:
+        require(
+            not value.get("measurement_only") and index["version"] == 4,
+            "Legacy/outside-rule version/index/mode mismatch",
+        )
+        require(
+            canonical_bytes(value.get("outside_rule_policy"))
+            == canonical_bytes(outside_rule_policy()),
+            "Outside-rule policy missing or altered",
+        )
+        # New normal evidence replays only with the exact current frozen producer;
+        # a matching journal copy is corroboration, not independent authority.
+        require(
+            type(value.get("implementation_hashes")) is dict
+            and value["implementation_hashes"] == implementation_hashes()
+            and all(
+                type(h) is str and re.fullmatch("[a-f0-9]{64}", h)
+                for h in value["implementation_hashes"].values()
+            )
+            and canonical_bytes(value["implementation_hashes"])
+            == canonical_bytes(journal.get("implementation_hashes")),
+            "Outside-rule producer implementation hashes mismatch",
+        )
+    else:
+        require(
+            not ({"outside_rule_policy", "outside_rule_usage"} & set(value))
+            and all(
+                "outside_rule" not in r and "qualified" not in r
+                for r in value["screenshots"]
+            ),
+            "Legacy evidence cannot downgrade outside-rule policy/proofs",
+        )
+    if value["mutation_run_version"] >= 2:
         require(
             canonical_bytes(value.get("preservation_policy"))
             == canonical_bytes(preservation_policy()),
             "Preservation policy missing or altered",
         )
     require(
-        (index["version"] == 3 and value["mutation_run_version"] == 2)
+        (index["version"] == 4 and new_rule)
+        or (
+            index["version"] == 3
+            and value["mutation_run_version"] == 2
+            and value.get("measurement_only") is True
+        )
         or (
             not value.get("measurement_complete")
             and value["capture_set_qualified"] is False
@@ -1825,6 +2160,8 @@ def verify_run(folder, catalog, inputs, *, evidence_sha256):
         )
     clean = {}
     repeats = {}
+    rederived = []
+    paired = {}
     authorized = expected_capture_keys(catalog)
     for record in sorted(
         value["screenshots"],
@@ -1858,7 +2195,11 @@ def verify_run(folder, catalog, inputs, *, evidence_sha256):
             and record["effective_manifest_sha256"] == effective.sha256,
             "Effective screenshot build identity mapping mismatch",
         )
-        pair, png, raw_dump, dump = verified_pair(effective, folder, record)
+        pair, png, raw_dump, dump = verified_pair(
+            effective, folder, record, evidence=evidence
+        )
+        derived = dict(record)
+        rederived.append(derived)
         repeat_key = (
             record["batch_id"],
             record["role"],
@@ -1887,6 +2228,9 @@ def verify_run(folder, catalog, inputs, *, evidence_sha256):
                 "Invalid control mapping",
             )
             clean[key] = (png, dump, record["pair_sha256"])
+            if new_rule:
+                derived["outside_rule"] = outside_proof(record)
+                derived["qualified"] = False
         else:
             old, old_dump, old_hash = clean[key]
             require(
@@ -1925,6 +2269,61 @@ def verify_run(folder, catalog, inputs, *, evidence_sha256):
                 canonical_bytes(record["verification"]) == canonical_bytes(expected),
                 "Dynamic gate replay mismatch",
             )
+            if new_rule:
+                derived["verification"] = expected
+                measure_outside_record(derived, old, png, old_dump, dump, paired)
+    if new_rule:
+        for record, derived in zip(
+            sorted(
+                value["screenshots"],
+                key=lambda r: (
+                    r["role"] != "clean",
+                    r["batch_id"],
+                    r["pass"],
+                    r["language"],
+                    r["screen"],
+                ),
+            ),
+            rederived,
+            strict=True,
+        ):
+            require(
+                canonical_bytes(record.get("outside_rule"))
+                == canonical_bytes(derived["outside_rule"])
+                and type(record.get("qualified")) is bool
+                and record["qualified"] is derived["qualified"],
+                "Outside-rule proof/repeat/qualification replay mismatch",
+            )
+        require(
+            canonical_bytes(value.get("outside_rule_usage"))
+            == canonical_bytes(outside_usage(catalog, rederived, value["status"])),
+            "Outside-rule usage replay mismatch",
+        )
+        calibration_attempted = any(r["role"] == "calibration" for r in rederived)
+        root = capture_directory(
+            folder, catalog.calibration["request"]["id"], "calibration"
+        )
+        summary_path = str((root / "capture/summary.json").relative_to(folder))
+        if not calibration_attempted and summary_path in evidence.files:
+            # The existing capture summary is written before the first frame;
+            # authenticate its bytes and effective scope, not a new stage marker.
+            summary = evidence.json(root, "capture/summary.json")
+            effective = inputs.with_build(catalog.calibration["build"])
+            require(
+                summary.get("schema_version") == 1
+                and summary.get("manifest_sha256") == effective.sha256
+                and summary.get("selection")
+                == effective.capture_selection(["en", "de"])
+                and summary.get("languages") == ["en", "de"]
+                and summary.get("passes") == ["forward", "reverse"],
+                "Calibration capture attempt summary scope mismatch",
+            )
+            calibration_attempted = True
+        require(
+            value.get("calibration_status") in {"failed", "passed"}
+            or not calibration_attempted,
+            "Calibration status contradicts authenticated capture attempt",
+        )
     require(
         value["dynamic_split_rate"] == split_rate(value["dynamic_tests"]),
         "Dynamic split rate mismatch",
@@ -1976,9 +2375,14 @@ def verify_run(folder, catalog, inputs, *, evidence_sha256):
         )
         require(
             all(
-                r["verification"] is None or r["verification"]["passed"]
+                r["verification"] is None
+                or (r["qualified"] if new_rule else r["verification"]["passed"])
                 for r in value["screenshots"]
             ),
             "Failed screenshot in qualified run",
+        )
+        require(
+            not new_rule or not value["outside_rule_usage"]["engineering_pauses"],
+            "Outside-rule engineering pause cannot qualify",
         )
     return value

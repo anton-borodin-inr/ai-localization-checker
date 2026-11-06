@@ -405,7 +405,10 @@ def synthetic_runtime(synthetic_completed_runtime, tmp_path, request):
     return target, catalog, inputs, result
 
 
-def reindex_synthetic(folder, version=3):
+def reindex_synthetic(folder, version=None):
+    if version is None:
+        manifest = json_bytes((folder / "mutation-manifest.json").read_bytes())
+        version = 4 if manifest["mutation_run_version"] == 3 else 3
     files = {
         str(p.relative_to(folder)): digest(p.read_bytes())
         for p in folder.rglob("*")
@@ -414,6 +417,640 @@ def reindex_synthetic(folder, version=3):
     raw = canonical_bytes({"version": version, "files": files})
     (folder / "evidence-index.json").write_bytes(raw)
     return digest(raw)
+
+
+def d053_capture(
+    capture,
+    *,
+    affected=(("tech-picker", "en"),),
+    fault=None,
+    roles=("calibration", "mutation"),
+):
+    """Authentic synthetic PNG/dump/pair bytes, with nonzero exact RGBA values."""
+    import io
+
+    from PIL import Image
+    from test_text_dump import element
+
+    from l10n_checker.text_dump import rgba_digest
+
+    def wrapped(device, effective, folder, languages, *, on_pair, variant, **kwargs):
+        def measured(record):
+            path = folder / record["pair"]
+            pair = json_bytes(path.read_bytes())
+            dump_path = path.parent / pair["dump"]
+            dump = json_bytes(dump_path.read_bytes())
+            box = [200, 100, 220, 120]
+            glyph = element(
+                "Stable",
+                "root/stable",
+                input_text="Stable",
+                source_key=None,
+                bounds=box,
+                glyph_bounds=box,
+                visible_bounds=box,
+                ellipsis_applied=False,
+            )
+            for line in glyph["lines"]:
+                line["bounds"] = box
+                for g in line["glyphs"]:
+                    g["bounds"] = g["visible_bounds"] = box
+            if fault == "unmutated" and variant in roles:
+                glyph["font_scale"] = [0.19, 0.19]
+            dump["elements"].append(glyph)
+            dump_path.write_bytes(
+                canonical_bytes(dump)
+                + (b"\n" if fault == "raw_dump_repeat" and record["pass"] == 2 else b"")
+            )
+            pair["dump_sha256"] = record["dump_sha256"] = digest(dump_path.read_bytes())
+            png_path = path.parent / pair["png"]
+            with Image.open(io.BytesIO(png_path.read_bytes())) as source:
+                image = source.convert("RGBA")
+            image.putpixel((201, 101), (40, 50, 60, 255))
+            image.putpixel((202, 101), (40, 50, 60, 255))
+            selected = (record["screen"], record["language"]) in affected
+            if variant in roles and selected:
+                xy = (
+                    (202, 101)
+                    if fault == "coordinates" and record["pass"] == 2
+                    else (201, 101)
+                )
+                value = (43, 49, 61, 255) if fault == "threshold" else (42, 49, 61, 255)
+                if fault == "values" and record["pass"] == 2:
+                    value = (41, 49, 61, 255)
+                image.putpixel(xy, value)
+                if (record["screen"], record["language"]) == ("tech-picker", "en"):
+                    image.putpixel((11, 21), (80, 90, 100, 255))
+            image.save(png_path)
+            raw = png_path.read_bytes()
+            pair["png_sha256"] = record["png_sha256"] = digest(raw)
+            pair["rgba_sha256"] = record["rgba_sha256"] = rgba_digest(raw)
+            path.write_bytes(canonical_bytes(pair))
+            if (
+                fault != "missing_reverse"
+                or variant not in roles
+                or record["pass"] != 2
+            ):
+                on_pair(record)
+
+        summary = capture(
+            device,
+            effective,
+            folder,
+            languages,
+            on_pair=measured,
+            variant=variant,
+            **kwargs,
+        )
+        hashes = {r["request"]: r["dump_sha256"] for r in summary["records"]}
+        for operation in summary["app_data_operations"]:
+            if operation["operation"] == "hook_output":
+                operation["sha256"] = hashes[operation["request"]]
+        (folder / "summary.json").write_bytes(canonical_bytes(summary))
+        return summary
+
+    return wrapped
+
+
+@pytest.fixture(scope="module")
+def d053_runtime(synthetic_completed_runtime):
+    checkpoints = []
+
+    def configure(run):
+        checkpoint = run.checkpoint
+
+        def observed():
+            checkpoint()
+            if any(
+                s["role"] == "calibration"
+                and s["pass"] == 1
+                and s["screen"] == "tech-picker"
+                for s in run.content["screenshots"]
+            ):
+                checkpoints.append(
+                    json_bytes((run.folder / "mutation-manifest.json").read_bytes())
+                )
+
+        run.checkpoint = observed
+
+    run, result = synthetic_completed_runtime["execute"](
+        "d053-narrow", capture_wrapper=d053_capture, configure=configure
+    )
+    return run, result, checkpoints
+
+
+def test_d053_exact_nonzero_rule_keeps_strict_failure_and_pass1_pending(d053_runtime):
+    run, result, checkpoints = d053_runtime
+    assert result["status"] == "qualified", run.journal
+    used = [s for s in result["screenshots"] if s["outside_rule"]["used"]]
+    assert len(used) == 4
+    assert all(
+        s["verification"]["passed"] is False and s["qualified"] is True for s in used
+    )
+    assert all(
+        s["outside_rule"]["assessment"]["outside"]["max_channel_deltas"] == [2, 1, 1, 0]
+        for s in used
+    )
+    assert all(
+        s["outside_rule"]["assessment"]["affected_elements"][0]["actor_path"]
+        == "root/stable"
+        for s in used
+    )
+    pending = [
+        s
+        for c in checkpoints
+        for s in c["screenshots"]
+        if s["role"] == "calibration"
+        and s["outside_rule"]["repeat_state"] == "pending"
+        and s["outside_rule"]["assessment"]["rule_needed"]
+    ]
+    assert pending and all(
+        s["qualified"] is False and s["outside_rule"]["used"] is False for s in pending
+    )
+    assert result["outside_rule_usage"]["global"]["used_frames"] == 4
+    assert result["outside_rule_usage"]["global"]["used_unique_pairs"] == 2
+    assert not result["outside_rule_usage"]["engineering_pauses"]
+    assert (
+        api().verify_run(
+            run.folder,
+            run.catalog,
+            run.inputs,
+            evidence_sha256=result["evidence_sha256"],
+        )["status"]
+        == "qualified"
+    )
+
+
+def test_d053_runtime_rederives_raw_dump_repeat_despite_complete_summary(
+    synthetic_completed_runtime,
+):
+    run, result = synthetic_completed_runtime["execute"](
+        "d053-raw-repeat",
+        capture_wrapper=lambda capture: d053_capture(capture, fault="raw_dump_repeat"),
+    )
+    assert result["status"] == "failed", (
+        "Same-build raw dump repeat cannot be relaxed by D053"
+    )
+    assert result["restoration_verified"] and not result["capture_set_qualified"]
+    assert not any(s["role"] != "clean" for s in result["screenshots"])
+    assert "repeat" in run.journal["error"].lower()
+    retained = json_bytes((run.folder / "mutation-manifest.json").read_bytes())
+    assert result["calibration_status"] == retained["calibration_status"] == "not_run"
+    assert (
+        api().verify_run(
+            run.folder,
+            run.catalog,
+            run.inputs,
+            evidence_sha256=result["evidence_sha256"],
+        )["calibration_status"]
+        == "not_run"
+    )
+
+
+@pytest.mark.parametrize(
+    "fault",
+    [
+        "coordinates",
+        "values",
+        "threshold",
+        "unmutated",
+        "missing_reverse",
+        "measurement",
+    ],
+)
+def test_d053_runtime_fatal_stops_never_split(
+    synthetic_completed_runtime, monkeypatch, fault
+):
+    if fault == "measurement":
+        monkeypatch.setattr(
+            api(), "assess_outside_rule", lambda *args: {"measurements_complete": False}
+        )
+    run, result = synthetic_completed_runtime["execute"](
+        "d053-fatal-" + fault,
+        capture_wrapper=lambda capture: d053_capture(capture, fault=fault),
+    )
+    assert result["status"] == "failed" and result["capture_set_qualified"] is False
+    assert result["calibration_status"] == "failed"
+    assert result["restoration_verified"] and run.device.build() == "1271048"
+    assert not result["dynamic_tests"] and not (run.folder / "builder-handoff").exists()
+    assert not any(s["role"] == "mutation" for s in result["screenshots"])
+    assert "outside-rule" in run.journal["error"].lower()
+    assert result["outside_rule_usage"]["engineering_pauses"] == []
+    if fault == "missing_reverse":
+        assert result["outside_rule_usage"]["global"]["pending_frames"] == 1
+
+
+def test_d053_probe_failure_leaves_calibration_not_run(synthetic_completed_runtime):
+    def configure(run):
+        def failed_probe():
+            raise CaptureError("synthetic probe failed before captures")
+
+        run.probe = failed_probe
+
+    run, result = synthetic_completed_runtime["execute"](
+        "d053-probe-status", configure=configure
+    )
+    retained = json_bytes((run.folder / "mutation-manifest.json").read_bytes())
+    assert result["status"] == "failed" and result["restoration_verified"] is True
+    assert result["capture_set_qualified"] is False and result["screenshots"] == []
+    assert result["calibration_status"] == retained["calibration_status"] == "not_run"
+    assert (
+        api().verify_run(
+            run.folder,
+            run.catalog,
+            run.inputs,
+            evidence_sha256=result["evidence_sha256"],
+        )["calibration_status"]
+        == "not_run"
+    )
+
+
+@pytest.fixture(scope="module", params=["threshold", "values", "missing_reverse"])
+def d053_failed_calibration(synthetic_completed_runtime, request):
+    return synthetic_completed_runtime["execute"](
+        "d053-calibration-status-" + request.param,
+        capture_wrapper=lambda capture: d053_capture(capture, fault=request.param),
+    )
+
+
+def test_d053_attempted_calibration_failure_is_retained_and_replayed(
+    d053_failed_calibration,
+):
+    run, result = d053_failed_calibration
+    assert any(s["role"] == "calibration" for s in result["screenshots"])
+    assert result["calibration_status"] == "failed"
+    assert result["status"] == "failed" and result["capture_set_qualified"] is False
+    assert result["restoration_verified"] is True
+    assert result["dynamic_tests"] == []
+    assert not any(s["role"] == "mutation" for s in result["screenshots"])
+    assert not (run.folder / "builder-handoff").exists()
+    retained = json_bytes((run.folder / "mutation-manifest.json").read_bytes())
+    assert retained["calibration_status"] == "failed"
+    replay = api().verify_run(
+        run.folder,
+        run.catalog,
+        run.inputs,
+        evidence_sha256=result["evidence_sha256"],
+    )
+    assert replay["calibration_status"] == "failed"
+    assert replay["status"] == "failed" and replay["capture_set_qualified"] is False
+
+
+def test_d053_rehashed_not_run_cannot_hide_authenticated_calibration_frames(
+    d053_failed_calibration,
+    tmp_path,
+):
+    import shutil
+
+    run, _ = d053_failed_calibration
+    folder = tmp_path / "hidden-calibration-attempt"
+    shutil.copytree(run.folder, folder)
+    value = json_bytes((folder / "mutation-manifest.json").read_bytes())
+    assert any(s["role"] == "calibration" for s in value["screenshots"])
+    value["calibration_status"] = "not_run"
+    rewrite_synthetic_manifest(folder, value)
+    with pytest.raises(CaptureError, match="[Cc]alibration.*attempt"):
+        api().verify_run(
+            folder,
+            run.catalog,
+            run.inputs,
+            evidence_sha256=reindex_synthetic(folder),
+        )
+
+
+def test_d053_calibration_failure_before_first_frame_is_proved_by_capture_summary(
+    synthetic_completed_runtime,
+    tmp_path,
+):
+    import shutil
+
+    from l10n_checker import screen_capture
+
+    def capture_wrapper(capture):
+        def wrapped(*args, variant, **kwargs):
+            if variant != "calibration":
+                return capture(*args, variant=variant, **kwargs)
+
+            def failed_build(*args):
+                raise CaptureError("synthetic calibration build transport failed")
+
+            with pytest.MonkeyPatch.context() as patch:
+                patch.setattr(screen_capture, "check_build", failed_build)
+                return screen_capture.capture_manifest(*args, variant=variant, **kwargs)
+
+        return wrapped
+
+    run, result = synthetic_completed_runtime["execute"](
+        "d053-calibration-before-frame",
+        capture_wrapper=capture_wrapper,
+    )
+    assert result["status"] == result["calibration_status"] == "failed"
+    assert result["restoration_verified"] is True
+    assert result["capture_set_qualified"] is False and not result["dynamic_tests"]
+    assert all(s["role"] == "clean" for s in result["screenshots"])
+    root = api().capture_directory(
+        run.folder, run.catalog.calibration["request"]["id"], "calibration"
+    )
+    summary = json_bytes((root / "capture/summary.json").read_bytes())
+    assert summary["status"] == "failed" and summary["records"] == []
+    assert summary["fatal_error"] == "synthetic calibration build transport failed"
+    assert (
+        api().verify_run(
+            run.folder,
+            run.catalog,
+            run.inputs,
+            evidence_sha256=result["evidence_sha256"],
+        )["calibration_status"]
+        == "failed"
+    )
+    folder = tmp_path / "hidden-calibration-summary"
+    shutil.copytree(run.folder, folder)
+    value = json_bytes((folder / "mutation-manifest.json").read_bytes())
+    value["calibration_status"] = "not_run"
+    rewrite_synthetic_manifest(folder, value)
+    with pytest.raises(CaptureError, match="[Cc]alibration.*attempt"):
+        api().verify_run(
+            folder,
+            run.catalog,
+            run.inputs,
+            evidence_sha256=reindex_synthetic(folder),
+        )
+
+
+@pytest.mark.parametrize("role", ["calibration", "mutation"])
+def test_d053_high_usage_pauses_at_completed_batch_without_control_dilution(
+    synthetic_completed_runtime, role
+):
+    run, result = synthetic_completed_runtime["execute"](
+        "d053-high-" + role,
+        capture_wrapper=lambda capture: d053_capture(
+            capture,
+            affected=(("tech-picker", "en"), ("tech-picker", "de")),
+            roles=(role,),
+        ),
+    )
+    assert result["status"] == "failed" and not result["capture_set_qualified"]
+    pauses = result["outside_rule_usage"]["engineering_pauses"]
+    assert len(pauses) == 1 and pauses[0]["role"] == role
+    assert pauses[0]["used_frames"] == 4 and pauses[0]["expected_frames"] == 20
+    assert "engineering pause" in run.journal["error"]
+    assert (
+        result["restoration_verified"] and not (run.folder / "builder-handoff").exists()
+    )
+    if role == "calibration":
+        assert not any(s["role"] == "mutation" for s in result["screenshots"])
+    expected_calibration = "failed" if role == "calibration" else "passed"
+    retained = json_bytes((run.folder / "mutation-manifest.json").read_bytes())
+    assert result["calibration_status"] == expected_calibration
+    assert retained["calibration_status"] == expected_calibration
+    replay = api().verify_run(
+        run.folder,
+        run.catalog,
+        run.inputs,
+        evidence_sha256=result["evidence_sha256"],
+    )
+    assert replay["status"] == "failed"
+    assert replay["calibration_status"] == expected_calibration
+
+
+@pytest.mark.parametrize(
+    "kind",
+    [
+        "policy_missing",
+        "policy_delta",
+        "policy_bool",
+        "usage_missing",
+        "usage_count",
+        "proof_missing",
+        "assessment",
+        "pixels",
+        "ids",
+        "set_hash",
+        "values_hash",
+        "repeat",
+        "binding",
+        "used",
+        "qualification",
+        "version",
+        "index",
+        "both_versions",
+        "producer",
+    ],
+)
+def test_d053_rehashed_proof_policy_usage_and_version_tampering_rejected(
+    d053_runtime, tmp_path, kind
+):
+    import shutil
+
+    run, _, _ = d053_runtime
+    folder = tmp_path / "d053-copy"
+    shutil.copytree(run.folder, folder)
+    value = json_bytes((folder / "mutation-manifest.json").read_bytes())
+    shot = next(s for s in value["screenshots"] if s["outside_rule"]["used"])
+    proof = shot["outside_rule"]
+    version = 4
+    if kind == "policy_missing":
+        value.pop("outside_rule_policy")
+    elif kind == "policy_delta":
+        value["outside_rule_policy"]["max_rgb_delta"] = 3
+    elif kind == "policy_bool":
+        value["outside_rule_policy"]["version"] = True
+    elif kind == "usage_missing":
+        value.pop("outside_rule_usage")
+    elif kind == "usage_count":
+        value["outside_rule_usage"]["global"]["used_frames"] = 0
+    elif kind == "proof_missing":
+        shot.pop("outside_rule")
+    elif kind == "assessment":
+        proof["assessment"]["local_criteria_passed"] = False
+    elif kind == "pixels":
+        proof["assessment"]["outside"]["different_pixels"] = 0
+    elif kind == "ids":
+        proof["assessment"]["affected_elements"][0]["before_draw_id"] = (
+            "inferred-parent"
+        )
+    elif kind in {"set_hash", "values_hash"}:
+        proof["assessment"][
+            "outside_pixel_" + ("set" if kind == "set_hash" else "values") + "_sha256"
+        ] = "0" * 64
+    elif kind == "repeat":
+        proof["repeat"]["passed"] = False
+    elif kind == "binding":
+        proof["pair_binding"]["reverse"]["control_pair_sha256"] = "0" * 64
+    elif kind == "used":
+        proof["used"] = False
+    elif kind == "qualification":
+        shot["qualified"] = 1
+    elif kind == "producer":
+        value["implementation_hashes"].pop("mutation_diagnostics.py")
+    else:
+        if kind in {"version", "both_versions"}:
+            value["mutation_run_version"] = 2
+        if kind in {"index", "both_versions"}:
+            version = 3
+    rewrite_synthetic_manifest(folder, value)
+    with pytest.raises(CaptureError, match="[Oo]utside|Legacy"):
+        api().verify_run(
+            folder,
+            run.catalog,
+            run.inputs,
+            evidence_sha256=reindex_synthetic(folder, version),
+        )
+
+
+@pytest.mark.parametrize(
+    "producer",
+    [
+        "mutation_run.py",
+        "mutation_catalog.py",
+        "mutation_device.py",
+        "mutation_verify.py",
+        "mutation_outside_rule.py",
+        "mutation_diagnostics.py",
+        "mutation_cli.py",
+        "mutation_plan.py",
+        "mutation_recipes.py",
+        "screen_manifest.py",
+        "screen_capture.py",
+        "hook.py",
+        "text_dump.py",
+        "text_reference.py",
+        "capture.py",
+    ],
+)
+@pytest.mark.parametrize("forged", ["0" * 64, True], ids=["wrong-value", "bool"])
+def test_d053_rehashed_matching_producer_claims_require_current_values(
+    d053_runtime, tmp_path, producer, forged
+):
+    import shutil
+
+    run, _, _ = d053_runtime
+    folder = tmp_path / "forged-producer"
+    shutil.copytree(run.folder, folder)
+    value = json_bytes((folder / "mutation-manifest.json").read_bytes())
+    journal_path = folder / "journal.json"
+    journal = json_bytes(journal_path.read_bytes())
+    assert value["implementation_hashes"] == api().implementation_hashes()
+    assert value["implementation_hashes"][producer] != forged
+    value["implementation_hashes"][producer] = forged
+    journal["implementation_hashes"] = dict(value["implementation_hashes"])
+    rewrite_synthetic_manifest(folder, value)
+    journal_path.write_bytes(canonical_bytes(journal))
+    with pytest.raises(CaptureError, match="producer implementation hashes mismatch"):
+        api().verify_run(
+            folder,
+            run.catalog,
+            run.inputs,
+            evidence_sha256=reindex_synthetic(folder),
+        )
+
+
+def test_d053_measurement_requested_at_run_entry_remains_old_strict_mode(
+    synthetic_completed_runtime,
+):
+    from functools import partial
+
+    def configure(run):
+        run.run = partial(run.run, measurement_only=True)
+
+    error = None
+    completed = None
+    try:
+        completed = synthetic_completed_runtime["execute"](
+            "d053-measure-at-run", configure=configure
+        )
+    except (KeyError, CaptureError) as exc:
+        error = exc
+    assert error is None, (
+        f"Run-entry measurement must not inherit normal D053 proofs: {error}"
+    )
+    assert completed is not None
+    run, result = completed
+    assert result["mutation_run_version"] == 2
+    assert (
+        result["measurement_complete"] is True and not result["capture_set_qualified"]
+    )
+    assert "outside_rule_policy" not in result and "outside_rule_usage" not in result
+    assert json_bytes((run.folder / "evidence-index.json").read_bytes())["version"] == 3
+    assert all("outside_rule" not in s for s in result["screenshots"])
+    assert (
+        api().verify_run(
+            run.folder,
+            run.catalog,
+            run.inputs,
+            evidence_sha256=result["evidence_sha256"],
+        )["measurement_complete"]
+        is True
+    )
+
+
+def test_d053_usage_counts_needed_even_when_measurement_is_missing():
+    from types import SimpleNamespace
+
+    catalog = SimpleNamespace(
+        control={"request": {"id": "control"}},
+        calibration={"request": {"id": "calibration"}},
+        plan={"screen_ids": ["one", "two", "three", "four", "five"], "batches": []},
+    )
+    shot = {
+        "batch_id": "calibration",
+        "role": "calibration",
+        "screen": "one",
+        "language": "en",
+        "pass": 1,
+        "verification": {"pixels": {"outside": {"different_pixels": 1}}},
+        "outside_rule": {"assessment": None, "used": False, "repeat_state": "failed"},
+    }
+    usage = api().outside_usage(catalog, [shot], "failed")
+    assert usage["global"]["needed_frames"] == 1
+    assert usage["global"]["missing_measurement_frames"] == 1
+    assert usage["global"]["used_frames"] == 0
+    assert usage["global"]["expected_frames"] == 20
+    assert usage["engineering_pauses"] == []
+
+
+def test_d053_zero_usage_denominator_is_undefined():
+    from types import SimpleNamespace
+
+    catalog = SimpleNamespace(
+        control={"request": {"id": "control"}},
+        calibration={"request": {"id": "calibration"}},
+        plan={"screen_ids": [], "batches": []},
+    )
+    usage = api().outside_usage(catalog, [], "not_run")
+    assert usage["global"]["expected_frames"] == 0
+    assert usage["global"]["used_share_expected"] is None
+    assert usage["global"]["used_share_observed"] is None
+    assert usage["engineering_pauses"] == []
+
+
+def test_d053_normal_version_and_complete_zero_usage(synthetic_runtime):
+    folder, catalog, inputs, result = synthetic_runtime
+    assert result["mutation_run_version"] == 3
+    assert json_bytes((folder / "evidence-index.json").read_bytes())["version"] == 4
+    assert result["outside_rule_policy"] == api().outside_rule_policy()
+    assert {"mutation_outside_rule.py", "mutation_diagnostics.py"} <= set(
+        result["implementation_hashes"]
+    )
+    usage = result["outside_rule_usage"]
+    assert usage["global"]["expected_frames"] == 40
+    assert usage["global"]["observed_frames"] == 40
+    assert usage["global"]["used_frames"] == usage["global"]["pending_frames"] == 0
+    assert usage["global"]["expected_unique_pairs"] == 20
+    assert usage["engineering_pauses"] == []
+    for shot in result["screenshots"]:
+        proof = shot["outside_rule"]
+        assert proof["used"] is False
+        if shot["role"] != "clean":
+            assert proof["repeat_state"] == "confirmed"
+            assert proof["repeat"]["passed"] is True
+            assert shot["qualified"] is True
+    assert (
+        api().verify_run(
+            folder, catalog, inputs, evidence_sha256=result["evidence_sha256"]
+        )["status"]
+        == "qualified"
+    )
 
 
 def test_synthetic_successful_orchestration_replays_offline(synthetic_runtime):
@@ -1133,8 +1770,8 @@ def test_d051_replay_recomputes_authorized_drift_from_inventories(
         f"D-051 operational replay rejected authorized drift: {caught}"
     )
     assert replay is not None
-    assert replay["status"] == "qualified" and replay["mutation_run_version"] == 2
-    assert json_bytes((folder / "evidence-index.json").read_bytes())["version"] == 3
+    assert replay["status"] == "qualified" and replay["mutation_run_version"] == 3
+    assert json_bytes((folder / "evidence-index.json").read_bytes())["version"] == 4
 
 
 @pytest.mark.parametrize("boundary,inventory_number", [("install", 3), ("capture", 13)])
@@ -1280,7 +1917,7 @@ def test_d051_rehashed_policy_and_ledger_tampering_is_rejected(d051_runtime_copy
     operation = journal["operations"][0]
     install_path = folder / operation["receipt"]
     receipt = json_bytes(install_path.read_bytes())
-    version = 3
+    version = 4
     if kind == "manifest_policy_missing":
         value.pop("preservation_policy")
     elif kind == "manifest_policy_widened":
@@ -1744,6 +2381,24 @@ def change_reverse_payload(folder, value, plan, role, kind):
         assert shot["verification"]["passed"], (
             "Regression must preserve every per-pass dynamic gate"
         )
+    if value.get("mutation_run_version") == 3:
+        for shot in value["screenshots"]:
+            proof = shot["outside_rule"]
+            if shot["role"] == "clean":
+                continue
+            siblings = [
+                s
+                for s in value["screenshots"]
+                if (s["batch_id"], s["role"], s["screen"], s["language"])
+                == (shot["batch_id"], shot["role"], shot["screen"], shot["language"])
+            ]
+            proof["pair_binding"] = {
+                "forward" if s["pass"] == 1 else "reverse": {
+                    "pair_sha256": s["pair_sha256"],
+                    "control_pair_sha256": s["control_pair_sha256"],
+                }
+                for s in siblings
+            }
     rewrite_synthetic_manifest(folder, value)
 
 
@@ -1976,6 +2631,11 @@ def test_failed_legacy_v1_is_inspectable_only_with_an_explicit_index_pin(
     value = json_bytes((folder / "mutation-manifest.json").read_bytes())
     value.update(status="failed", capture_set_qualified=False, mutation_run_version=1)
     value.pop("preservation_policy")
+    value.pop("outside_rule_policy")
+    value.pop("outside_rule_usage")
+    for shot in value["screenshots"]:
+        shot.pop("outside_rule")
+        shot.pop("qualified")
     rewrite_synthetic_manifest(folder, value)
     assert (
         api().verify_run(
@@ -2530,7 +3190,8 @@ def test_real_capture_cleanup_is_journaled_without_becoming_batch_interference(
     monkeypatch.setattr(api(), "write_handoff", handoff)
     run.probe = lambda: run.capture(record, "mutation")
     result = run.run(probe_only=True)
-    split = failure == "dynamic" and cleanup == "none"
+    # D053 makes every outside failure fatal, even in a multi-recipe batch.
+    split = False
     assert result["status"] == ("awaiting_builder_approval" if split else "failed")
     assert result["capture_set_qualified"] is False
     assert bool(result["dynamic_tests"]) is split

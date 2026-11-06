@@ -667,3 +667,70 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
   a 40-pair diagnostic run into a full qualified run. No labels, evaluation,
   production, tolerance, new build or policy adoption is authorized. Stop for
   Anton after the measurement report. See [mutation-generator.md](mutation-generator.md).
+
+## D-053 — Narrow paired-pass outside-mask glyph exception
+
+- **Date:** 2026-11-05
+- **Status:** Proposed
+- **Decision:** Record Anton's explicit task-chat authorization to supersede only
+  D-050's zero-outside-mask clause for fresh normal mutation runs. An outside
+  changed RGBA pixel is permitted only when its physical pixel centre is inside
+  the recorded visible bounds of a genuine visible glyph belonging to an
+  unchanged, unmutated dump record. Retain full prior ordered-group equality
+  (text, geometry, clipping, visibility and all other existing fields, excluding
+  only draw/logical IDs as before), target exclusions, viewport/screen clipping
+  and hidden-glyph exclusion. Each R/G/B absolute delta must independently be
+  at most 2; alpha delta must be zero. Exact changed coordinates **and original
+  before/after RGBA values**, comparison identity and target mask must reproduce
+  in forward/reverse passes. First-pass evidence is pending, not qualified.
+- **Why:** D-052's pinned diagnostic matrix observed outside differences only on
+  the mutated EN `options-gameplay` screen, in both passes: 406 changed pixels,
+  all attributable to unchanged unmutated visible glyph bounds, maximum RGB
+  delta 2 and alpha delta 0, with deterministic coordinates and values. All ten
+  DE comparisons and all other EN comparisons had zero outside differences.
+  The rendering cause remains **unestablished**; glyph attribution is not causal
+  proof. These are bounded observations, not a general font-atlas allowance.
+  The frozen catalog SHA-256 is
+  `790b21921ca3d4988b6257a6da235817c8b8407b2f029871c74a05598efaf354`;
+  diagnostic root
+  `82d9eedfa7a418c1bf82b5a45e2a3b20b9c292185ff7227a84407514039a8095`;
+  matrix SHA-256
+  `ac4ed1d3761876ae6ab49dddffc099565e8e05340cbadd7885c8cc569288cc0c`;
+  raw-results review SHA-256
+  `1fffcb3fbea1f514f1f47b4794fc7250a2c51f268debd34a26acc7dc18687a3c`;
+  historical delivery-index SHA-256
+  `35d7b667497882bb246720c76aa75891a5734903bcb6e23ed25e87da206bc0e9`.
+- **Alternatives considered:** Keep the old unconditional zero gate (not the
+  owner's selected rule); accept whole-owner/panel bounds, aggregate glyph
+  boxes, alpha changes or a general numeric tolerance (too broad); change the
+  rendering/build pipeline now (requires separate fork/build authorization);
+  retroactively qualify D-052 (not authorized).
+- **Consequences:** Keep strict `mutation-dynamic-v1` results and every raw
+  count, exclusive bounding box and maximum channel delta unchanged. Separate
+  per-screenshot proofs retain affected before/after draw IDs, actor paths,
+  signatures/group hashes, exact-coordinate/value fingerprints, repeat/pair
+  bindings and actual exception use. Any outside-rule failure, changed
+  unmutated element or missing measurement is a fatal STOP, never a dynamic
+  split/build request. Every intended-occurrence, N <= 2, density, same-build
+  decoded-RGBA/full-raw-dump repeatability, installation/environment,
+  shared-lock, input, settings/save, D-051 preservation and cleanup gate stays
+  unchanged. No Accepted entry or earlier Proposed text/status is edited.
+  New normal evidence uses run version 3/index 4 with exact policy and usage;
+  semantic replay rederives proofs, IDs, metrics, fingerprints, repeats and
+  counts from authenticated raw pairs/PNGs/dumps. Bind the rule module and its
+  executable diagnostics dependency in producer hashes. Missing/altered proof,
+  policy, usage or downgraded versions cannot qualify after rehashing.
+  D-052 remains strict v2/index 3, nonqualifying even with zero differences;
+  historical failed/diagnostic evidence is never promoted or rewritten.
+  The predeclared conservative engineering pause is **more than 10%** of a
+  completed calibration or production batch's expected combined EN+DE frames
+  (normally 20, controls excluded), grounded in the observed D-052 2/20 baseline.
+  Report pending/confirmed use, expected/observed denominators, role, batch,
+  language, pass, global and unique-pair counts separately. Do not stop at a
+  misleading partial 1/1 rate or dilute a broad batch with controls/future batches;
+  a language slice is reported but is not a separate 50% cutoff. Zero
+  denominators are undefined. A high share stops before the next batch and
+  recommends a separately approved fork-side alternative, not automatic edits
+  or builds. Only a new tested/reviewed frozen producer may perform fresh normal
+  calibration/production and the required second full run under the owner's
+  exact device authorization. No labels, evaluation or other gate changes.

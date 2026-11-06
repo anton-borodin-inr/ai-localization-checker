@@ -352,15 +352,16 @@ Compare decoded RGBA using a versioned mask derived from all matched before/afte
 mutated extents, including overflow glyphs/decorations with fixed outward
 rounding. Never mask a whole parent panel to hide layout reflow. Require:
 
-1. **Zero changed RGBA pixels outside the mask.**
+1. **Zero changed RGBA pixels outside the mask, or the separately proven D-053
+   glyph exception below for fresh normal runs.** Strict v1 measurements remain raw.
 2. **No moved/changed unmutated dump element**, including inside masked areas.
 3. Every intended mutation is visible and within the occurrence limit.
 
 Incremental font-atlas allocation may change unrelated pixels (D-042). If the
-calibration has outside-mask differences, **stop before production** and report
-counts, exclusive bounding boxes and maximum channel deltas. No tolerance,
-font-atlas workaround or gate weakening is authorized. D-042's historical
-cross-build allowance is not itself the mutation gate.
+calibration has outside-mask differences not proven under D-053, **stop before
+production** and report counts, exclusive bounding boxes and maximum channel
+deltas. No general tolerance or font-atlas workaround is authorized. D-042's
+historical cross-build allowance is not itself the mutation gate.
 
 PR (c) retains dev-only EN/DE forward/reverse capture and hash/readiness checks,
 verified backup/restore and frozen-catalog installation. Its authorization is
@@ -471,8 +472,9 @@ than overwriting the probe observation with the final one. Unexpected drift
 between transactions stops before the next install/capture, not only at the end.
 
 This exception addresses AndroidX startup bookkeeping, not game-state or
-rendering variability. D-050's RGBA masks, zero tolerance, unmutated-element
-layout checks, and forward/reverse RGBA/raw-dump equality are unchanged.
+rendering variability. D-053 separately supersedes only D-050's outside-pixel
+clause; RGBA masks, unmutated-element layout checks and forward/reverse
+RGBA/raw-dump equality remain unchanged.
 
 The run finalizer restores the exact original reference APK, verifies its
 certificate/hash/version and data, and records cleanup errors separately from
@@ -505,7 +507,7 @@ PYTHONPATH=src uv run l10n-mutate run \
 `probe` performs the certificate/backup/replacement/downgrade/restoration proof,
 not captures. `run` repeats the preflight and proof, captures the empty control,
 then the EN-help singleton across all five dev screens, EN/DE and forward/reverse
-passes. Only a successful zero-tolerance calibration permits production batches.
+passes. Only successful calibration under the narrow D-053 rule permits production batches.
 Same-build pass repeatability remains mandatory in addition to cross-build
 isolation. Timeouts and transport failures are operational failures, not observed
 interference or clean results.
@@ -523,7 +525,8 @@ versionCodes before constructing a device. Only the existing authorized control,
 calibration and reference APKs are installed; no new build is permitted.
 
 Invoke the existing Python interface explicitly; the ordinary `run` and `probe`
-commands gain no measurement CLI flag and retain their strict behavior:
+commands gain no measurement CLI flag. Fresh normal runs use D-053 separately;
+measurement mode retains the original strict, nonqualifying behavior:
 
 ```python
 from pathlib import Path
@@ -587,6 +590,65 @@ cannot supply missing production evidence or create a qualified run. Historical
 failed evidence remains nonqualified and inspectable, never rewritten. Stop for
 Anton's decision after reporting the full matrix; no labels/evaluation follow.
 
+### D-053: separate outside-mask proofs in fresh normal runs
+
+Anton authorized the rule on 2026-11-05 (Proposed D-053), superseding only
+D-050's outside-mask clause. The pinned D-052 evidence and rationale are in the
+decision entry; the observed rendering cause remains unestablished. Do not
+reinterpret historical measurement/failed evidence as qualified.
+
+The strict `verify_screen` result stays `mutation-dynamic-v1` and is never edited:
+outside counts, exclusive boxes, channel maxima, mask, intended-occurrence and
+unmutated-group results remain available even when its `passed` is false.
+Each normal screenshot additionally carries `outside_rule` and a separate
+`qualified` result. Controls carry an explicit non-use/control record. Every
+comparison assessment binds the exact versioned policy, identity, mask, raw
+outside measurements, sorted affected before/after draw IDs and actor paths,
+signature/group hashes, and exact-coordinate/before-after-RGBA fingerprints.
+
+All outside changes must fall within genuine **visible per-glyph bounds**, using
+half-open physical pixel-centre membership and intersection with glyph visibility,
+clip, viewport and screen. Hidden/undrawn/zero-alpha glyphs, owner-only bounds,
+aggregate boxes and inferred parents do not qualify. All unmutated ordered groups
+must remain exactly equal under the existing ID exclusions, including secondary
+draws. Each R/G/B delta independently must be <=2; alpha delta must be 0. No mask
+expansion, broad image tolerance or PNG encoding rule change is introduced.
+
+Pass 1 stays `pending`, `used: false`, `qualified: false`. Only an exact pass-2
+comparison identity/mask, changed coordinate set **and original before/after RGBA
+values** confirms both proofs. Pair bindings identify both controls and both
+mutations. Equal counts/boxes/max deltas alone are insufficient. Missing reverse
+measurements, invalid geometry, any local/repeat failure or changed unmutated
+record cause a fatal STOP, not a split/handoff. Intended mutations and N <=2 still
+must qualify independently. Existing same-build decoded-RGBA and full raw-dump
+equality, operational, settings/save, installation/environment, shared-lock,
+D-051 preservation, cleanup and restoration gates remain mandatory.
+
+`outside_rule_usage` records expected/observed frames, needed/pending/confirmed
+use, unique pairs and expected/observed rates globally and by batch, role,
+language and pass. Clean controls never enter these denominators. Undefined
+zero-denominator rates are `null`. A first partial 1/1 is not an engineering
+pause: its expected batch scope is still normally 20 EN+DE frames. After each
+complete calibration or production batch, **more than 10%** exception use in that
+batch's expected combined EN+DE scope stops before the next batch and recommends
+discussion of a separately approved fork-side alternative. The predeclared
+threshold uses D-052's 2/20 baseline; exactly 10% is not a pause. Per-language
+shares are reported independently, not used as a separate 50% cutoff. Future
+batches and controls cannot dilute a broad current batch. No builder/fork change
+is automatic. Invalid captures stop first, even in an incomplete batch.
+
+Normal evidence is run version **3**, index **4**, with exact policy and complete
+usage required. Semantic replay authenticates the retained raw pair/PNG/dump
+bytes at their reads, rederives strict metrics, assessments, IDs, fingerprints,
+paired repeat bindings, qualification and usage, and rejects rehashed alterations,
+deleted proofs/policy/counts and version downgrades. Producer hashes bind both
+`mutation_outside_rule.py` and its executable `mutation_diagnostics.py` dependency.
+D-052 remains run v2/index v3 and strictly nonqualifying; older failed evidence
+remains inspectable, without promotion. Freeze and review the new producer before
+fresh normal calibration/production, then perform the required second full run
+under separate exact device authorization. Host synthetic tests are not device
+qualification, labels or evaluation.
+
 ### Evidence and split handoff
 
 `mutation-manifest.json` maps every screenshot to state, build/patch identity,
@@ -603,7 +665,8 @@ Offline verification must authenticate that root, require complete evidence,
 replay same-build repeatability and cross-build gates, and reject contradictory
 status/qualification flags.
 
-New evidence uses `mutation_run_version: 2` and evidence-index version `3`,
+New normal evidence uses `mutation_run_version: 3` and evidence-index version `4`
+(D-053); nonqualifying measurement keeps run version `2`/index `3`,
 with the exact `preservation_policy` in the manifest, journal and install
 receipts. Policy version 1 binds D-051, the four exact private paths, allowed
 changes `bytes`, `sha256`, `presence`, and `app_data_writes: 0` for this exception.
@@ -754,8 +817,8 @@ volume by counting provenance-only aliases of the source fallback.
 6. Keep runtime gates pending. Later, use same-builder empty controls, run the
    mandatory empty-vs-single calibration, then qualify each mutation's actual
    glyph/owner behavior, D-023/D-025 boundaries and cross-screen impact. Any
-   outside-mask calibration change stops with counts/bboxes/max deltas; zero
-   tolerance remains binding. A source-qualified overflow that does not visibly
+   outside-mask calibration change not proven by D-053 stops with counts/bboxes/max
+   deltas. A source-qualified overflow that does not visibly
    overflow its own label stops qualification. Only real batch interference
    may trigger deterministic splitting, with the split rate reported. An
    operational error is not interference or a clean result.
