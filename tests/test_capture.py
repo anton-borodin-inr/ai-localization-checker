@@ -204,6 +204,20 @@ def test_screencap_failure_is_clear(monkeypatch, error):
     assert isinstance(raised.value.__cause__, cap.CaptureError)
 
 
+def test_d055_app_data_limit_does_not_relax_other_native_commands(monkeypatch):
+    observed = []
+
+    def native(command, **kwargs):
+        observed.append(kwargs["timeout"])
+        return subprocess.CompletedProcess(command, 0, stdout=b"synthetic")
+
+    monkeypatch.setattr(subprocess, "run", native)
+    device = cap.Device(Path("never-real-adb"), "emulator-9999")
+    device.run("exec-out", "tar", "-cf", "-", timeout_s=300)
+    device.screenshot()
+    assert observed == [300, 30]
+
+
 def test_screenshot_reads_screen_only(monkeypatch):
     calls = []
 

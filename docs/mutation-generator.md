@@ -651,7 +651,7 @@ shares are reported independently, not used as a separate 50% cutoff. Future
 batches and controls cannot dilute a broad current batch. No builder/fork change
 is automatic. Invalid captures stop first, even in an incomplete batch.
 
-Fresh normal evidence is run version **4**, index **5**, with exact policy and complete
+Fresh normal evidence is run version **5**, index **6** (D-055 below), with exact D-054 policy and complete
 usage required. Semantic replay authenticates the retained raw pair/PNG/dump
 bytes at their reads, rederives strict metrics, assessments, IDs, fingerprints,
 paired repeat bindings, qualification and usage, and rejects rehashed alterations,
@@ -667,6 +667,82 @@ promotion. Freeze and review the new producer before
 fresh normal calibration/production, then perform the required second full run
 under separate exact device authorization. Host synthetic tests are not device
 qualification, labels or evaluation.
+
+### D-055: bounded reads and verified exact hook-output cleanup
+
+App-data backup/readback reads use exactly **300 seconds**, including package-root
+inventories, inventory-only readbacks, SaveFiles, settings observations and final
+reference reads. Other native defaults (30 s), environment checks (180 s) and
+hook deadlines are unchanged. Each attempt durably retains a numbered JSON
+receipt and private raw `.bin` bytes, even on native failure. Receipts record
+root/path/purpose/command, observed bytes/hash, monotonic start/end/duration,
+bytes/second, outcome/validation, limit and `over_60s`. A zero duration has
+`null` throughput. Enumerate **every** `over_60s: true` read in the Report,
+including failed reads. A failed, incomplete or malformed read stops; tar
+member readability without terminal tar blocks is not completion. Binary
+partial stdout stays in private evidence, not public error text.
+
+Both standalone v2 capture and mutation capture establish a complete starting
+inventory, rederive exact final/temporary paths and reject collisions before
+the first write. The hook directory must already exist as a regular directory;
+this task neither creates a new baseline directory nor authorizes removing it.
+After settings restoration, cleanup force-stops the package and verifies its
+stopped state. The operator must exclusively own the released device; the
+mutation device lock remains in force. No concurrent root/ADB operator is
+permitted within this quiescent boundary. Before the first unlink, authenticate
+the whole present planned-new set against retained host bytes re-read from
+disk, the complete before-cleanup inventory and safe device identity. A present
+unpulled final/temp is pulled and retained exactly (raw diagnostic bytes may be
+invalid as a TextDump); otherwise cleanup fails closed. Symlinks, hard links,
+ancestor aliases, unsafe paths, changed identity/hash and unavailable guard
+capabilities stop. A single guarded shell operation rechecks the stopped
+writer, identities and content hash and unlinks one exact private-root path.
+There is no glob, recursive removal, directory deletion or namespace sweep.
+
+`hook-cleanup.json` and the capture summary bind a versioned `D055` policy,
+starting/before/after inventories, exact path states, host byte/hash bindings,
+identities and guarded commands. Missing planned files are `absent`, not
+successful captures. Partial cleanup retains successful deletions and the
+remaining attempted/verified/unavailable paths, attempts a fresh post inventory,
+and remains fatal/nonretrying. Compare post-cleanup inventory to start with
+**D-051 only**, without a hook-root exemption or accumulated allowed-output
+union. Preparation, following installs and final restoration must maintain
+that continuity. Native/callback/cancellation and cleanup failures remain
+separate; no operational failure can cause a split or make failed pixels qualify.
+
+Offline replay authenticates every new observation/raw byte at use, derives
+coverage from completed workflow boundaries, reconstructs inventories, checks
+numeric/duration/throughput/completion claims and rederives exact cleanup
+authority/transitions/host bindings. Available failed/partial attempts are
+validated too, without inventing later captures. `app_data.py` is included in
+the exact current producer hashes; matching producer-controlled copies alone
+are insufficient.
+
+The current reader refuses **D-054 run v4/index5**, rather than reinterpreting it
+as D-055. Preserve its index, manifest and payloads unchanged. Use the exact
+archived `960dae205aafcc679e8a2b7e7cbfd569a14deb88` producer (the pre-D055
+producer archive is retained under `host-verification-9/source-before-D055/`,
+bound by `before-archive.json`) and its compatible host environment. For an
+owner-provided complete archive/environment, the read-only recipe is:
+
+```sh
+# D054_ARCHIVE must be the authenticated exact 960dae2 producer, not current src.
+PYTHONPATH="$D054_ARCHIVE/src" "$D054_PYTHON" -m l10n_checker.mutation_cli verify \
+  --catalog "$CATALOG_JSON" --sha256 "$APPROVED_CATALOG_SHA256" \
+  --manifest "$D054_ARCHIVE/fixtures/stage2/screens-v2.json" \
+  --recipes "$D054_ARCHIVE/fixtures/stage3/recipes-v1.json" --sdk "$SDK" --jdk "$JDK" \
+  --run-dir "$RUN_DIR" --evidence-sha256 "$PINNED_EVIDENCE_INDEX_SHA256"
+```
+
+Do not downgrade fields, combine old/current producer modules, rewrite evidence
+or promote historical failures. D-053 v3/index4 still needs its separately
+documented exact archive; older strict failures and permanently nonqualifying
+measurement evidence retain their documented reader path. Host synthetic
+checks do not prove Android command support or device qualification. Fresh host
+checks and independent review/freeze precede the separately authorized scoped
+audit, calibration/production and second full run. D-054/v2 and every nonpixel,
+N/density, exact repeat, >10% completed-batch pause, catalog, fixture, install,
+environment, reference-restoration, lock, split and approval gate is unchanged.
 
 ### Evidence and split handoff
 
@@ -684,8 +760,9 @@ Offline verification must authenticate that root, require complete evidence,
 replay same-build repeatability and cross-build gates, and reject contradictory
 status/qualification flags.
 
-New normal evidence uses `mutation_run_version: 4` and evidence-index version `5`
-(D-054); D-053 run v3/index 4 requires its exact archived producer as above.
+New normal evidence uses `mutation_run_version: 5` and evidence-index version `6`
+(D-055 operational proof plus unchanged D-054/v2 pixels). D-054 v4/index5 and
+D-053 v3/index4 require their exact archived producers as above.
 Nonqualifying measurement keeps run version `2`/index `3`,
 with the exact `preservation_policy` in the manifest, journal and install
 receipts. Policy version 1 binds D-051, the four exact private paths, allowed

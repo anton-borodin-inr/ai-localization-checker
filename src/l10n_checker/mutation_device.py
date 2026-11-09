@@ -1,11 +1,20 @@
 """Approved install/capture transactions; never uninstall, provision saves or build."""
 
-import io
 import shlex
 import subprocess
 import tarfile
-from pathlib import Path
 
+from l10n_checker import app_data
+
+# Shared app-data readers are also used by standalone capture.
+from l10n_checker.app_data import (
+    DATA_ROOTS,
+    data_inventory,
+    inventory_changes,
+    preservation_policy,
+    preservation_report,
+    read_tar,
+)
 from l10n_checker.capture import (
     PACKAGE,
     REPO_ROOT,
@@ -19,108 +28,14 @@ from l10n_checker.screen_capture import write_json
 from l10n_checker.screen_manifest import digest
 from l10n_checker.text_dump import canonical_bytes
 
-DATA_ROOTS = {
-    "private": f"/data/user/0/{PACKAGE}",
-    "device_encrypted": f"/data/user_de/0/{PACKAGE}",
-    "external": f"/sdcard/Android/data/{PACKAGE}",
-}
+# Preserve the public compatibility constant without a cyclic dependency.
+ANDROIDX_BOOKKEEPING = app_data.ANDROIDX_BOOKKEEPING
 
 
-ANDROIDX_BOOKKEEPING = (
-    "private:files/profileInstalled",
-    "private:no_backup/androidx.work.workdb",
-    "private:no_backup/androidx.work.workdb-shm",
-    "private:no_backup/androidx.work.workdb-wal",
-)
-
-
-def preservation_policy():
-    """Task-specific owner authorization, not a general cache/database ignore."""
-    return {
-        "decision": "D-051",
-        "version": 1,
-        "regular_file_paths": list(ANDROIDX_BOOKKEEPING),
-        "allowed_changes": ["bytes", "sha256", "presence"],
-        "app_data_writes": 0,
-    }
-
-
-def preservation_report(before, after, allowed_new=()):
-    """Compare only; retain all four observations, including explicit absence."""
-    changes = inventory_changes(before, after, allowed_new)
-
-    def exempt(change):
-        old, new = change["before"], change["after"]
-        return (
-            change["path"] in ANDROIDX_BOOKKEEPING
-            and all(v is None or v.get("type") == "file" for v in (old, new))
-            and (
-                old is None
-                or new is None
-                or {k: v for k, v in old.items() if k not in {"bytes", "sha256"}}
-                == {k: v for k, v in new.items() if k not in {"bytes", "sha256"}}
-            )
-        )
-
-    return {
-        "policy": preservation_policy(),
-        "bookkeeping": [
-            {"path": name, "before": before.get(name), "after": after.get(name)}
-            for name in ANDROIDX_BOOKKEEPING
-        ],
-        "exempt_changes": [c for c in changes if exempt(c)],
-        "unexpected_changes": [c for c in changes if not exempt(c)],
-    }
-
-
-def data_inventory(archives):
-    result = {}
-    for root, raw in archives.items():
-        with tarfile.open(fileobj=io.BytesIO(raw)) as archive:
-            for member in archive.getmembers():
-                require(
-                    not Path(member.name).is_absolute()
-                    and ".." not in Path(member.name).parts,
-                    "Unsafe app-data backup member",
-                )
-                name = root + ":" + str(Path(member.name))
-                require(name not in result, "Duplicate app-data backup member")
-                require(
-                    member.isfile() or member.isdir() or member.issym(),
-                    "Unsupported app-data backup member",
-                )
-                value = {
-                    "uid": member.uid,
-                    "gid": member.gid,
-                    "mode": member.mode,
-                    "type": "file"
-                    if member.isfile()
-                    else "directory"
-                    if member.isdir()
-                    else "symlink",
-                }
-                if member.isfile():
-                    payload = archive.extractfile(member).read()
-                    require(len(payload) == member.size, "Incomplete app-data backup")
-                    value.update(bytes=len(payload), sha256=digest(payload))
-                elif member.issym():
-                    value["target"] = member.linkname
-                result[name] = value
-    require(bool(result), "Empty app-data backup")
-    return result
-
-
-def inventory_changes(before, after, allowed_new=()):
-    """Only declared new hook outputs are exempt; existing data stays exact."""
-    excluded = set(allowed_new) - set(before)
-    return [
-        {"path": name, "before": before.get(name), "after": after.get(name)}
-        for name in sorted(set(before) | set(after))
-        if name not in excluded and before.get(name) != after.get(name)
-    ]
-
-
-def read_app_data(device):
+def read_app_data(device, *, evidence_dir=None, purpose="app-data"):
+    require(
+        evidence_dir is not None, "Durable app-data read evidence directory required"
+    )
     require(not device.pid(), "App running during data backup")
     archives = {}
     with preserve_cleanup(device.unroot, "Unroot"):
@@ -130,9 +45,7 @@ def read_app_data(device):
                 "if [ -d " + shlex.quote(path) + " ]; then printf present; fi"
             ).strip()
             if present == "present":
-                archives[name] = device.run(
-                    "exec-out", "tar", "-cf", "-", "-C", path, "."
-                )
+                archives[name] = read_tar(device, path, name, purpose, evidence_dir)
         require(
             "private" in archives and "external" in archives,
             "Required package app-data roots absent",
@@ -220,7 +133,9 @@ def install_verified(
             "Installed certificate mismatch; never uninstall",
         )
         journal["previous_build"] = previous
-        before = read_app_data(device)
+        before = read_app_data(
+            device, evidence_dir=folder / "reads", purpose="install-before"
+        )
         journal["backup"] = save_backup(folder / "before", before)
         inventory = data_inventory(before)
         if previous_inventory is not None:
@@ -232,7 +147,11 @@ def install_verified(
                 not journal["input_preservation"]["unexpected_changes"],
                 "Unexpected app-data change before install",
             )
-        readback = data_inventory(read_app_data(device))
+        readback = data_inventory(
+            read_app_data(
+                device, evidence_dir=folder / "reads", purpose="install-readback"
+            )
+        )
         write_json(folder / "before-readback.json", readback)
         journal["backup_readback_preservation"] = preservation_report(
             inventory, readback
@@ -263,7 +182,9 @@ def install_verified(
         )
         journal["observed_build"] = observed
         journal["environment"] = environment(build)
-        after = read_app_data(device)
+        after = read_app_data(
+            device, evidence_dir=folder / "reads", purpose="install-after"
+        )
         journal["post_install"] = save_backup(folder / "after", after)
         after_inventory = data_inventory(after)
         journal["data_changes"] = inventory_changes(inventory, after_inventory)

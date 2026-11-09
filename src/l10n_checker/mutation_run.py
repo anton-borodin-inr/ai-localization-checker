@@ -2,6 +2,7 @@
 
 import fcntl
 import io
+import math
 import os
 import re
 import subprocess
@@ -10,6 +11,13 @@ from typing import cast
 
 from PIL import Image
 
+from l10n_checker.app_data import (
+    DATA_ROOTS,
+    cleanup_policy,
+    hook_paths,
+    unlink_command,
+    validate_tar,
+)
 from l10n_checker.capture import (
     REPO_ROOT,
     SETTINGS_PATH,
@@ -383,6 +391,7 @@ def implementation_hashes():
         "text_dump.py",
         "text_reference.py",
         "capture.py",
+        "app_data.py",
     )
     return {name: digest((Path(__file__).parent / name).read_bytes()) for name in names}
 
@@ -441,7 +450,7 @@ class MutationRun:
             "api_spend_usd": 0,
         }
         self.content = {
-            "mutation_run_version": 2 if measurement_only else 4,
+            "mutation_run_version": 2 if measurement_only else 5,
             "preservation_policy": preservation_policy(),
             "status": "not_run",
             "capture_set_qualified": False,
@@ -468,6 +477,8 @@ class MutationRun:
         if measurement_only:
             self.content.update(measurement_only=True, measurement_complete=False)
         else:
+            self.content["cleanup_policy"] = cleanup_policy()
+            self.journal["cleanup_policy"] = cleanup_policy()
             self.content["outside_rule_policy"] = outside_rule_policy()
             self.journal["implementation_hashes"] = self.content[
                 "implementation_hashes"
@@ -495,7 +506,7 @@ class MutationRun:
                 measurement_only=True,
                 measurement_complete=self.content["measurement_complete"],
             )
-        if self.content.get("mutation_run_version") == 4:
+        if self.content.get("mutation_run_version") == 5:
             self.content["outside_rule_usage"] = outside_usage(
                 self.catalog, self.content["screenshots"], self.content["status"]
             )
@@ -606,22 +617,26 @@ class MutationRun:
             "Final 1271048 restoration identity failed",
         )
         if self.original_inventory is not None:
-            current = data_inventory(read_app_data(self.device))
+            current = data_inventory(
+                read_app_data(
+                    self.device,
+                    evidence_dir=self.folder / "private/reads",
+                    purpose=f"reference-{self.counter:03d}",
+                )
+            )
             write_json(self.folder / "private/final-inventory.json", current)
             relative = f"private/reference-{self.counter:03d}-inventory.json"
             write_json(self.folder / relative, current)
             prior = preservation_report(self.last_inventory, current)
-            changes = inventory_changes(
-                self.original_inventory, current, self.allowed_outputs
-            )
+            changes = inventory_changes(self.original_inventory, current)
             self.journal["restoration_data_changes"] = changes
             self.journal["restoration_preservation"] = preservation_report(
-                self.original_inventory, current, self.allowed_outputs
+                self.original_inventory, current
             )
             self.journal.setdefault("restoration_checks", []).append(
                 {
                     "inventory": relative,
-                    "allowed_outputs": sorted(self.allowed_outputs),
+                    "allowed_outputs": [],
                     "prior_preservation": prior,
                     "preservation": self.journal["restoration_preservation"],
                 }
@@ -654,13 +669,23 @@ class MutationRun:
             "Starting installed package is not pinned 1271048",
         )
         environment_check(reference, self.folder / "environment/initial")
-        initial = read_app_data(self.device)
+        initial = read_app_data(
+            self.device,
+            evidence_dir=self.folder / "private/reads",
+            purpose="original-before",
+        )
         self.original_inventory = data_inventory(initial)
         self.last_inventory = self.original_inventory
         self.journal["original_backup"] = save_backup(
             self.folder / "private/original", initial
         )
-        readback = data_inventory(read_app_data(self.device))
+        readback = data_inventory(
+            read_app_data(
+                self.device,
+                evidence_dir=self.folder / "private/reads",
+                purpose="original-readback",
+            )
+        )
         write_json(self.folder / "private/original-readback.json", readback)
         self.journal["original_readback_preservation"] = preservation_report(
             self.original_inventory, readback
@@ -705,7 +730,11 @@ class MutationRun:
         root = capture_directory(self.folder, record["request"]["id"], role)
         root.mkdir(parents=True, exist_ok=False)
         (root / "effective-manifest.json").write_bytes(effective.manifest_bytes)
-        before = data_inventory(read_app_data(self.device))
+        before = data_inventory(
+            read_app_data(
+                self.device, evidence_dir=root / "reads", purpose="capture-preflight"
+            )
+        )
         write_json(root / "before-inventory.json", before)
         preflight = preservation_report(self.last_inventory, before)
         write_json(root / "preflight-preservation.json", preflight)
@@ -716,14 +745,22 @@ class MutationRun:
         prepared = prepare_device(
             self.device, effective, root / "prepare", ["en", "de"]
         )
-        allowed = {"private:files/l10n-hook"}
+        prepared_preservation = preservation_report(
+            before, prepared["starting_inventory"]
+        )
+        write_json(root / "prepare-preservation.json", prepared_preservation)
+        require(
+            not prepared_preservation["unexpected_changes"],
+            "Capture preparation app-data drift; no writes",
+        )
+        allowed = set()
         for output in prepared["planned_hook_output_operations"]:
             allowed.update("private:" + output[name] for name in ("file", "temporary"))
         require(
             not (allowed - {"private:files/l10n-hook"}) & set(before),
             "Prepared hook output already exists",
         )
-        self.allowed_outputs.update(allowed)
+
         failures = []
         outside_fatal = []
         paired = {}
@@ -849,11 +886,13 @@ class MutationRun:
                 }
             )
             self.checkpoint()
-        after_archives = read_app_data(self.device)
+        after_archives = read_app_data(
+            self.device, evidence_dir=root / "reads", purpose="capture-after"
+        )
         save_backup(root / "after-capture", after_archives)
         after = data_inventory(after_archives)
-        changes = inventory_changes(before, after, allowed)
-        preservation = preservation_report(before, after, allowed)
+        changes = inventory_changes(before, after)
+        preservation = preservation_report(before, after)
         self.journal.setdefault("capture_data_checks", []).append(
             {
                 "batch_id": record["request"]["id"],
@@ -869,6 +908,10 @@ class MutationRun:
             "Unexpected app-data change during capture",
         )
         self.last_inventory = after
+        require(
+            summary.get("hook_cleanup", {}).get("status") == "verified",
+            "Capture hook cleanup failed or missing; no dynamic split",
+        )
         require(
             not summary.get("cleanup_errors"),
             "Capture cleanup failed; no dynamic split",
@@ -1090,32 +1133,29 @@ class MutationRun:
             if self.content["status"] != "awaiting_builder_approval":
                 self.content["status"] = "failed"
         except BaseException as exc:
-            if measurement_only:
-                primary = exc
-                self.journal["error"] = str(exc)
-                self.journal["error_details"] = failure_details(exc)
-                self.journal["cleanup_errors"] = getattr(exc, "cleanup_errors", [])
+            primary = exc
+            self.journal["error"] = str(exc)
+            self.journal["error_details"] = failure_details(exc)
+            self.journal["cleanup_errors"] = getattr(exc, "cleanup_errors", [])
+            self.content.update(status="failed", capture_set_qualified=False)
             raise
         finally:
             try:
                 self.restore()
-            except BaseException as exc:
+            except BaseException as exc:  # noqa: BLE001 - retain cleanup cancellation on primary
                 expected_cleanup = isinstance(
                     exc, (CaptureError, OSError, ValueError, subprocess.SubprocessError)
                 )
-                if not measurement_only and not expected_cleanup:
-                    raise
                 self.journal["restoration_error"] = str(exc)
                 self.journal["restoration_error_details"] = failure_details(exc)
-                if measurement_only:
-                    if primary is not None:
-                        retain_cleanup(primary, exc, "Reference restoration")
-                        self.journal["error_details"] = failure_details(primary)
-                        self.journal["cleanup_errors"] = getattr(
-                            primary, "cleanup_errors", []
-                        )
-                    elif not expected_cleanup:
-                        restoration_interrupt = exc
+                if primary is not None:
+                    retain_cleanup(primary, exc, "Reference restoration")
+                    self.journal["error_details"] = failure_details(primary)
+                    self.journal["cleanup_errors"] = getattr(
+                        primary, "cleanup_errors", []
+                    )
+                elif not expected_cleanup:
+                    restoration_interrupt = exc
                 self.content.update(
                     status="restoration_failed",
                     restoration_verified=False,
@@ -1134,7 +1174,7 @@ class MutationRun:
             # The independent final root binds the manifest, avoiding a hash cycle.
             index = canonical_bytes(
                 {
-                    "version": 3 if measurement_only else 5,
+                    "version": 3 if measurement_only else 6,
                     "files": retained_files(self.folder),
                 }
             )
@@ -1363,6 +1403,787 @@ class RunEvidence:
             raise CaptureError(f"Invalid operational receipt: {relative}") from exc
 
 
+def replay_reads(evidence, folder, value, inputs, catalog):
+    """Replay every attempted read, then derive required coverage from stages."""
+    groups = {}
+    ordered = {}
+    directories = {}
+    attempted_receipts = set()
+    for relative in sorted(evidence.files):
+        if not relative.endswith(
+            ("/reads-attempts.json", "/cleanup-pulls-attempts.json")
+        ):
+            continue
+        journal = evidence.json(folder, relative)
+        directory = Path(relative).with_name(
+            Path(relative).name.removesuffix("-attempts.json")
+        )
+        require(
+            journal.get("version") == 1
+            and journal.get("decision") == "D055"
+            and journal.get("outcome") == "attempted"
+            and type(journal.get("attempts")) is list,
+            "D055 missing/invalid read attempt journal",
+        )
+        for n, attempt in enumerate(journal["attempts"], 1):
+            require(
+                attempt.get("receipt") == f"{n:06d}.json",
+                "D055 read attempt sequence mismatch",
+            )
+            name = str(directory / attempt["receipt"])
+            read = evidence.json(folder, name)
+            require(
+                attempt
+                == {
+                    "receipt": attempt["receipt"],
+                    **{
+                        key: read.get(key)
+                        for key in (
+                            "root",
+                            "path",
+                            "purpose",
+                            "kind",
+                            "command",
+                            "limit_s",
+                        )
+                    },
+                },
+                "D055 read attempt differs from observed receipt",
+            )
+            attempted_receipts.add(name)
+    for relative in sorted(evidence.files):
+        path = Path(relative)
+        if path.parent.name not in {"reads", "cleanup-pulls"}:
+            continue
+        require(
+            re.fullmatch(r"[0-9]{6}\.(?:json|bin)", path.name),
+            "D055 unsafe telemetry filename",
+        )
+        if path.suffix == ".bin":
+            require(
+                str(path.with_suffix(".json")) in evidence.files,
+                "D055 raw read has no telemetry",
+            )
+            continue
+        require(
+            relative in attempted_receipts,
+            "D055 read receipt missing durable attempt binding",
+        )
+        receipt = evidence.json(folder, relative)
+        directories.setdefault(str(path.parent), []).append(int(path.stem))
+        require(
+            receipt.get("version") == 1
+            and receipt.get("decision") == "D055"
+            and type(receipt.get("limit_s")) is int
+            and receipt["limit_s"] == 300
+            and receipt.get("kind") in {"tar", "file"}
+            and receipt.get("outcome") in {"complete", "failed"}
+            and type(receipt.get("validated")) is bool
+            and receipt["validated"] is (receipt["outcome"] == "complete"),
+            "D055 read telemetry completion/limit missing or inconsistent",
+        )
+        start, end = receipt.get("start_monotonic_ns"), receipt.get("end_monotonic_ns")
+        count, duration, throughput = (
+            receipt.get(k) for k in ("bytes", "duration_s", "bytes_per_second")
+        )
+        require(
+            type(start) is int
+            and type(end) is int
+            and 0 <= start <= end
+            and type(count) is int
+            and count >= 0
+            and type(duration) in {int, float}
+            and math.isfinite(duration)
+            and duration == (end - start) / 1_000_000_000
+            and type(receipt.get("over_60s")) is bool
+            and receipt["over_60s"] is (duration > 60)
+            and (
+                (duration == 0 and throughput is None)
+                or (
+                    duration > 0
+                    and type(throughput) in {int, float}
+                    and math.isfinite(throughput)
+                    and throughput >= 0
+                    and throughput == count / duration
+                )
+            ),
+            "D055 read telemetry numeric/duration/throughput mismatch",
+        )
+        require(
+            receipt.get("raw") == path.with_suffix(".bin").name,
+            "D055 read telemetry raw path mismatch",
+        )
+        raw = evidence.read(folder / path.parent, receipt["raw"])
+        require(
+            len(raw) == count and digest(raw) == receipt.get("sha256"),
+            "D055 read telemetry byte/hash mismatch",
+        )
+        root, remote, kind = receipt.get("root"), receipt.get("path"), receipt["kind"]
+        if kind == "file":
+            expected = receipt.get("expected_bytes")
+            require(
+                (receipt["outcome"] == "failed" and expected is None and count == 0)
+                or (
+                    type(expected) is int
+                    and expected >= 0
+                    and (receipt["outcome"] == "failed" or count == expected)
+                ),
+                "D055 file read completion length mismatch",
+            )
+        if kind == "tar":
+            from l10n_checker.screen_capture import SAVES_PATH
+
+            require(
+                (root in DATA_ROOTS and remote == DATA_ROOTS[root])
+                or (root == "SaveFiles" and remote == SAVES_PATH),
+                "D055 read root/path mismatch",
+            )
+            require(
+                receipt.get("command")
+                == ["exec-out", "tar", "-cf", "-", "-C", remote, "."],
+                "D055 read command mismatch",
+            )
+            if receipt["outcome"] == "complete":
+                validate_tar(raw)
+                data_inventory({root: raw})
+        else:
+            if receipt.get("purpose") == "hook-output-cleanup-pull":
+                hook_paths(
+                    [
+                        {
+                            "file": remote.removesuffix(".tmp"),
+                            "temporary": remote.removesuffix(".tmp") + ".tmp",
+                        }
+                    ]
+                )
+                expected_command = [
+                    "exec-out",
+                    "cat",
+                    DATA_ROOTS["private"] + "/" + remote,
+                ]
+            else:
+                require(
+                    remote == SETTINGS_PATH and root == "private",
+                    "D055 settings telemetry root/path mismatch",
+                )
+                expected_command = ["exec-out", "cat", SETTINGS_PATH]
+            require(
+                receipt.get("command") == expected_command,
+                "D055 file read command mismatch",
+            )
+        require(
+            (receipt["outcome"] == "failed") is bool(receipt.get("error_details")),
+            "D055 failed read error/outcome mismatch",
+        )
+        groups.setdefault((str(path.parent.parent), receipt.get("purpose")), []).append(
+            (receipt, raw)
+        )
+        ordered.setdefault(str(path.parent), []).append(receipt)
+    for numbers in directories.values():
+        require(
+            numbers == list(range(1, len(numbers) + 1)),
+            "D055 missing read telemetry sequence",
+        )
+
+    def error_reads(node):
+        if isinstance(node, dict):
+            if "app_data_read" in node:
+                reference = node["app_data_read"]
+                matches = [
+                    name
+                    for name in attempted_receipts
+                    if reference.get("receipt", "").endswith("/" + name)
+                ]
+                require(
+                    len(matches) == 1,
+                    "D055 failed read reference missing attempted receipt",
+                )
+                read = evidence.json(folder, matches[0])
+                require(
+                    all(
+                        reference.get(key) == read.get(key)
+                        for key in ("root", "path", "purpose")
+                    ),
+                    "D055 failed read reference scope mismatch",
+                )
+            for child in node.values():
+                error_reads(child)
+        elif isinstance(node, list):
+            for child in node:
+                error_reads(child)
+
+    for relative in evidence.files:
+        if relative == "journal.json" or relative.endswith(
+            ("/install.json", "/capture/summary.json", "/hook-cleanup.json")
+        ):
+            error_reads(evidence.json(folder, relative))
+    consumed = set()
+
+    def rows_for(relative, purpose):
+        consumed.add((relative, purpose))
+        return groups.get((relative, purpose), [])
+
+    def package(relative, purpose, inventory):
+        rows = rows_for(relative, purpose)
+        roots = {name.split(":", 1)[0] for name in inventory}
+        require(
+            len(rows) == len(roots)
+            and [r[0]["root"] for r in rows]
+            == [root for root in DATA_ROOTS if root in roots]
+            and all(
+                r[0]["outcome"] == "complete" and r[0]["kind"] == "tar" for r in rows
+            ),
+            "D055 missing/incomplete package read telemetry coverage: " + purpose,
+        )
+        require(
+            data_inventory({r[0]["root"]: r[1] for r in rows}) == inventory,
+            "D055 read inventory not derived from actual archive bytes: " + purpose,
+        )
+
+    # Each retained completed workflow boundary independently requires its reads.
+    for relative in sorted(evidence.files):
+        if relative.endswith("/inventory.json"):
+            parent = str(Path(relative).parent)
+            if parent == "private/original":
+                package("private", "original-before", evidence.json(folder, relative))
+            elif re.fullmatch(r"private/install-[0-9]{3}/(?:before|after)", parent):
+                stage = (
+                    "install-before" if parent.endswith("/before") else "install-after"
+                )
+                package(
+                    str(Path(parent).parent), stage, evidence.json(folder, relative)
+                )
+            elif re.fullmatch(r"artifacts/[^/]+/[^/]+/after-capture", parent):
+                package(
+                    str(Path(parent).parent),
+                    "capture-after",
+                    evidence.json(folder, relative),
+                )
+        elif relative == "private/original-readback.json":
+            package("private", "original-readback", evidence.json(folder, relative))
+        elif re.fullmatch(r"private/install-[0-9]{3}/before-readback.json", relative):
+            package(
+                str(Path(relative).parent),
+                "install-readback",
+                evidence.json(folder, relative),
+            )
+        elif re.fullmatch(r"private/reference-[0-9]{3}-inventory.json", relative):
+            purpose = Path(relative).name.removesuffix("-inventory.json")
+            package("private", purpose, evidence.json(folder, relative))
+        elif re.fullmatch(r"artifacts/[^/]+/[^/]+/before-inventory.json", relative):
+            package(
+                str(Path(relative).parent),
+                "capture-preflight",
+                evidence.json(folder, relative),
+            )
+        elif Path(relative).name in {
+            "prepare-start-inventory.json",
+            "runtime-start-inventory.json",
+            "before-cleanup-inventory.json",
+            "post-cleanup-inventory.json",
+        }:
+            purpose = Path(relative).name.removesuffix("-inventory.json")
+            package(
+                str(Path(relative).parent), purpose, evidence.json(folder, relative)
+            )
+
+    for relative in sorted(evidence.files):
+        if not relative.endswith(("/device-plan.json", "/capture/summary.json")):
+            continue
+        receipt = evidence.json(folder, relative)
+        parent = str(Path(relative).parent)
+        if receipt.get("backup"):
+            for purpose, kind, payload in (
+                ("settings-backup", "file", "private/GameSettings.json"),
+                ("settings-backup-readback", "file", "private/GameSettings.json"),
+                ("saves-backup", "tar", "private/SaveFiles.tar"),
+                ("saves-backup-readback", "tar", "private/SaveFiles.tar"),
+            ):
+                rows = rows_for(parent, purpose)
+                require(
+                    len(rows) == 1
+                    and rows[0][0]["outcome"] == "complete"
+                    and rows[0][0]["kind"] == kind,
+                    "D055 missing capture backup/readback telemetry: " + purpose,
+                )
+                retained = evidence.read(folder / parent, payload)
+                require(
+                    rows[0][1] == retained
+                    if kind == "file"
+                    else save_inventory(rows[0][1]) == save_inventory(retained),
+                    "D055 capture readback telemetry differs from retained backup",
+                )
+        if relative.endswith("/capture/summary.json"):
+            operations = receipt.get("app_data_operations", [])
+            for operation in ("replace_settings", "restore_original_settings"):
+                verified = [
+                    o
+                    for o in operations
+                    if o["operation"] == operation and o["status"] == "verified"
+                ]
+                rows = rows_for(parent, operation + "-readback")
+                if receipt.get("status") == "complete":
+                    require(
+                        len(rows) == len(verified),
+                        "D055 missing settings observation telemetry",
+                    )
+                require(
+                    sum(r[0]["outcome"] == "complete" for r in rows) >= len(verified),
+                    "D055 verified settings read missing telemetry",
+                )
+                attempted = [o for o in operations if o["operation"] == operation]
+                require(len(rows) <= len(attempted), "D055 unbound settings readback")
+                for (read, raw), op in zip(rows, attempted):
+                    expected = (
+                        inputs.settings[op["language"]]
+                        if operation == "replace_settings"
+                        else evidence.read(folder / parent, "private/GameSettings.json")
+                    )
+                    require(
+                        op.get("sha256") == digest(expected),
+                        "D055 settings operation input mismatch",
+                    )
+                    if read["outcome"] == "complete":
+                        require(
+                            raw == expected, "D055 settings readback bytes mismatch"
+                        )
+            rows = rows_for(parent, "capture-settings-readback")
+            expected_languages = [
+                language
+                for n in (1, 2)
+                for language in ("en", "de")
+                for _ in [*inputs.screens(language, n == 2), None]
+            ]
+            require(
+                len(rows) <= len(expected_languages),
+                "D055 extra frame/pass settings telemetry",
+            )
+            for (read, raw), language in zip(rows, expected_languages):
+                if read["outcome"] == "complete":
+                    require(
+                        raw == inputs.settings[language],
+                        "D055 frame/pass settings readback bytes mismatch",
+                    )
+            verified_hooks = sum(
+                o.get("operation") == "hook_output" and o.get("status") == "verified"
+                for o in operations
+            )
+            replacements = sum(
+                o.get("operation") == "replace_settings" for o in operations
+            )
+            require(
+                len(rows) >= verified_hooks + max(0, replacements - 1),
+                "D055 missing attempted frame/pass settings telemetry",
+            )
+            final_saves = rows_for(parent, "saves-final-readback")
+            require(len(final_saves) <= 1, "D055 extra final SaveFiles telemetry")
+            for read, raw in final_saves:
+                if read["outcome"] == "complete":
+                    require(
+                        save_inventory(raw)
+                        == save_inventory(
+                            evidence.read(folder / parent, "private/SaveFiles.tar")
+                        ),
+                        "D055 final SaveFiles readback bytes mismatch",
+                    )
+            if receipt.get("status") == "complete":
+                require(
+                    len(rows) == len(expected_languages) == len(receipt["records"]) + 4,
+                    "D055 missing per-frame/pass settings telemetry",
+                )
+                require(
+                    len(final_saves) == 1,
+                    "D055 missing final SaveFiles telemetry",
+                )
+    for (parent, purpose), rows in groups.items():
+        if purpose.startswith("settings-") or purpose in {
+            "replace_settings-readback",
+            "restore_original_settings-readback",
+            "capture-settings-readback",
+        }:
+            require(
+                all(
+                    r["kind"] == "file"
+                    and r["root"] == "private"
+                    and r["path"] == SETTINGS_PATH
+                    for r, _ in rows
+                ),
+                "D055 settings read kind/root/path mismatch",
+            )
+        elif purpose.startswith("saves-"):
+            from l10n_checker.screen_capture import SAVES_PATH
+
+            require(
+                all(
+                    r["kind"] == "tar"
+                    and r["root"] == "SaveFiles"
+                    and r["path"] == SAVES_PATH
+                    for r, _ in rows
+                ),
+                "D055 SaveFiles read kind/root/path mismatch",
+            )
+    # Incomplete boundaries have no final inventory yet, but their observations
+    # still need an exact authorized kind/root prefix, never an arbitrary purpose.
+    for (parent, purpose), rows in groups.items():
+        if (parent, purpose) in consumed:
+            continue
+        package_purpose = (
+            (
+                parent == "private"
+                and (
+                    purpose in {"original-before", "original-readback"}
+                    or re.fullmatch(r"reference-[0-9]{3}", purpose)
+                )
+            )
+            or (
+                re.fullmatch(r"private/install-[0-9]{3}", parent)
+                and purpose in {"install-before", "install-readback", "install-after"}
+            )
+            or (
+                re.fullmatch(r"artifacts/[^/]+/[^/]+", parent)
+                and purpose in {"capture-preflight", "capture-after"}
+            )
+            or (
+                re.fullmatch(r"artifacts/[^/]+/[^/]+/(?:prepare|capture)", parent)
+                and purpose
+                in {"prepare-start", "runtime-start", "before-cleanup", "post-cleanup"}
+            )
+        )
+        if package_purpose:
+            if parent == "private":
+                if purpose == "original-before":
+                    require(
+                        "private/initial-apk/installed.apk" in evidence.files
+                        and "environment/initial/receipt.json" in evidence.files,
+                        "D055 initial read lacks entered probe boundary",
+                    )
+                elif purpose == "original-readback":
+                    require(
+                        "private/original/inventory.json" in evidence.files,
+                        "D055 readback lacks original backup boundary",
+                    )
+                else:
+                    number = int(purpose.removeprefix("reference-"))
+                    name = f"private/install-{number:03d}/install.json"
+                    require(
+                        name in evidence.files
+                        and "private/final-apk/installed.apk" in evidence.files
+                        and evidence.json(folder, name).get("build")
+                        == inputs.manifest.build.model_dump()
+                        and "private/original/inventory.json" in evidence.files,
+                        "D055 reference read has no matching entered restoration boundary",
+                    )
+            elif parent.startswith("private/install-"):
+                receipt = evidence.json(folder / parent, "install.json")
+                if purpose == "install-readback":
+                    require(
+                        parent + "/before/inventory.json" in evidence.files,
+                        "D055 install readback lacks backup boundary",
+                    )
+                elif purpose == "install-after":
+                    require(
+                        receipt.get("install_attempted") is True
+                        and receipt.get("observed_build")
+                        == {
+                            key: receipt.get("build", {}).get(key)
+                            for key in ("version_code", "apk_sha256")
+                        }
+                        | {
+                            "certificate_sha256": catalog.data["signing"][
+                                "reference_certificate_sha256"
+                            ]
+                        }
+                        and parent + "/before-readback.json" in evidence.files,
+                        "D055 post-install read lacks entered verified-build boundary",
+                    )
+            else:
+                capture_parent = (
+                    str(Path(parent).parent)
+                    if Path(parent).name in {"prepare", "capture"}
+                    else parent
+                )
+                require(
+                    capture_parent + "/effective-manifest.json" in evidence.files,
+                    "D055 capture read lacks entered effective-manifest boundary",
+                )
+                prerequisites = {
+                    "capture-after": parent + "/capture/summary.json",
+                    "prepare-start": capture_parent + "/before-inventory.json",
+                    "runtime-start": capture_parent + "/prepare/device-plan.json",
+                    "before-cleanup": capture_parent + "/capture/write-boundary.json",
+                    "post-cleanup": capture_parent + "/capture/hook-cleanup.json",
+                }
+                require(
+                    purpose not in prerequisites
+                    or prerequisites[purpose] in evidence.files,
+                    "D055 read lacks entered capture/cleanup operation boundary",
+                )
+            roots = [r["root"] for r, _ in rows]
+            require(
+                roots
+                in (
+                    ["private"],
+                    ["private", "device_encrypted"],
+                    ["private", "external"],
+                    list(DATA_ROOTS),
+                ),
+                "D055 incomplete package read root/order mismatch",
+            )
+            require(
+                all(r["kind"] == "tar" for r, _ in rows),
+                "D055 package read kind mismatch",
+            )
+        elif re.fullmatch(
+            r"artifacts/[^/]+/[^/]+/(?:prepare|capture)", parent
+        ) and purpose in {
+            "settings-backup",
+            "settings-backup-readback",
+            "saves-backup",
+            "saves-backup-readback",
+        }:
+            require(
+                len(rows) == 1
+                and rows[0][0]["kind"]
+                == ("file" if purpose.startswith("settings") else "tar"),
+                "D055 incomplete backup read coverage mismatch",
+            )
+        elif (
+            re.fullmatch(r"artifacts/[^/]+/[^/]+/capture", parent)
+            and purpose == "hook-output-cleanup-pull"
+        ):
+            proof = evidence.json(folder / parent, "hook-cleanup.json")
+            referenced = {p.get("host") for p in proof["paths"]}
+            require(
+                all(
+                    "cleanup-pulls/" + r["raw"] in referenced
+                    for r, _ in rows
+                    if r["outcome"] == "complete"
+                ),
+                "D055 unbound cleanup read telemetry",
+            )
+        else:
+            require(False, "D055 unconsumed/unapproved read telemetry: " + purpose)
+        require(
+            value["status"] not in {"qualified", "probe_verified"}
+            or purpose == "hook-output-cleanup-pull",
+            "D055 unbound successful read boundary",
+        )
+        require(
+            all(r["outcome"] == "complete" for r, _ in rows[:-1]),
+            "D055 read continued after failed observation",
+        )
+    if value["status"] in {"qualified", "probe_verified"}:
+        require(
+            all(
+                r["outcome"] == "complete" for rows in groups.values() for r, _ in rows
+            ),
+            "D055 failed read cannot qualify",
+        )
+    replay_read_workflow(evidence, folder, ordered, inputs)
+    return groups
+
+
+def replay_read_workflow(evidence, folder, ordered, inputs):
+    """Consume writer order, including interrupted main prefixes and cleanup tails.
+
+    Directories have distinct writers: probe/reference, install, capture's outer
+    inventory, preparation, and the capture loop. Numeric timestamps cannot bind
+    these roles; use their actual call order and durable entry/operation records.
+    Payload, root coverage and cleanup's whole-set unlink barrier remain separate.
+    """
+    backups = [
+        "settings-backup",
+        "settings-backup-readback",
+        "saves-backup",
+        "saves-backup-readback",
+    ]
+
+    def blocks(rows):
+        result = []
+        for row in rows:
+            if not result or result[-1][0] != row["purpose"]:
+                result.append((row["purpose"], []))
+            result[-1][1].append(row)
+        return result
+
+    def sequence(rows, purposes, *, tail=False):
+        actual = blocks(rows)
+        require(
+            [p for p, _ in actual] == purposes[: len(actual)],
+            "D055 read workflow purpose order mismatch",
+        )
+        for i, (_, batch) in enumerate(actual):
+            require(
+                all(r["outcome"] == "complete" for r in batch[:-1]),
+                "D055 read workflow continued after failed observation",
+            )
+            if i < len(actual) - 1 and not tail:
+                require(
+                    batch[-1]["outcome"] == "complete"
+                    and (
+                        batch[-1]["kind"] != "tar"
+                        or batch[-1]["root"] in {"external", "SaveFiles"}
+                    ),
+                    "D055 read workflow advanced past an incomplete boundary",
+                )
+
+    for directory, rows in ordered.items():
+        parent = str(Path(directory).parent)
+        if Path(directory).name == "cleanup-pulls":
+            proof = evidence.json(folder / parent, "hook-cleanup.json")
+            summary = evidence.json(folder / parent, "summary.json")
+            mapped = {
+                r["readiness"]["dump"]["file"]
+                for r in summary.get("records", [])
+                if r.get("dump")
+            }
+            expected = [
+                p["path"]
+                for p in proof["paths"]
+                if "private:" + p["path"] in proof.get("before", {})
+                and p["path"] not in mapped
+            ]
+            require(
+                [r["path"] for r in rows] == expected[: len(rows)]
+                and all(r["outcome"] == "complete" for r in rows[:-1]),
+                "D055 cleanup pull workflow order mismatch",
+            )
+        elif parent == "private":
+            main = [r for r in rows if not r["purpose"].startswith("reference-")]
+            references = rows[len(main) :]
+            require(
+                rows == main + references, "D055 reference read precedes probe reads"
+            )
+            sequence(main, ["original-before", "original-readback"])
+            purposes = sorted(
+                {r["purpose"] for r in references},
+                key=lambda p: int(p.removeprefix("reference-")),
+            )
+            sequence(references, purposes)
+        elif re.fullmatch(r"private/install-[0-9]{3}", parent):
+            sequence(rows, ["install-before", "install-readback", "install-after"])
+        elif re.fullmatch(r"artifacts/[^/]+/[^/]+", parent):
+            sequence(rows, ["capture-preflight", "capture-after"])
+        elif re.fullmatch(r"artifacts/[^/]+/[^/]+/prepare", parent):
+            sequence(rows, ["prepare-start", *backups])
+        elif re.fullmatch(r"artifacts/[^/]+/[^/]+/capture", parent):
+            summary = evidence.json(folder / parent, "summary.json")
+            operations = summary.get("app_data_operations", [])
+            # Root inventory and backups are mandatory before the write boundary.
+            initial = [r for r in rows if r["purpose"] == "runtime-start"]
+            require(
+                rows[: len(initial)] == initial, "D055 runtime inventory read order"
+            )
+            prefix = [r for r in rows[len(initial) :] if r["purpose"] in backups]
+            require(
+                rows[len(initial) : len(initial) + len(prefix)] == prefix,
+                "D055 capture backup read order",
+            )
+            sequence([*initial, *prefix], ["runtime-start", *backups])
+            remaining = rows[len(initial) + len(prefix) :]
+            if remaining:
+                require(
+                    initial
+                    and initial[-1]["root"] == "external"
+                    and all(r["outcome"] == "complete" for r in initial + prefix)
+                    and [r["purpose"] for r in prefix] == backups,
+                    "D055 capture workflow lacks completed inventory/backups",
+                )
+            tail_purposes = {
+                "restore_original_settings-readback",
+                "before-cleanup",
+                "post-cleanup",
+            }
+            boundary = next(
+                (i for i, r in enumerate(remaining) if r["purpose"] in tail_purposes),
+                len(remaining),
+            )
+            main, tail = remaining[:boundary], remaining[boundary:]
+            replacements = [
+                o for o in operations if o["operation"] == "replace_settings"
+            ]
+            stages = [(n, lang) for n in (1, 2) for lang in ("en", "de")]
+            require(
+                [(o.get("pass_number"), o.get("language")) for o in replacements]
+                == stages[: len(replacements)],
+                "D055 settings replacement workflow mismatch",
+            )
+            records = summary.get("records", [])
+            expected_keys = [
+                (n, lang, s.id)
+                for n, lang in stages
+                for s in inputs.screens(lang, n == 2)
+            ]
+            require(
+                [(r.get("pass"), r.get("language"), r.get("screen")) for r in records]
+                == expected_keys[: len(records)],
+                "D055 frame attempt workflow mismatch",
+            )
+            by_key = {(r["pass"], r["language"], r["screen"]): r for r in records}
+            hooks = {
+                (o["pass"], o["language"], o["screen"]): o
+                for o in operations
+                if o["operation"] == "hook_output"
+            }
+            expected = []
+            all_frames = True
+            for n, language in stages[: len(replacements)]:
+                expected.append("replace_settings-readback")
+                for screen in inputs.screens(language, n == 2):
+                    key = (n, language, screen.id)
+                    if key not in by_key:
+                        all_frames = False
+                        break
+                    record = by_key[key]
+                    if hooks.get(key, {}).get("status") == "verified" or record.get(
+                        "pair"
+                    ):
+                        expected.append("capture-settings-readback")
+                if not all_frames:
+                    break
+                expected.append("capture-settings-readback")  # end of language pass
+            if all_frames and len(replacements) == len(stages):
+                expected.append("saves-final-readback")
+            require(
+                [r["purpose"] for r in main] == expected[: len(main)]
+                and all(r["outcome"] == "complete" for r in main[:-1]),
+                "D055 capture read workflow is not an ordered execution prefix",
+            )
+            if tail:
+                require(
+                    any(
+                        o["operation"] == "restore_original_settings"
+                        for o in operations
+                    )
+                    and len(
+                        [
+                            r
+                            for r in tail
+                            if r["purpose"] == "restore_original_settings-readback"
+                        ]
+                    )
+                    <= 1,
+                    "D055 read finalization lacks entered restoration boundary",
+                )
+                # Restoration may fail before its read; quiescence may fail before
+                # before-cleanup. Both still authorize the single post-inventory.
+                sequence(
+                    tail,
+                    [
+                        p
+                        for p in (
+                            "restore_original_settings-readback",
+                            "before-cleanup",
+                            "post-cleanup",
+                        )
+                        if any(r["purpose"] == p for r in tail)
+                    ],
+                    tail=True,
+                )
+        else:
+            require(False, "D055 unapproved read workflow directory")
+
+
 def replay_backup(evidence, folder, relative, receipt=None):
     root = contained(folder, relative)
     inventory = evidence.json(root, "inventory.json")
@@ -1487,6 +2308,352 @@ def replay_preservation(recorded, before, after, allowed_new=()):
     return expected
 
 
+def replay_cleanup(evidence, root, prepared, summary, outputs, *, partial=False):
+    """Exact deletion authority from inventories and authenticated host bytes."""
+    capture_root = root / "capture"
+    proof = evidence.json(capture_root, "hook-cleanup.json")
+    starting = evidence.json(capture_root, "runtime-start-inventory.json")
+    plan_start = evidence.json(root / "prepare", "prepare-start-inventory.json")
+    require(
+        prepared.get("starting_inventory") == plan_start
+        and summary.get("starting_inventory") == starting
+        and proof.get("starting") == starting,
+        "D055 cleanup starting inventory mismatch",
+    )
+    replay_preservation(preservation_report(plan_start, starting), plan_start, starting)
+    directory = prepared.get("directory_identity")
+    require(
+        type(directory) is list
+        and len(directory) == 3
+        and summary.get("directory_identity") == directory
+        and proof.get("directory_identity") == directory,
+        "D055 cleanup directory identity mismatch",
+    )
+    require(
+        all(
+            starting.get("private:" + p, {}).get("type") == "directory"
+            for p in (".", "files", "files/l10n-hook")
+        ),
+        "D055 cleanup needs pre-existing hook directory",
+    )
+    for path, identity in zip(
+        (".", "files", "files/l10n-hook"), directory, strict=True
+    ):
+        parts = identity.split()
+        require(
+            len(parts) == 7
+            and all(re.fullmatch(r"[0-9]+", parts[k]) for k in (0, 1, 2, 4, 5, 6))
+            and re.fullmatch(r"[0-9a-fA-F]+", parts[3])
+            and int(parts[2]) >= 1
+            and int(parts[3], 16) & 0o170000 == 0o040000
+            and [int(parts[4]), int(parts[5]), int(parts[3], 16) & 0o7777]
+            == [starting["private:" + path][k] for k in ("uid", "gid", "mode")],
+            "D055 cleanup directory identity/type/metadata invalid",
+        )
+    require(
+        canonical_bytes(proof.get("policy")) == canonical_bytes(cleanup_policy())
+        and summary.get("hook_cleanup") == proof
+        and proof.get("status")
+        in ({"verified", "failed"} if partial else {"verified"}),
+        "D055 cleanup proof missing/altered/failed",
+    )
+    paths = hook_paths(outputs)
+    entries = proof.get("paths")
+    require(
+        type(entries) is list
+        and [p.get("path") for p in entries] == paths
+        and not {"private:" + p for p in paths} & set(starting),
+        "D055 cleanup authority is not exact plan-new paths",
+    )
+    before = proof.get("before")
+    if before is None:
+        require(
+            partial
+            and proof["status"] == "failed"
+            and proof.get("error_details")
+            and all(
+                set(p) == {"path", "status"} and p["status"] == "unavailable"
+                for p in entries
+            )
+            and proof.get("quiescence")
+            in (None, {"force_stopped": True, "pid": "", "package_stopped": True})
+            and str(
+                (capture_root / "before-cleanup-inventory.json").relative_to(
+                    evidence.folder
+                )
+            )
+            not in evidence.files,
+            "D055 cleanup incomplete predelete proof",
+        )
+        if proof.get("after") is not None:
+            after = evidence.json(capture_root, "post-cleanup-inventory.json")
+            require(
+                proof["after"] == after
+                and proof.get("preservation") == preservation_report(starting, after),
+                "D055 failed prebarrier post inventory/ledger mismatch",
+            )
+        else:
+            require(
+                proof["error_details"].get("cleanup_errors"),
+                "D055 failed prebarrier missing post-inventory failure evidence",
+            )
+        return None
+    require(
+        proof.get("quiescence")
+        == {"force_stopped": True, "pid": "", "package_stopped": True},
+        "D055 cleanup missing writer quiescence",
+    )
+    require(
+        before == evidence.json(capture_root, "before-cleanup-inventory.json"),
+        "D055 cleanup before inventory mismatch",
+    )
+    mapped = {
+        r["readiness"]["dump"]["file"]: r["dump"]
+        for r in summary.get("records", [])
+        if r.get("dump")
+    }
+    deleted = set()
+    unlink_started = any(
+        p.get("status") in {"deleted", "attempted", "failed"} or "command" in p
+        for p in entries
+    )
+    stopped = False
+    require(
+        proof["status"] != "failed" or proof.get("error_details"),
+        "D055 failed cleanup lacks primary failure",
+    )
+    for entry in entries:
+        path, status = entry["path"], entry.get("status")
+        value = before.get("private:" + path)
+        require(
+            ("command" in entry) is (status in {"deleted", "attempted", "failed"})
+            and ("error_details" in entry) is (status == "failed"),
+            "D055 cleanup phase command/error state regression",
+        )
+        if status in {"absent", "unavailable"}:
+            require(
+                set(entry) == {"path", "status"},
+                "D055 cleanup unavailable/absent state retained attempt/proof fields",
+            )
+        if value is None:
+            require(
+                status == "absent"
+                or (partial and not unlink_started and status == "unavailable"),
+                "D055 cleanup forged absence/deletion",
+            )
+            continue
+        require(
+            value.get("type") == "file"
+            and status
+            in (
+                {"deleted", "attempted", "failed", "verified", "unavailable"}
+                if partial
+                else {"deleted"}
+            ),
+            "D055 cleanup present file not verified/deleted",
+        )
+        if status == "unavailable":
+            require(
+                partial and proof["status"] == "failed" and not unlink_started,
+                "D055 cleanup missing host proof",
+            )
+            continue
+        if unlink_started:
+            require(
+                not stopped or status == "verified",
+                "D055 cleanup continued after first failure/unattempted path",
+            )
+            if status != "deleted":
+                stopped = True
+        identity = entry.get("identity")
+        require(
+            type(identity) is list and len(identity) == 4 and identity[:3] == directory,
+            "D055 cleanup identity/ancestor mismatch",
+        )
+        parts = identity[-1].split()
+        require(
+            len(parts) == 7
+            and parts[2] == "1"
+            and int(parts[3], 16) & 0o170000 == 0o100000
+            and [int(parts[k]) for k in (4, 5, 6)]
+            == [value[k] for k in ("uid", "gid", "bytes")]
+            and int(parts[3], 16) & 0o7777 == value["mode"],
+            "D055 cleanup unsafe leaf identity/type/link/metadata",
+        )
+        host = entry.get("host")
+        require(
+            type(host) is str
+            and (
+                host == mapped.get(path)
+                or re.fullmatch(r"cleanup-pulls/[0-9]{6}\.bin", host)
+            ),
+            "D055 cleanup host proof path is not actual retained output",
+        )
+        raw = evidence.read(capture_root, host)
+        require(
+            type(entry.get("bytes")) is int
+            and len(raw) == entry["bytes"] == value["bytes"]
+            and digest(raw) == entry.get("sha256") == value["sha256"],
+            "D055 cleanup host hash/bytes proof mismatch",
+        )
+        if status in {"deleted", "attempted", "failed"}:
+            require(
+                entry.get("command") == unlink_command(path, identity, digest(raw)),
+                "D055 cleanup unguarded/widened unlink command",
+            )
+        if status == "failed":
+            require(
+                partial and proof["status"] == "failed" and entry.get("error_details"),
+                "D055 failed path lacks failure evidence",
+            )
+        if status == "deleted":
+            deleted.add("private:" + path)
+    if proof.get("after") is not None:
+        after = evidence.json(capture_root, "post-cleanup-inventory.json")
+        require(proof["after"] == after, "D055 cleanup post inventory mismatch")
+        # A failed guarded command may already have unlinked its one exact path.
+        # Derive its observed effect without claiming a successful deletion.
+        if partial:
+            deleted.update(
+                "private:" + entry["path"]
+                for entry in proof["paths"]
+                if entry["status"] in {"attempted", "failed"}
+                and "private:" + entry["path"] not in after
+            )
+        expected = {k: v for k, v in before.items() if k not in deleted}
+        replay_preservation(preservation_report(expected, after), expected, after)
+        require(
+            proof.get("preservation") == preservation_report(starting, after),
+            "D055 cleanup preservation ledger mismatch",
+        )
+        if proof["status"] == "verified":
+            replay_preservation(proof["preservation"], starting, after)
+        return after
+    require(
+        partial and proof["status"] == "failed" and proof.get("error_details"),
+        "D055 cleanup missing fresh post inventory",
+    )
+    return None
+
+
+def replay_partial_d055(evidence, folder, catalog, inputs):
+    """Validate every available D055 capture attempt without requiring later stages."""
+    artifacts = {
+        ("clean", catalog.control["request"]["id"]): catalog.control,
+        ("calibration", catalog.calibration["request"]["id"]): catalog.calibration,
+    }
+    artifacts.update(
+        {
+            ("mutation", b["id"]): catalog.records[b["id"]]
+            for b in catalog.plan["batches"]
+        }
+    )
+    seen = set()
+    for relative in sorted(evidence.files):
+        match = re.fullmatch(
+            r"artifacts/([^/]+)/([^/]+)/prepare/device-plan.json", relative
+        )
+        if not match:
+            continue
+        key = match.groups()
+        require(key in artifacts, "D055 unapproved capture attempt")
+        root = folder / "artifacts" / key[0] / key[1]
+        effective = inputs.with_build(artifacts[key]["build"])
+        prepared = evidence.json(root / "prepare", "device-plan.json")
+        outputs = planned_hook_outputs(
+            effective, ["en", "de"], prepared.get("request_namespace", "")
+        )
+        require(
+            prepared.get("planned_hook_output_operations") == outputs
+            and prepared.get("manifest_sha256") == effective.sha256
+            and prepared.get("selection") == effective.capture_selection(["en", "de"])
+            and prepared.get("planned_hook_directory_operation")
+            == HOOK_DIRECTORY_OPERATION
+            and canonical_bytes(prepared.get("cleanup_policy"))
+            == canonical_bytes(cleanup_policy()),
+            "D055 attempted preparation authority mismatch",
+        )
+        start = evidence.json(root / "prepare", "prepare-start-inventory.json")
+        require(
+            prepared.get("starting_inventory") == start
+            and not {"private:" + p for p in hook_paths(outputs)} & set(start),
+            "D055 attempted preparation classified existing output as new",
+        )
+        before_name = str((root / "before-inventory.json").relative_to(folder))
+        if before_name in evidence.files:
+            before = evidence.json(root, "before-inventory.json")
+            require(
+                not preservation_report(before, start)["unexpected_changes"],
+                "D055 attempted preparation rebaselined inventory",
+            )
+        summary_name = str((root / "capture/summary.json").relative_to(folder))
+        if summary_name not in evidence.files:
+            continue
+        summary = evidence.json(root / "capture", "summary.json")
+        require(
+            summary.get("manifest_sha256") == effective.sha256
+            and summary.get("selection") == effective.capture_selection(["en", "de"]),
+            "D055 attempted capture scope mismatch",
+        )
+        cleanup_name = str((root / "capture/hook-cleanup.json").relative_to(folder))
+        boundary_name = str((root / "capture/write-boundary.json").relative_to(folder))
+        writes_possible = (
+            boundary_name in evidence.files
+            or bool(summary.get("records"))
+            or any(
+                name.startswith(str((root / "capture").relative_to(folder)) + "/pass-")
+                for name in evidence.files
+            )
+            or any(
+                evidence.json(folder, name).get("purpose")
+                in {
+                    "replace_settings-readback",
+                    "capture-settings-readback",
+                    "restore_original_settings-readback",
+                }
+                for name in evidence.files
+                if name.startswith(
+                    str((root / "capture/reads").relative_to(folder)) + "/"
+                )
+                and name.endswith(".json")
+            )
+            or (
+                summary.get("backup")
+                and summary.get("device_plan_sha256")
+                == digest(evidence.read(root / "prepare", "device-plan.json"))
+            )
+        )
+        if writes_possible:
+            require(
+                evidence.json(root / "capture", "write-boundary.json")
+                == {
+                    "manifest_sha256": effective.sha256,
+                    "device_plan_sha256": digest(
+                        evidence.read(root / "prepare", "device-plan.json")
+                    ),
+                    "cleanup_required": True,
+                },
+                "D055 missing/altered capture write boundary",
+            )
+        if (
+            writes_possible
+            or summary.get("app_data_operations")
+            or summary.get("hook_cleanup")
+            or cleanup_name in evidence.files
+        ):
+            require(
+                cleanup_name in evidence.files,
+                "D055 missing cleanup for attempted capture",
+            )
+            replay_cleanup(evidence, root, prepared, summary, outputs, partial=True)
+            seen.add(cleanup_name)
+    require(
+        {name for name in evidence.files if name.endswith("/hook-cleanup.json")}
+        == seen,
+        "D055 unbound cleanup receipt outside an exact prepared capture",
+    )
+
+
 def replay_capture(
     evidence,
     folder,
@@ -1497,6 +2664,8 @@ def replay_capture(
     before,
     *,
     measurement_only=False,
+    partial_mapping=False,
+    legacy_measurement=False,
 ):
     identity = artifact["request"]["id"]
     root = capture_directory(folder, identity, role)
@@ -1647,10 +2816,19 @@ def replay_capture(
                 if (record["pass"], record["language"]) != (n, language):
                     continue
                 key = (record["screen"], record["language"], record["pass"])
-                require(key in mapped, "Capture receipt has no runtime screenshot")
-                shot = mapped[key]
                 pair_path = contained(root / "capture", record["pair"])
                 pair = evidence.json(pair_path.parent, pair_path.name)
+                require(
+                    key in mapped or partial_mapping,
+                    "Capture receipt has no runtime screenshot",
+                )
+                if key in mapped:
+                    shot = mapped[key]
+                else:
+                    verified_pair(
+                        effective, root / "capture", record, evidence=evidence
+                    )
+                    shot = {**pair, "pair": str(pair_path.relative_to(folder))}
                 require(
                     str(pair_path.relative_to(folder)) == shot["pair"]
                     and record.get("status") == "captured"
@@ -1693,26 +2871,40 @@ def replay_capture(
         summary.get("app_data_operations") == operations,
         "Capture settings/hook operations receipt mismatch",
     )
-    allowed = {"private:files/l10n-hook"} | {
-        "private:" + o[name] for o in outputs for name in ("file", "temporary")
-    }
+    allowed = {"private:" + o[name] for o in outputs for name in ("file", "temporary")}
+    if legacy_measurement:
+        require(measurement_only, "Legacy capture allowance is measurement-only")
+        allowed.add("private:files/l10n-hook")
     require(
         not (allowed - {"private:files/l10n-hook"}) & set(before),
         "Capture hook outputs already existed",
     )
     after = replay_backup(evidence, root, "after-capture")
+    if not legacy_measurement:
+        cleaned = replay_cleanup(evidence, root, prepared, summary, outputs)
+        require(
+            not preservation_report(cleaned, after)["unexpected_changes"],
+            "D055 post-cleanup continuity changed before capture boundary",
+        )
+        require(
+            not preservation_report(before, prepared["starting_inventory"])[
+                "unexpected_changes"
+            ],
+            "D055 capture preparation rebaselined app data",
+        )
+    allowance = allowed if legacy_measurement else set()
     check = {
         "batch_id": identity,
         "role": role,
         "preflight_preservation": preflight,
-        "changes": inventory_changes(before, after, allowed),
-        "preservation": preservation_report(before, after, allowed),
+        "changes": inventory_changes(before, after, allowance),
+        "preservation": preservation_report(before, after, allowance),
     }
     require(
         not check["preservation"]["unexpected_changes"],
         "Capture app-data inventory preservation failed",
     )
-    return after, allowed, check
+    return after, allowance, check
 
 
 def replay_reference_data(evidence, folder, recorded, original, previous, allowed, n):
@@ -1736,7 +2928,377 @@ def replay_reference_data(evidence, folder, recorded, original, previous, allowe
     return current
 
 
+def replay_available_operations(evidence, folder, catalog, inputs, value):
+    """Replay retained completed transactions and the honest failed tail."""
+    journal = evidence.json(folder, "journal.json")
+    require(
+        journal.get("status") == value["status"]
+        and journal.get("live_provider_requests") == 0
+        and journal.get("api_spend_usd") == 0
+        and journal.get("preservation_policy") == preservation_policy(),
+        "Failed operational receipt journal mismatch",
+    )
+    reference = {
+        "build": inputs.manifest.build.model_dump(),
+        "apk": catalog.data["reference"]["apk"],
+    }
+    certificate = catalog.data["signing"]["reference_certificate_sha256"]
+
+    def available(name):
+        return name in evidence.files
+
+    def ledger(recorded, before, after, *, successful=False):
+        expected = preservation_report(before, after)
+        require(
+            canonical_bytes(recorded) == canonical_bytes(expected),
+            "Preservation policy/ledger receipt mismatch",
+        )
+        require(
+            not successful or not expected["unexpected_changes"],
+            "Successful transaction has unexpected app-data change",
+        )
+        return expected
+
+    def environment(relative, build, *, successful=False):
+        receipt = evidence.json(folder, relative + "/receipt.json")
+        command = [str(REPO_ROOT / "scripts/check_env.sh")]
+        if build["version_code"] != "1271048":
+            command += ["--version-code", build["version_code"]]
+        require(
+            receipt.get("command") == command and receipt.get("build") == build,
+            "Install environment authority mismatch",
+        )
+        for stream in ("stdout", "stderr"):
+            require(
+                digest(evidence.read(folder, relative + "/" + stream + ".txt"))
+                == receipt.get(stream + "_sha256"),
+                "Install environment log mismatch",
+            )
+        if successful:
+            replay_environment(evidence, folder, relative, build)
+        else:
+            require(
+                type(receipt.get("exit_code")) is int or receipt.get("error_details"),
+                "Failed environment observation lacks outcome",
+            )
+        return receipt
+
+    # probe() admits no app-data read or transaction before BOTH initial gates.
+    # A genuine failed preflight may retain only its available observation and
+    # the final identity/unroot tail; later evidence proves successful entry.
+    progressed = any(
+        name.startswith(
+            ("private/reads/", "private/original/", "private/install-", "artifacts/")
+        )
+        or name in {"private/reads-attempts.json", "private/original-readback.json"}
+        for name in evidence.files
+    )
+    if progressed or available("environment/initial/receipt.json"):
+        require(
+            available("private/initial-apk/installed.apk"),
+            "Initial environment/data observation lacks initial APK authority",
+        )
+    if progressed:
+        require(
+            available("environment/initial/receipt.json"),
+            "Initial environment prerequisite missing before app-data/transactions",
+        )
+    if available("private/initial-apk/installed.apk"):
+        replay_installed_apk(
+            evidence, folder, "private/initial-apk", reference["build"], certificate
+        )
+    if available("environment/initial/receipt.json"):
+        environment("environment/initial", reference["build"], successful=progressed)
+    original = previous_inventory = None
+    if available("private/original/inventory.json"):
+        original = previous_inventory = replay_backup(
+            evidence, folder, "private/original", journal.get("original_backup")
+        )
+    if available("private/original-readback.json"):
+        require(original is not None, "Original readback has no backup")
+        current = evidence.json(folder, "private/original-readback.json")
+        ledger(journal.get("original_readback_preservation"), original, current)
+        previous_inventory = current
+    captures = [
+        (catalog.control, "clean"),
+        (catalog.calibration, "calibration"),
+        *[(catalog.records[b["id"]], "mutation") for b in catalog.plan["batches"]],
+    ]
+    main = [(catalog.control, None), (reference, None), *captures]
+    installs = sorted(
+        name
+        for name in evidence.files
+        if re.fullmatch(r"private/install-[0-9]{3}/install.json", name)
+    )
+    require(
+        installs
+        == [
+            f"private/install-{n:03d}/install.json" for n in range(1, len(installs) + 1)
+        ],
+        "Missing attempted install receipt sequence",
+    )
+    previous_builds = [reference["build"]]
+    completed, checks, reference_checks = [], [], []
+    halted = final_reference = False
+    last_reference = None
+    for n, name in enumerate(installs, 1):
+        receipt = evidence.json(folder, name)
+        relative = str(Path(name).parent)
+        build = receipt.get("build")
+        require(not final_reference, "Install continued after final reference attempt")
+        if n >= 3 and build == reference["build"]:
+            artifact, role = reference, None
+            final_reference = True
+        else:
+            require(n <= len(main), "Extra install beyond authorized stage prefix")
+            artifact, role = main[n - 1]
+            require(
+                not halted or build == reference["build"],
+                "Install continued after failed stage",
+            )
+        require(
+            build == artifact["build"]
+            and receipt.get("command")
+            == [
+                "install",
+                "-r",
+                "-d",
+                str(catalog.path.parent / artifact["apk"]["path"]),
+            ]
+            and receipt.get("preservation_policy") == preservation_policy(),
+            "Failed/partial install authority or preservation policy mismatch",
+        )
+        verified = receipt.get("status") == "verified"
+        require(
+            receipt.get("status")
+            in {"verified", "failed", "preparing", "install_attempted"},
+            "Unknown partial install state",
+        )
+        if verified:
+            require(
+                receipt.get("install_attempted") is True
+                and receipt.get("app_data_preserved") is True
+                and not receipt.get("error_details")
+                and not receipt.get("error")
+                and receipt.get("stdout", "").strip().splitlines()[-1:] == ["Success"],
+                "Unsuccessful completed install receipt",
+            )
+            completed.append(
+                {
+                    "kind": "install",
+                    "receipt": name,
+                    "sha256": digest(canonical_bytes(receipt)),
+                }
+            )
+        else:
+            require(
+                receipt.get("app_data_preserved") is False
+                and (
+                    receipt.get("error_details")
+                    or journal.get("error_details")
+                    or journal.get("restoration_error_details")
+                ),
+                "Partial install lacks failure evidence",
+            )
+            halted = True
+        if verified or available(relative + "/before-apk/installed.apk"):
+            raw = evidence.read(folder, relative + "/before-apk/installed.apk")
+            candidates = [b for b in previous_builds if digest(raw) == b["apk_sha256"]]
+            require(len(candidates) == 1, "Install previous APK continuity mismatch")
+            require(
+                receipt.get("previous_build")
+                == replay_installed_apk(
+                    evidence,
+                    folder,
+                    relative + "/before-apk",
+                    candidates[0],
+                    certificate,
+                ),
+                "Install previous identity receipt mismatch",
+            )
+        before = readback = after = None
+        if verified or available(relative + "/before/inventory.json"):
+            require(
+                previous_inventory is not None and "backup" in receipt,
+                "Install has no original/input backup",
+            )
+            before = replay_backup(
+                evidence, folder, relative + "/before", receipt["backup"]
+            )
+            ledger(
+                receipt.get("input_preservation"),
+                previous_inventory,
+                before,
+                successful=verified,
+            )
+        if verified or available(relative + "/before-readback.json"):
+            require(before is not None, "Install readback lacks before inventory")
+            readback = evidence.json(folder, relative + "/before-readback.json")
+            ledger(
+                receipt.get("backup_readback_preservation"),
+                before,
+                readback,
+                successful=verified,
+            )
+        if verified or available(relative + "/after-apk/installed.apk"):
+            require(
+                receipt.get("observed_build")
+                == replay_installed_apk(
+                    evidence, folder, relative + "/after-apk", build, certificate
+                ),
+                "Install observed identity receipt mismatch",
+            )
+        if verified or available(f"environment/{n:03d}/receipt.json"):
+            observed = environment(f"environment/{n:03d}", build, successful=verified)
+            require(
+                not verified or receipt.get("environment") == observed,
+                "Install environment receipt mismatch",
+            )
+        if verified or available(relative + "/after/inventory.json"):
+            require(
+                before is not None
+                and readback is not None
+                and "post_install" in receipt,
+                "Install after inventory lacks backup/readback",
+            )
+            after = replay_backup(
+                evidence, folder, relative + "/after", receipt["post_install"]
+            )
+            require(
+                receipt.get("data_changes") == inventory_changes(before, after),
+                "Install data-change ledger mismatch",
+            )
+            ledger(receipt.get("preservation"), before, after, successful=verified)
+            ledger(
+                receipt.get("post_readback_preservation"),
+                readback,
+                after,
+                successful=verified,
+            )
+        if verified:
+            previous_builds, previous_inventory = [build], after
+        elif receipt.get("install_attempted"):
+            previous_builds = list(
+                {b["apk_sha256"]: b for b in [*previous_builds, build]}.values()
+            )
+        if role is not None and verified:
+            root = capture_directory(folder, artifact["request"]["id"], role)
+            base = str(root.relative_to(folder))
+            if available(base + "/before-inventory.json"):
+                capture_before = evidence.json(root, "before-inventory.json")
+                preflight = ledger(
+                    evidence.json(root, "preflight-preservation.json"),
+                    previous_inventory,
+                    capture_before,
+                )
+                if available(base + "/after-capture/inventory.json"):
+                    captured = replay_backup(evidence, root, "after-capture")
+                    check = {
+                        "batch_id": artifact["request"]["id"],
+                        "role": role,
+                        "preflight_preservation": preflight,
+                        "changes": inventory_changes(capture_before, captured),
+                        "preservation": preservation_report(capture_before, captured),
+                    }
+                    checks.append(check)
+                    summary = evidence.json(root, "capture/summary.json")
+                    if summary.get("status") == "complete" and not summary.get(
+                        "fatal_error_details"
+                    ):
+                        _, _, expected_check = replay_capture(
+                            evidence,
+                            folder,
+                            artifact,
+                            role,
+                            inputs,
+                            value["screenshots"],
+                            previous_inventory,
+                            partial_mapping=True,
+                        )
+                        require(
+                            check == expected_check,
+                            "Completed capture continuity mismatch",
+                        )
+                    else:
+                        halted = True
+                    if not check["preservation"]["unexpected_changes"]:
+                        previous_inventory = captured
+                else:
+                    halted = True
+            else:
+                halted = True
+        ref_name = f"private/reference-{n:03d}-inventory.json"
+        if available(ref_name):
+            require(
+                build == reference["build"]
+                and original is not None
+                and previous_inventory is not None,
+                "Reference inventory has no authorized reference transaction",
+            )
+            current = evidence.json(folder, ref_name)
+            expected = {
+                "inventory": ref_name,
+                "allowed_outputs": [],
+                "prior_preservation": preservation_report(previous_inventory, current),
+                "preservation": preservation_report(original, current),
+            }
+            reference_checks.append(expected)
+            last_reference = current
+            if (
+                not expected["prior_preservation"]["unexpected_changes"]
+                and not expected["preservation"]["unexpected_changes"]
+            ):
+                previous_inventory = current
+    require(
+        journal.get("operations") == completed,
+        "Missing/altered completed install receipt journal",
+    )
+    require(
+        journal.get("capture_data_checks", []) == checks,
+        "Missing/altered partial capture preservation ledger",
+    )
+    require(
+        journal.get("restoration_checks", []) == reference_checks,
+        "Missing/altered reference preservation ledger",
+    )
+    if available("private/final-inventory.json"):
+        current = evidence.json(folder, "private/final-inventory.json")
+        require(
+            last_reference == current and original is not None,
+            "Final reference inventory receipt mismatch",
+        )
+        require(
+            journal.get("restoration_data_changes")
+            == inventory_changes(original, current),
+            "Final reference changes mismatch",
+        )
+        ledger(
+            journal.get("restoration_preservation"),
+            original,
+            current,
+            successful=value["restoration_verified"],
+        )
+    if value["restoration_verified"]:
+        replay_installed_apk(
+            evidence, folder, "private/final-apk", reference["build"], certificate
+        )
+        require(
+            original is None
+            or (
+                available("private/final-inventory.json")
+                and reference_checks
+                and not reference_checks[-1]["prior_preservation"]["unexpected_changes"]
+            ),
+            "Verified restoration lacks successful preservation boundary",
+        )
+
+
 def replay_operations(evidence, folder, catalog, inputs, value):
+    if value["mutation_run_version"] == 5 and value["status"] not in {
+        "qualified",
+        "probe_verified",
+    }:
+        return replay_available_operations(evidence, folder, catalog, inputs, value)
     journal = evidence.json(folder, "journal.json")
     require(
         journal.get("status") == value["status"]
@@ -1903,6 +3465,15 @@ def replay_operations(evidence, folder, catalog, inputs, value):
                 value["screenshots"],
                 after,
                 measurement_only=value.get("measurement_only", False),
+                legacy_measurement=(
+                    value["mutation_run_version"] == 2
+                    and value.get("measurement_only") is True
+                    and "cleanup_policy" not in journal
+                    and not any(
+                        "/reads/" in name or name.endswith("/hook-cleanup.json")
+                        for name in evidence.files
+                    )
+                ),
             )
             allowed_outputs.update(allowed)
             checks.append(check)
@@ -2015,7 +3586,7 @@ def verify_run(folder, catalog, inputs, *, evidence_sha256):
     require(
         set(index) == {"version", "files"}
         and type(index["version"]) is int
-        and index["version"] in {1, 2, 3, 4, 5}
+        and index["version"] in {1, 2, 3, 4, 5, 6}
         and type(index["files"]) is dict,
         "Unsupported evidence index",
     )
@@ -2036,7 +3607,7 @@ def verify_run(folder, catalog, inputs, *, evidence_sha256):
     )
     require(
         type(value["mutation_run_version"]) is int
-        and value["mutation_run_version"] in {1, 2, 3, 4}
+        and value["mutation_run_version"] in {1, 2, 3, 4, 5}
         and value["catalog_sha256"] == catalog.sha256
         and value["labels_created"] is False
         and value["screen_ids"] == catalog.plan["screen_ids"],
@@ -2070,10 +3641,33 @@ def verify_run(folder, catalog, inputs, *, evidence_sha256):
         "the exact archived 09acc674516196be2badfae247cc1ff76228fa17 producer, "
         "without rewriting or promoting evidence",
     )
-    new_rule = value["mutation_run_version"] == 4
+    require(
+        value["mutation_run_version"] != 4 and index["version"] != 5,
+        "Legacy D054 run v4/index 5 requires exact archived "
+        "960dae205aafcc679e8a2b7e7cbfd569a14deb88 producer; never rewrite or promote evidence",
+    )
+    new_rule = value["mutation_run_version"] == 5
+    has_d055 = (
+        "cleanup_policy" in value
+        or "cleanup_policy" in journal
+        or any(
+            name.endswith("/hook-cleanup.json") or "/reads/" in name
+            for name in evidence.files
+        )
+    )
+    require(
+        new_rule
+        or not has_d055
+        or (
+            value.get("measurement_only") is True
+            and value["mutation_run_version"] == 2
+            and index["version"] == 3
+        ),
+        "Legacy downgrade cannot hide D055 cleanup/read artifacts",
+    )
     if new_rule:
         require(
-            not value.get("measurement_only") and index["version"] == 5,
+            not value.get("measurement_only") and index["version"] == 6,
             "Legacy/outside-rule version/index/mode mismatch",
         )
         require(
@@ -2081,6 +3675,13 @@ def verify_run(folder, catalog, inputs, *, evidence_sha256):
             == canonical_bytes(outside_rule_policy()),
             "Outside-rule policy missing or altered",
         )
+        require(
+            value.get("cleanup_policy") == cleanup_policy()
+            and journal.get("cleanup_policy") == cleanup_policy(),
+            "D055 cleanup policy missing or altered",
+        )
+        replay_reads(evidence, folder, value, inputs, catalog)
+        replay_partial_d055(evidence, folder, catalog, inputs)
         # New normal evidence replays only with the exact current frozen producer;
         # a matching journal copy is corroboration, not independent authority.
         require(
@@ -2110,7 +3711,7 @@ def verify_run(folder, catalog, inputs, *, evidence_sha256):
             "Preservation policy missing or altered",
         )
     require(
-        (index["version"] == 5 and new_rule)
+        (index["version"] == 6 and new_rule)
         or (
             index["version"] == 3
             and value["mutation_run_version"] == 2
@@ -2139,6 +3740,8 @@ def verify_run(folder, catalog, inputs, *, evidence_sha256):
             == occurrence_matrix(value["screenshots"]),
             "Runtime success metadata/provenance mismatch",
         )
+        replay_operations(evidence, folder, catalog, inputs, value)
+    elif new_rule:
         replay_operations(evidence, folder, catalog, inputs, value)
     if value.get("measurement_complete"):
         measured = []
@@ -2305,14 +3908,21 @@ def verify_run(folder, catalog, inputs, *, evidence_sha256):
             == canonical_bytes(outside_usage(catalog, rederived, value["status"])),
             "Outside-rule usage replay mismatch",
         )
-        calibration_attempted = any(r["role"] == "calibration" for r in rederived)
+        calibration_rows = [r for r in rederived if r["role"] == "calibration"]
+        # replay_operations authenticates the ordered probe/control/calibration
+        # prefix. APK identity alone is not a role: production may reinstall it.
+        calibration_install = "private/install-004/install.json"
+        calibration_attempted = bool(calibration_rows) or (
+            calibration_install in evidence.files
+            and evidence.json(folder, calibration_install).get("build")
+            == catalog.calibration["build"]
+        )
         root = capture_directory(
             folder, catalog.calibration["request"]["id"], "calibration"
         )
         summary_path = str((root / "capture/summary.json").relative_to(folder))
-        if not calibration_attempted and summary_path in evidence.files:
-            # The existing capture summary is written before the first frame;
-            # authenticate its bytes and effective scope, not a new stage marker.
+        summary = {}
+        if summary_path in evidence.files:
             summary = evidence.json(root, "capture/summary.json")
             effective = inputs.with_build(catalog.calibration["build"])
             require(
@@ -2325,10 +3935,71 @@ def verify_run(folder, catalog, inputs, *, evidence_sha256):
                 "Calibration capture attempt summary scope mismatch",
             )
             calibration_attempted = True
+        calibration_attempted = calibration_attempted or any(
+            name.startswith(str(root.relative_to(folder)) + "/")
+            for name in evidence.files
+        )
+        calibration_expected = {k[2:] for k in authorized if k[1] == "calibration"}
+        keys = [(r["screen"], r["language"], r["pass"]) for r in calibration_rows]
+        complete = (
+            len(keys) == len(calibration_expected)
+            and set(keys) == calibration_expected
+            and all(r["qualified"] for r in calibration_rows)
+            and all(
+                set(passes) == {1, 2} and passes[1] == passes[2]
+                for key, passes in repeats.items()
+                if key[1] == "calibration"
+            )
+            and summary.get("status") == "complete"
+            and not summary.get("fatal_error_details")
+            and not summary.get("cleanup_errors")
+            and summary.get("settings_restored") is True
+            and summary.get("saves_unchanged") is True
+            and not any(
+                p["role"] == "calibration"
+                for p in value["outside_rule_usage"]["engineering_pauses"]
+            )
+            and str((root / "after-capture/inventory.json").relative_to(folder))
+            in evidence.files
+            and any(
+                c.get("role") == "calibration"
+                and c.get("batch_id") == catalog.calibration["request"]["id"]
+                and not c.get("preservation", {}).get("unexpected_changes")
+                for c in journal.get("capture_data_checks", [])
+            )
+        )
+        if complete:
+            require(
+                calibration_install in evidence.files,
+                "Calibration completion lacks exact verified install",
+            )
+            install = evidence.json(folder, calibration_install)
+            require(
+                install.get("build") == catalog.calibration["build"]
+                and install.get("status") == "verified",
+                "Calibration completion lacks exact verified install",
+            )
+            calibration_input = replay_backup(
+                evidence,
+                folder,
+                str(Path(calibration_install).parent / "after"),
+                install.get("post_install"),
+            )
+            replay_capture(
+                evidence,
+                folder,
+                catalog.calibration,
+                "calibration",
+                inputs,
+                value["screenshots"],
+                calibration_input,
+            )
+        calibration_status = (
+            "passed" if complete else "failed" if calibration_attempted else "not_run"
+        )
         require(
-            value.get("calibration_status") in {"failed", "passed"}
-            or not calibration_attempted,
-            "Calibration status contradicts authenticated capture attempt",
+            value.get("calibration_status") == calibration_status,
+            "Calibration status contradicts authenticated attempt/repeat/gates",
         )
     require(
         value["dynamic_split_rate"] == split_rate(value["dynamic_tests"]),

@@ -790,3 +790,68 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
   and frozen producer may perform new normal calibration/production and the
   required second complete run under the owner's exact device authorization.
   No labels, metrics, goldens, fixtures, split, build or other gate changes.
+
+## D-055 — Durable 300-second reads and exact plan-new hook cleanup
+
+- **Date:** 2026-11-06
+- **Status:** Proposed
+- **Decision:** Record Anton's explicit task-chat authorization. App-data
+  backup/readback reads have an exact **300 s** operational hang limit. Preserve
+  root/path/purpose, actual retained bytes/hash, monotonic start/end/duration,
+  throughput, limit, outcome/completion and a strict **>60 s** flag for every
+  attempted package-root, SaveFiles and settings read, including inventory-only,
+  failed, preparation, readback and final reads. A zero measured duration has
+  undefined (`null`) throughput, never infinity. Retain partial binary bytes in
+  private evidence, not decoded public errors. Empty, malformed or truncated
+  tar streams (including missing terminal blocks) stop; exit zero is not proof.
+- **Cleanup authority:** Independently rederive the exact v2 plan, bind its
+  complete starting inventory and serial, and recheck runtime newness before
+  any settings write or hook launch. A collision, alias or absent existing
+  hook directory stops before writes. After writers are force-stopped, retain
+  the complete pre-cleanup inventory and authenticate **all** present exact
+  planned final/temporary files against actual host re-read bytes/hashes before
+  the first unlink. Pull and retain an otherwise unpulled planned partial file,
+  or fail closed. Missing files are absent/unavailable, never successful pairs.
+  Delete only those exact new regular paths; no pre-existing hook file, hook
+  directory, near-name, namespace sweep, wildcard or recursive removal.
+- **Identity and failure boundaries:** Reject unsafe/duplicate paths, symlink
+  leaves/ancestors, host aliases, hard links and changed file/ancestor identity
+  or content. Guard identity/hash and exact unlink in one shell operation
+  while the package is force-stopped and the released device is exclusively
+  operator-owned; mutation's existing shared device lock remains mandatory.
+  A competing root/ADB operator is outside this quiescent boundary: do not run
+  concurrently or treat separate stat/hash and unguarded removal as safe.
+  Unsupported identity/quiescence/guard observations fail closed. Record each
+  attempted/deleted/absent/failed transition, including partial cleanup; do not
+  retry. Always attempt a fresh complete post-cleanup inventory and retain its
+  failure separately if unavailable. Compare to the starting inventory with
+  **exactly D-051**, without any new-output or hook-directory exemption. Carry
+  that verified inventory through preparation, later installs and final1271048
+  restoration; no accumulated output allowlist or inter-stage rebaselining.
+- **Why:** An approximately 85 MB read immediately after capture had little
+  margin at 30 s; the operational timeout catches hangs, not performance
+  qualification. Retained hook outputs must not accumulate across runs.
+- **Consequences:** List every >60 s observation in the Report, with bytes,
+  actual duration, throughput and outcome. Failed/incomplete reads and cleanup,
+  settings, save, inventory or telemetry-persistence failures are fatal
+  operational stops, never split/interference/diagnostic continuation. Preserve
+  primary, native cause and cleanup/cancellation failures independently.
+  Successful cleanup cannot qualify failed pixels, dumps or repeats.
+  Fresh normal evidence is **run v5 / index6**, with versioned `D055` cleanup
+  proofs and authenticated every-read receipts/raw bytes. Semantic replay
+  rederives exact authority, actual host bindings, inventories, transitions,
+  D-051 preservation and numeric/completion/coverage claims, including available
+  failed/partial attempts. Bind the new `app_data.py` executable helper in
+  producer hashes. Current replay rejects D-054 v4/index5; use the exact archived
+  `960dae205aafcc679e8a2b7e7cbfd569a14deb88` producer without rewriting evidence.
+  D-053 stays archived-only and older strict failure/measurement evidence stays
+  readable and permanently nonqualifying as documented.
+  D-054/v2 pixel policy, alpha0, genuine unchanged glyph bounds, exact paired
+  coordinates/oriented values, nonpixel/occurrence/N/density/raw-repeat gates,
+  >10% completed-batch engineering pause, catalog, fixtures, install `-r -d`,
+  per-build environment checks, final1271048 restoration, locks, splits,
+  labels/provider/new-build and publication/device approval gates are unchanged.
+  Fresh host checks and independent review precede the scoped capture audit,
+  calibration/production and second full run; this entry is not execution proof
+  or additional device authorization. The entire earlier decision prefix stays
+  byte-for-byte unchanged.

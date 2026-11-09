@@ -67,7 +67,11 @@ def transaction(tmp_path, monkeypatch):
     path = tmp_path / "artifact.apk"
     path.write_bytes(b"synthetic APK")
     build = {"version_code": "1800000001", "apk_sha256": digest(path.read_bytes())}
-    monkeypatch.setattr(api(), "read_app_data", lambda device: {"private": archive()})
+    monkeypatch.setattr(
+        api(),
+        "read_app_data",
+        lambda device, *, evidence_dir, purpose: {"private": archive()},
+    )
     monkeypatch.setattr(
         api(),
         "installed_identity",
@@ -75,6 +79,51 @@ def transaction(tmp_path, monkeypatch):
     )
     checks = []
     return device, path, build, checks
+
+
+def test_d055_install_supplies_durable_scope_for_all_reads(tmp_path, monkeypatch):
+    reader = api().read_app_data
+    device, path, build, _checks = transaction(tmp_path, monkeypatch)
+    monkeypatch.setattr(api(), "read_app_data", reader)
+    device.root = device.unroot = lambda: None
+    device.shell = lambda *args: "present"
+    calls = []
+
+    def native(*args, timeout_s=30):
+        if args[:2] == ("exec-out", "tar"):
+            calls.append(timeout_s)
+            return archive()
+        assert args[:3] == ("install", "-r", "-d")
+        return b"Success\n"
+
+    device.run = native
+    error = None
+    try:
+        result = api().install_verified(
+            device,
+            path,
+            build,
+            "a" * 64,
+            tools=None,
+            folder=tmp_path / "tx",
+            environment=lambda build: None,
+        )
+    except CaptureError as exc:
+        error = str(exc)
+    assert error is None, f"Install lost required per-read evidence scope: {error}"
+    assert result["status"] == "verified"
+    from l10n_checker.screen_manifest import json_bytes
+
+    receipts = [
+        json_bytes(p.read_bytes()) for p in (tmp_path / "tx/reads").glob("*.json")
+    ]
+    assert len(receipts) == len(calls) == 9
+    assert calls == [300] * 9
+    assert {r["purpose"] for r in receipts} == {
+        "install-before",
+        "install-readback",
+        "install-after",
+    }
 
 
 def test_install_always_uses_r_d_and_environment_check(tmp_path, monkeypatch):
@@ -98,7 +147,9 @@ def test_incomplete_backup_prevents_install(tmp_path, monkeypatch):
     monkeypatch.setattr(
         api(),
         "read_app_data",
-        lambda device: (_ for _ in ()).throw(CaptureError("backup failed")),
+        lambda device, *, evidence_dir, purpose: (_ for _ in ()).throw(
+            CaptureError("backup failed")
+        ),
     )
     with pytest.raises(CaptureError, match="backup"):
         api().install_verified(
@@ -118,7 +169,9 @@ def test_data_loss_stops_without_repair_or_uninstall(tmp_path, monkeypatch):
     snapshots = iter(
         [{"private": archive()}, {"private": archive()}, {"private": archive(b"LOST")}]
     )
-    monkeypatch.setattr(api(), "read_app_data", lambda device: next(snapshots))
+    monkeypatch.setattr(
+        api(), "read_app_data", lambda device, *, evidence_dir, purpose: next(snapshots)
+    )
     with pytest.raises(CaptureError, match="preserv"):
         api().install_verified(
             device,
@@ -335,7 +388,9 @@ def test_d051_install_records_backup_readback_and_install_exemptions(
         for raw in (b"before", b"readback", b"installed")
     ]
     reads = iter(snapshots)
-    monkeypatch.setattr(api(), "read_app_data", lambda device: next(reads))
+    monkeypatch.setattr(
+        api(), "read_app_data", lambda device, *, evidence_dir, purpose: next(reads)
+    )
     caught = None
     try:
         api().install_verified(
@@ -399,7 +454,9 @@ def test_d051_metadata_of_file_created_at_readback_stays_strict(tmp_path, monkey
             )
         ]
     )
-    monkeypatch.setattr(api(), "read_app_data", lambda device: next(snapshots))
+    monkeypatch.setattr(
+        api(), "read_app_data", lambda device, *, evidence_dir, purpose: next(snapshots)
+    )
     rejected = False
     try:
         api().install_verified(
@@ -574,6 +631,32 @@ def test_runtime_timeout_and_cleanup_timeout_are_separately_journaled(tmp_path):
     )
 
 
+def test_d055_normal_cancellation_and_final_cleanup_preserve_both(tmp_path):
+    import l10n_checker.mutation_run as runtime
+
+    run = object.__new__(runtime.MutationRun)
+    run.folder = tmp_path
+    run.content = {"status": "not_run", "capture_set_qualified": False}
+    run.journal = {}
+    run.checkpoint = lambda: None
+    original = KeyboardInterrupt("primary cancellation")
+    cleanup = KeyboardInterrupt("cleanup cancellation")
+
+    def probe():
+        raise original
+
+    def restore():
+        raise cleanup
+
+    run.probe, run.restore = probe, restore
+    with pytest.raises(KeyboardInterrupt) as caught:
+        run.run(probe_only=True)
+    assert caught.value is original, "Final cleanup replaced the primary cancellation"
+    assert run.journal["error_details"]["type"] == "KeyboardInterrupt"
+    assert run.journal["restoration_error_details"]["message"] == "cleanup cancellation"
+    assert (tmp_path / "evidence-index.json").is_file()
+
+
 def test_preflight_refuses_multiple_emulators_before_environment_root_check(
     monkeypatch,
 ):
@@ -623,7 +706,8 @@ def test_backup_unroot_double_failure_retains_primary_and_install_receipt(
         if phase == "root":
             raise original
 
-    def backup(*args):
+    def backup(*args, timeout_s):
+        assert timeout_s == 300
         calls.append("backup")
         assert args[:3] == ("exec-out", "tar", "-cf"), "Install must not start"
         raise original
@@ -667,7 +751,10 @@ def test_backup_unroot_double_failure_retains_primary_and_install_receipt(
     details = receipt["error_details"]
     primary = details["cause"] if wrapped else details
     assert primary["type"] == "TimeoutExpired"
-    assert primary["stdout"] == "backup stdout"
+    if phase == "archive":
+        assert primary["stdout_bytes"] == len(b"backup stdout")
+    else:
+        assert primary["stdout"] == "backup stdout"
     assert primary["stderr"] == "backup stderr"
     cleanup_details = details["cleanup_errors"]
     assert len(cleanup_details) == 1

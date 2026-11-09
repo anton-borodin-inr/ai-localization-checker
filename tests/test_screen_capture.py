@@ -112,7 +112,10 @@ class FakeDevice:
             raise CaptureError("partial write")
         self.settings = data
 
-    def run(self, *args):
+    def run(self, *args, timeout_s=30):
+        assert timeout_s in {30, 300}
+        if args == ("exec-out", "cat", SETTINGS_PATH):
+            return self.read_file(SETTINGS_PATH)
         assert args[:3] == ("exec-out", "tar", "-cf")
         stream = io.BytesIO()
         with tarfile.open(fileobj=stream, mode="w") as archive:
@@ -523,6 +526,24 @@ def test_faults_are_reported_and_backups_retained(run_env, fault):
         assert not list(folder.glob("pass-*/*.png"))
 
 
+def test_d055_prepare_records_settings_and_every_saves_read(run_env):
+    device, folder, inputs = run_env
+    prepare_device(device, inputs, folder)
+    receipts = [
+        json.loads(p.read_bytes()) for p in sorted((folder / "reads").glob("*.json"))
+    ]
+    assert len(receipts) == 4, (
+        "Settings backup/readback and both SaveFiles reads must survive"
+    )
+    assert [r["purpose"] for r in receipts] == [
+        "settings-backup",
+        "settings-backup-readback",
+        "saves-backup",
+        "saves-backup-readback",
+    ]
+    assert all(r["limit_s"] == 300 and r["outcome"] == "complete" for r in receipts)
+
+
 def test_prepare_only_never_writes_app_data(run_env):
     device, folder, inputs = run_env
     plan = prepare_device(device, inputs, folder)
@@ -713,8 +734,13 @@ def test_real_capture_backup_unroot_failure_keeps_primary(
     device, folder, inputs = run_env
     original, cleanup = native_timeout("backup"), native_timeout("unroot")
 
-    def backup(*args):
+    run = device.run
+
+    def backup(*args, **kwargs):
+        if args == ("exec-out", "cat", SETTINGS_PATH):
+            return run(*args, **kwargs)
         assert args[:3] == ("exec-out", "tar", "-cf")
+        assert kwargs == {"timeout_s": 300}
         raise original
 
     def unroot():
@@ -734,7 +760,8 @@ def test_real_capture_backup_unroot_failure_keeps_primary(
         assert summary["fatal_error"] == str(original)
         assert json.loads((folder / "summary.json").read_bytes()) == summary
         details = summary["fatal_error_details"]
-    assert details["cause"]["stdout"] == "backup stdout"
+    assert details["cause"]["stdout_bytes"] == len(b"backup stdout")
+    assert (folder / "reads/000003.bin").read_bytes() == b"backup stdout"
     assert details["cause"]["stderr"] == "backup stderr"
     assert details["cleanup_errors"][0]["cause"]["stdout"] == "unroot stdout"
     assert details["cleanup_errors"][0]["cause"]["stderr"] == "unroot stderr"

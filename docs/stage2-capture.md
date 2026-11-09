@@ -82,7 +82,9 @@ and verifies readback. It leaves the app stopped and adbd as shell. It writes
 **no app data**. Private backups remain in the selected output folder (directory
 0700; files 0600). `device-plan.json` lists exact settings hashes and selected
 screen orders. For v2 it also lists every temporary/final device hook output
-and conditional hook-directory creation.
+and its D-055 cleanup authority. The hook directory must already exist; an
+absent directory fails before writes, without creating/removing it. The plan
+also binds the complete package-root starting inventory and directory identity.
 
 The plan binds the **original, unfiltered manifest hash**, selected IDs, split
 name (or explicit-ID selection), and split-file hash, as well as the existing
@@ -107,14 +109,41 @@ uv run l10n-capture --manifest fixtures/stage2/screens-v2.json --split dev \
 Omitting `--lang` uses the manifest language list. `--serial` selects an emulator.
 `--device-plan` checks the prepared selection and operations before app-data
 writes. A repeated v2 capture requires a fresh plan and separate approval;
-do not reuse request IDs or delete prior device outputs.
+do not reuse request IDs or manually delete prior device outputs. D-055 removes
+only the exact new outputs of the current verified plan, never older files.
 Two passes are mandatory: forward then reverse screen order, keeping languages
 outside the screen loop. Normally there are four settings pushes and four cold
 starts; the first request launches directly into hook mode. One final write
 restores original settings byte for byte. Every write attempt/readback is
 journaled. Backups remain after success and failure. No app installation, save
 copy or data deletion occurs. Failed restoration retains backups and reports
-an error requiring manual recovery; adbd is unrooted on exit.
+an error requiring manual recovery; adbd is unrooted on exit. The sole D-055
+deletion exception is the current plan's new final/temporary hook files after
+their actual retained host bytes/hashes are verified. No save, settings,
+pre-existing hook file or directory is a cleanup target.
+
+App-data/settings/SaveFiles backup and readback reads have an exact 300 s hang
+limit; native 30 s defaults, environment limits and hook deadlines are unchanged.
+Private numbered `reads/*.json`/`.bin` receipts survive preparation, inventory-only,
+readback, failed and final reads. They bind purpose/root/path, actual bytes/hash,
+monotonic duration, throughput, outcome/completion, limit and `over_60s`. Report
+every read over 60 s, including failures. Zero-duration throughput is `null`.
+Failed/incomplete reads and malformed/truncated tars stop without retries.
+
+After settings restoration, D-055 cleanup force-stops the package and proves
+its stopped state under the exclusively released device/operator boundary;
+do not allow a concurrent root/ADB operator. It retains complete before-cleanup
+inventory and verifies the **entire** eligible host-pulled set before any unlink.
+Unpulled planned final/temp bytes are retained exactly or cleanup fails closed.
+Safe identities, no symlinks/hard links/ancestor aliases, and a guarded exact
+private-root unlink protect against substitution by the stopped app writer.
+No wildcard, recursive removal, namespace sweep or hook-directory deletion is
+authorized. `hook-cleanup.json` plus summary record exact attempted/deleted/absent
+states and host bindings, including partial failures. A fresh complete post
+inventory must equal start under D-051 only, with no new-output exemption.
+Cleanup/telemetry/verification failures are fatal, never successful captures or
+permission to continue. Primary and cleanup/cancellation errors are retained
+separately; successful cleanup cannot repair failed image/dump qualification.
 
 A unique Android log marker establishes a fresh logcat barrier before each
 request. The D-038 extras are sent, with a unique request id and padded

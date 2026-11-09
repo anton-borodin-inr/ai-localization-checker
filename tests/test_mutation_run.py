@@ -46,11 +46,6 @@ def synthetic_completed_runtime(tmp_path_factory):
     from l10n_checker.capture import SETTINGS_PATH
     from l10n_checker.mutation_catalog import read_catalog
     from l10n_checker.mutation_device import DATA_ROOTS
-    from l10n_checker.screen_capture import (
-        HOOK_DIRECTORY_OPERATION,
-        planned_hook_outputs,
-        planned_operations,
-    )
 
     runtime = api()
     root = tmp_path_factory.mktemp("synthetic-runtime").resolve()
@@ -67,7 +62,6 @@ def synthetic_completed_runtime(tmp_path_factory):
     inputs.source_manifest_sha256 = catalog.data["inputs"]["manifest"]["sha256"]
 
     settings_raw = b'{"language":"English","synthetic":true}\n'
-    settings_stat = f"10001 10001 600 {len(settings_raw)}"
 
     def archive(files):
         stream = io.BytesIO()
@@ -89,26 +83,14 @@ def synthetic_completed_runtime(tmp_path_factory):
         "device_encrypted": {"synthetic": b"unchanged"},
     }
 
-    def snapshot(folder):
-        private = folder / "private"
-        private.mkdir()
-        (private / "GameSettings.json").write_bytes(settings_raw)
-        (private / "SaveFiles.tar").write_bytes(saves)
-        return {
-            "settings_sha256": digest(settings_raw),
-            "settings_stat": settings_stat,
-            "settings_backup": "private/GameSettings.json",
-            "saves_backup": "private/SaveFiles.tar",
-            "saves": {
-                "./" + name: digest(raw) for name, raw in inputs.fixtures.items()
-            },
-            "save_copies_needed": [],
-        }
+    from test_text_dump import DumpDevice
 
-    class SyntheticDevice:
+    class SyntheticDevice(DumpDevice):
         serial = "emulator-5554"
 
         def __init__(self, volatile=False, transform=None):
+            super().__init__(inputs)
+            self.settings = settings_raw
             self.apk = catalog.apk_path(
                 {"apk": catalog.data["reference"]["apk"]}
             ).read_bytes()
@@ -119,17 +101,29 @@ def synthetic_completed_runtime(tmp_path_factory):
                 0,
             )
 
-        def run(self, *args):
+        def run(self, *args, timeout_s=30):
             self.calls.append(args)
             if args == ("devices",):
                 return b"List of devices attached\nemulator-5554\tdevice\n"
             if args[:3] == ("install", "-r", "-d"):
                 self.apk = Path(args[3]).read_bytes()
                 return b"Success\n"
+            if args[:3] == ("exec-out", "run-as", "com.unciv.app"):
+                return self.hook_files[args[-1]]
             if args[:2] == ("exec-out", "cat"):
+                if args[-1] == SETTINGS_PATH:
+                    return self.settings
+                if args[-1].startswith(DATA_ROOTS["private"] + "/files/l10n-hook/"):
+                    return self.hook_files[
+                        args[-1].removeprefix(DATA_ROOTS["private"] + "/")
+                    ]
                 return self.apk
             if args[:2] == ("exec-out", "tar"):
+                assert timeout_s == 300
                 from test_mutation_device import BOOKKEEPING
+
+                if args[-2].endswith("/files/SaveFiles"):
+                    return saves
 
                 name = next(
                     name for name, path in DATA_ROOTS.items() if path == args[-2]
@@ -137,6 +131,9 @@ def synthetic_completed_runtime(tmp_path_factory):
                 if name == "private":
                     self.inventory_number += 1
                 files = dict(app_files[name])
+                if name == "private":
+                    files.update(self.hook_files)
+                    files["files/GameSettings.json"] = self.settings
                 if self.volatile and name == "private":
                     files.update(
                         {
@@ -147,14 +144,36 @@ def synthetic_completed_runtime(tmp_path_factory):
                     )
                 if self.transform:
                     self.transform(name, self.inventory_number, files)
-                return archive(files)
+                raw = archive(files)
+                if name == "private":
+                    output = io.BytesIO()
+                    with (
+                        tarfile.open(fileobj=io.BytesIO(raw)) as source,
+                        tarfile.open(fileobj=output, mode="w") as target,
+                    ):
+                        for directory in (".", "files", "files/l10n-hook"):
+                            member = tarfile.TarInfo(directory)
+                            member.type, member.uid, member.gid, member.mode = (
+                                tarfile.DIRTYPE,
+                                10001,
+                                10001,
+                                0o700,
+                            )
+                            target.addfile(member)
+                        for member in source.getmembers():
+                            target.addfile(member, source.extractfile(member))
+                    raw = output.getvalue()
+                return raw
             pytest.fail(f"Unexpected synthetic device command: {args}")
 
         def shell(self, *args):
             if args[:2] == ("pm", "path"):
                 return "package:/data/app/synthetic/base.apk"
-            assert len(args) == 1 and args[0].startswith("if [ -d ")
-            return "present"
+            if args == ("wm", "density"):
+                return "Physical density: 420"
+            if len(args) == 1 and args[0].startswith("sha256sum "):
+                return digest(self.apk) + "  base.apk"
+            return super().shell(*args)
 
         def build(self):
             import io
@@ -169,13 +188,54 @@ def synthetic_completed_runtime(tmp_path_factory):
             pass
 
         def force_stop(self):
-            pass
+            self.running = False
 
         def root(self):
-            pass
+            self.rooted = True
 
         def unroot(self):
-            pass
+            self.rooted = False
+
+        def size(self):
+            return tuple(inputs.manifest.resolution)
+
+        def request(self, device, screen, token, state, timeout, **kwargs):
+            self.running = True
+            game_language = json_bytes(self.settings)["language"]
+            elements = []
+            if (screen, game_language) == ("tech-picker", "English"):
+                mutated = self.build() != catalog.control["build"]["version_code"]
+                elements = [
+                    element(
+                        "Mining..." if mutated else "Mining",
+                        "root/mining",
+                        input_text="Mining and ore extraction" if mutated else "Mining",
+                        source_key=None,
+                        ellipsis_applied=mutated,
+                    )
+                ]
+            value = dump_for(
+                screen=screen,
+                language=game_language,
+                state=state,
+                elements=elements,
+                size=list(self.size()),
+            )
+            value["build_version_code"] = int(self.build())
+            self.raw_dump = canonical_bytes(value)
+            relative = f"files/l10n-hook/{token}.json"
+            self.hook_files[relative] = self.raw_dump
+            return {
+                "dump": {"file": relative, "sha256": digest(self.raw_dump)},
+                "events": [],
+                "frames": 2,
+                "panes": list(state["scroll_to"]),
+            }
+
+        def screenshot(self):
+            from conftest import make_png
+
+            return make_png(*self.size())
 
     def native(command, **kwargs):
         if command == ["pgrep", "-fl", "l10n-capture"]:
@@ -184,164 +244,6 @@ def synthetic_completed_runtime(tmp_path_factory):
         return SimpleNamespace(
             returncode=0, stdout=b"synthetic environment check", stderr=b""
         )
-
-    def prepare(device, effective, folder, languages):
-        folder.mkdir(parents=True)
-        backup = snapshot(folder)
-        plan = {
-            "mode": "prepare_only",
-            "app_data_writes": 0,
-            "manifest_sha256": effective.sha256,
-            "selection": effective.capture_selection(languages),
-            "observed_build": {
-                "version_code": effective.manifest.build.version_code,
-                "apk_sha256": effective.manifest.build.apk_sha256,
-                "density_dpi": effective.manifest.density_dpi,
-            },
-            "backup": backup,
-            "serial": device.serial,
-            "request_namespace": "c" * 32,
-            "planned_app_data_operations": planned_operations(
-                effective, languages, digest(settings_raw)
-            ),
-            "planned_hook_directory_operation": HOOK_DIRECTORY_OPERATION,
-            "planned_hook_output_operations": planned_hook_outputs(
-                effective, languages, "c" * 32
-            ),
-        }
-        (folder / "device-plan.json").write_bytes(canonical_bytes(plan))
-        return plan
-
-    def capture(
-        device, effective, folder, languages, *, on_pair, variant, device_plan, **kwargs
-    ):
-        folder.mkdir()
-        backup = snapshot(folder)
-        plan = json_bytes(device_plan.read_bytes())
-        output_map = {
-            (o["screen"], o["language"], o["pass"]): o
-            for o in plan["planned_hook_output_operations"]
-        }
-        operations = []
-        records = []
-        for n in (1, 2):
-            for language, game_language in (("en", "English"), ("de", "German")):
-                operations.append(
-                    {
-                        "operation": "replace_settings",
-                        "path": SETTINGS_PATH,
-                        "sha256": digest(effective.settings[language]),
-                        "status": "verified",
-                        "language": language,
-                        "pass_number": n,
-                    }
-                )
-                for screen in effective.screens(reverse=n == 2):
-                    elements = []
-                    if (screen.id, language) == ("tech-picker", "en"):
-                        mutated = variant != "clean"
-                        elements = [
-                            element(
-                                "Mining..." if mutated else "Mining",
-                                "root/mining",
-                                input_text="Mining and ore extraction"
-                                if mutated
-                                else "Mining",
-                                source_key=None,
-                                ellipsis_applied=mutated,
-                            )
-                        ]
-                    dump = dump_for(
-                        screen=screen.id,
-                        language=game_language,
-                        state=effective.states[screen.id, language],
-                        elements=elements,
-                    )
-                    dump["build_version_code"] = int(
-                        effective.manifest.build.version_code
-                    )
-                    pair_path = write_pair(folder / f"{screen.id}-{language}-{n}", dump)
-                    pair = json_bytes(pair_path.read_bytes())
-                    pair["build"] = effective.manifest.build.model_dump()
-                    pair_path.write_bytes(canonical_bytes(pair))
-                    output = output_map[screen.id, language, n]
-                    record = {
-                        "screen": screen.id,
-                        "language": language,
-                        "pass": n,
-                        "pair": str(pair_path.relative_to(folder)),
-                        "status": "captured",
-                        "request": output["request"],
-                        "state": effective.states[screen.id, language],
-                        "png": str(
-                            (pair_path.parent / pair["png"]).relative_to(folder)
-                        ),
-                        "dump": str(
-                            (pair_path.parent / pair["dump"]).relative_to(folder)
-                        ),
-                        **{
-                            key: pair[key]
-                            for key in ("png_sha256", "rgba_sha256", "dump_sha256")
-                        },
-                    }
-                    if not records:
-                        operations.append(
-                            {**HOOK_DIRECTORY_OPERATION, "status": "verified_present"}
-                        )
-                    operations.append(
-                        {
-                            "operation": "hook_output",
-                            **output,
-                            "status": "verified",
-                            "sha256": pair["dump_sha256"],
-                        }
-                    )
-                    records.append(record)
-                    on_pair(record)
-        operations.append(
-            {
-                "operation": "restore_original_settings",
-                "path": SETTINGS_PATH,
-                "sha256": digest(settings_raw),
-                "status": "verified",
-            }
-        )
-        summary = {
-            "schema_version": 1,
-            "status": "complete",
-            "settings_restored": True,
-            "saves_unchanged": True,
-            "records": records,
-            "backup": backup,
-            "manifest_sha256": effective.sha256,
-            "selection": plan["selection"],
-            "languages": languages,
-            "passes": ["forward", "reverse"],
-            "device_plan_sha256": digest(device_plan.read_bytes()),
-            "observed_build": plan["observed_build"],
-            "planned_app_data_operations": plan["planned_app_data_operations"],
-            "app_data_operations": operations,
-            "live_provider_requests": 0,
-            "api_spend_usd": 0,
-            "comparisons": [
-                {
-                    "screen": s.id,
-                    "language": language,
-                    "status": "identical",
-                    "dump_status": "identical",
-                    "different_pixels": 0,
-                    "total_pixels": effective.manifest.resolution[0]
-                    * effective.manifest.resolution[1],
-                    "different_share": 0.0,
-                    "bounding_box": None,
-                    "bounding_box_convention": "[left, top, right-exclusive, bottom-exclusive] or null",
-                }
-                for language in languages
-                for s in effective.screens(language)
-            ],
-        }
-        (folder / "summary.json").write_bytes(canonical_bytes(summary))
-        return summary
 
     def execute(
         name,
@@ -356,11 +258,20 @@ def synthetic_completed_runtime(tmp_path_factory):
         device = SyntheticDevice(volatile, transform)
         with pytest.MonkeyPatch.context() as monkeypatch:
             monkeypatch.setattr(subprocess, "run", native)
-            monkeypatch.setattr(runtime, "prepare_device", prepare)
+            from l10n_checker.screen_capture import capture_manifest as real_capture
+            from l10n_checker.screen_capture import prepare_device as real_prepare
+
+            monkeypatch.setattr(runtime, "prepare_device", real_prepare)
+
+            def native_capture(device, effective, folder, languages, **kw):
+                return real_capture(
+                    device, effective, folder, languages, request=device.request, **kw
+                )
+
             monkeypatch.setattr(
                 runtime,
                 "capture_manifest",
-                capture_wrapper(capture) if capture_wrapper else capture,
+                capture_wrapper(native_capture) if capture_wrapper else native_capture,
             )
             run = runtime.MutationRun(
                 catalog,
@@ -405,10 +316,976 @@ def synthetic_runtime(synthetic_completed_runtime, tmp_path, request):
     return target, catalog, inputs, result
 
 
+@pytest.mark.parametrize("leftover", [False, True])
+def test_d055_runtime_final_read_has_durable_scope(tmp_path, monkeypatch, leftover):
+    from types import SimpleNamespace
+
+    from test_mutation_device import archive
+
+    run = object.__new__(api().MutationRun)
+    run.folder = tmp_path
+    (tmp_path / "private").mkdir()
+    run.restored, run.needs_restore, run.restore_error = False, False, None
+    run.device = SimpleNamespace(unroot=lambda: None)
+    run.tools = None
+    run.counter = 2
+    build = {
+        "version_code": "1271048",
+        "apk_sha256": "a" * 64,
+        "certificate_sha256": "c" * 64,
+    }
+    run.inputs = SimpleNamespace(
+        manifest=SimpleNamespace(build=SimpleNamespace(apk_sha256="a" * 64))
+    )
+    run.catalog = SimpleNamespace(
+        data={"signing": {"reference_certificate_sha256": "c" * 64}}
+    )
+    run.original_inventory = run.last_inventory = api().data_inventory(
+        {"private": archive()}
+    )
+    run.allowed_outputs = {"private:leftover"}
+    run.journal, run.content = {}, {}
+    run.checkpoint = lambda: None
+    monkeypatch.setattr(api(), "installed_identity", lambda *a: build)
+    observed = []
+
+    def read(device, *, evidence_dir=None, purpose="app-data"):
+        observed.append((evidence_dir, purpose))
+        if leftover:
+            import io
+            import tarfile
+
+            output = io.BytesIO()
+            with tarfile.open(fileobj=output, mode="w") as tar:
+                for name, value in (("save", b"save"), ("leftover", b"new")):
+                    member = tarfile.TarInfo("./" + name)
+                    member.size, member.uid, member.gid, member.mode = (
+                        len(value),
+                        10001,
+                        10001,
+                        0o600,
+                    )
+                    tar.addfile(member, io.BytesIO(value))
+            result = {"private": output.getvalue()}
+            run.last_inventory = api().data_inventory(result)
+            return result
+        return {"private": archive()}
+
+    monkeypatch.setattr(api(), "read_app_data", read)
+    error = None
+    try:
+        run._restore_once()
+    except CaptureError as exc:
+        error = exc
+    assert (error is not None) is leftover, (
+        "Final restoration must not exempt an accumulated output union"
+    )
+    assert observed == [(tmp_path / "private/reads", "reference-002")], (
+        "Final inventory loses durable telemetry scope"
+    )
+
+
+def test_d055_real_runtime_cleanup_and_every_read_survive_final_boundary(
+    synthetic_completed_runtime,
+):
+    folder, _catalog, _inputs, result = synthetic_completed_runtime["completed"]
+    assert result["status"] == "qualified"
+    proofs = list(folder.glob("artifacts/*/*/capture/hook-cleanup.json"))
+    assert len(proofs) == 3
+    for path in proofs:
+        proof = json_bytes(path.read_bytes())
+        assert proof["status"] == "verified"
+        assert proof["preservation"]["unexpected_changes"] == []
+        assert sum(r["status"] == "deleted" for r in proof["paths"]) == 20
+    receipts = [json_bytes(p.read_bytes()) for p in folder.rglob("reads/*.json")]
+    assert {
+        "original-before",
+        "original-readback",
+        "reference-002",
+        "reference-006",
+    } <= {r["purpose"] for r in receipts}
+    assert all(r["limit_s"] == 300 and r["outcome"] == "complete" for r in receipts)
+    assert json_bytes((folder / "evidence-index.json").read_bytes())["version"] == 6
+
+
+def test_d055_rehashed_missing_cleanup_cannot_qualify(synthetic_runtime):
+    folder, catalog, inputs, _ = synthetic_runtime
+    root = next((folder / "artifacts/clean").iterdir()) / "capture"
+    (root / "hook-cleanup.json").unlink()
+    path = root / "summary.json"
+    summary = json_bytes(path.read_bytes())
+    summary.pop("hook_cleanup")
+    path.write_bytes(canonical_bytes(summary))
+    with pytest.raises(CaptureError, match="cleanup|D055|receipt"):
+        api().verify_run(
+            folder, catalog, inputs, evidence_sha256=reindex_synthetic(folder)
+        )
+
+
+def test_d055_rehashed_missing_read_telemetry_cannot_qualify(synthetic_runtime):
+    folder, catalog, inputs, _ = synthetic_runtime
+    path = folder / "private/reads/000001.json"
+    path.unlink()
+    with pytest.raises(CaptureError, match="telemetry|read|D055"):
+        api().verify_run(
+            folder, catalog, inputs, evidence_sha256=reindex_synthetic(folder)
+        )
+
+
+@pytest.mark.parametrize("after_unlink", [False, True])
+@pytest.mark.parametrize("forge", ["path", "command"])
+def test_d055_failed_cleanup_replay_rejects_rehashed_widened_authority(
+    synthetic_completed_runtime, tmp_path, after_unlink, forge
+):
+    import shutil
+
+    def wrapper(capture):
+        def failed(device, *args, variant, **kwargs):
+            shell = device.shell
+
+            def native(*command):
+                if len(command) == 1 and "# D055 guarded unlink" in command[0]:
+                    if after_unlink:
+                        shell(*command)
+                    raise CaptureError("synthetic guarded unlink failed")
+                return shell(*command)
+
+            if variant == "calibration":
+                device.shell = native
+            try:
+                return capture(device, *args, variant=variant, **kwargs)
+            finally:
+                device.shell = shell
+
+        return failed
+
+    run, result = synthetic_completed_runtime["execute"](
+        f"d055-partial-unlink-{forge}-{after_unlink}", capture_wrapper=wrapper
+    )
+    assert (
+        result["status"] in {"failed", "restoration_failed"}
+        and not result["capture_set_qualified"]
+    )
+    assert (
+        api().verify_run(
+            run.folder,
+            run.catalog,
+            run.inputs,
+            evidence_sha256=result["evidence_sha256"],
+        )["capture_set_qualified"]
+        is False
+    )
+    folder = tmp_path / "failed-forgery"
+    shutil.copytree(run.folder, folder)
+    root = next((folder / "artifacts/calibration").iterdir()) / "capture"
+    proof = json_bytes((root / "hook-cleanup.json").read_bytes())
+    assert proof["status"] == "failed"
+    if forge == "path":
+        proof["paths"][0]["path"] = "files/l10n-hook/pre-existing-near-name.json"
+    else:
+        entry = next(
+            e for e in proof["paths"] if e["status"] in {"attempted", "failed"}
+        )
+        entry["command"] = (
+            "rm -- /data/user/0/com.unciv/files/l10n-hook/pre-existing-near-name.json"
+        )
+    (root / "hook-cleanup.json").write_bytes(canonical_bytes(proof))
+    summary = json_bytes((root / "summary.json").read_bytes())
+    summary["hook_cleanup"] = proof
+    (root / "summary.json").write_bytes(canonical_bytes(summary))
+    with pytest.raises(CaptureError, match="D055|cleanup|authority"):
+        api().verify_run(
+            folder, run.catalog, run.inputs, evidence_sha256=reindex_synthetic(folder)
+        )
+
+
+def test_d055_rehashed_both_version_downgrade_cannot_hide_new_artifacts(
+    synthetic_runtime,
+):
+    folder, catalog, inputs, _ = synthetic_runtime
+    value = json_bytes((folder / "mutation-manifest.json").read_bytes())
+    value.update(mutation_run_version=1, status="failed", capture_set_qualified=False)
+    for field in ("outside_rule_policy", "outside_rule_usage", "cleanup_policy"):
+        value.pop(field, None)
+    for shot in value["screenshots"]:
+        shot.pop("outside_rule", None)
+        shot.pop("qualified", None)
+    rewrite_synthetic_manifest(folder, value)
+    journal = json_bytes((folder / "journal.json").read_bytes())
+    journal.update(status="failed")
+    journal.pop("cleanup_policy", None)
+    (folder / "journal.json").write_bytes(canonical_bytes(journal))
+    with pytest.raises(CaptureError, match="D055|Legacy|downgrade"):
+        api().verify_run(
+            folder, catalog, inputs, evidence_sha256=reindex_synthetic(folder, 1)
+        )
+
+
+def test_d055_prepare_cannot_rebaseline_drift_before_settings_writes(
+    synthetic_completed_runtime,
+):
+    def change(root, number, files):
+        if root == "private" and number >= 14:
+            files["files/strict-prepare-drift"] = b"unexpected"
+
+    run, result = synthetic_completed_runtime["execute"](
+        "d055-prepare-drift", transform=change
+    )
+    assert result["capture_set_qualified"] is False
+    assert result["screenshots"] == [], (
+        "Prepare rebaselined drift and permitted capture writes"
+    )
+    assert run.device.writes == 0
+
+
+@pytest.mark.parametrize("failed", [False, True])
+@pytest.mark.parametrize(
+    "change",
+    [
+        "missing",
+        "bytes-bool",
+        "bytes-negative",
+        "duration",
+        "throughput",
+        "limit",
+        "over60",
+        "completion",
+        "raw",
+        "purpose",
+    ],
+)
+def test_d055_rehashed_read_telemetry_corruption_is_rejected(
+    synthetic_runtime, failed, change
+):
+    folder, catalog, inputs, _ = synthetic_runtime
+    path = folder / "private/reads/000001.json"
+    receipt = json_bytes(path.read_bytes())
+    if change == "missing":
+        receipt.pop("duration_s")
+    elif change == "bytes-bool":
+        receipt["bytes"] = True
+    elif change == "bytes-negative":
+        receipt["bytes"] = -1
+    elif change == "duration":
+        receipt["duration_s"] = -1
+    elif change == "throughput":
+        receipt["bytes_per_second"] += 1
+    elif change == "limit":
+        receipt["limit_s"] = 30
+    elif change == "over60":
+        receipt["over_60s"] = not receipt["over_60s"]
+    elif change == "completion":
+        receipt["validated"] = False
+    elif change == "raw":
+        receipt["raw"] = "000002.bin"
+    else:
+        receipt["purpose"] = "forged-unbound-read"
+    path.write_bytes(canonical_bytes(receipt))
+    if failed:
+        value = json_bytes((folder / "mutation-manifest.json").read_bytes())
+        value.update(status="failed", capture_set_qualified=False)
+        value["outside_rule_usage"] = api().outside_usage(
+            catalog, value["screenshots"], "failed"
+        )
+        rewrite_synthetic_manifest(folder, value)
+    with pytest.raises(CaptureError, match="D055|telemetry"):
+        api().verify_run(
+            folder, catalog, inputs, evidence_sha256=reindex_synthetic(folder)
+        )
+
+
+@pytest.mark.parametrize(
+    "change",
+    [
+        "path",
+        "omit",
+        "state",
+        "host",
+        "bytes",
+        "identity",
+        "unlink",
+        "leftover",
+        "non-D051",
+    ],
+)
+def test_d055_rehashed_cleanup_claims_cannot_replace_semantics(
+    synthetic_runtime, change
+):
+    folder, catalog, inputs, _ = synthetic_runtime
+    root = next((folder / "artifacts/clean").iterdir()) / "capture"
+    proof = json_bytes((root / "hook-cleanup.json").read_bytes())
+    entry = next(p for p in proof["paths"] if p["status"] == "deleted")
+    if change == "path":
+        entry["path"] = "files/l10n-hook/pre-existing-near-name.json"
+    elif change == "omit":
+        proof["paths"].pop()
+    elif change == "state":
+        entry["status"] = "absent"
+    elif change == "host":
+        entry["host"] = proof["paths"][2]["host"]
+    elif change == "bytes":
+        entry["bytes"] += 1
+    elif change == "identity":
+        parts = entry["identity"][-1].split()
+        parts[2] = "2"
+        entry["identity"][-1] = " ".join(parts)
+    elif change == "unlink":
+        entry["command"] = "rm -rf files/l10n-hook"
+    else:
+        key = (
+            "private:" + entry["path"]
+            if change == "leftover"
+            else "private:files/unrelated"
+        )
+        proof["after"][key] = dict(proof["before"]["private:" + entry["path"]])
+        (root / "post-cleanup-inventory.json").write_bytes(
+            canonical_bytes(proof["after"])
+        )
+        proof["preservation"] = api().preservation_report(
+            proof["starting"], proof["after"]
+        )
+    (root / "hook-cleanup.json").write_bytes(canonical_bytes(proof))
+    summary = json_bytes((root / "summary.json").read_bytes())
+    summary["hook_cleanup"] = proof
+    (root / "summary.json").write_bytes(canonical_bytes(summary))
+    with pytest.raises(CaptureError, match="D055|cleanup|inventory|app-data"):
+        api().verify_run(
+            folder, catalog, inputs, evidence_sha256=reindex_synthetic(folder)
+        )
+
+
+def test_d055_rehashed_file_completion_requires_observed_length(synthetic_runtime):
+    folder, catalog, inputs, _ = synthetic_runtime
+    path = next((folder / "artifacts/clean").glob("*/capture/reads/*.json"))
+    # Select the real settings backup observation, not a package-root tar.
+    path = next(
+        p
+        for p in path.parent.glob("*.json")
+        if json_bytes(p.read_bytes())["purpose"] == "settings-backup"
+    )
+    receipt = json_bytes(path.read_bytes())
+    receipt["expected_bytes"] += 1
+    path.write_bytes(canonical_bytes(receipt))
+    with pytest.raises(CaptureError, match="D055|length|complete"):
+        api().verify_run(
+            folder, catalog, inputs, evidence_sha256=reindex_synthetic(folder)
+        )
+
+
+def test_d055_rehashed_matching_directory_alias_is_rejected(synthetic_runtime):
+    folder, catalog, inputs, _ = synthetic_runtime
+    root = next((folder / "artifacts/clean").iterdir())
+    plan = json_bytes((root / "prepare/device-plan.json").read_bytes())
+    summary = json_bytes((root / "capture/summary.json").read_bytes())
+    proof = summary["hook_cleanup"]
+    # Rehash every copied identity/command, not just one stale summary flag.
+    directory = list(plan["directory_identity"])
+    parts = directory[2].split()
+    parts[3] = "a1c0"
+    directory[2] = " ".join(parts)
+    plan["directory_identity"] = summary["directory_identity"] = proof[
+        "directory_identity"
+    ] = directory
+    for entry in proof["paths"]:
+        if entry["status"] == "deleted":
+            entry["identity"][:3] = directory
+            entry["command"] = api().unlink_command(
+                entry["path"], entry["identity"], entry["sha256"]
+            )
+    (root / "prepare/device-plan.json").write_bytes(canonical_bytes(plan))
+    summary["device_plan_sha256"] = digest(
+        (root / "prepare/device-plan.json").read_bytes()
+    )
+    (root / "capture/hook-cleanup.json").write_bytes(canonical_bytes(proof))
+    (root / "capture/summary.json").write_bytes(canonical_bytes(summary))
+    with pytest.raises(CaptureError, match="D055|directory|identity"):
+        api().verify_run(
+            folder, catalog, inputs, evidence_sha256=reindex_synthetic(folder)
+        )
+
+
+@pytest.mark.parametrize("change", ["frame-settings", "final-save", "extra-read"])
+def test_d055_read_payload_and_exact_coverage_are_rederived(synthetic_runtime, change):
+    import io
+    import tarfile
+
+    folder, catalog, inputs, _ = synthetic_runtime
+    root = next((folder / "artifacts/clean").iterdir()) / "capture/reads"
+    purpose = (
+        "capture-settings-readback"
+        if change == "frame-settings"
+        else "saves-final-readback"
+    )
+    path = next(
+        p
+        for p in root.glob("*.json")
+        if json_bytes(p.read_bytes())["purpose"] == purpose
+    )
+    receipt = json_bytes(path.read_bytes())
+    raw = b'{"language":"French","forged":true}'
+    if change == "final-save":
+        output = io.BytesIO()
+        with (
+            tarfile.open(
+                fileobj=io.BytesIO((root / receipt["raw"]).read_bytes())
+            ) as source,
+            tarfile.open(fileobj=output, mode="w") as target,
+        ):
+            for member in source.getmembers():
+                payload = source.extractfile(member) if member.isfile() else None
+                if member.isfile():
+                    member.size = len(raw)
+                    payload = io.BytesIO(raw)
+                target.addfile(member, payload)
+        raw = output.getvalue()
+    if change == "extra-read":
+        root = folder / "private/reads"
+        number = max(int(p.stem) for p in root.glob("*.json")) + 1
+        path = root / f"{number:06d}.json"
+        receipt = json_bytes(
+            next(
+                (folder / "artifacts/clean").glob("*/capture/reads/*.json")
+            ).read_bytes()
+        )
+        receipt.update(
+            kind="file",
+            root="private",
+            path=api().SETTINGS_PATH,
+            command=["exec-out", "cat", api().SETTINGS_PATH],
+            purpose="unapproved-extra-observation",
+            raw=f"{number:06d}.bin",
+        )
+    receipt.update(
+        bytes=len(raw),
+        sha256=digest(raw),
+        bytes_per_second=len(raw) / receipt["duration_s"]
+        if receipt["duration_s"]
+        else None,
+    )
+    if receipt["kind"] == "file":
+        receipt["expected_bytes"] = len(raw)
+    (root / receipt["raw"]).write_bytes(raw)
+    path.write_bytes(canonical_bytes(receipt))
+    with pytest.raises(CaptureError, match="D055|read|telemetry"):
+        api().verify_run(
+            folder, catalog, inputs, evidence_sha256=reindex_synthetic(folder)
+        )
+
+
+def relocate_synthetic_read(root, purpose, before):
+    """Keep every purpose's payload order and every slot's valid numeric metrics."""
+    paths = sorted((root / "reads").glob("*.json"))
+    items = [
+        (json_bytes(p.read_bytes()), p.with_suffix(".bin").read_bytes()) for p in paths
+    ]
+    slots = [(r["start_monotonic_ns"], r["end_monotonic_ns"]) for r, _ in items]
+    index = next(i for i, (r, _) in enumerate(items) if r["purpose"] == purpose)
+    moved = items.pop(index)
+    destination = next(i for i, (r, _) in enumerate(items) if r["purpose"] == before)
+    items.insert(destination, moved)
+    for path, (read, raw), (start, end) in zip(paths, items, slots, strict=True):
+        duration = (end - start) / 1_000_000_000
+        read.update(
+            raw=path.with_suffix(".bin").name,
+            start_monotonic_ns=start,
+            end_monotonic_ns=end,
+            duration_s=duration,
+            bytes_per_second=len(raw) / duration if duration else None,
+            over_60s=duration > 60,
+        )
+        path.write_bytes(canonical_bytes(read))
+        path.with_suffix(".bin").write_bytes(raw)
+    attempts_path = root / "reads-attempts.json"
+    attempts = json_bytes(attempts_path.read_bytes())
+    attempts["attempts"] = [
+        {
+            "receipt": p.name,
+            **{
+                key: json_bytes(p.read_bytes())[key]
+                for key in ("root", "path", "purpose", "kind", "command", "limit_s")
+            },
+        }
+        for p in paths
+    ]
+    attempts_path.write_bytes(canonical_bytes(attempts))
+
+
+@pytest.mark.parametrize("failed", [False, True])
+def test_d055_final_save_read_follows_all_frames(
+    synthetic_completed_runtime, tmp_path, failed
+):
+    import shutil
+
+    source, catalog, inputs, result = synthetic_completed_runtime["completed"]
+    if failed:
+        run, result = synthetic_completed_runtime["execute"](
+            "d055-read-order-failed-alpha",
+            capture_wrapper=lambda capture: d053_capture(capture, fault="alpha"),
+        )
+        source, catalog, inputs = run.folder, run.catalog, run.inputs
+    assert api().verify_run(
+        source, catalog, inputs, evidence_sha256=result["evidence_sha256"]
+    )["status"] == ("failed" if failed else "qualified")
+    folder = tmp_path / "forgery"
+    shutil.copytree(source, folder)
+    root = next((folder / "artifacts/clean").iterdir()) / "capture"
+    relocate_synthetic_read(root, "saves-final-readback", "capture-settings-readback")
+    with pytest.raises(CaptureError, match="D055|[Rr]ead|workflow"):
+        api().verify_run(
+            folder, catalog, inputs, evidence_sha256=reindex_synthetic(folder)
+        )
+
+
+@pytest.mark.parametrize(
+    "scope,purpose,before",
+    [
+        ("private", "original-readback", "original-before"),
+        ("install", "install-readback", "install-before"),
+        ("outer", "capture-after", "capture-preflight"),
+        ("prepare", "saves-backup-readback", "settings-backup"),
+        ("capture", "saves-backup", "settings-backup-readback"),
+        ("capture", "restore_original_settings-readback", "capture-settings-readback"),
+        ("capture", "before-cleanup", "saves-final-readback"),
+        ("capture", "post-cleanup", "before-cleanup"),
+    ],
+)
+def test_d055_read_workflow_cannot_cross_purpose_boundaries(
+    synthetic_runtime, scope, purpose, before
+):
+    folder, catalog, inputs, result = synthetic_runtime
+    assert (
+        api().verify_run(
+            folder, catalog, inputs, evidence_sha256=result["evidence_sha256"]
+        )["status"]
+        == "qualified"
+    )
+    capture = next((folder / "artifacts/clean").iterdir())
+    root = {
+        "private": folder / "private",
+        "install": folder / "private/install-001",
+        "outer": capture,
+        "prepare": capture / "prepare",
+        "capture": capture / "capture",
+    }[scope]
+    relocate_synthetic_read(root, purpose, before)
+    with pytest.raises(CaptureError, match="D055|workflow|[Rr]ead"):
+        api().verify_run(
+            folder, catalog, inputs, evidence_sha256=reindex_synthetic(folder)
+        )
+
+
+@pytest.mark.parametrize("stage", ["prepare", "capture"])
+@pytest.mark.parametrize("fault", ["absent", "metadata-error"])
+def test_d055_initial_metadata_halted_prefix_replays(
+    synthetic_completed_runtime, stage, fault
+):
+    def inject(device):
+        stat = device.stat
+        calls = 0
+
+        def metadata(path):
+            nonlocal calls
+            calls += 1
+            if calls == 1:
+                if fault == "absent":
+                    return None
+                raise OSError("synthetic first backup metadata failed")
+            return stat(path)
+
+        device.stat = metadata
+
+    def configure(run):
+        stat = run.device.stat
+        injected = False
+
+        def metadata(path):
+            nonlocal injected
+            if stage == "prepare" and run.counter == 4 and not injected:
+                injected = True
+                inject(run.device)
+                return run.device.stat(path)
+            return stat(path)
+
+        run.device.stat = metadata
+
+    def wrapper(capture):
+        def wrapped(device, *args, variant, **kwargs):
+            if stage == "capture" and variant == "calibration":
+                inject(device)
+            return capture(device, *args, variant=variant, **kwargs)
+
+        return wrapped
+
+    run, result = synthetic_completed_runtime["execute"](
+        f"d055-initial-metadata-{stage}-{fault}",
+        configure=configure,
+        capture_wrapper=wrapper,
+    )
+    assert result["status"] == "failed" and result["calibration_status"] == "failed"
+    assert not any(r["role"] == "calibration" for r in result["screenshots"])
+    assert (
+        api().verify_run(
+            run.folder,
+            run.catalog,
+            run.inputs,
+            evidence_sha256=result["evidence_sha256"],
+        )["status"]
+        == "failed"
+    )
+
+
+@pytest.mark.parametrize(
+    "fault", ["hook", "cancellation", "final-save", "before-cleanup", "post-cleanup"]
+)
+def test_d055_interrupted_read_workflow_keeps_authorized_tail(
+    synthetic_completed_runtime, fault
+):
+    from l10n_checker.app_data import DATA_ROOTS
+    from l10n_checker.hook import HookFailure
+    from l10n_checker.screen_capture import SAVES_PATH
+
+    runs = []
+
+    def wrapper(capture):
+        def wrapped(device, *args, variant, **kwargs):
+            if variant == "calibration":
+                native = device.run
+                saves = private = 0
+                fired = False
+
+                def read(*command, **kw):
+                    nonlocal saves, private, fired
+                    if command[:2] == ("exec-out", "tar"):
+                        saves += command[-2] == SAVES_PATH
+                        private += command[-2] == DATA_ROOTS["private"]
+                        if not fired and (
+                            (fault == "final-save" and saves == 3)
+                            or (fault == "before-cleanup" and private == 2)
+                            or (fault == "post-cleanup" and private == 3)
+                        ):
+                            fired = True
+                            raise CaptureError("synthetic read interrupted at " + fault)
+                    return native(*command, **kw)
+
+                def request(*args, **kw):
+                    raise HookFailure("client_timeout", terminal=False, events=[])
+
+                def screenshot():
+                    raise KeyboardInterrupt()
+
+                device.run = read
+                if fault == "hook":
+                    device.request = request
+                if fault == "cancellation":
+                    device.screenshot = screenshot
+            return capture(device, *args, variant=variant, **kwargs)
+
+        return wrapped
+
+    def execute():
+        return synthetic_completed_runtime["execute"](
+            "d055-workflow-tail-" + fault,
+            configure=lambda run: runs.append(run),
+            capture_wrapper=wrapper,
+        )
+
+    if fault == "cancellation":
+        with pytest.raises(KeyboardInterrupt):
+            execute()
+        run = runs[0]
+        result = {**run.content, "evidence_sha256": run.evidence_sha256}
+    else:
+        run, result = execute()
+    # Failure before cleanup's inventory cannot authorize unlinking hook files;
+    # the retained outputs then correctly prevent a verified reference restore.
+    expected_status = "restoration_failed" if fault == "before-cleanup" else "failed"
+    assert result["status"] == expected_status and not result["capture_set_qualified"]
+    assert (
+        api().verify_run(
+            run.folder,
+            run.catalog,
+            run.inputs,
+            evidence_sha256=result["evidence_sha256"],
+        )["status"]
+        == expected_status
+    )
+
+
+def test_d055_cleanup_required_when_first_settings_write_fails(
+    synthetic_completed_runtime, tmp_path
+):
+    import shutil
+
+    def wrapper(capture):
+        def wrapped(device, *args, variant, **kwargs):
+            write = device.write_file
+
+            def failed(*args):
+                raise CaptureError("synthetic settings write failed before readback")
+
+            if variant == "calibration":
+                device.write_file = failed
+            try:
+                return capture(device, *args, variant=variant, **kwargs)
+            finally:
+                device.write_file = write
+
+        return wrapped
+
+    run, result = synthetic_completed_runtime["execute"](
+        "d055-first-write-cleanup", capture_wrapper=wrapper
+    )
+    assert not result["capture_set_qualified"]
+    assert (
+        api().verify_run(
+            run.folder,
+            run.catalog,
+            run.inputs,
+            evidence_sha256=result["evidence_sha256"],
+        )["status"]
+        == "failed"
+    )
+    folder = tmp_path / "forgery"
+    shutil.copytree(run.folder, folder)
+    root = next((folder / "artifacts/calibration").iterdir()) / "capture"
+    summary = json_bytes((root / "summary.json").read_bytes())
+    assert summary["records"] == [] and summary["hook_cleanup"]["status"] == "verified"
+    summary.pop("hook_cleanup")
+    summary["app_data_operations"] = []
+    (root / "hook-cleanup.json").unlink()
+    (root / "summary.json").write_bytes(canonical_bytes(summary))
+    with pytest.raises(CaptureError, match="D055|cleanup"):
+        api().verify_run(
+            folder, run.catalog, run.inputs, evidence_sha256=reindex_synthetic(folder)
+        )
+
+
+def test_d055_first_failed_read_cannot_erase_receipt_and_raw(
+    synthetic_completed_runtime, tmp_path
+):
+    import shutil
+
+    def configure(run):
+        native = run.device.run
+
+        def failed(*args, **kwargs):
+            if args[:2] == ("exec-out", "tar"):
+                raise CaptureError("synthetic first archive read failed")
+            return native(*args, **kwargs)
+
+        run.device.run = failed
+
+    run, result = synthetic_completed_runtime["execute"](
+        "d055-first-failed-read", configure=configure
+    )
+    assert result["status"] == "failed"
+    assert (
+        api().verify_run(
+            run.folder,
+            run.catalog,
+            run.inputs,
+            evidence_sha256=result["evidence_sha256"],
+        )["status"]
+        == "failed"
+    )
+    folder = tmp_path / "forgery"
+    shutil.copytree(run.folder, folder)
+    receipts = list((folder / "private/reads").glob("*.json"))
+    assert len(receipts) == 1
+    receipt = json_bytes(receipts[0].read_bytes())
+    assert receipt["outcome"] == "failed"
+    (receipts[0].parent / receipt["raw"]).unlink()
+    receipts[0].unlink()
+    with pytest.raises(CaptureError, match="D055|read|receipt"):
+        api().verify_run(
+            folder, run.catalog, run.inputs, evidence_sha256=reindex_synthetic(folder)
+        )
+
+
+@pytest.mark.parametrize("change", ["strip-fullset-hostproof", "hide-failed-command"])
+def test_d055_partial_cleanup_phase_cannot_regress(
+    synthetic_completed_runtime, tmp_path, change
+):
+    import shutil
+
+    def wrapper(capture):
+        def wrapped(device, *args, variant, **kwargs):
+            shell = device.shell
+            calls = 0
+
+            def failed(*command):
+                nonlocal calls
+                if len(command) == 1 and "# D055 guarded unlink" in command[0]:
+                    calls += 1
+                    if calls == 2:
+                        raise CaptureError("synthetic second guarded unlink failed")
+                return shell(*command)
+
+            if variant == "calibration":
+                device.shell = failed
+            try:
+                return capture(device, *args, variant=variant, **kwargs)
+            finally:
+                device.shell = shell
+
+        return wrapped
+
+    run, result = synthetic_completed_runtime["execute"](
+        "d055-cleanup-phase-" + change, capture_wrapper=wrapper
+    )
+    assert (
+        api().verify_run(
+            run.folder,
+            run.catalog,
+            run.inputs,
+            evidence_sha256=result["evidence_sha256"],
+        )["capture_set_qualified"]
+        is False
+    )
+    folder = tmp_path / "forgery"
+    shutil.copytree(run.folder, folder)
+    root = next((folder / "artifacts/calibration").iterdir()) / "capture"
+    proof = json_bytes((root / "hook-cleanup.json").read_bytes())
+    assert any(p["status"] == "deleted" for p in proof["paths"])
+    if change == "strip-fullset-hostproof":
+        entry = next(p for p in proof["paths"] if p["status"] == "verified")
+        entry["status"] = "unavailable"
+        for field in ("host", "identity", "bytes", "sha256"):
+            entry.pop(field)
+    else:
+        entry = next(p for p in proof["paths"] if p["status"] == "failed")
+        entry["status"] = "verified"
+        entry["command"] = "rm -rf /data/user/0/com.unciv.app/files"
+    (root / "hook-cleanup.json").write_bytes(canonical_bytes(proof))
+    summary = json_bytes((root / "summary.json").read_bytes())
+    summary["hook_cleanup"] = proof
+    (root / "summary.json").write_bytes(canonical_bytes(summary))
+    with pytest.raises(CaptureError, match="D055|cleanup|phase"):
+        api().verify_run(
+            folder, run.catalog, run.inputs, evidence_sha256=reindex_synthetic(folder)
+        )
+
+
+def test_d055_failed_pre_quiescence_trace_is_readable_not_qualified(
+    synthetic_completed_runtime, tmp_path
+):
+    import shutil
+
+    def wrapper(capture):
+        def wrapped(device, *args, variant, **kwargs):
+            shell = device.shell
+
+            def unavailable(*command):
+                if command == ("dumpsys", "package", "com.unciv.app"):
+                    return "synthetic unavailable stopped state"
+                return shell(*command)
+
+            if variant == "calibration":
+                device.shell = unavailable
+            try:
+                return capture(device, *args, variant=variant, **kwargs)
+            finally:
+                device.shell = shell
+
+        return wrapped
+
+    run, result = synthetic_completed_runtime["execute"](
+        "d055-pre-quiescence", capture_wrapper=wrapper
+    )
+    assert (
+        result["status"] == "restoration_failed"
+        and result["capture_set_qualified"] is False
+    )
+    replay = api().verify_run(
+        run.folder, run.catalog, run.inputs, evidence_sha256=result["evidence_sha256"]
+    )
+    assert replay["capture_set_qualified"] is False
+    folder = tmp_path / "forgery"
+    shutil.copytree(run.folder, folder)
+    root = next((folder / "artifacts/calibration").iterdir()) / "capture"
+    proof = json_bytes((root / "hook-cleanup.json").read_bytes())
+    assert "before" not in proof and all(
+        p["status"] == "unavailable" for p in proof["paths"]
+    )
+    proof["paths"][0]["status"] = "deleted"
+    (root / "hook-cleanup.json").write_bytes(canonical_bytes(proof))
+    summary = json_bytes((root / "summary.json").read_bytes())
+    summary["hook_cleanup"] = proof
+    (root / "summary.json").write_bytes(canonical_bytes(summary))
+    with pytest.raises(CaptureError, match="D055|cleanup|quiescence"):
+        api().verify_run(
+            folder, run.catalog, run.inputs, evidence_sha256=reindex_synthetic(folder)
+        )
+
+
+@pytest.mark.parametrize("legacy", [False, True])
+def test_d055_capture_output_allowance_is_versioned(
+    synthetic_completed_runtime, legacy
+):
+    # Unit branch control on real capture receipts, not an invented old producer.
+    folder, catalog, inputs, result = synthetic_completed_runtime["completed"]
+    evidence = api().RunEvidence(folder, api().retained_files(folder))
+    root = api().capture_directory(folder, catalog.control["request"]["id"], "clean")
+    before = evidence.json(root, "before-inventory.json")
+    _after, allowed, _check = api().replay_capture(
+        evidence,
+        folder,
+        catalog.control,
+        "clean",
+        inputs,
+        result["screenshots"],
+        before,
+        measurement_only=legacy,
+        legacy_measurement=legacy,
+    )
+    plan = evidence.json(root, "prepare/device-plan.json")
+    expected = {"private:files/l10n-hook"} | {
+        "private:" + o[key]
+        for o in plan["planned_hook_output_operations"]
+        for key in ("file", "temporary")
+    }
+    assert allowed == (expected if legacy else set())
+
+
+def test_d055_real_runtime_semantic_replay(synthetic_completed_runtime):
+    folder, catalog, inputs, result = synthetic_completed_runtime["completed"]
+    error, replay = None, None
+    try:
+        replay = api().verify_run(
+            folder, catalog, inputs, evidence_sha256=result["evidence_sha256"]
+        )
+    except CaptureError as exc:
+        error = str(exc)
+    assert error is None, f"D055 real-wrapper evidence has no semantic replay: {error}"
+    assert replay["mutation_run_version"] == 5 and replay["status"] == "qualified"
+
+
+def test_d055_new_runtime_declares_v5_and_binds_shared_helper(tmp_path):
+    from l10n_checker.mutation_catalog import read_catalog
+
+    path, kwargs, _, _ = synthetic_catalog(tmp_path)
+    catalog = read_catalog(path, digest(path.read_bytes()), **kwargs)
+    inputs = Inputs(MANIFEST, split="dev")
+    inputs.source_manifest_sha256 = catalog.data["inputs"]["manifest"]["sha256"]
+    run = api().MutationRun(
+        catalog,
+        inputs,
+        tmp_path / "out/run",
+        approved_root=tmp_path / "out",
+        device=None,
+        tools=kwargs["tools"],
+    )
+    assert run.content["mutation_run_version"] == 5, (
+        "Fresh normal run must opt into D055 replay"
+    )
+    assert "app_data.py" in run.content["implementation_hashes"]
+    assert run.content["cleanup_policy"]["decision"] == "D055"
+
+
 def reindex_synthetic(folder, version=None):
     if version is None:
         manifest = json_bytes((folder / "mutation-manifest.json").read_bytes())
-        version = {4: 5, 3: 4}.get(manifest["mutation_run_version"], 3)
+        version = {5: 6, 4: 5, 3: 4}.get(manifest["mutation_run_version"], 3)
     files = {
         str(p.relative_to(folder)): digest(p.read_bytes())
         for p in folder.rglob("*")
@@ -464,6 +1341,10 @@ def d053_capture(
                 + (b"\n" if fault == "raw_dump_repeat" and record["pass"] == 2 else b"")
             )
             pair["dump_sha256"] = record["dump_sha256"] = digest(dump_path.read_bytes())
+            # Synthetic draw changes must also exist on the persistent device.
+            device.hook_files[record["readiness"]["dump"]["file"]] = (
+                dump_path.read_bytes()
+            )
             png_path = path.parent / pair["png"]
             with Image.open(io.BytesIO(png_path.read_bytes())) as source:
                 image = source.convert("RGBA")
@@ -549,8 +1430,8 @@ def d053_runtime(synthetic_completed_runtime):
 def test_d053_exact_nonzero_rule_keeps_strict_failure_and_pass1_pending(d053_runtime):
     run, result, checkpoints = d053_runtime
     assert result["status"] == "qualified", run.journal
-    assert result["mutation_run_version"] == 4
-    assert json_bytes((run.folder / "evidence-index.json").read_bytes())["version"] == 5
+    assert result["mutation_run_version"] == 5
+    assert json_bytes((run.folder / "evidence-index.json").read_bytes())["version"] == 6
     assert result["outside_rule_policy"]["decision"] == "D054"
     assert result["outside_rule_policy"]["version"] == 2
     assert result["outside_rule_policy"]["max_rgb_delta"] is None
@@ -690,6 +1571,241 @@ def d053_failed_calibration(synthetic_completed_runtime, request):
             capture, fault=request.param, rgb_delta=47
         ),
     )
+
+
+@pytest.mark.parametrize("change", ["failed-environment", "missing-environment"])
+def test_d055_failed_prefix_requires_initial_environment(
+    d053_failed_calibration, tmp_path, change
+):
+    import shutil
+
+    run, result = d053_failed_calibration
+    assert (
+        api().verify_run(
+            run.folder,
+            run.catalog,
+            run.inputs,
+            evidence_sha256=result["evidence_sha256"],
+        )["status"]
+        == "failed"
+    )
+    folder = tmp_path / "forgery"
+    shutil.copytree(run.folder, folder)
+    root = folder / "environment/initial"
+    if change == "failed-environment":
+        path = root / "receipt.json"
+        receipt = json_bytes(path.read_bytes())
+        assert receipt["exit_code"] == 0
+        receipt["exit_code"] = 1
+        path.write_bytes(canonical_bytes(receipt))
+    else:
+        shutil.rmtree(root)
+    assert list((folder / "private").glob("install-*/install.json"))
+    with pytest.raises(CaptureError, match="environment|[Ii]nitial"):
+        api().verify_run(
+            folder, run.catalog, run.inputs, evidence_sha256=reindex_synthetic(folder)
+        )
+
+
+@pytest.mark.parametrize("fault", ["exit", "native-error"])
+def test_d055_halted_initial_environment_failure_is_inspectable(
+    synthetic_completed_runtime, fault
+):
+    import subprocess
+    from types import SimpleNamespace
+
+    def configure(run):
+        native = subprocess.run
+
+        def command(args, **kwargs):
+            if Path(args[0]).name == "check_env.sh":
+                if fault == "native-error":
+                    raise OSError("synthetic initial environment unavailable")
+                return SimpleNamespace(returncode=1, stdout=b"mismatch", stderr=b"")
+            return native(args, **kwargs)
+
+        subprocess.run = command
+
+    run, result = synthetic_completed_runtime["execute"](
+        "d055-halted-initial-environment-" + fault, configure=configure
+    )
+    assert result["status"] == "failed" and result["calibration_status"] == "not_run"
+    assert not list((run.folder / "private").glob("install-*/install.json"))
+    assert not (run.folder / "private/reads-attempts.json").exists()
+    replay = api().verify_run(
+        run.folder, run.catalog, run.inputs, evidence_sha256=result["evidence_sha256"]
+    )
+    assert replay["status"] == "failed" and not replay["capture_set_qualified"]
+
+
+@pytest.mark.parametrize("change", ["command", "input-ledger"])
+def test_d055_failed_run_still_replays_completed_install_prefix(
+    d053_failed_calibration, tmp_path, change
+):
+    import shutil
+
+    run, _ = d053_failed_calibration
+    folder = tmp_path / "forgery"
+    shutil.copytree(run.folder, folder)
+    path = folder / "private/install-001/install.json"
+    receipt = json_bytes(path.read_bytes())
+    if change == "command":
+        receipt["command"] = ["uninstall", "com.unciv.app"]
+    else:
+        receipt.pop("input_preservation")
+    path.write_bytes(canonical_bytes(receipt))
+    journal = json_bytes((folder / "journal.json").read_bytes())
+    journal["operations"][0]["sha256"] = digest(canonical_bytes(receipt))
+    (folder / "journal.json").write_bytes(canonical_bytes(journal))
+    with pytest.raises(CaptureError, match="install|[Pp]reservation|ledger"):
+        api().verify_run(
+            folder, run.catalog, run.inputs, evidence_sha256=reindex_synthetic(folder)
+        )
+
+
+def test_d055_failed_tail_rejects_unbound_reference_read(
+    d053_failed_calibration, tmp_path
+):
+    import shutil
+
+    run, _ = d053_failed_calibration
+    folder = tmp_path / "forgery"
+    shutil.copytree(run.folder, folder)
+    reads = folder / "private/reads"
+    source = reads / "000001.json"
+    receipt = json_bytes(source.read_bytes())
+    raw = (reads / receipt["raw"]).read_bytes()
+    n = max(int(p.stem) for p in reads.glob("*.json")) + 1
+    receipt.update(purpose="reference-999", raw=f"{n:06d}.bin")
+    (reads / receipt["raw"]).write_bytes(raw)
+    (reads / f"{n:06d}.json").write_bytes(canonical_bytes(receipt))
+    path = folder / "private/reads-attempts.json"
+    attempts = json_bytes(path.read_bytes())
+    attempts["attempts"].append(
+        {
+            "receipt": f"{n:06d}.json",
+            **{
+                key: receipt[key]
+                for key in ("root", "path", "purpose", "kind", "command", "limit_s")
+            },
+        }
+    )
+    path.write_bytes(canonical_bytes(attempts))
+    with pytest.raises(CaptureError, match="D055|read|reference"):
+        api().verify_run(
+            folder, run.catalog, run.inputs, evidence_sha256=reindex_synthetic(folder)
+        )
+
+
+def test_d055_failed_calibration_cannot_claim_passed(d053_failed_calibration, tmp_path):
+    import shutil
+
+    run, result = d053_failed_calibration
+    assert result["calibration_status"] == "failed"
+    folder = tmp_path / "forgery"
+    shutil.copytree(run.folder, folder)
+    value = json_bytes((folder / "mutation-manifest.json").read_bytes())
+    value["calibration_status"] = "passed"
+    rewrite_synthetic_manifest(folder, value)
+    with pytest.raises(CaptureError, match="[Cc]alibration"):
+        api().verify_run(
+            folder, run.catalog, run.inputs, evidence_sha256=reindex_synthetic(folder)
+        )
+
+
+@pytest.mark.parametrize("stage", ["production", "restoration"])
+def test_d055_later_failure_preserves_passed_calibration(
+    synthetic_completed_runtime, stage
+):
+    def wrapper(capture):
+        def wrapped(device, *args, variant, **kwargs):
+            screenshot = device.screenshot
+
+            def failed():
+                raise CaptureError("synthetic later production capture failed")
+
+            if stage == "production" and variant == "mutation":
+                device.screenshot = failed
+            try:
+                return capture(device, *args, variant=variant, **kwargs)
+            finally:
+                device.screenshot = screenshot
+
+        return wrapped
+
+    def configure(run):
+        native = run.device.run
+        reference_installs = 0
+
+        def failed(*command, **kwargs):
+            nonlocal reference_installs
+            if command[:3] == ("install", "-r", "-d") and Path(
+                command[3]
+            ) == run.catalog.apk_path(run.reference()):
+                reference_installs += 1
+                if stage == "restoration" and reference_installs == 2:
+                    raise CaptureError("synthetic later reference install failed")
+            return native(*command, **kwargs)
+
+        run.device.run = failed
+
+    run, result = synthetic_completed_runtime["execute"](
+        "d055-later-failure-" + stage, capture_wrapper=wrapper, configure=configure
+    )
+    assert (
+        result["calibration_status"] == "passed"
+        and result["capture_set_qualified"] is False
+    )
+    replay = api().verify_run(
+        run.folder, run.catalog, run.inputs, evidence_sha256=result["evidence_sha256"]
+    )
+    assert (
+        replay["calibration_status"] == "passed"
+        and replay["capture_set_qualified"] is False
+    )
+
+
+def test_d055_calibration_install_failure_cannot_claim_not_run(
+    synthetic_completed_runtime, tmp_path
+):
+    import shutil
+
+    def configure(run):
+        native = run.device.run
+
+        def failed(*command, **kwargs):
+            if command[:3] == ("install", "-r", "-d") and Path(
+                command[3]
+            ) == run.catalog.apk_path(run.catalog.calibration):
+                raise CaptureError(
+                    "synthetic calibration install failed before first frame"
+                )
+            return native(*command, **kwargs)
+
+        run.device.run = failed
+
+    run, result = synthetic_completed_runtime["execute"](
+        "d055-calibration-install-failed", configure=configure
+    )
+    assert result["calibration_status"] == "failed"
+    assert (
+        api().verify_run(
+            run.folder,
+            run.catalog,
+            run.inputs,
+            evidence_sha256=result["evidence_sha256"],
+        )["calibration_status"]
+        == "failed"
+    )
+    folder = tmp_path / "forgery"
+    shutil.copytree(run.folder, folder)
+    value = json_bytes((folder / "mutation-manifest.json").read_bytes())
+    value["calibration_status"] = "not_run"
+    rewrite_synthetic_manifest(folder, value)
+    with pytest.raises(CaptureError, match="[Cc]alibration"):
+        api().verify_run(
+            folder, run.catalog, run.inputs, evidence_sha256=reindex_synthetic(folder)
+        )
 
 
 def test_d053_attempted_calibration_failure_is_retained_and_replayed(
@@ -876,7 +1992,7 @@ def test_d053_rehashed_proof_policy_usage_and_version_tampering_rejected(
     value = json_bytes((folder / "mutation-manifest.json").read_bytes())
     shot = next(s for s in value["screenshots"] if s["outside_rule"]["used"])
     proof = shot["outside_rule"]
-    version = 5
+    version = 6
     if kind == "policy_missing":
         value.pop("outside_rule_policy")
     elif kind == "policy_delta":
@@ -960,6 +2076,7 @@ def test_d053_rehashed_proof_policy_usage_and_version_tampering_rejected(
         "text_dump.py",
         "text_reference.py",
         "capture.py",
+        "app_data.py",
     ],
 )
 @pytest.mark.parametrize("forged", ["0" * 64, True], ids=["wrong-value", "bool"])
@@ -1070,8 +2187,8 @@ def test_d053_zero_usage_denominator_is_undefined():
 
 def test_d053_normal_version_and_complete_zero_usage(synthetic_runtime):
     folder, catalog, inputs, result = synthetic_runtime
-    assert result["mutation_run_version"] == 4
-    assert json_bytes((folder / "evidence-index.json").read_bytes())["version"] == 5
+    assert result["mutation_run_version"] == 5
+    assert json_bytes((folder / "evidence-index.json").read_bytes())["version"] == 6
     assert result["outside_rule_policy"] == api().outside_rule_policy()
     assert {"mutation_outside_rule.py", "mutation_diagnostics.py"} <= set(
         result["implementation_hashes"]
@@ -1220,6 +2337,7 @@ def differing_calibration(
                     raw = dump_path.read_bytes() + b"\n"
                     dump_path.write_bytes(raw)
                     pair["dump_sha256"] = record["dump_sha256"] = digest(raw)
+                    device.hook_files[record["readiness"]["dump"]["file"]] = raw
                 else:
                     png_path = pair_path.parent / pair["png"]
                     with Image.open(io.BytesIO(png_path.read_bytes())) as image:
@@ -1809,7 +2927,7 @@ def test_measurement_operational_failures_are_fatal_not_repeat_differences(
 
 @pytest.mark.parametrize("kind", ["settings", "save", "other"])
 def test_measurement_preservation_failure_stops_and_restores_without_repair(
-    synthetic_completed_runtime, kind
+    synthetic_completed_runtime, monkeypatch, kind
 ):
     root_name = "external" if kind == "save" else "private"
     target = (
@@ -1820,16 +2938,31 @@ def test_measurement_preservation_failure_stops_and_restores_without_repair(
         else "files/other-state"
     )
 
-    def change(root, number, files):
-        # A transient unexpected post-clean observation, not an app-data repair.
-        if root == root_name and number == 14:
-            files[target] = b"unauthorized state"
+    reader = api().read_app_data
+    injected = False
+
+    def read(device, *, evidence_dir, purpose):
+        nonlocal injected
+        previous = device.transform
+        if purpose == "capture-after" and not injected:
+            injected = True
+
+            def change(root, number, files):
+                if root == root_name:
+                    files[target] = b"unauthorized state"
+
+            device.transform = change
+        try:
+            return reader(device, evidence_dir=evidence_dir, purpose=purpose)
+        finally:
+            device.transform = previous
+
+    monkeypatch.setattr(api(), "read_app_data", read)
 
     run, result = synthetic_completed_runtime["execute"](
         "measurement-preservation-" + kind,
         measurement_only=True,
         volatile=True,
-        transform=change,
     )
     assert result["status"] == "failed" and result["measurement_complete"] is False
     assert (
@@ -1904,8 +3037,8 @@ def test_d051_replay_recomputes_authorized_drift_from_inventories(
         f"D-051 operational replay rejected authorized drift: {caught}"
     )
     assert replay is not None
-    assert replay["status"] == "qualified" and replay["mutation_run_version"] == 4
-    assert json_bytes((folder / "evidence-index.json").read_bytes())["version"] == 5
+    assert replay["status"] == "qualified" and replay["mutation_run_version"] == 5
+    assert json_bytes((folder / "evidence-index.json").read_bytes())["version"] == 6
 
 
 @pytest.mark.parametrize("boundary,inventory_number", [("install", 3), ("capture", 13)])
@@ -2051,7 +3184,7 @@ def test_d051_rehashed_policy_and_ledger_tampering_is_rejected(d051_runtime_copy
     operation = journal["operations"][0]
     install_path = folder / operation["receipt"]
     receipt = json_bytes(install_path.read_bytes())
-    version = 5
+    version = 6
     if kind == "manifest_policy_missing":
         value.pop("preservation_policy")
     elif kind == "manifest_policy_widened":
@@ -2149,6 +3282,9 @@ def test_d051_rehashed_inventories_with_honest_ledgers_still_reject_unexpected_c
         tarfile.open(fileobj=stream, mode="w") as output,
     ):
         for member in source.getmembers():
+            if member.isdir():
+                output.addfile(member)
+                continue
             payload = source.extractfile(member)
             assert payload is not None
             raw = payload.read()
@@ -2172,6 +3308,20 @@ def test_d051_rehashed_inventories_with_honest_ledgers_still_reject_unexpected_c
             member.size, member.uid, member.gid, member.mode = 3, 10001, 10001, 0o600
             output.addfile(member, io.BytesIO(b"new"))
     path.write_bytes(stream.getvalue())
+    # Rehash the actual retained read too, so the negative still reaches D-051.
+    for observation in (tx / "reads").glob("*.json"):
+        read = json_bytes(observation.read_bytes())
+        if read["purpose"] == "install-after" and read["root"] == root:
+            raw = path.read_bytes()
+            (observation.parent / read["raw"]).write_bytes(raw)
+            read.update(
+                bytes=len(raw),
+                sha256=digest(raw),
+                bytes_per_second=len(raw) / read["duration_s"]
+                if read["duration_s"]
+                else None,
+            )
+            observation.write_bytes(canonical_bytes(read))
     archives = {
         name: (tx / "after" / (name + ".tar")).read_bytes()
         for name in ("private", "external", "device_encrypted")
@@ -2417,11 +3567,56 @@ def test_rehashed_semantic_operational_corruption_is_rejected(synthetic_runtime,
         path.write_bytes(canonical_bytes(value))
     with pytest.raises(
         CaptureError,
-        match="receipt|backup|inventory|install|reference|environment|capture|manifest|Preservation",
+        match="receipt|backup|inventory|install|reference|environment|capture|manifest|Preservation|D055",
     ):
         api().verify_run(
             folder, catalog, inputs, evidence_sha256=reindex_synthetic(folder)
         )
+
+
+def forge_d055_cleanup_dump(root, summary, remote, raw):
+    """Keep synthetic cleanup/read receipts honest while forging repeat payloads."""
+    import io
+    import tarfile
+
+    proof = summary["hook_cleanup"]
+    entry = next(e for e in proof["paths"] if e["path"] == remote)
+    entry.update(bytes=len(raw), sha256=digest(raw))
+    parts = entry["identity"][-1].split()
+    parts[-1] = str(len(raw))
+    entry["identity"][-1] = " ".join(parts)
+    entry["command"] = api().unlink_command(remote, entry["identity"], digest(raw))
+    proof["before"]["private:" + remote].update(bytes=len(raw), sha256=digest(raw))
+    (root / "before-cleanup-inventory.json").write_bytes(
+        canonical_bytes(proof["before"])
+    )
+    for path in (root / "reads").glob("*.json"):
+        read = json_bytes(path.read_bytes())
+        if (read["purpose"], read["root"]) != ("before-cleanup", "private"):
+            continue
+        payload = path.parent / read["raw"]
+        output = io.BytesIO()
+        with (
+            tarfile.open(fileobj=io.BytesIO(payload.read_bytes())) as source,
+            tarfile.open(fileobj=output, mode="w") as target,
+        ):
+            for member in source.getmembers():
+                stream = source.extractfile(member) if member.isfile() else None
+                if str(Path(member.name)) == remote:
+                    member.size = len(raw)
+                    stream = io.BytesIO(raw)
+                target.addfile(member, stream)
+        observed = output.getvalue()
+        payload.write_bytes(observed)
+        read.update(
+            bytes=len(observed),
+            sha256=digest(observed),
+            bytes_per_second=len(observed) / read["duration_s"]
+            if read["duration_s"]
+            else None,
+        )
+        path.write_bytes(canonical_bytes(read))
+    (root / "hook-cleanup.json").write_bytes(canonical_bytes(proof))
 
 
 def change_reverse_payload(folder, value, plan, role, kind):
@@ -2488,6 +3683,14 @@ def change_reverse_payload(folder, value, plan, role, kind):
                 and operation["request"] == record["request"]
             ):
                 operation["sha256"] = pair["dump_sha256"]
+        if kind == "dump":
+            record["readiness"]["dump"]["sha256"] = pair["dump_sha256"]
+            forge_d055_cleanup_dump(
+                root,
+                summary,
+                record["readiness"]["dump"]["file"],
+                (path.parent / pair["dump"]).read_bytes(),
+            )
         summary_path.write_bytes(canonical_bytes(summary))
     clean = next(
         r
@@ -2515,7 +3718,7 @@ def change_reverse_payload(folder, value, plan, role, kind):
         assert shot["verification"]["passed"], (
             "Regression must preserve every per-pass dynamic gate"
         )
-    if value.get("mutation_run_version") == 4:
+    if value.get("mutation_run_version") == 5:
         for shot in value["screenshots"]:
             proof = shot["outside_rule"]
             if shot["role"] == "clean":
@@ -2759,6 +3962,7 @@ def test_capture_qualification_flag_cannot_disagree_with_status(
 @pytest.mark.parametrize("index_version", [1, 2])
 def test_failed_legacy_v1_is_inspectable_only_with_an_explicit_index_pin(
     synthetic_runtime,
+    tmp_path,
     index_version,
 ):
     folder, catalog, inputs, _ = synthetic_runtime
@@ -2767,9 +3971,29 @@ def test_failed_legacy_v1_is_inspectable_only_with_an_explicit_index_pin(
     value.pop("preservation_policy")
     value.pop("outside_rule_policy")
     value.pop("outside_rule_usage")
+    value.pop("cleanup_policy")
     for shot in value["screenshots"]:
         shot.pop("outside_rule")
         shot.pop("qualified")
+    # A legacy fixture cannot be a renamed D055 run with new cleanup/read files.
+    # Retain the actual synthetic pairs, but build a separate pre-D055 envelope.
+    import shutil
+
+    previous = folder
+    folder = tmp_path / "genuine-synthetic-legacy"
+    folder.mkdir()
+    for shot in value["screenshots"]:
+        pair_path = previous / shot["pair"]
+        pair = json_bytes(pair_path.read_bytes())
+        target = folder / shot["pair"]
+        target.parent.mkdir(parents=True, exist_ok=True)
+        for source in (
+            pair_path,
+            pair_path.parent / pair["png"],
+            pair_path.parent / pair["dump"],
+        ):
+            shutil.copy2(source, target.parent / source.name)
+    (folder / "journal.json").write_bytes(canonical_bytes({"status": "failed"}))
     rewrite_synthetic_manifest(folder, value)
     assert (
         api().verify_run(
@@ -3087,23 +4311,25 @@ def real_capture_runtime(tmp_path, monkeypatch):
     """Exercise real preparation/capture wrappers; only device/native I/O is fake."""
     from functools import partial
 
-    from test_mutation_device import archive
-    from test_screen_capture import FakeDevice
+    from test_text_dump import DumpDevice
 
     from l10n_checker import screen_capture
+    from l10n_checker.app_data import package_data
 
     inputs = Inputs(MANIFEST, split="dev").select_screens(screen_ids=["tech-picker"])
     inputs.manifest = inputs.manifest.model_copy(update={"resolution": [4, 2]})
-    device = FakeDevice(inputs)
+    device = DumpDevice(inputs)
     monkeypatch.setattr(device, "serial", "emulator-5554", raising=False)
     monkeypatch.setattr(device, "build", lambda: inputs.manifest.build.version_code)
     run = object.__new__(api().MutationRun)
     run.folder = tmp_path.resolve() / "run"
     run.folder.mkdir()
     run.inputs, run.device = inputs, device
+    device.root()
     run.last_inventory = api().data_inventory(
-        {"private": archive(), "external": archive()}
+        package_data(device, tmp_path / "baseline", "test-baseline")
     )
+    device.unroot()
     run.plan = {"mutations": {}, "batches": []}
     run.allowed_outputs, run.clean = set(), {}
     run.content = {
@@ -3122,11 +4348,7 @@ def real_capture_runtime(tmp_path, monkeypatch):
         "build_identity_sha256": "b" * 64,
     }
     run.probe = lambda: run.capture(record, "clean")
-    monkeypatch.setattr(
-        api(),
-        "read_app_data",
-        lambda device: {"private": archive(), "external": archive()},
-    )
+
     monkeypatch.setattr(
         api(),
         "capture_manifest",
@@ -3173,12 +4395,12 @@ def test_real_capture_wrapped_timeout_is_checkpointed_in_runtime_journal(
         read_data = api().read_app_data
         reads = 0
 
-        def inventory(device):
+        def inventory(device, *, evidence_dir, purpose):
             nonlocal reads
             reads += 1
             if reads == 2:
                 raise CaptureError("post-capture inventory failed")
-            return read_data(device)
+            return read_data(device, evidence_dir=evidence_dir, purpose=purpose)
 
         monkeypatch.setattr(api(), "read_app_data", inventory)
     if measurement_only:
@@ -3244,7 +4466,9 @@ def test_real_capture_cleanup_is_journaled_without_becoming_batch_interference(
     monkeypatch.setattr(subprocess, "run", fail_native)
 
     def request(device, screen, token, state, timeout, **kwargs):
-        ready = device.request(device, screen, token, state, timeout)
+        ready = device.request(device, screen, token, state, timeout, **kwargs)
+        # The native dump stub and persistent filesystem must agree.
+        device.hook_files[f"files/l10n-hook/{token}.json"] = b"{}"
         if failure == "transport":
             native.run("request")
         return {**ready, "dump": {"file": f"files/l10n-hook/{token}.json"}}
@@ -3277,7 +4501,7 @@ def test_real_capture_cleanup_is_journaled_without_becoming_batch_interference(
         nonlocal unroots
         unroots += 1
         unroot()
-        if unroots == 2 and cleanup in {"unroot", "settings_and_unroot"}:
+        if unroots == 3 and cleanup in {"unroot", "settings_and_unroot"}:
             native.run("unroot")
 
     monkeypatch.setattr(run.device, "force_stop", force_stop)
@@ -3337,7 +4561,7 @@ def test_real_capture_cleanup_is_journaled_without_becoming_batch_interference(
             run.folder / "artifacts/mutation/synthetic-batch/capture/summary.json"
         ).read_bytes()
     )
-    assert len(summary["records"]) == 1 and unroots == 2
+    assert len(summary["records"]) == 1 and unroots == 4
     assert bool(summary.get("settings_restored")) is (cleanup != "settings_and_unroot")
     journal = json_bytes((run.folder / "journal.json").read_bytes())
     error = journal["capture_errors"][0]
@@ -3356,9 +4580,20 @@ def test_real_capture_cleanup_is_journaled_without_becoming_batch_interference(
         expected = (
             ["settings", "unroot"] if cleanup == "settings_and_unroot" else [cleanup]
         )
-        assert [e["cause"]["stdout"] for e in error["cleanup_errors"]] == [
-            label + " stdout" for label in expected
-        ]
-        assert [e["cause"]["stderr"] for e in error["cleanup_errors"]] == [
-            label + " stderr" for label in expected
-        ]
+        assert [
+            e["cause"]["stdout"] for e in error["cleanup_errors"] if "cause" in e
+        ] == [label + " stdout" for label in expected]
+        assert [
+            e["cause"]["stderr"] for e in error["cleanup_errors"] if "cause" in e
+        ] == [label + " stderr" for label in expected]
+        extra = [e for e in error["cleanup_errors"] if "cause" not in e]
+        assert extra == (
+            [
+                {
+                    "type": "CaptureError",
+                    "message": "Strict post-cleanup app-data preservation failed",
+                }
+            ]
+            if cleanup == "settings_and_unroot"
+            else []
+        )

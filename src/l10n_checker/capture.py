@@ -30,11 +30,16 @@ def failure_details(exc) -> dict:
     for name in ("stdout", "stderr"):
         output = getattr(exc, name, None)
         if output is not None:
+            if name == "stdout" and getattr(exc, "app_data_binary_stdout", False):
+                details["stdout_bytes"] = len(output)
+                continue
             details[name] = (
                 output.decode("utf-8", errors="replace")
                 if isinstance(output, bytes)
                 else str(output)
             )
+    if getattr(exc, "app_data_read", None):
+        details["app_data_read"] = exc.app_data_read
     if exc.__cause__ is not None:
         details["cause"] = failure_details(exc.__cause__)
     if getattr(exc, "cleanup_errors", None):
@@ -104,7 +109,11 @@ class Device:
         self.serial = serial
 
     def run(
-        self, *args: str, input: bytes | None = None, allow_fail: bool = False
+        self,
+        *args: str,
+        input: bytes | None = None,
+        allow_fail: bool = False,
+        timeout_s: float = 30,
     ) -> bytes:
         command = [str(self.adb)]
         if self.serial:
@@ -115,7 +124,7 @@ class Device:
                 check=not allow_fail,
                 capture_output=True,
                 input=input,
-                timeout=30,
+                timeout=timeout_s,
             ).stdout
         except FileNotFoundError as exc:
             raise CaptureError("SDK adb was not found; check ANDROID_HOME.") from exc
