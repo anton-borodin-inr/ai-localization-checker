@@ -3,6 +3,7 @@
 import base64
 import io
 import json
+import os
 import re
 import shlex
 import shutil
@@ -520,6 +521,84 @@ def test_d055_all_host_outputs_verified_before_first_unlink(d055_env):
     assert result["status"] == "failed"
     assert result["hook_cleanup"]["status"] == "failed"
     assert "hash" in str(result["hook_cleanup"]["error_details"])
+    assert device.unlinked == []
+
+
+def test_d055_host_proof_ctime_only_change_allows_cleanup(d055_env, monkeypatch):
+    from l10n_checker import app_data
+
+    device, _inputs, _folder, capture = d055_env
+    host_bytes = app_data.host_bytes
+    read_bytes = Path.read_bytes
+    changed = []
+
+    def metadata_only(path):
+        raw = read_bytes(path)
+        before = path.stat()
+        os.utime(path, ns=(before.st_atime_ns, before.st_mtime_ns))
+        after = path.stat()
+        assert before.st_ctime_ns != after.st_ctime_ns
+        assert (before.st_dev, before.st_ino, before.st_size, before.st_mtime_ns) == (
+            after.st_dev,
+            after.st_ino,
+            after.st_size,
+            after.st_mtime_ns,
+        )
+        changed.append(path)
+        return raw
+
+    def annotated_read(path):
+        with monkeypatch.context() as context:
+            context.setattr(Path, "read_bytes", metadata_only)
+            return host_bytes(path)
+
+    monkeypatch.setattr(app_data, "host_bytes", annotated_read)
+    result = capture()
+    assert changed
+    assert result["status"] == "complete"
+    assert result["hook_cleanup"]["status"] == "verified"
+    assert len(device.unlinked) == 4
+    assert device.hook_files == {"files/l10n-hook/pre-existing-near-name.json": b"keep"}
+
+
+def test_d055_host_proof_content_change_still_fails_recorded_hash(
+    d055_env, monkeypatch
+):
+    from l10n_checker import app_data
+
+    device, _inputs, folder, capture = d055_env
+    host_bytes = app_data.host_bytes
+    read_bytes = Path.read_bytes
+    target = None
+    changed = False
+
+    def remember(record):
+        nonlocal target
+        if target is None:
+            target = folder / "capture" / record["dump"]
+
+    def change_content(path):
+        nonlocal changed
+        raw = read_bytes(path)
+        if path == target and not changed:
+            before = path.stat()
+            raw = bytes([raw[0] ^ 1]) + raw[1:]
+            path.write_bytes(raw)
+            os.utime(path, ns=(before.st_atime_ns, before.st_mtime_ns))
+            changed = True
+        return raw
+
+    def checked_read(path):
+        with monkeypatch.context() as context:
+            context.setattr(Path, "read_bytes", change_content)
+            return host_bytes(path)
+
+    monkeypatch.setattr(app_data, "host_bytes", checked_read)
+    result = capture(on_pair=remember)
+    assert changed
+    assert result["status"] == "failed"
+    assert result["hook_cleanup"]["status"] == "failed"
+    assert "hash" in result["hook_cleanup"]["error_details"]["message"]
     assert device.unlinked == []
 
 
