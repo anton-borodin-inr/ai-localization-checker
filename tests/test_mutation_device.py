@@ -46,6 +46,39 @@ def test_backup_inventory_binds_bytes_ownership_and_modes():
     assert before == api().data_inventory({"private": archive()})
 
 
+def test_installed_apk_read_uses_300s_and_retains_full_identity(tmp_path):
+    payload = b"complete synthetic APK\x00\xff"
+    certificate = "c" * 64
+    remote = "/data/app/synthetic/base.apk"
+
+    class Native:
+        def shell(self, *args):
+            assert args == ("pm", "path", "com.unciv.app")
+            return "package:" + remote + "\n"
+
+        def run(self, *args, timeout_s=30):
+            assert args == ("exec-out", "cat", remote)
+            assert timeout_s == 300, "Complete APK reads need the approved hang limit"
+            return payload
+
+        def build(self):
+            return "1271048"
+
+    class Tools:
+        def inspect(self, path):
+            assert path.read_bytes() == payload
+            return {"version_code": "1271048", "certificate_sha256": certificate}
+
+    result = api().installed_identity(Native(), Tools(), tmp_path / "identity")
+
+    assert (tmp_path / "identity/installed.apk").read_bytes() == payload
+    assert result == {
+        "version_code": "1271048",
+        "apk_sha256": digest(payload),
+        "certificate_sha256": certificate,
+    }
+
+
 class Device:
     def __init__(self):
         self.calls = []

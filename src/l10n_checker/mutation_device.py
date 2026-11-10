@@ -81,7 +81,7 @@ def installed_identity(device, tools, folder):
         remote.startswith("/data/app/") and "\n" not in remote,
         "Unexpected installed APK path",
     )
-    raw = device.run("exec-out", "cat", remote)
+    raw = device.run("exec-out", "cat", remote, timeout_s=300)
     folder = no_symlinks(folder)
     folder.mkdir(mode=0o700, parents=True, exist_ok=True)
     path = folder / "installed.apk"
