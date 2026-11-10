@@ -182,6 +182,7 @@ Diagnosis on 2026-11-10 (emulator 36.5.11, API 34 r14):
 
 - The guest's dropbox held two `system_server_watchdog` reports: on 2026-11-09 at 22:55 (main thread blocked 469 s) and on 2026-11-10 at 02:58 (149 s), with ANRs before them. Both fell inside periods when the Mac display was off; the Mac itself did not sleep. Working hypothesis: macOS throttles the windowed emulator process while the display is off. This is a correlation, not yet confirmed by a controlled run.
 - With 2 GB guest RAM, lmkd logged thrashing and low swap during boot, and `system_server` reached `Watchdog: WAITED_HALF`. With `lavapipe`, the host CPU also renders every frame.
+- With `lavapipe` and 4 GB RAM, `adb shell true` (30 tries, 1 s apart) took median 615 ms and max 3625 ms while Unciv was in the foreground (qemu at 172% host CPU), and median 66 ms, max 753 ms with Unciv in the background. With `-gpu host` and Unciv in the foreground, the max was 35 ms. Slow adb during a capture on `lavapipe` is therefore expected and is not by itself a hang.
 
 Mitigations: 4 GB guest RAM, `caffeinate` while the emulator runs, and an explicit renderer (see [AVD](#avd)). Wiping the AVD data is not needed for this; nothing pointed to corrupted AVD state.
 
