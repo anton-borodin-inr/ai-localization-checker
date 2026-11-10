@@ -23,6 +23,7 @@ from l10n_checker.capture import (
     SETTINGS_PATH,
     CaptureError,
     Device,
+    preserve_cleanup,
     retain_cleanup,
 )
 from l10n_checker.mutation_catalog import ApkTools, no_symlinks, read_catalog, require
@@ -547,6 +548,7 @@ class MutationRun:
                 folder=folder,
                 environment=self.environment,
                 previous_inventory=self.last_inventory,
+                reference_restoration=record["build"]["version_code"] == "1271048",
             )
             self.journal["operations"].append(
                 {
@@ -566,12 +568,10 @@ class MutationRun:
                 state = json_bytes(receipt.read_bytes())
                 if state.get("install_attempted"):
                     self.needs_restore = True
-                    if (
-                        record["build"]["version_code"] == "1271048"
-                        and state["status"] != "verified"
-                    ):
-                        self.restore_error = state.get(
-                            "error", "Reference restoration failed"
+                    if record["build"]["version_code"] == "1271048":
+                        self.restore_attempted = True
+                        self.content["restoration_verified"] = (
+                            state.get("identity_verified") is True
                         )
             self.checkpoint()
 
@@ -584,16 +584,20 @@ class MutationRun:
     def restore(self):
         if self.restored:
             return
-        require(
-            not self.restore_attempted and self.restore_error is None,
-            "Reference restoration already attempted; stop without retry: "
-            + str(self.restore_error),
-        )
-        self.restore_attempted = True
+        if self.restore_error is not None:
+            raise getattr(
+                self,
+                "restore_failure",
+                CaptureError(
+                    "Reference restoration already attempted; stop without retry: "
+                    + str(self.restore_error)
+                ),
+            )
         try:
             self._restore_once()
         except BaseException as exc:
             self.restore_error = str(exc)
+            self.restore_failure = exc
             raise
 
     def _restore_once(self):
@@ -604,8 +608,25 @@ class MutationRun:
             "Reference restoration already failed; stop without retry: "
             + str(self.restore_error),
         )
-        if self.needs_restore:
-            self.install(self.reference())
+        primary = None
+        if not self.restore_attempted:
+            try:
+                self.install(self.reference())
+            except BaseException as exc:  # noqa: BLE001 - observe identity/data independently
+                primary = exc
+        try:
+            with preserve_cleanup(self.device.unroot, "Final unroot"):
+                self._verify_restoration()
+        except BaseException as exc:
+            if primary is None:
+                raise
+            retain_cleanup(primary, exc, "Final reference verification")
+        if primary is not None:
+            raise primary
+        self.restored = True
+        self.checkpoint()
+
+    def _verify_restoration(self):
         observed = installed_identity(
             self.device, self.tools, self.folder / "private/final-apk"
         )
@@ -616,6 +637,8 @@ class MutationRun:
             == self.catalog.data["signing"]["reference_certificate_sha256"],
             "Final 1271048 restoration identity failed",
         )
+        self.content["restoration_verified"] = True
+        self.checkpoint()
         if self.original_inventory is not None:
             current = data_inventory(
                 read_app_data(
@@ -648,9 +671,6 @@ class MutationRun:
                 "Original app data not restored; backups retained, no repair",
             )
             self.last_inventory = current
-        self.device.unroot()
-        self.content["restoration_verified"] = True
-        self.restored = True
         self.checkpoint()
 
     def probe(self):
@@ -1158,7 +1178,6 @@ class MutationRun:
                     restoration_interrupt = exc
                 self.content.update(
                     status="restoration_failed",
-                    restoration_verified=False,
                     capture_set_qualified=False,
                 )
             if measurement_only:
@@ -1875,25 +1894,36 @@ def replay_reads(evidence, folder, value, inputs, catalog):
                     )
             elif parent.startswith("private/install-"):
                 receipt = evidence.json(folder / parent, "install.json")
+                reference_tail = (
+                    receipt.get("reference_restoration") == "D-056"
+                    and receipt.get("build") == inputs.manifest.build.model_dump()
+                    and receipt.get("reference_validated") is True
+                )
                 if purpose == "install-readback":
                     require(
-                        parent + "/before/inventory.json" in evidence.files,
+                        reference_tail
+                        or parent + "/before/inventory.json" in evidence.files,
                         "D055 install readback lacks backup boundary",
                     )
                 elif purpose == "install-after":
                     require(
                         receipt.get("install_attempted") is True
-                        and receipt.get("observed_build")
-                        == {
-                            key: receipt.get("build", {}).get(key)
-                            for key in ("version_code", "apk_sha256")
-                        }
-                        | {
-                            "certificate_sha256": catalog.data["signing"][
-                                "reference_certificate_sha256"
-                            ]
-                        }
-                        and parent + "/before-readback.json" in evidence.files,
+                        and (
+                            reference_tail
+                            or (
+                                receipt.get("observed_build")
+                                == {
+                                    key: receipt.get("build", {}).get(key)
+                                    for key in ("version_code", "apk_sha256")
+                                }
+                                | {
+                                    "certificate_sha256": catalog.data["signing"][
+                                        "reference_certificate_sha256"
+                                    ]
+                                }
+                                and parent + "/before-readback.json" in evidence.files
+                            )
+                        ),
                         "D055 post-install read lacks entered verified-build boundary",
                     )
             else:
@@ -2061,7 +2091,22 @@ def replay_read_workflow(evidence, folder, ordered, inputs):
             )
             sequence(references, purposes)
         elif re.fullmatch(r"private/install-[0-9]{3}", parent):
-            sequence(rows, ["install-before", "install-readback", "install-after"])
+            receipt = evidence.json(folder / parent, "install.json")
+            reference_tail = (
+                receipt.get("reference_restoration") == "D-056"
+                and receipt.get("build") == inputs.manifest.build.model_dump()
+                and receipt.get("reference_validated") is True
+            )
+            purposes = ["install-before", "install-readback", "install-after"]
+            if reference_tail:
+                missing = set(purposes) - {r["purpose"] for r in rows}
+                errors = {e["stage"] for e in receipt["observation_errors"]}
+                require(
+                    missing <= errors,
+                    "Reference missing read lacks observation failure",
+                )
+                purposes = [p for p in purposes if p not in missing]
+            sequence(rows, purposes, tail=reference_tail)
         elif re.fullmatch(r"artifacts/[^/]+/[^/]+", parent):
             sequence(rows, ["capture-preflight", "capture-after"])
         elif re.fullmatch(r"artifacts/[^/]+/[^/]+/prepare", parent):
@@ -2928,6 +2973,54 @@ def replay_reference_data(evidence, folder, recorded, original, previous, allowe
     return current
 
 
+def replay_reference_install(evidence, folder, relative, receipt, build, certificate):
+    """Identity success is authenticated separately from preservation success."""
+    expected = {key: build[key] for key in ("version_code", "apk_sha256")} | {
+        "certificate_sha256": certificate,
+    }
+    require(
+        receipt.get("reference_restoration") == "D-056"
+        and type(receipt.get("reference_validated")) is bool
+        and type(receipt.get("identity_verified")) is bool
+        and type(receipt.get("observation_errors")) is list,
+        "Missing/altered reference restoration receipt",
+    )
+    if receipt["reference_validated"]:
+        require(
+            receipt.get("reference_identity") == expected,
+            "Reference identity receipt mismatch",
+        )
+    if receipt.get("install_attempted"):
+        require(receipt["reference_validated"], "Unvalidated reference install attempt")
+    if receipt["identity_verified"]:
+        require(
+            receipt.get("install_attempted") is True
+            and receipt.get("observed_build")
+            == replay_installed_apk(
+                evidence, folder, relative + "/after-apk", build, certificate
+            ),
+            "Reference identity verification receipt mismatch",
+        )
+    elif receipt.get("install_attempted"):
+        require(
+            any(
+                error.get("stage") == "installed-identity"
+                and error.get("error_details")
+                for error in receipt["observation_errors"]
+            ),
+            "Unverified reference identity lacks failed observation",
+        )
+    if receipt.get("status") == "verified":
+        require(
+            receipt["reference_validated"]
+            and receipt["identity_verified"]
+            and receipt["observation_errors"] == [],
+            "Successful reference has failed observations",
+        )
+    else:
+        require(receipt.get("error_details"), "Failed reference lacks error receipt")
+
+
 def replay_available_operations(evidence, folder, catalog, inputs, value):
     """Replay retained completed transactions and the honest failed tail."""
     journal = evidence.json(folder, "journal.json")
@@ -2983,14 +3076,15 @@ def replay_available_operations(evidence, folder, catalog, inputs, value):
             )
         return receipt
 
-    # probe() admits no app-data read or transaction before BOTH initial gates.
-    # A genuine failed preflight may retain only its available observation and
-    # the final identity/unroot tail; later evidence proves successful entry.
+    # Only reference restoration may enter after failed initial diagnostics.
+    # Original data reads and ordinary installs still require both initial gates.
     progressed = any(
-        name.startswith(
-            ("private/reads/", "private/original/", "private/install-", "artifacts/")
-        )
+        name.startswith(("private/reads/", "private/original/", "artifacts/"))
         or name in {"private/reads-attempts.json", "private/original-readback.json"}
+        or (
+            re.fullmatch(r"private/install-[0-9]{3}/install.json", name)
+            and evidence.json(folder, name).get("build") != reference["build"]
+        )
         for name in evidence.files
     )
     if progressed or available("environment/initial/receipt.json"):
@@ -3004,9 +3098,13 @@ def replay_available_operations(evidence, folder, catalog, inputs, value):
             "Initial environment prerequisite missing before app-data/transactions",
         )
     if available("private/initial-apk/installed.apk"):
-        replay_installed_apk(
-            evidence, folder, "private/initial-apk", reference["build"], certificate
-        )
+        if progressed:
+            replay_installed_apk(
+                evidence, folder, "private/initial-apk", reference["build"], certificate
+            )
+        else:
+            # Failed initial diagnostics cannot prohibit the reference-only tail.
+            evidence.read(folder, "private/initial-apk/installed.apk")
     if available("environment/initial/receipt.json"):
         environment("environment/initial", reference["build"], successful=progressed)
     original = previous_inventory = None
@@ -3041,14 +3139,21 @@ def replay_available_operations(evidence, folder, catalog, inputs, value):
     completed, checks, reference_checks = [], [], []
     halted = final_reference = False
     last_reference = None
+    last_install = {}
     for n, name in enumerate(installs, 1):
         receipt = evidence.json(folder, name)
+        last_install = receipt
         relative = str(Path(name).parent)
         build = receipt.get("build")
         require(not final_reference, "Install continued after final reference attempt")
-        if n >= 3 and build == reference["build"]:
+        is_reference = build == reference["build"]
+        if is_reference and (n != 2 or halted):
             artifact, role = reference, None
             final_reference = True
+            require(
+                journal.get("error_details"),
+                "Early/final reference lacks stopped stage",
+            )
         else:
             require(n <= len(main), "Extra install beyond authorized stage prefix")
             artifact, role = main[n - 1]
@@ -3069,6 +3174,10 @@ def replay_available_operations(evidence, folder, catalog, inputs, value):
             "Failed/partial install authority or preservation policy mismatch",
         )
         verified = receipt.get("status") == "verified"
+        if is_reference:
+            replay_reference_install(
+                evidence, folder, relative, receipt, build, certificate
+            )
         require(
             receipt.get("status")
             in {"verified", "failed", "preparing", "install_attempted"},
@@ -3104,50 +3213,88 @@ def replay_available_operations(evidence, folder, catalog, inputs, value):
         if verified or available(relative + "/before-apk/installed.apk"):
             raw = evidence.read(folder, relative + "/before-apk/installed.apk")
             candidates = [b for b in previous_builds if digest(raw) == b["apk_sha256"]]
-            require(len(candidates) == 1, "Install previous APK continuity mismatch")
-            require(
-                receipt.get("previous_build")
-                == replay_installed_apk(
-                    evidence,
-                    folder,
-                    relative + "/before-apk",
-                    candidates[0],
-                    certificate,
-                ),
-                "Install previous identity receipt mismatch",
+            previous_error = (
+                is_reference
+                and not verified
+                and any(
+                    error.get("stage") == "previous-identity"
+                    for error in receipt.get("observation_errors", [])
+                )
             )
+            if previous_error and "previous_build" not in receipt:
+                pass  # Retained bytes are an observation, not a verified previous identity.
+            elif is_reference and not candidates:
+                require(
+                    receipt.get("previous_build", {}).get("apk_sha256") == digest(raw),
+                    "Reference previous diagnostic receipt mismatch",
+                )
+            else:
+                require(
+                    len(candidates) == 1, "Install previous APK continuity mismatch"
+                )
+                require(
+                    receipt.get("previous_build")
+                    == replay_installed_apk(
+                        evidence,
+                        folder,
+                        relative + "/before-apk",
+                        candidates[0],
+                        certificate,
+                    ),
+                    "Install previous identity receipt mismatch",
+                )
         before = readback = after = None
         if verified or available(relative + "/before/inventory.json"):
             require(
-                previous_inventory is not None and "backup" in receipt,
+                (is_reference or previous_inventory is not None)
+                and "backup" in receipt,
                 "Install has no original/input backup",
             )
             before = replay_backup(
                 evidence, folder, relative + "/before", receipt["backup"]
             )
-            ledger(
-                receipt.get("input_preservation"),
-                previous_inventory,
-                before,
-                successful=verified,
-            )
+            if previous_inventory is not None:
+                ledger(
+                    receipt.get("input_preservation"),
+                    previous_inventory,
+                    before,
+                    successful=verified,
+                )
+            else:
+                require(
+                    "input_preservation" not in receipt,
+                    "Reference invented input inventory",
+                )
         if verified or available(relative + "/before-readback.json"):
-            require(before is not None, "Install readback lacks before inventory")
-            readback = evidence.json(folder, relative + "/before-readback.json")
-            ledger(
-                receipt.get("backup_readback_preservation"),
-                before,
-                readback,
-                successful=verified,
-            )
-        if verified or available(relative + "/after-apk/installed.apk"):
             require(
-                receipt.get("observed_build")
-                == replay_installed_apk(
-                    evidence, folder, relative + "/after-apk", build, certificate
-                ),
-                "Install observed identity receipt mismatch",
+                is_reference or before is not None,
+                "Install readback lacks before inventory",
             )
+            readback = evidence.json(folder, relative + "/before-readback.json")
+            if before is not None:
+                ledger(
+                    receipt.get("backup_readback_preservation"),
+                    before,
+                    readback,
+                    successful=verified,
+                )
+        if verified or available(relative + "/after-apk/installed.apk"):
+            if is_reference and receipt.get("identity_verified") is False:
+                # A failed reinstall may retain the previous APK, not the reference.
+                raw = evidence.read(folder, relative + "/after-apk/installed.apk")
+                if "observed_build" in receipt:
+                    require(
+                        receipt["observed_build"].get("apk_sha256") == digest(raw),
+                        "Failed reference observed APK digest mismatch",
+                    )
+            else:
+                require(
+                    receipt.get("observed_build")
+                    == replay_installed_apk(
+                        evidence, folder, relative + "/after-apk", build, certificate
+                    ),
+                    "Install observed identity receipt mismatch",
+                )
         if verified or available(f"environment/{n:03d}/receipt.json"):
             observed = environment(f"environment/{n:03d}", build, successful=verified)
             require(
@@ -3156,25 +3303,26 @@ def replay_available_operations(evidence, folder, catalog, inputs, value):
             )
         if verified or available(relative + "/after/inventory.json"):
             require(
-                before is not None
-                and readback is not None
+                (is_reference or (before is not None and readback is not None))
                 and "post_install" in receipt,
                 "Install after inventory lacks backup/readback",
             )
             after = replay_backup(
                 evidence, folder, relative + "/after", receipt["post_install"]
             )
-            require(
-                receipt.get("data_changes") == inventory_changes(before, after),
-                "Install data-change ledger mismatch",
-            )
-            ledger(receipt.get("preservation"), before, after, successful=verified)
-            ledger(
-                receipt.get("post_readback_preservation"),
-                readback,
-                after,
-                successful=verified,
-            )
+            if before is not None:
+                require(
+                    receipt.get("data_changes") == inventory_changes(before, after),
+                    "Install data-change ledger mismatch",
+                )
+                ledger(receipt.get("preservation"), before, after, successful=verified)
+            if readback is not None:
+                ledger(
+                    receipt.get("post_readback_preservation"),
+                    readback,
+                    after,
+                    successful=verified,
+                )
         if verified:
             previous_builds, previous_inventory = [build], after
         elif receipt.get("install_attempted"):
@@ -3276,20 +3424,17 @@ def replay_available_operations(evidence, folder, catalog, inputs, value):
             journal.get("restoration_preservation"),
             original,
             current,
-            successful=value["restoration_verified"],
         )
     if value["restoration_verified"]:
         replay_installed_apk(
             evidence, folder, "private/final-apk", reference["build"], certificate
         )
         require(
-            original is None
-            or (
-                available("private/final-inventory.json")
-                and reference_checks
-                and not reference_checks[-1]["prior_preservation"]["unexpected_changes"]
-            ),
-            "Verified restoration lacks successful preservation boundary",
+            installs
+            and last_install.get("build") == reference["build"]
+            and last_install.get("install_attempted") is True
+            and last_install.get("reference_validated") is True,
+            "Verified restoration lacks authorized reference attempt",
         )
 
 
@@ -3377,6 +3522,10 @@ def replay_operations(evidence, folder, catalog, inputs, value):
         relative = f"private/install-{n:03d}"
         receipt = evidence.json(folder, relative + "/install.json")
         build = artifact["build"]
+        if build == reference:
+            replay_reference_install(
+                evidence, folder, relative, receipt, build, certificate
+            )
         require(
             operation
             == {

@@ -48,6 +48,8 @@ def failure_details(exc) -> dict:
 
 
 def retain_cleanup(original, cleanup, operation="Reference restoration"):
+    if cleanup is original:
+        return
     original.add_note(f"{operation} also failed: {cleanup}")
     errors = getattr(original, "cleanup_errors", [])
     errors.append(failure_details(cleanup))

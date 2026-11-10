@@ -262,10 +262,10 @@ ANDROIDX_BOOKKEEPING = (
 def preservation_policy():
     """Task-specific owner authorization, not a general cache/database ignore."""
     return {
-        "decision": "D-051",
-        "version": 1,
+        "decision": "D-056",
+        "version": 2,
         "regular_file_paths": list(ANDROIDX_BOOKKEEPING),
-        "allowed_changes": ["bytes", "sha256", "presence"],
+        "allowed_changes": ["bytes", "sha256", "presence", "uid", "gid", "mode"],
         "app_data_writes": 0,
     }
 
@@ -282,8 +282,16 @@ def preservation_report(before, after, allowed_new=()):
             and (
                 old is None
                 or new is None
-                or {k: v for k, v in old.items() if k not in {"bytes", "sha256"}}
-                == {k: v for k, v in new.items() if k not in {"bytes", "sha256"}}
+                or {
+                    k: v
+                    for k, v in old.items()
+                    if k not in {"bytes", "sha256", "uid", "gid", "mode"}
+                }
+                == {
+                    k: v
+                    for k, v in new.items()
+                    if k not in {"bytes", "sha256", "uid", "gid", "mode"}
+                }
             )
         )
 

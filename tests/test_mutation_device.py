@@ -275,6 +275,8 @@ def test_restoration_error_does_not_replace_original_failure():
 def test_failed_final_verification_does_not_reinstall_reference_twice(
     tmp_path, monkeypatch
 ):
+    from types import SimpleNamespace
+
     import l10n_checker.mutation_run as runtime
     from l10n_checker.mutation_run import MutationRun
 
@@ -284,7 +286,8 @@ def test_failed_final_verification_does_not_reinstall_reference_twice(
     run.restore_attempted = False
     run.needs_restore = True
     run.folder = tmp_path
-    run.device = run.tools = None
+    run.device = SimpleNamespace(unroot=lambda: None)
+    run.tools = None
     run.reference = dict
     calls = []
     run.install = lambda record: calls.append(record)
@@ -344,14 +347,12 @@ def file_entry(raw=b"before", **metadata):
 @pytest.mark.parametrize(
     "change",
     [
-        {"uid": 10002},
-        {"gid": 10002},
-        {"mode": 0o644},
+        {"unknown_metadata": "strict"},
         {"type": "directory"},
         {"type": "symlink", "target": "elsewhere"},
     ],
 )
-def test_d051_never_exempts_metadata_or_nonregular_files(change):
+def test_d056_never_exempts_unknown_metadata_or_nonregular_files(change):
     name = "private:" + BOOKKEEPING[0]
     before = {name: file_entry()}
     after = {name: file_entry(b"changed", **change)}
@@ -361,6 +362,39 @@ def test_d051_never_exempts_metadata_or_nonregular_files(change):
     if change.get("type") in {"directory", "symlink"}:
         assert api().preservation_report({}, after)["unexpected_changes"]
         assert api().preservation_report(after, {})["unexpected_changes"]
+
+
+@pytest.mark.parametrize("path", BOOKKEEPING)
+@pytest.mark.parametrize(
+    "change",
+    [
+        {"uid": 10002},
+        {"gid": 10002},
+        {"mode": 0o660},
+        {"uid": 10002, "gid": 10003, "mode": 0o660},
+    ],
+)
+def test_d056_records_authorized_bookkeeping_metadata(path, change):
+    name = "private:" + path
+    before, after = {name: file_entry()}, {name: file_entry(b"recreated", **change)}
+    report = api().preservation_report(before, after)
+    assert report["unexpected_changes"] == []
+    assert report["exempt_changes"] == api().inventory_changes(before, after)
+    assert next(r for r in report["bookkeeping"] if r["path"] == name) == {
+        "path": name,
+        "before": before[name],
+        "after": after[name],
+    }
+    assert report["policy"]["decision"] == "D-056"
+    assert report["policy"]["version"] == 2
+    assert report["policy"]["allowed_changes"] == [
+        "bytes",
+        "sha256",
+        "presence",
+        "uid",
+        "gid",
+        "mode",
+    ]
 
 
 def bookkeeping_archive(value, mode=0o600, present=True):
@@ -434,13 +468,15 @@ def test_d051_reports_all_four_files_without_hiding_raw_deltas():
         }
         for path in BOOKKEEPING
     ]
-    assert report["policy"]["decision"] == "D-051"
+    assert report["policy"]["decision"] == "D-056"
     empty = api().preservation_report({}, {})
     assert all(r["before"] is None and r["after"] is None for r in empty["bookkeeping"])
     assert empty["exempt_changes"] == empty["unexpected_changes"] == []
 
 
-def test_d051_metadata_of_file_created_at_readback_stays_strict(tmp_path, monkeypatch):
+def test_d056_metadata_of_bookkeeping_created_at_readback_is_recorded(
+    tmp_path, monkeypatch
+):
     from l10n_checker.screen_manifest import json_bytes
 
     device, path, build, _ = transaction(tmp_path, monkeypatch)
@@ -470,9 +506,10 @@ def test_d051_metadata_of_file_created_at_readback_stays_strict(tmp_path, monkey
         )
     except CaptureError:
         rejected = True
-    assert rejected, "Creation must not conceal metadata drift after the readback"
+    assert not rejected, "D-056 permits metadata drift on these same four regular files"
     receipt = json_bytes((tmp_path / "tx/install.json").read_bytes())
-    assert receipt["post_readback_preservation"]["unexpected_changes"]
+    assert not receipt["post_readback_preservation"]["unexpected_changes"]
+    assert len(receipt["post_readback_preservation"]["exempt_changes"]) == 4
 
 
 @pytest.mark.parametrize("path", BOOKKEEPING)
@@ -760,3 +797,182 @@ def test_backup_unroot_double_failure_retains_primary_and_install_receipt(
     assert len(cleanup_details) == 1
     assert cleanup_details[0]["cause"]["stdout"] == "unroot stdout"
     assert cleanup_details[0]["cause"]["stderr"] == "unroot stderr"
+
+
+@pytest.mark.parametrize(
+    "fault",
+    [
+        "input",
+        "backup",
+        "incomplete",
+        "readback",
+        "settings",
+        "save",
+        "current_identity",
+        "environment",
+        "cancel",
+    ],
+)
+def test_d056_reference_installs_and_verifies_despite_observation_failure(
+    tmp_path, monkeypatch, fault
+):
+    from types import SimpleNamespace
+
+    from l10n_checker.screen_manifest import json_bytes
+
+    device, path, build, _ = transaction(tmp_path, monkeypatch)
+    build["version_code"] = "1271048"
+    original = {"private": archive()}
+    previous = api().data_inventory(original)
+    if fault == "input":
+        previous = api().data_inventory({"private": archive(b"original")})
+    reads, identities = [], []
+    primary = (
+        KeyboardInterrupt("cancel before backup")
+        if fault == "cancel"
+        else CaptureError("failed " + fault)
+    )
+
+    def read(device, *, evidence_dir, purpose):
+        reads.append(purpose)
+        if (purpose == "install-before" and fault in {"backup", "cancel"}) or (
+            purpose == "install-readback" and fault == "readback"
+        ):
+            raise primary
+        if purpose == "install-before" and fault == "incomplete":
+            return {"private": b"truncated tar"}
+        if purpose == "install-after" and fault in {"settings", "save"}:
+            return {"private": archive(b"changed protected " + fault.encode())}
+        return original
+
+    def identity(device, tools, folder):
+        identities.append(folder.name)
+        return {
+            **build,
+            "certificate_sha256": (
+                "b" * 64
+                if fault == "current_identity" and folder.name == "before-apk"
+                else "a" * 64
+            ),
+        }
+
+    def environment(build):
+        if fault == "environment":
+            raise primary
+
+    monkeypatch.setattr(api(), "read_app_data", read)
+    monkeypatch.setattr(api(), "installed_identity", identity)
+    error = None
+    try:
+        api().install_verified(
+            device,
+            path,
+            build,
+            "a" * 64,
+            tools=SimpleNamespace(
+                inspect=lambda p: {**build, "certificate_sha256": "a" * 64}
+            ),
+            folder=tmp_path / "tx",
+            environment=environment,
+            previous_inventory=previous,
+            reference_restoration=True,
+        )
+    except BaseException as exc:  # noqa: BLE001 - retain cancellation for command assertions
+        error = exc
+    assert [c for c in device.calls if c[0] == "install"] == [
+        ("install", "-r", "-d", str(path))
+    ], f"Preservation must not gate reference reinstall: {error!r}"
+    assert identities == ["before-apk", "after-apk"]
+    assert reads == ["install-before", "install-readback", "install-after"]
+    receipt = json_bytes((tmp_path / "tx/install.json").read_bytes())
+    assert receipt["identity_verified"] is True
+    assert receipt["reference_validated"] is True
+    assert receipt["status"] == "failed" and receipt["app_data_preserved"] is False
+    assert receipt["observation_errors"] and receipt["error_details"]
+    if fault in {"backup", "readback", "environment", "cancel"}:
+        assert error is primary
+
+
+@pytest.mark.parametrize("fault", ["hash", "signer", "version", "inspection"])
+def test_d056_invalid_reference_itself_blocks_command(tmp_path, monkeypatch, fault):
+    from types import SimpleNamespace
+
+    from l10n_checker.screen_manifest import json_bytes
+
+    device, path, build, _ = transaction(tmp_path, monkeypatch)
+    build["version_code"] = "1271048"
+    inspected = {**build, "certificate_sha256": "a" * 64}
+    if fault == "hash":
+        path.write_bytes(b"different reference")
+    elif fault == "signer":
+        inspected["certificate_sha256"] = "b" * 64
+    elif fault == "version":
+        inspected["version_code"] = "1271049"
+
+    def inspect(path):
+        if fault == "inspection":
+            raise CaptureError("reference unverified")
+        return inspected
+
+    error = None
+    try:
+        api().install_verified(
+            device,
+            path,
+            build,
+            "a" * 64,
+            tools=SimpleNamespace(inspect=inspect),
+            folder=tmp_path / "tx",
+            environment=lambda build: None,
+            reference_restoration=True,
+        )
+    except BaseException as exc:  # noqa: BLE001 - retain cancellation for command assertions
+        error = exc
+    assert isinstance(error, CaptureError), f"Reference validation missing: {error!r}"
+    assert not any(c[0] == "install" for c in device.calls)
+    receipt = json_bytes((tmp_path / "tx/install.json").read_bytes())
+    assert receipt["reference_validated"] is False
+    assert receipt["identity_verified"] is False
+
+
+@pytest.mark.parametrize("field", ["version_code", "apk_sha256", "certificate_sha256"])
+def test_d056_reference_installed_identity_mismatch_cannot_claim_success(
+    tmp_path, monkeypatch, field
+):
+    from types import SimpleNamespace
+
+    from l10n_checker.screen_manifest import json_bytes
+
+    device, path, build, _ = transaction(tmp_path, monkeypatch)
+    build["version_code"] = "1271048"
+    expected = {**build, "certificate_sha256": "a" * 64}
+    identities, reads = [], []
+
+    def identity(device, tools, folder):
+        identities.append(folder.name)
+        return expected | ({field: "incorrect"} if folder.name == "after-apk" else {})
+
+    def read(device, *, evidence_dir, purpose):
+        reads.append(purpose)
+        return {"private": archive()}
+
+    monkeypatch.setattr(api(), "installed_identity", identity)
+    monkeypatch.setattr(api(), "read_app_data", read)
+    with pytest.raises(CaptureError, match="Installed APK identity mismatch"):
+        api().install_verified(
+            device,
+            path,
+            build,
+            "a" * 64,
+            tools=SimpleNamespace(inspect=lambda path: expected),
+            folder=tmp_path / "tx",
+            environment=lambda build: None,
+            reference_restoration=True,
+        )
+    receipt = json_bytes((tmp_path / "tx/install.json").read_bytes())
+    assert receipt["identity_verified"] is False and receipt["status"] == "failed"
+    assert identities == ["before-apk", "after-apk"]
+    assert reads == ["install-before", "install-readback", "install-after"]
+    assert [c for c in device.calls if c[0] == "install"] == [
+        ("install", "-r", "-d", str(path))
+    ]

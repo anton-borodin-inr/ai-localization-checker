@@ -449,9 +449,10 @@ recorded as Proposed D-051. The exact package-relative paths are:
 Only `DATA_ROOTS["private"]` qualifies (inventory keys start with `private:`).
 The same names in external/device-encrypted roots, prefix/suffix matches,
 descendants, and all other app-data paths stay strict. Only regular-file bytes,
-SHA-256 and absence/creation/deletion may differ. Existing-file uid/gid/mode
-remain exact; directory/symlink substitutions are unexpected. Settings and
-saves stay byte-exact. The code never writes or restores these four files:
+SHA-256, absence/creation/deletion and UID/GID/mode may differ under Proposed
+D-056's extension of D-051; all other fields stay strict. Directory/symlink
+substitutions are unexpected. Settings and saves stay byte-exact. The code never
+writes or restores these four files:
 backups/readbacks retain observations, not permission to repair app data.
 
 Every comparison records all four before/after inventory entries, including
@@ -459,28 +460,40 @@ size/hash for present regular files and explicit `null` for absence, even when
 unchanged. Raw `inventory_changes`/install `data_changes`/capture `changes` and
 `restoration_data_changes` are not filtered by D-051. Separate ledgers partition
 actual exempt deltas from unexpected deltas; only an empty unexpected set may
-proceed. Declared-new hook outputs retain their existing separate handling;
+qualify or proceed to another capture/catalog install. Reference restoration is
+never gated by preservation. Declared-new hook outputs retain their existing
+separate handling;
 pre-existing hook files are never made mutable by that declaration.
 
 Checks cover original backup readback, continuity into each install, per-install
 backup readback and both before/readback-to-after comparisons, capture preflight
 and before/after, and each reference verification. The readback-to-after check
-keeps metadata strict even for a file first created during the backup readback.
+keeps every non-exempt field strict, including files first created at readback.
 Probe and final reference inventories/ledgers are retained separately as
 `private/reference-NNN-inventory.json` and journal `restoration_checks`, rather
 than overwriting the probe observation with the final one. Unexpected drift
-between transactions stops before the next install/capture, not only at the end.
+between transactions stops before the next catalog install/capture, not the
+authorized reference reinstall.
 
 This exception addresses AndroidX startup bookkeeping, not game-state or
 rendering variability. D-053 separately supersedes only D-050's outside-pixel
 clause; RGBA masks, unmutated-element layout checks and forward/reverse
 RGBA/raw-dump equality remain unchanged. D-054 supersedes only D-053's RGB cap.
 
-The run finalizer restores the exact original reference APK, verifies its
-certificate/hash/version and data, and records cleanup errors separately from
-the original failure. A failed final readback is not permission to retry
-installation indefinitely or to call full restoration successful merely because
-settings and saves match.
+Under Proposed D-056, the finalizer always attempts the pinned reference with
+`adb install -r -d` after an entered device-stage stop/cancellation, including
+early backup/current-identity/environment failures. Only the reference APK's own
+unverified or mismatched hash/version/signer blocks the command. Observe all
+preservation/readback/environment failures independently, still verify installed
+certificate/hash/version after the command, and retain the first error plus
+cleanup receipts. Ordinary catalog/mutation installs keep their strict guards.
+`reference_validated`, `install_attempted` and `identity_verified` in a reference
+install receipt are distinct from `app_data_preserved` and its overall status.
+Run `restoration_verified` means the installed reference identity was verified,
+not that preservation passed: unresolved non-exempt preservation still fails
+the run and cannot qualify captures. No duplicate finalizer reinstall follows
+an already attempted reference command; a failed pre-install observation is
+not itself an install attempt. No app-data repair or generic retry is added.
 
 ### Operator command examples, not execution evidence
 
@@ -569,8 +582,9 @@ The capture wrapper still uses `fail_fast=True` for native, transport, readiness
 and invalid-pair failures. Operational/cleanup errors, settings/save drift and
 unexpected app-data changes remain fatal, even alongside comparison failures or
 an otherwise complete 20-record summary. D-051 remains exact: four private-root
-regular-file content/presence exceptions, strict existing-file metadata and no
-other delta. Every install/backup/input/readback/post/capture/restoration check,
+regular-file content/presence exceptions plus the same files' UID/GID/mode under
+D-056, and no other delta. Every install/backup/input/readback/post/capture/
+restoration check,
 serial lock, containment boundary, `install -r -d`, per-artifact actual-version
 environment check and default check after reference `1271048` remain unchanged.
 Final restoration runs even after failure/cancellation and never retries an
@@ -765,8 +779,11 @@ New normal evidence uses `mutation_run_version: 5` and evidence-index version `6
 D-053 v3/index4 require their exact archived producers as above.
 Nonqualifying measurement keeps run version `2`/index `3`,
 with the exact `preservation_policy` in the manifest, journal and install
-receipts. Policy version 1 binds D-051, the four exact private paths, allowed
-changes `bytes`, `sha256`, `presence`, and `app_data_writes: 0` for this exception.
+receipts. Policy version 2 binds D-056's extension of D-051, the same four exact
+private paths, allowed changes `bytes`, `sha256`, `presence`, `uid`, `gid`, `mode`,
+and `app_data_writes: 0` for this exception. Existing run/index versions and
+current-source producer hashes bind the new reference-restoration receipts;
+old failed evidence remains immutable/nonqualified under its archived producer.
 Every ledger's full observations and delta partition are recomputed from
 authenticated retained inventories (tar inventories are also regenerated).
 Missing/modified/widened policies or ledgers, incomplete observations, and

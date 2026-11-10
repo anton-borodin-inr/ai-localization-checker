@@ -34,6 +34,20 @@ def test_filename():
     )
 
 
+@pytest.mark.parametrize("existing_cleanup", [False, True])
+def test_d056_repeated_cleanup_preserves_serializable_primary(existing_cleanup):
+    import json
+
+    primary = cap.CaptureError("reference install failed")
+    if existing_cleanup:
+        cap.retain_cleanup(primary, cap.CaptureError("final identity failed"))
+    expected = json.loads(json.dumps(cap.failure_details(primary)))
+
+    cap.retain_cleanup(primary, primary)
+
+    assert json.loads(json.dumps(cap.failure_details(primary))) == expected
+
+
 @pytest.mark.parametrize(
     "field", ["", " ", "a__b", "../x", "/x", "x/y", "x\\y", "a\nb", "-x"]
 )

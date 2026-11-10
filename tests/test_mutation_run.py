@@ -326,6 +326,8 @@ def test_d055_runtime_final_read_has_durable_scope(tmp_path, monkeypatch, leftov
     run.folder = tmp_path
     (tmp_path / "private").mkdir()
     run.restored, run.needs_restore, run.restore_error = False, False, None
+    # The reference command already ran; test its readback.
+    run.restore_attempted = True
     run.device = SimpleNamespace(unroot=lambda: None)
     run.tools = None
     run.counter = 2
@@ -997,7 +999,7 @@ def test_d055_interrupted_read_workflow_keeps_authorized_tail(
     else:
         run, result = execute()
     # Failure before cleanup's inventory cannot authorize unlinking hook files;
-    # the retained outputs then correctly prevent a verified reference restore.
+    # the retained outputs prevent preservation success, never reference reinstall.
     expected_status = "restoration_failed" if fault == "before-cleanup" else "failed"
     assert result["status"] == expected_status and not result["capture_set_qualified"]
     assert (
@@ -1078,7 +1080,8 @@ def test_d055_first_failed_read_cannot_erase_receipt_and_raw(
     run, result = synthetic_completed_runtime["execute"](
         "d055-first-failed-read", configure=configure
     )
-    assert result["status"] == "failed"
+    assert result["status"] == "restoration_failed"
+    assert result["restoration_verified"] is True
     assert (
         api().verify_run(
             run.folder,
@@ -1086,7 +1089,7 @@ def test_d055_first_failed_read_cannot_erase_receipt_and_raw(
             run.inputs,
             evidence_sha256=result["evidence_sha256"],
         )["status"]
-        == "failed"
+        == "restoration_failed"
     )
     folder = tmp_path / "forgery"
     shutil.copytree(run.folder, folder)
@@ -1608,7 +1611,7 @@ def test_d055_failed_prefix_requires_initial_environment(
 
 
 @pytest.mark.parametrize("fault", ["exit", "native-error"])
-def test_d055_halted_initial_environment_failure_is_inspectable(
+def test_d056_halted_initial_environment_restores_and_remains_inspectable(
     synthetic_completed_runtime, fault
 ):
     import subprocess
@@ -1629,13 +1632,24 @@ def test_d055_halted_initial_environment_failure_is_inspectable(
     run, result = synthetic_completed_runtime["execute"](
         "d055-halted-initial-environment-" + fault, configure=configure
     )
-    assert result["status"] == "failed" and result["calibration_status"] == "not_run"
-    assert not list((run.folder / "private").glob("install-*/install.json"))
+    assert (
+        result["status"] == "restoration_failed"
+        and result["calibration_status"] == "not_run"
+    )
+    assert result["restoration_verified"] is True
+    receipts = list((run.folder / "private").glob("install-*/install.json"))
+    assert len(receipts) == 1
+    receipt = json_bytes(receipts[0].read_bytes())
+    assert receipt["reference_restoration"] == "D-056"
+    assert receipt["install_attempted"] is True and receipt["identity_verified"] is True
+    assert receipt["app_data_preserved"] is False and receipt["observation_errors"]
     assert not (run.folder / "private/reads-attempts.json").exists()
     replay = api().verify_run(
         run.folder, run.catalog, run.inputs, evidence_sha256=result["evidence_sha256"]
     )
-    assert replay["status"] == "failed" and not replay["capture_set_qualified"]
+    assert (
+        replay["status"] == "restoration_failed" and not replay["capture_set_qualified"]
+    )
 
 
 @pytest.mark.parametrize("change", ["command", "input-ledger"])
@@ -1715,7 +1729,7 @@ def test_d055_failed_calibration_cannot_claim_passed(d053_failed_calibration, tm
 
 @pytest.mark.parametrize("stage", ["production", "restoration"])
 def test_d055_later_failure_preserves_passed_calibration(
-    synthetic_completed_runtime, stage
+    synthetic_completed_runtime, stage, tmp_path
 ):
     def wrapper(capture):
         def wrapped(device, *args, variant, **kwargs):
@@ -1763,6 +1777,31 @@ def test_d055_later_failure_preserves_passed_calibration(
         replay["calibration_status"] == "passed"
         and replay["capture_set_qualified"] is False
     )
+    if stage == "restoration":
+        import shutil
+
+        assert result["restoration_verified"] is False
+        receipt_path = max(run.folder.glob("private/install-*/install.json"))
+        receipt = json_bytes(receipt_path.read_bytes())
+        assert receipt["identity_verified"] is False
+        assert receipt["observed_build"]["version_code"] != "1271048"
+        assert (
+            digest((receipt_path.parent / "after-apk/installed.apk").read_bytes())
+            == receipt["observed_build"]["apk_sha256"]
+        )
+        folder = tmp_path / "forged-failed-reference-identity"
+        shutil.copytree(run.folder, folder)
+        receipt["observed_build"]["apk_sha256"] = "f" * 64
+        (folder / receipt_path.relative_to(run.folder)).write_bytes(
+            canonical_bytes(receipt)
+        )
+        with pytest.raises(CaptureError, match="[Ff]ailed reference observed APK"):
+            api().verify_run(
+                folder,
+                run.catalog,
+                run.inputs,
+                evidence_sha256=reindex_synthetic(folder),
+            )
 
 
 def test_d055_calibration_install_failure_cannot_claim_not_run(
@@ -3041,6 +3080,286 @@ def test_d051_replay_recomputes_authorized_drift_from_inventories(
     assert json_bytes((folder / "evidence-index.json").read_bytes())["version"] == 6
 
 
+@pytest.mark.parametrize(
+    "fault",
+    [
+        "original-before",
+        "original-readback",
+        "initial-identity",
+        "initial-environment",
+        "cancel",
+        "final-input",
+    ],
+)
+def test_d056_stopped_device_stage_attempts_reference_once_and_replays(
+    synthetic_completed_runtime, monkeypatch, fault, tmp_path
+):
+    import shutil
+
+    runs = []
+    primary = (
+        KeyboardInterrupt("early cancellation")
+        if fault == "cancel"
+        else CaptureError("first stop " + fault)
+    )
+    reader = api().read_app_data
+    fired = False
+
+    def read(device, *, evidence_dir, purpose):
+        nonlocal fired
+        target = "original-before" if fault == "cancel" else fault
+        if purpose == target and not fired:
+            fired = True
+            native = device.run
+
+            def interrupted(*args, **kwargs):
+                if args[:2] == ("exec-out", "tar"):
+                    raise primary
+                return native(*args, **kwargs)
+
+            device.run = interrupted
+            try:
+                return reader(device, evidence_dir=evidence_dir, purpose=purpose)
+            finally:
+                device.run = native
+        return reader(device, evidence_dir=evidence_dir, purpose=purpose)
+
+    monkeypatch.setattr(api(), "read_app_data", read)
+
+    def configure(run):
+        runs.append(run)
+        if fault == "initial-identity":
+            run.device.apk = run.catalog.apk_path(run.catalog.control).read_bytes()
+        elif fault == "initial-environment":
+            environment = api().environment_check
+
+            def check(build, folder):
+                result = environment(build, folder)
+                if folder.name == "initial":
+                    raise primary
+                return result
+
+            monkeypatch.setattr(api(), "environment_check", check)
+        elif fault == "final-input":
+
+            def change(root, number, files):
+                if root == "private" and number >= 28:
+                    files["files/not-bookkeeping"] = b"unresolved protected delta"
+
+            run.device.transform = change
+
+    options = {"configure": configure, "probe_only": fault != "final-input"}
+    if fault == "cancel":
+        with pytest.raises(KeyboardInterrupt) as caught:
+            synthetic_completed_runtime["execute"]("d056-stage-" + fault, **options)
+        assert caught.value is primary
+        run = runs[0]
+        result = {**run.content, "evidence_sha256": run.evidence_sha256}
+    else:
+        run, result = synthetic_completed_runtime["execute"](
+            "d056-stage-" + fault, **options
+        )
+    installs = [c for c in run.device.calls if c[:3] == ("install", "-r", "-d")]
+    reference_path = str(run.catalog.apk_path(run.reference()))
+    assert sum(c[-1] == reference_path for c in installs) == (
+        2 if fault == "final-input" else 1
+    )
+    assert installs[-1][-1] == reference_path and run.device.build() == "1271048"
+    assert result["restoration_verified"] is True
+    assert result["capture_set_qualified"] is False
+    assert result["status"] in {"failed", "restoration_failed"}
+    assert run.journal["error_details"]
+    assert (
+        api().verify_run(
+            run.folder,
+            run.catalog,
+            run.inputs,
+            evidence_sha256=result["evidence_sha256"],
+        )["status"]
+        == result["status"]
+    )
+    folder = tmp_path / "forged-restoration"
+    shutil.copytree(run.folder, folder)
+    receipt_path = max((folder / "private").glob("install-*/install.json"))
+    receipt = json_bytes(receipt_path.read_bytes())
+    assert (
+        receipt["reference_restoration"] == "D-056"
+        and receipt["identity_verified"] is True
+    )
+    receipt["reference_validated"] = False
+    receipt_path.write_bytes(canonical_bytes(receipt))
+    with pytest.raises(CaptureError):
+        api().verify_run(
+            folder, run.catalog, run.inputs, evidence_sha256=reindex_synthetic(folder)
+        )
+
+
+@pytest.mark.parametrize(
+    "fault",
+    [
+        "install-before",
+        "install-readback",
+        "install-after",
+        "previous-identity",
+        "environment",
+        "command",
+    ],
+)
+def test_d056_failed_reference_observations_keep_one_command_and_replay_raw_tail(
+    synthetic_completed_runtime, monkeypatch, fault, tmp_path
+):
+    import l10n_checker.mutation_device as transactions
+
+    reader, identity = transactions.read_app_data, transactions.installed_identity
+    primary = CaptureError("reference observation failed at " + fault)
+
+    def read(device, *, evidence_dir, purpose):
+        native = device.run
+        if evidence_dir.parent.name == "install-002" and purpose == fault:
+
+            def interrupted(*args, **kwargs):
+                if args[:2] == ("exec-out", "tar"):
+                    raise primary
+                return native(*args, **kwargs)
+
+            device.run = interrupted
+        try:
+            return reader(device, evidence_dir=evidence_dir, purpose=purpose)
+        finally:
+            device.run = native
+
+    def inspect(device, tools, folder):
+        result = identity(device, tools, folder)
+        if (
+            folder.parent.name == "install-002"
+            and folder.name == "before-apk"
+            and fault == "previous-identity"
+        ):
+            raise primary
+        return result
+
+    monkeypatch.setattr(transactions, "read_app_data", read)
+    monkeypatch.setattr(transactions, "installed_identity", inspect)
+
+    def configure(run):
+        if fault == "command":
+            native = run.device.run
+
+            def command(*args, **kwargs):
+                result = native(*args, **kwargs)
+                if args[:3] == ("install", "-r", "-d") and args[-1] == str(
+                    run.catalog.apk_path(run.reference())
+                ):
+                    raise primary
+                return result
+
+            run.device.run = command
+        elif fault == "environment":
+            environment = run.environment
+
+            def check(build):
+                result = environment(build)
+                if run.counter == 2:
+                    raise primary
+                return result
+
+            run.environment = check
+
+    run, result = synthetic_completed_runtime["execute"](
+        "d056-reference-tail-" + fault, configure=configure, probe_only=True
+    )
+    reference = str(run.catalog.apk_path(run.reference()))
+    assert [
+        c
+        for c in run.device.calls
+        if c[:3] == ("install", "-r", "-d") and c[-1] == reference
+    ] == [("install", "-r", "-d", reference)]
+    assert (
+        result["restoration_verified"] is True and not result["capture_set_qualified"]
+    )
+    assert run.journal["error_details"]["message"] == str(primary)
+    receipt = json_bytes((run.folder / "private/install-002/install.json").read_bytes())
+    assert receipt["identity_verified"] is True and receipt["status"] == "failed"
+    assert receipt["observation_errors"]
+    assert (
+        api().verify_run(
+            run.folder,
+            run.catalog,
+            run.inputs,
+            evidence_sha256=result["evidence_sha256"],
+        )["status"]
+        == result["status"]
+    )
+    if fault == "install-before":
+        import shutil
+
+        folder = tmp_path / "forged-identity"
+        shutil.copytree(run.folder, folder)
+        receipt["identity_verified"] = False
+        (folder / "private/install-002/install.json").write_bytes(
+            canonical_bytes(receipt)
+        )
+        with pytest.raises(CaptureError, match="[Ii]dentity"):
+            api().verify_run(
+                folder,
+                run.catalog,
+                run.inputs,
+                evidence_sha256=reindex_synthetic(folder),
+            )
+
+
+def test_d056_preinstall_stop_does_not_suppress_real_reference_command(
+    synthetic_completed_runtime,
+):
+    primary = CaptureError("stopped before the reference transaction entered")
+
+    def configure(run):
+        install = run.install
+        stopped = False
+
+        def interrupted(record):
+            nonlocal stopped
+            if record["build"]["version_code"] == "1271048" and not stopped:
+                stopped = True
+                # Previous installed identity is now diagnostic only; the pinned
+                # reference remains independently authenticated and unchanged.
+                run.device.apk = run.catalog.apk_path(
+                    run.catalog.calibration
+                ).read_bytes()
+                raise primary
+            return install(record)
+
+        run.install = interrupted
+
+    run, result = synthetic_completed_runtime["execute"](
+        "d056-preinstall-stop", configure=configure, probe_only=True
+    )
+    reference = str(run.catalog.apk_path(run.reference()))
+    assert [
+        c
+        for c in run.device.calls
+        if c[:3] == ("install", "-r", "-d") and c[-1] == reference
+    ] == [("install", "-r", "-d", reference)]
+    assert result["status"] == "failed" and result["restoration_verified"] is True
+    assert not result["capture_set_qualified"] and run.device.build() == "1271048"
+    assert run.journal["error_details"]["message"] == str(primary)
+    receipt = json_bytes((run.folder / "private/install-002/install.json").read_bytes())
+    assert (
+        receipt["previous_build"]["version_code"]
+        == run.catalog.calibration["build"]["version_code"]
+    )
+    assert receipt["identity_verified"] is True and receipt["status"] == "verified"
+    assert (
+        api().verify_run(
+            run.folder,
+            run.catalog,
+            run.inputs,
+            evidence_sha256=result["evidence_sha256"],
+        )["status"]
+        == "failed"
+    )
+
+
 @pytest.mark.parametrize("boundary,inventory_number", [("install", 3), ("capture", 13)])
 def test_d051_runtime_stops_on_strict_drift_between_transactions(
     synthetic_completed_runtime,
@@ -3063,7 +3382,9 @@ def test_d051_runtime_stops_on_strict_drift_between_transactions(
     assert result["screenshots"] == [], "Strict drift must stop before capturing"
     installs = [c for c in run.device.calls if c[:3] == ("install", "-r", "-d")]
     if boundary == "install":
-        assert installs == [], "Prior app-data drift must stop before the next install"
+        assert installs == [
+            ("install", "-r", "-d", str(run.catalog.apk_path(run.reference())))
+        ], "Drift blocks the catalog install, not the authorized reference reinstall"
     else:
         assert "preflight" in run.journal["error"].lower()
 
@@ -3118,6 +3439,9 @@ def test_d051_bookkeeping_drift_cannot_hide_strict_runtime_changes(
         transform=change,
     )
     assert result["status"] in {"failed", "restoration_failed"}
+    assert result["restoration_verified"] is True and run.device.build() == "1271048"
+    installs = [c for c in run.device.calls if c[:3] == ("install", "-r", "-d")]
+    assert installs[-1][-1] == str(run.catalog.apk_path(run.reference()))
     assert not result["capture_set_qualified"]
     assert not (run.folder / "builder-handoff").exists()
 
@@ -3230,7 +3554,7 @@ def test_d051_rehashed_policy_and_ledger_tampering_is_rejected(d051_runtime_copy
     elif kind == "bookkeeping_row":
         receipt["preservation"]["bookkeeping"].pop()
     else:
-        receipt["preservation"]["policy"]["allowed_changes"].append("mode")
+        receipt["preservation"]["policy"]["allowed_changes"].append("mtime")
     rewrite_synthetic_manifest(folder, value)
     install_path.write_bytes(canonical_bytes(receipt))
     operation["sha256"] = digest(canonical_bytes(receipt))
@@ -3270,7 +3594,7 @@ def test_d051_rehashed_inventories_with_honest_ledgers_still_reject_unexpected_c
     target = {
         "settings": "files/GameSettings.json",
         "other": "files/not-bookkeeping",
-        "mode": "files/profileInstalled",
+        "mode": "files/GameSettings.json",
         "symlink": "files/profileInstalled",
         "external_alias": "files/profileInstalled",
         "save": "files/SaveFiles/" + next(iter(inputs.fixtures)),

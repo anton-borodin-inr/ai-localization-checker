@@ -855,3 +855,49 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
   calibration/production and second full run; this entry is not execution proof
   or additional device authorization. The entire earlier decision prefix stays
   byte-for-byte unchanged.
+
+## D-056 — Bookkeeping metadata and preservation-independent reference restoration
+
+- **Date:** 2026-11-10
+- **Status:** Proposed
+- **Decision:** Record Anton's two explicit task-chat policy corrections. Extend
+  D-051 only for the same four exact private-root regular files:
+  `files/profileInstalled`, `no_backup/androidx.work.workdb`,
+  `no_backup/androidx.work.workdb-shm`, `no_backup/androidx.work.workdb-wal`.
+  Their UID, GID and mode may also change, alongside bytes/hash/presence; retain
+  full before/after entries and raw deltas. All other fields and paths remain
+  strict, including settings/saves, existing hook outputs, directories, symlinks,
+  other roots and near-names. This is comparison only, never app-data repair.
+  After any stop/cancellation within the entered authorized device stage, always
+  attempt reference `1271048` with `adb install -r -d`, then verify installed
+  version, APK SHA-256 and signer. Only an invalid/unverified pinned reference
+  APK's own identity/signature may block that command, not preservation,
+  backup/readback/capture failures, current-installed diagnostics or environment
+  failures. Ordinary catalog/mutation install prerequisites remain strict.
+- **Why:** SQLite deletes and recreates WAL/SHM; the creating process determines
+  their mode. Preservation failure must be reported without leaving a mutation
+  APK installed merely because the reinstall was blocked before adb.
+- **Consequences:** Bind exact preservation policy `D-056` version 2. Record
+  reference validation, actual install attempt and installed identity separately
+  from preservation/observation outcome. Preserve the first error, independent
+  cleanup errors and complete available raw read/backup/ledger receipts, including
+  failed prefixes. One actual reference attempt per stop/finalization; no duplicate
+  finalizer command after an attempted reinstall, and no pre-install observation
+  may masquerade as that attempt. Identity success alone never qualifies failed
+  captures or unresolved non-exempt preservation. Keep run v5/index6 and current
+  producer binding; semantic replay checks the actual policy and restoration
+  receipts. Historical failed evidence, including index
+  `9acf52152fab0d7ce0a98523f7a6cb05fa9e8a08d0dbc4c8c23dedeef6e2bd08`,
+  remains immutable/nonqualified and uses its archived producer, never promotion.
+  D-054 pixel/glyph/alpha/repeat/usage and occurrence gates, D-055 300 s reads,
+  every-read telemetry, exact-plan-new cleanup, environment/default-reference
+  checks, locks, catalog, builds, fixtures, labels, metrics and split are unchanged.
+- **Operational disposition:** Stop and ask for dataset correctness/safety,
+  pixel/dump/occurrence gates, labels, protected settings/save changes, data loss,
+  new builds/catalogs, or methodology/decision changes. For content-independent
+  operational noise (timeouts/failed-read retries, host metadata, emulator/adb,
+  these four files' permissions/metadata, reference restoration), the controller
+  makes one smallest in-bounds fix, records its reason in Report and continues;
+  recurrence after that fix stops. This is a bounded operator workflow, not a
+  generic retry/recovery layer or additional device authorization. No prior
+  decision text/status or historical evidence is rewritten.

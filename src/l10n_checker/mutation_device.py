@@ -109,7 +109,19 @@ def install_verified(
     folder,
     environment,
     previous_inventory=None,
+    reference_restoration=False,
 ):
+    if reference_restoration:
+        return _install_reference(
+            device,
+            apk,
+            build,
+            certificate_sha256,
+            tools=tools,
+            folder=folder,
+            environment=environment,
+            previous_inventory=previous_inventory,
+        )
     folder = no_symlinks(folder)
     folder.mkdir(mode=0o700, parents=True, exist_ok=False)
     journal = {
@@ -213,6 +225,204 @@ def install_verified(
         raise
     finally:
         checkpoint()
+
+
+def _install_reference(
+    device,
+    apk,
+    build,
+    certificate_sha256,
+    *,
+    tools,
+    folder,
+    environment,
+    previous_inventory,
+):
+    """D-056: preservation observations never gate the one reference command."""
+    folder = no_symlinks(folder)
+    folder.mkdir(mode=0o700, parents=True, exist_ok=False)
+    journal = {
+        "command": ["install", "-r", "-d", str(apk)],
+        "build": build,
+        "status": "preparing",
+        "reference_restoration": "D-056",
+        "reference_validated": False,
+        "identity_verified": False,
+        "app_data_preserved": False,
+        "preservation_policy": preservation_policy(),
+        "observation_errors": [],
+    }
+    primary = None
+
+    def checkpoint():
+        write_json(folder / "install.json", journal)
+
+    def observe(stage, operation):
+        nonlocal primary
+        try:
+            return operation()
+        except BaseException as exc:  # noqa: BLE001 - restore even after cancellation
+            journal["observation_errors"].append(
+                {"stage": stage, "error_details": failure_details(exc)}
+            )
+            if primary is None:
+                primary = exc
+            else:
+                retain_cleanup(primary, exc, stage)
+            return None
+
+    def compare(field, before, after, message):
+        journal[field] = preservation_report(before, after)
+        require(not journal[field]["unexpected_changes"], message)
+
+    def snapshot(phase, backup=None):
+        archives = read_app_data(
+            device, evidence_dir=folder / "reads", purpose="install-" + phase
+        )
+        inventory = data_inventory(archives)
+        if backup is not None:
+            journal[backup] = save_backup(
+                folder / ("before" if phase == "before" else "after"), archives
+            )
+        else:
+            write_json(folder / "before-readback.json", inventory)
+        return inventory
+
+    try:
+        # Only the pinned reference APK itself may block this command.
+        require(build["version_code"] == "1271048", "Not the pinned reference version")
+        require(
+            digest(no_symlinks(apk).read_bytes()) == build["apk_sha256"],
+            "Reference APK changed before install",
+        )
+        inspected = tools.inspect(apk)
+        journal["reference_identity"] = {
+            "version_code": inspected["version_code"],
+            "apk_sha256": digest(no_symlinks(apk).read_bytes()),
+            "certificate_sha256": inspected["certificate_sha256"],
+        }
+        require(
+            journal["reference_identity"]
+            == {
+                **{key: build[key] for key in ("version_code", "apk_sha256")},
+                "certificate_sha256": certificate_sha256,
+            },
+            "Reference APK identity or signature mismatch",
+        )
+        journal["reference_validated"] = True
+
+        def stop():
+            device.force_stop()
+            require(not device.pid(), "App still running before reference install")
+
+        observe("force-stop", stop)
+
+        def previous():
+            journal["previous_build"] = installed_identity(
+                device, tools, folder / "before-apk"
+            )
+            require(
+                journal["previous_build"]["certificate_sha256"] == certificate_sha256,
+                "Installed certificate mismatch; never uninstall",
+            )
+
+        observe("previous-identity", previous)
+        before = observe("install-before", lambda: snapshot("before", "backup"))
+        if before is not None and previous_inventory is not None:
+            observe(
+                "input-preservation",
+                lambda: compare(
+                    "input_preservation",
+                    previous_inventory,
+                    before,
+                    "Unexpected app-data change before install",
+                ),
+            )
+        readback = observe("install-readback", lambda: snapshot("readback"))
+        if before is not None and readback is not None:
+            observe(
+                "backup-preservation",
+                lambda: compare(
+                    "backup_readback_preservation",
+                    before,
+                    readback,
+                    "App data changed while verifying backup",
+                ),
+            )
+
+        # Recheck the reference bytes immediately before the authorized command.
+        require(
+            digest(no_symlinks(apk).read_bytes()) == build["apk_sha256"],
+            "Reference APK changed before install",
+        )
+        journal.update(status="install_attempted", install_attempted=True)
+        observe("install-checkpoint", checkpoint)
+
+        def install():
+            journal["stdout"] = device.run("install", "-r", "-d", str(apk)).decode(
+                "utf-8"
+            )
+            require(
+                journal["stdout"].strip().splitlines()[-1:] == ["Success"],
+                "Install did not report Success",
+            )
+
+        observe("install-command", install)
+
+        def identity():
+            observed = installed_identity(device, tools, folder / "after-apk")
+            journal["observed_build"] = observed
+            require(
+                observed == journal["reference_identity"],
+                "Installed APK identity mismatch",
+            )
+            journal["identity_verified"] = True
+
+        observe("installed-identity", identity)
+
+        def check_environment():
+            journal["environment"] = environment(build)
+
+        observe("environment", check_environment)
+        after = observe("install-after", lambda: snapshot("after", "post_install"))
+        if before is not None and after is not None:
+            journal["data_changes"] = inventory_changes(before, after)
+            observe(
+                "post-preservation",
+                lambda: compare(
+                    "preservation",
+                    before,
+                    after,
+                    "App data preservation failed; no automatic repair",
+                ),
+            )
+        if readback is not None and after is not None:
+            observe(
+                "post-readback-preservation",
+                lambda: compare(
+                    "post_readback_preservation",
+                    readback,
+                    after,
+                    "App data preservation failed; no automatic repair",
+                ),
+            )
+        if primary is not None:
+            raise primary
+        journal.update(status="verified", app_data_preserved=True)
+        return journal
+    except BaseException as exc:  # noqa: BLE001 - retain cancellation after reference attempt
+        if primary is None:
+            primary = exc
+        elif exc is not primary:
+            retain_cleanup(primary, exc, "Reference validation")
+        journal.update(
+            status="failed", error=str(primary), error_details=failure_details(primary)
+        )
+        raise primary
+    finally:
+        with preserve_cleanup(checkpoint, "Reference install receipt"):
+            if primary is not None:
+                raise primary
 
 
 def environment_check(build, folder):
