@@ -66,6 +66,14 @@ AVDMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/avdmanager"
      -k "system-images;android-34;google_apis;arm64-v8a" -d pixel_7
    ```
 
+4. Guest RAM: 4 GB (D-057). `avdmanager` writes 2 GB, which makes Android 14 thrash at boot (see [Hangs and slow adb](#hangs-and-slow-adb)):
+
+   ```bash
+   sed -i '' 's/^hw.ramSize=.*/hw.ramSize=4096/' ~/.android/avd/unciv_api34.avd/config.ini
+   ```
+
+   Write the value as a plain number of megabytes. `4096M` is not parsed: the emulator silently falls back to 2048 MB and logs `Increasing RAM size to 2048MB`.
+
 ## AVD
 
 | Property | Value |
@@ -74,17 +82,30 @@ AVDMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/avdmanager"
 | Device profile | `pixel_7` |
 | System image | `android-34;google_apis;arm64-v8a` (API 34, no Play Store) |
 | Screen | 1080 × 2400 px, 420 dpi (D-014) |
+| Guest RAM | `hw.ramSize=4096` (D-057) |
+| Renderer | set explicitly with `-gpu` on every start (D-057) |
 
 Unciv runs in landscape, so screenshots are 2400 × 1080. The display cutout is disabled (see [Display cutout](#display-cutout)), so screenshots contain only the game.
 
-Start the emulator and get root:
+Start the emulator, keep the Mac display awake while it runs, and get root:
 
 ```bash
-"$ANDROID_HOME/emulator/emulator" -avd unciv_api34 -no-snapshot-save &
+"$ANDROID_HOME/emulator/emulator" -avd unciv_api34 -no-snapshot-save -gpu lavapipe &
 "$ANDROID_HOME/platform-tools/adb" wait-for-device
+caffeinate -d -i -w "$(pgrep -f 'qemu-system-aarch64 -avd unciv_api34')" &
 "$ANDROID_HOME/platform-tools/adb" root
 "$ANDROID_HOME/platform-tools/adb" shell whoami   # root
 ```
+
+The renderer is part of the capture conditions, so it is never left to `auto`. On 2026-11-10, `auto` resolved to `lavapipe` (software Vulkan on the host CPU). Earlier captures also used `auto` and are assumed, not verified, to have used `lavapipe` too. `-gpu host` (Metal through MoltenVK) is faster: cold boot in 18 s, and no watchdog or lmkd kills in the trial on 2026-11-10. It can change pixels, though. Switching renderer for captures that feed the dataset or a D-050 calibration needs a pixel comparison first (D-042 style: changed-pixel count, bounding box, maximum channel delta). Until Anton decides, use `lavapipe` for those captures.
+
+To check which renderer and RAM a running emulator actually uses:
+
+```bash
+grep -E 'hw.gpu.mode|hw.ramSize' ~/.android/avd/unciv_api34.avd/hardware-qemu.ini
+```
+
+`caffeinate -d -i -w PID` keeps the display and the system awake until that emulator process exits; start it again after every emulator restart. The equivalent setting is System Settings → Lock Screen → turn display off on power adapter when inactive: Never. Closing the lid without an external display still sleeps the Mac.
 
 After **every** boot, run:
 
@@ -152,3 +173,25 @@ The expected Unciv version code depends on the stage, and the `unciv-apk` line n
 Reading a manifest needs `python3`. Invalid input (both options together, an unknown option, an unreadable manifest, a non-digit version code) exits 2 before any adb call. The check compares the version code only; `l10n-capture` also verifies the manifest's APK hash.
 
 The `adb root` check restarts adbd, so run this only when no capture is in progress.
+
+## Hangs and slow adb
+
+Symptoms: `adb` commands time out or take seconds, the device drops to `offline`, or Unciv freezes, sometimes after the emulator was left alone for a while.
+
+Diagnosis on 2026-11-10 (emulator 36.5.11, API 34 r14):
+
+- The guest's dropbox held two `system_server_watchdog` reports: on 2026-11-09 at 22:55 (main thread blocked 469 s) and on 2026-11-10 at 02:58 (149 s), with ANRs before them. Both fell inside periods when the Mac display was off; the Mac itself did not sleep. Working hypothesis: macOS throttles the windowed emulator process while the display is off. This is a correlation, not yet confirmed by a controlled run.
+- With 2 GB guest RAM, lmkd logged thrashing and low swap during boot, and `system_server` reached `Watchdog: WAITED_HALF`. With `lavapipe`, the host CPU also renders every frame.
+
+Mitigations: 4 GB guest RAM, `caffeinate` while the emulator runs, and an explicit renderer (see [AVD](#avd)). Wiping the AVD data is not needed for this; nothing pointed to corrupted AVD state.
+
+Commands used for the diagnosis (all read-only):
+
+```bash
+ADB="$ANDROID_HOME/platform-tools/adb"
+"$ADB" shell dumpsys dropbox | grep -Ei 'watchdog|anr|lowmem'      # past system_server stalls, survive reboots
+"$ADB" shell dumpsys dropbox --print system_server_watchdog | grep -E 'Subject|Blocked'
+"$ADB" logcat -d -b all | grep -E 'lowmemorykiller: Kill|Watchdog: WAITED|ANR in'
+"$ADB" shell 'grep -E "MemTotal|MemAvailable|SwapFree" /proc/meminfo'
+pmset -g log | grep -E 'Display is turned (on|off)'                    # compare with dropbox timestamps
+```
