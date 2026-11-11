@@ -13,7 +13,7 @@ from l10n_checker.screen_manifest import digest
 from l10n_checker.text_dump import canonical_bytes
 
 
-def compare_rgba(first, second, rectangles):
+def compare_rgba(first, second, rectangles, *, bounded_rgb=False):
     with Image.open(io.BytesIO(first)) as image:
         a = image.convert("RGBA")
     with Image.open(io.BytesIO(second)) as image:
@@ -54,18 +54,36 @@ def compare_rgba(first, second, rectangles):
             ],
         }
 
-    inside, outside = stats(mask), stats(ImageChops.invert(mask))
+    outside_mask = ImageChops.invert(mask)
+    inside, outside = stats(mask), stats(outside_mask)
+    passed = outside["different_pixels"] == 0
+    if bounded_rgb:
+        rgb = ImageChops.lighter(
+            ImageChops.lighter(channels[0], channels[1]), channels[2]
+        )
+        within_limit = rgb.point(lambda delta: 255 if 0 < delta <= 2 else 0)
+        same_alpha = channels[3].point(lambda delta: 255 if delta == 0 else 0)
+        tolerated = ImageChops.multiply(
+            outside_mask, ImageChops.multiply(within_limit, same_alpha)
+        )
+        outside["tolerated_pixels"] = tolerated.histogram()[255]
+        outside["max_tolerated_rgb_delta"] = ImageChops.multiply(
+            rgb, tolerated
+        ).getextrema()[1]
+        passed = outside["different_pixels"] == outside["tolerated_pixels"]
+    mask_record = {
+        "policy": "target-extents-floor-ceil-v1",
+        "rectangles": sorted(rounded),
+        "size": [width, height],
+    }
+    if not bounded_rgb:
+        mask_record["sha256"] = digest(mask.tobytes())
     return {
-        "passed": outside["different_pixels"] == 0,
+        "passed": passed,
         "total": stats(Image.new("L", a.size, 255)),
         "inside": inside,
         "outside": outside,
-        "mask": {
-            "policy": "target-extents-floor-ceil-v1",
-            "rectangles": sorted(rounded),
-            "sha256": digest(mask.tobytes()),
-            "size": [width, height],
-        },
+        "mask": mask_record,
         "bounding_box_convention": "[left,top,right-exclusive,bottom-exclusive]",
     }
 
@@ -101,7 +119,9 @@ def plain(text):
     )
 
 
-def verify_screen(first_png, second_png, before, after, mutations):
+def verify_screen(
+    first_png, second_png, before, after, mutations, *, bounded_rgb=False
+):
     require(
         (
             before.screen,
@@ -264,7 +284,7 @@ def verify_screen(first_png, second_png, before, after, mutations):
         for key in sorted(set(a) | set(b))
         if a.get(key) != b.get(key)
     ]
-    pixels = compare_rgba(first_png, second_png, rectangles)
+    pixels = compare_rgba(first_png, second_png, rectangles, bounded_rgb=bounded_rgb)
     passed = (
         pixels["passed"]
         and not changed

@@ -6,6 +6,7 @@ import math
 import os
 import re
 import subprocess
+from contextlib import contextmanager
 from pathlib import Path
 from typing import cast
 
@@ -1383,10 +1384,31 @@ def run_config(config, *, probe_only=False, measurement_only=False):
         re.fullmatch(r"emulator-\d+", device.serial) is not None,
         "Invalid emulator serial for device lock",
     )
+    with device_lock(device, REPO_ROOT):
+        run = MutationRun(
+            catalog,
+            inputs,
+            Path(config["output_dir"]),
+            approved_root=root,
+            device=device,
+            tools=ApkTools(Path(config["sdk"]), Path(config["jdk"])),
+            **({"measurement_only": True} if measurement_only else {}),
+        )
+        run.content.update(resumed)
+        run.checkpoint()
+        return run.run(
+            probe_only=probe_only,
+            **({"measurement_only": True} if measurement_only else {}),
+        )
+
+
+@contextmanager
+def device_lock(device, repo_root):
+    """Share the existing serial lock between fresh and legacy mutation commands."""
     common = (
         subprocess.run(
             ["git", "rev-parse", "--path-format=absolute", "--git-common-dir"],
-            cwd=REPO_ROOT,
+            cwd=repo_root,
             capture_output=True,
             timeout=10,
             check=True,
@@ -1408,21 +1430,7 @@ def run_config(config, *, probe_only=False, measurement_only=False):
             raise CaptureError(
                 "Another mutation run owns this device boundary"
             ) from exc
-        run = MutationRun(
-            catalog,
-            inputs,
-            Path(config["output_dir"]),
-            approved_root=root,
-            device=device,
-            tools=ApkTools(Path(config["sdk"]), Path(config["jdk"])),
-            **({"measurement_only": True} if measurement_only else {}),
-        )
-        run.content.update(resumed)
-        run.checkpoint()
-        return run.run(
-            probe_only=probe_only,
-            **({"measurement_only": True} if measurement_only else {}),
-        )
+        yield
 
 
 class RunEvidence:

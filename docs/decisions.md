@@ -955,3 +955,18 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 - **Supersedes:** Archival, exact-producer and historical re-verification requirements in
   D-051–D-056. Methodology stays in force. D-053/D-054 evidence was deleted.
 - **Why:** On 2026-11-11, artifacts reached about four million files and 28 GB (177 APKs, 646 device backups).
+
+## D-060 — Allow bounded outside-mask RGB differences in #59
+
+- **Date:** 2026-11-11
+- **Status:** Proposed
+- **Decision:** Across all #59 screens and both languages, allow outside-mask
+  pixel differences only when each absolute R/G/B delta is at most 2 and alpha
+  is unchanged. Larger deltas, alpha changes and moved or changed unmutated
+  dump elements fail. Report tolerated pixel count and maximum RGB delta per
+  calibration screen and language, without glyph attribution, per-pixel
+  proof or extra replay.
+- **Why:** The historical EN Options calibration showed 406 deterministic
+  outside-mask differences with maximum RGB delta 2 and no alpha change.
+- **Consequences:** Supersedes only D-050's zero-outside-mask clause upon
+  acceptance. D-051–D-056 remain Proposed and are not used by fresh runs.

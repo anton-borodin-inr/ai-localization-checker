@@ -88,6 +88,33 @@ def test_one_pixel_any_rgba_channel_fails_without_tolerance(value, delta):
     assert result["passed"] is False
 
 
+@pytest.mark.parametrize(
+    "outside_value,passed",
+    [
+        ((8, 22, 28, 255), True),
+        ((10, 20, 33, 255), False),
+        ((10, 20, 30, 254), False),
+    ],
+)
+def test_d060_counts_only_outside_rgb_deltas_within_two(outside_value, passed):
+    result = api().compare_rgba(
+        png(),
+        png(
+            [
+                ((1, 1), (255, 255, 255, 0)),
+                ((10, 10), (11, 21, 30, 255)),
+                ((99, 59), outside_value),
+            ]
+        ),
+        [[0, 0, 2, 2]],
+        bounded_rgb=True,
+    )
+    assert result["passed"] is passed
+    assert result["outside"]["different_pixels"] == 2
+    assert result["outside"]["tolerated_pixels"] == (2 if passed else 1)
+    assert result["outside"]["max_tolerated_rgb_delta"] == (2 if passed else 1)
+
+
 def test_mask_union_rounds_outward_without_bridging_targets():
     result = api().compare_rgba(
         png(),

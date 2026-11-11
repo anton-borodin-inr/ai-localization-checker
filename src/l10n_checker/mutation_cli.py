@@ -2,6 +2,7 @@
 
 import argparse
 import sys
+import zipfile
 from pathlib import Path
 
 from l10n_checker.capture import CaptureError
@@ -84,11 +85,28 @@ def main(argv=None):
         else:
             command.add_argument("--output-dir", type=Path, required=True)
             command.add_argument("--approved-output-root", type=Path, required=True)
-            command.add_argument("--serial")
-            command.add_argument("--resume-from", type=Path)
-            command.add_argument("--resume-sha256")
+            command.add_argument("--serial", required=name == "run")
+            if name == "run":
+                command.add_argument("--plan", type=Path, required=True)
+                command.add_argument("--task-dir", type=Path, required=True)
+                command.add_argument("--calibration-only", action="store_true")
+            else:
+                command.add_argument("--resume-from", type=Path)
+                command.add_argument("--resume-sha256")
     args = parser.parse_args(argv)
     try:
+        if args.command == "run":
+            from l10n_checker.mutation_task import run_task
+
+            config = {
+                key: str(value) if isinstance(value, Path) else value
+                for key, value in vars(args).items()
+                if key != "command"
+            }
+            command = ["l10n-mutate", *(argv if argv is not None else sys.argv[1:])]
+            result = run_task(config, command=command)
+            print(f"Mutation runtime: {result['status']}; no labels")
+            return 0
         if args.command != "plan":
             from l10n_checker.mutation_run import (
                 run_config,
@@ -157,7 +175,14 @@ def main(argv=None):
         with (folder / "plan.json").open("xb") as stream:
             stream.write(raw)
         print(f"Offline plan: {folder / 'plan.json'} (not production-ready)")
-    except (CaptureError, OSError, ValueError, TypeError, KeyError) as exc:
+    except (
+        CaptureError,
+        OSError,
+        ValueError,
+        TypeError,
+        KeyError,
+        zipfile.BadZipFile,
+    ) as exc:
         print(f"Mutation planning error: {exc}", file=sys.stderr)
         return 1
     return 0

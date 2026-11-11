@@ -14,6 +14,43 @@ provider/detector/baseline, nor writes labels. Its output is always
 claim of non-interference. Dynamic checks and the split rate remain unrun/null.
 There is no owner runner or excluded-screen bypass in this command.
 
+## Fresh device runs under D-059 and Proposed D-060
+
+Use a dedicated task directory under `~/Developer/sandbox/` and an approved
+output root under `data/runs/`. The fork builder supplies a compact
+`builds.json` with `source_commit`, `builder_commit`, `reference` and
+`artifacts`. The reference and each artifact have a local APK filename
+(`file`) and its `sha256`. Artifact keys are IDs from `build-requests.json`.
+The checker validates the pinned reference, signer, version, exact translation
+edits and unchanged nontranslation APK payloads before device access.
+
+```sh
+PYTHONPATH=src uv run l10n-mutate run \
+  --plan "$PLAN" --manifest fixtures/stage2/screens-v2.json \
+  --recipes fixtures/stage3/recipes-v1.json --catalog "$BUILDS" --sha256 "$BUILDS_SHA" \
+  --task-dir "$TASK" --approved-output-root "$RUN_ROOT" --output-dir "$RUN" \
+  --serial "$SERIAL" --sdk "$SDK" --jdk "$JDK" --calibration-only
+```
+
+Start with the empty control and EN-help singleton. On a calibration pass,
+assemble the three planned batches and reuse the original two APKs. Run
+without `--calibration-only` twice with separate output folders and compare
+the manifests. Both runs reuse one task snapshot and restore the reference
+APK and saved settings/saves before release. Use the D-057 emulator profile.
+
+The live D-060 comparison permits outside-mask RGB deltas up to two with
+unchanged alpha. It checks unmutated elements and exact same-build decoded
+RGBA/raw-dump repeats independently. `run.json` records tolerated counts and
+maximum deltas by calibration screen, language and pass. Stop on a gate or
+operational failure. A production split handoff is a proposal for the owner
+and fork builder to approve. No child builds are launched by the checker.
+
+Keep `run.json` and the PNGs and manifest entries submitted for manual
+acceptance. The other capture is used to verify repeatability. Delete
+duplicate PNGs, APKs and scratch files at task end, and delete the snapshot
+after final restoration. The earlier catalog and replay sections below
+describe historical tooling.
+
 ## Inputs and command
 
 Install the existing locked dependencies with `uv sync --locked`. No dependency
