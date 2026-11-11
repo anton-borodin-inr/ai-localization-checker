@@ -902,6 +902,16 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
   generic retry/recovery layer or additional device authorization. No prior
   decision text/status or historical evidence is rewritten.
 
+## D-057 — Emulator stability: 4 GB guest RAM, display kept awake, explicit renderer
+
+- **Date:** 2026-11-10
+- **Status:** Accepted
+- **Accepted by:** Anton, 2026-11-10, as proposed
+- **Decision:** `unciv_api34` runs with `hw.ramSize=4096`. During unattended device work the Mac display is kept awake for as long as the emulator runs (`caffeinate -d -i -w <qemu pid>`). The renderer is always passed explicitly with `-gpu`, never left to `auto`; captures that feed the dataset or a D-050 calibration use `lavapipe` until a pixel comparison between `lavapipe` and `host` has been reviewed and Anton picks one in a new entry.
+- **Why:** Issue #70. **observed:** Two `system_server_watchdog` reports (main thread blocked 469 s and 149 s) fell inside periods when the Mac display was off while the Mac stayed awake; with 2 GB RAM, lmkd thrashed at boot and `system_server` reached `WAITED_HALF`; `auto` resolved to `lavapipe`. With 4 GB and `-gpu host`, a trial on 2026-11-10 booted in 18 s and showed no lmkd kill, watchdog or ANR, with `adb shell true` at most 35 ms over 30 tries. With `lavapipe`, 4 GB RAM and Unciv in the foreground, the same check took median 615 ms and max 3625 ms (66 ms and 753 ms with Unciv in the background), so `lavapipe` keeps adb slow while Unciv renders. **assumption:** the display-off correlation is causal; this is not yet confirmed by a controlled unattended run. Earlier captures used `auto` and are assumed, not verified, to have used `lavapipe`. A renderer change can alter pixels, which D-042 and D-050 measure with no tolerance.
+- **Alternatives considered:** Wipe the AVD data (no evidence of corrupted AVD state, and it loses installed builds); a fresh AVD with the same settings (would keep 2 GB and `auto`, so it would not isolate the cause); switch to `-gpu host` at once (faster, but pixel continuity with existing captures is unverified).
+- **Consequences:** `docs/environment.md` documents the setting, its value format (`4096M` is silently ignored), the start command and a troubleshooting section. Choosing `host` for captures needs a separate comparison and decision. No change to labels, metrics, matching, the split, D-014 resolution or capture code.
+
 ## D-058 — Flag visible text side effects for human review
 
 - **Date:** 2026-11-11
@@ -927,3 +937,21 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
   review flags and qualification from the authenticated pair and dump bytes.
   The strict comparison and D-053/D-054 code stay available for historical
   replay. Earlier evidence keeps its original qualification status.
+
+## D-059 — Simple, disposable runs
+
+- **Date:** 2026-11-11
+- **Status:** Accepted
+- **Decision:** Keep only the builds of the current task and reuse them across its
+  runs and attempts; delete them when the task ends. Skip source and environment archives.
+  Keep D-035 `data/runs/<run_id>/run.json` (`run_id`, `requests_sent`, token usage,
+  estimated cost, exact command, commit, config and seed), the labeled dataset, accepted
+  references, final reports, and screenshots with their manifest entries while awaiting
+  Anton's decision or after acceptance. Delete other disposable artifacts at task end.
+- **D-050 and #59:** Replace only verified backup/restore with one prepared app-state
+  snapshot (saves and settings) per task. Restore it after clearing app data or reinstalling.
+  Keep the builder, calibration, density, class rules and isolation gate as #59 criteria:
+  zero outside-mask RGBA differences and no moved or changed unmutated dump element.
+- **Supersedes:** Archival, exact-producer and historical re-verification requirements in
+  D-051–D-056. Methodology stays in force. D-053/D-054 evidence was deleted.
+- **Why:** On 2026-11-11, artifacts reached about four million files and 28 GB (177 APKs, 646 device backups).

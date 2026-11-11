@@ -42,7 +42,81 @@ Implementation details inside the approved plan — helper functions, internal n
 - changing the task's scope, or doing anything listed under **Out of scope**;
 - changing methodology: labels, metrics, matching, the data split, evaluation settings;
 - changing or working around an `Accepted` decision;
-- a destructive operation: deleting data or run records, force-push, history rewrite.
+- a destructive operation: deleting the labeled dataset, accepted references,
+  screenshots or manifest entries awaiting Anton's decision, approved
+  screenshots or their manifest entries, run records, final task reports, or
+  anything the task did not create; force-push; history rewrite. Cleaning up
+  disposable files the current task created is expected and needs no approval
+  (see "What to keep vs. delete").
+
+## Keep it simple (D-059)
+
+This is a portfolio tool; v1 results are preliminary. Choose the simplest
+solution that keeps results honest and reproducible. If a plan feels heavy,
+propose a simpler variant with its trade-off before implementing.
+
+Record the commit hash, exact command, config and seed in `run.json` for
+reproducibility.
+
+### Builds and app state
+
+- Build only the APKs the approved method needs (D-050: frozen-builder clean
+  control and mutated batches). Keep only the builds of the current task and
+  reuse them across its runs and attempts; delete them when the task ends.
+- Back up the prepared app state (save files, settings) once per task, not
+  per run or per attempt. Restore by clearing app data/reinstalling and
+  pushing that one snapshot.
+
+### Do not
+
+- Archive source code or environments: no copies of `src/`, `.venv`, Android
+  SDK, JDK, Gradle caches, APK contents or full device file trees. A commit hash
+  identifies the code; `uv.lock` and `docs/environment.md` identify the
+  environment.
+- Keep old producer versions or compatibility readers for old run formats. If
+  current code cannot read an old run, re-run it or drop it.
+- Build proof about proof: no per-file hashes, before/after inventories or
+  byte-level re-authentication around every operation. A screenshot, its
+  manifest entry and the run record are enough evidence for a capture.
+- Add a decision for transient noise (e.g. AndroidX bookkeeping files). Ignore
+  non-game state in code with a one-line comment.
+- Bump run/evidence format versions for every change. Keep one current format.
+- Add locks, guards, retries or timeouts unless a real failure was observed in
+  this task.
+- Commit hash catalogs, changed-file lists or archive checks under
+  `docs/evidence/`. Evidence in the repo = a short report plus a few
+  representative screenshots.
+- Write long docs: a feature section fits on one screen; a decision fits in
+  about 10 lines.
+
+### What to keep vs. delete
+
+Keep (project assets, never delete without asking Anton):
+
+- the labeled dataset, accepted references and approved screenshots;
+- screenshots handed to Anton for manual acceptance and their manifest until
+  he decides on each one; then keep only the accepted screenshots and their
+  manifest entries;
+- one `data/runs/<run_id>/run.json` per run, with the exact command, commit,
+  config, seed and any metrics. Preserve the D-035 accounting fields:
+  `run_id`, `requests_sent`, token usage and estimated cost;
+- the final report of each task.
+
+Delete disposable artifacts when the task ends (no need to ask): intermediate
+captures, failed and superseded attempts, temporary files, scratch scripts,
+debug dumps and the app-state snapshot, after the final restoration at task
+end. If a failed attempt matters, describe it in the report in two or three
+sentences instead of keeping its files.
+
+### Limits
+
+- Run outputs go to `data/runs/` (gitignored). Git worktrees go to
+  `~/Developer/worktrees/`; scratch space to `~/Developer/sandbox/`.
+  Never write under `~/Documents` or `~/Desktop` (they sync to iCloud).
+- Stop and ask before a step that leaves more than 1,000 files or 500 MB
+  of artifacts under `data/` or `~/Developer/`. Build-tool caches and build
+  output directories (Gradle, uv) do not count.
+- The task report states the disk footprint left behind (files and MB).
 
 ## Honest reporting
 
