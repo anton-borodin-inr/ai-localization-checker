@@ -674,7 +674,11 @@ def test_runtime_timeout_and_cleanup_timeout_are_separately_journaled(tmp_path):
 
     run = object.__new__(runtime.MutationRun)
     run.folder = tmp_path.resolve()
-    run.content = {"status": "not_run", "capture_set_qualified": False}
+    run.content = {
+        "mutation_run_version": 6,
+        "status": "not_run",
+        "capture_set_qualified": False,
+    }
     run.journal = {}
     run.checkpoint = lambda: None
     original = subprocess.TimeoutExpired(
@@ -706,7 +710,11 @@ def test_d055_normal_cancellation_and_final_cleanup_preserve_both(tmp_path):
 
     run = object.__new__(runtime.MutationRun)
     run.folder = tmp_path
-    run.content = {"status": "not_run", "capture_set_qualified": False}
+    run.content = {
+        "mutation_run_version": 6,
+        "status": "not_run",
+        "capture_set_qualified": False,
+    }
     run.journal = {}
     run.checkpoint = lambda: None
     original = KeyboardInterrupt("primary cancellation")

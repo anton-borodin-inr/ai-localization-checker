@@ -901,3 +901,29 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
   recurrence after that fix stops. This is a bounded operator workflow, not a
   generic retry/recovery layer or additional device authorization. No prior
   decision text/status or historical evidence is rewritten.
+
+## D-058 — Flag visible text side effects for human review
+
+- **Date:** 2026-11-11
+- **Status:** Proposed
+- **Decision:** Anton authorized replacing D-050's cross-build pixel and dump
+  isolation gate and D-054 for fresh normal runs. Cross-build outside-mask
+  pixel differences and unmutated element geometry changes are measurements
+  only. They neither stop a run nor trigger a dynamic split or usage pause.
+  Compare each unmutated draw group's ordered visible text lines, visibility,
+  ellipsis and clipped fraction. Record semantic differences with the
+  screenshot, actor path and before/after values as review flags in the run
+  manifest. Review flags never block capture qualification or create labels.
+- **Why:** Anton labels the rendered screenshots under D-012. A mutation can
+  realistically reflow surrounding UI, and pixel-identical isolation does not
+  protect the information the human labels rely on. Visible text side effects
+  remain useful for deciding how to label a screenshot.
+- **Consequences:** The intended-occurrence visibility and class checks,
+  N ≤ 2, density, exact forward/reverse decoded RGBA and raw dump equality,
+  dev-only selection, hold-out isolation, D-055 cleanup and D-056 preservation
+  and reference restoration remain binding. Dynamic splits for qualifying
+  intended-occurrence failures retain their existing handoff. Fresh normal
+  evidence uses run version 6 and evidence index version 7. Replay derives
+  review flags and qualification from the authenticated pair and dump bytes.
+  The strict comparison and D-053/D-054 code stay available for historical
+  replay. Earlier evidence keeps its original qualification status.

@@ -3,6 +3,7 @@
 import importlib
 import importlib.util
 import io
+from copy import deepcopy
 
 import pytest
 from PIL import Image
@@ -25,6 +26,54 @@ def png(changes=()):
     stream = io.BytesIO()
     image.save(stream, format="PNG")
     return stream.getvalue()
+
+
+def test_d058_compares_visible_text_and_preserves_line_breaks():
+    before = element(
+        "ABC", visibility="partial", clipped_fraction=0.2, ellipsis_applied=False
+    )
+    before["lines"][0]["glyphs"][-1].update(visibility="hidden", visible_bounds=None)
+    after = deepcopy(before)
+    after["bounds"] = [10, 20, 99, 40]
+    after["display_text"] = after["lines"][0]["text"] = "ABZ"
+    after["lines"][0]["glyphs"][-1]["text"] = "Z"
+    comparison = {
+        "changed_unmutated_elements": [
+            {
+                "actor_path": "root/0",
+                "decoration": False,
+                "before": [before],
+                "after": [after],
+            }
+        ]
+    }
+    assert api().semantic_side_effects(comparison) == []
+
+    line = after["lines"][0]
+    glyphs = line["glyphs"]
+    after["lines"] = [
+        {**line, "text": "A", "glyphs": glyphs[:1]},
+        {**line, "text": "BZ", "glyphs": glyphs[1:]},
+    ]
+    after["display_text"] = "A\nBZ"
+    after["clipped_fraction"] = 0.3
+    (flag,) = api().semantic_side_effects(comparison)
+    assert flag["before"] == [
+        {
+            "visible_lines": ["AB"],
+            "visibility": "partial",
+            "ellipsis_applied": False,
+            "clipped_fraction": 0.2,
+        }
+    ]
+    assert flag["after"] == [
+        {
+            "visible_lines": ["A", "B"],
+            "visibility": "partial",
+            "ellipsis_applied": False,
+            "clipped_fraction": 0.3,
+        }
+    ]
 
 
 @pytest.mark.parametrize(

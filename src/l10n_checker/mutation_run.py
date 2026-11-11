@@ -50,7 +50,10 @@ from l10n_checker.mutation_outside_rule import (
 from l10n_checker.mutation_plan import load_plan, split_after_interference
 from l10n_checker.mutation_verify import (
     compare_rgba,
+    intended_occurrences_passed,
     occurrence_matrix,
+    semantic_side_effects,
+    side_effect_policy,
     split_rate,
     verify_screen,
 )
@@ -199,10 +202,16 @@ def write_handoff(catalog, plan, batch_id, reason, folder, manifest):
 
 def nonpixel_passed(verification):
     """The exception never substitutes for intended occurrences or layout gates."""
-    return (
-        not verification["changed_unmutated_elements"]
-        and len(verification["occurrences"]) <= 2
-        and all(o["qualified"] is True for o in verification["occurrences"])
+    return not verification[
+        "changed_unmutated_elements"
+    ] and intended_occurrences_passed(verification)
+
+
+def record_semantic_review(record):
+    verification = record["verification"]
+    record["side_effects"] = semantic_side_effects(verification) if verification else []
+    record["qualified"] = bool(
+        verification and intended_occurrences_passed(verification)
     )
 
 
@@ -408,6 +417,7 @@ class MutationRun:
         device,
         tools,
         measurement_only=False,
+        run_version=6,
     ):
         approved_root = manifest_output_directory(approved_root, False)
         folder = manifest_output_directory(folder, False)
@@ -451,7 +461,7 @@ class MutationRun:
             "api_spend_usd": 0,
         }
         self.content = {
-            "mutation_run_version": 2 if measurement_only else 5,
+            "mutation_run_version": 2 if measurement_only else run_version,
             "preservation_policy": preservation_policy(),
             "status": "not_run",
             "capture_set_qualified": False,
@@ -480,7 +490,10 @@ class MutationRun:
         else:
             self.content["cleanup_policy"] = cleanup_policy()
             self.journal["cleanup_policy"] = cleanup_policy()
-            self.content["outside_rule_policy"] = outside_rule_policy()
+            if run_version == 5:
+                self.content["outside_rule_policy"] = outside_rule_policy()
+            else:
+                self.content["side_effect_policy"] = side_effect_policy()
             self.journal["implementation_hashes"] = self.content[
                 "implementation_hashes"
             ]
@@ -489,12 +502,16 @@ class MutationRun:
     def checkpoint(self):
         if self.content.get("measurement_only"):
             require(
-                all("outside_rule" not in r for r in self.content["screenshots"]),
-                "Measurement cannot convert existing normal outside-rule evidence",
+                all(
+                    "outside_rule" not in r and "side_effects" not in r
+                    for r in self.content["screenshots"]
+                ),
+                "Measurement cannot convert existing normal evidence",
             )
             self.content["mutation_run_version"] = 2
             self.content.pop("outside_rule_policy", None)
             self.content.pop("outside_rule_usage", None)
+            self.content.pop("side_effect_policy", None)
             self.journal.pop("implementation_hashes", None)
             # This mode can never publish a calibration or run success, even at
             # intermediate/error checkpoints or when every comparison is zero.
@@ -727,6 +744,12 @@ class MutationRun:
         measurement_only = measurement_only or self.content.get(
             "measurement_only", False
         )
+        outside_gate = (
+            self.content["mutation_run_version"] == 5 and not measurement_only
+        )
+        semantic_review = (
+            self.content["mutation_run_version"] == 6 and not measurement_only
+        )
         if role == "calibration" and not measurement_only:
             # Attempted is not not_run: any early exit stays failed until every
             # calibration gate below has completed, including paired-pass proof.
@@ -836,7 +859,7 @@ class MutationRun:
             ]
             if role == "clean":
                 self.clean[key] = (png, dump, stable["pair_sha256"])
-                if not measurement_only:
+                if outside_gate:
                     stable["outside_rule"] = outside_proof(stable)
                     stable["qualified"] = False
             else:
@@ -845,18 +868,22 @@ class MutationRun:
                     clean_png, png, clean_dump, dump, mutations
                 )
                 stable.update(control_pair_sha256=clean_sha, verification=verification)
-                if not measurement_only:
+                if outside_gate:
                     error = measure_outside_record(
                         stable, clean_png, png, clean_dump, dump, paired
                     )
                     if error:
                         outside_fatal.append(error)
-                if (
-                    not verification["passed"]
-                    if measurement_only
-                    else not nonpixel_passed(verification)
-                ):
+                if measurement_only:
+                    passed = verification["passed"]
+                elif outside_gate:
+                    passed = nonpixel_passed(verification)
+                else:
+                    passed = intended_occurrences_passed(verification)
+                if not passed:
                     failures.append(stable)
+            if semantic_review:
+                record_semantic_review(stable)
             self.content["screenshots"].append(stable)
             self.checkpoint()
             if outside_fatal and not measurement_only:
@@ -1002,13 +1029,12 @@ class MutationRun:
                 return {"passed": False}
             failure = failures[0]
             v = failure["verification"]
-            kind = (
-                "outside_mask_pixels"
-                if v["pixels"]["outside"]["different_pixels"]
-                else "changed_unmutated_element"
-                if v["changed_unmutated_elements"]
-                else "missing_mutation"
-            )
+            kind = "missing_mutation"
+            if outside_gate:
+                if v["pixels"]["outside"]["different_pixels"]:
+                    kind = "outside_mask_pixels"
+                elif v["changed_unmutated_elements"]:
+                    kind = "changed_unmutated_element"
             reason = {
                 "kind": kind,
                 "screen": failure["screen"],
@@ -1058,9 +1084,11 @@ class MutationRun:
         ]
         require(
             len(actual) == len(expected) and set(actual) == expected,
-            "Missing forward/reverse outside-rule measurement scope",
+            "Missing forward/reverse outside-rule measurement scope"
+            if outside_gate
+            else "Missing forward/reverse capture scope",
         )
-        if role != "clean":
+        if outside_gate and role != "clean":
             require(
                 all(r["qualified"] for r in paired.values()),
                 "Pending outside-rule proof cannot qualify",
@@ -1193,7 +1221,7 @@ class MutationRun:
             # The independent final root binds the manifest, avoiding a hash cycle.
             index = canonical_bytes(
                 {
-                    "version": 3 if measurement_only else 6,
+                    "version": self.content["mutation_run_version"] + 1,
                     "files": retained_files(self.folder),
                 }
             )
@@ -3439,7 +3467,7 @@ def replay_available_operations(evidence, folder, catalog, inputs, value):
 
 
 def replay_operations(evidence, folder, catalog, inputs, value):
-    if value["mutation_run_version"] == 5 and value["status"] not in {
+    if value["mutation_run_version"] in {5, 6} and value["status"] not in {
         "qualified",
         "probe_verified",
     }:
@@ -3735,7 +3763,7 @@ def verify_run(folder, catalog, inputs, *, evidence_sha256):
     require(
         set(index) == {"version", "files"}
         and type(index["version"]) is int
-        and index["version"] in {1, 2, 3, 4, 5, 6}
+        and index["version"] in {1, 2, 3, 4, 5, 6, 7}
         and type(index["files"]) is dict,
         "Unsupported evidence index",
     )
@@ -3756,7 +3784,7 @@ def verify_run(folder, catalog, inputs, *, evidence_sha256):
     )
     require(
         type(value["mutation_run_version"]) is int
-        and value["mutation_run_version"] in {1, 2, 3, 4, 5}
+        and value["mutation_run_version"] in {1, 2, 3, 4, 5, 6}
         and value["catalog_sha256"] == catalog.sha256
         and value["labels_created"] is False
         and value["screen_ids"] == catalog.plan["screen_ids"],
@@ -3795,7 +3823,9 @@ def verify_run(folder, catalog, inputs, *, evidence_sha256):
         "Legacy D054 run v4/index 5 requires exact archived "
         "960dae205aafcc679e8a2b7e7cbfd569a14deb88 producer; never rewrite or promote evidence",
     )
-    new_rule = value["mutation_run_version"] == 5
+    outside_gate = value["mutation_run_version"] == 5
+    semantic_review = value["mutation_run_version"] == 6
+    current_protocol = outside_gate or semantic_review
     has_d055 = (
         "cleanup_policy" in value
         or "cleanup_policy" in journal
@@ -3805,7 +3835,7 @@ def verify_run(folder, catalog, inputs, *, evidence_sha256):
         )
     )
     require(
-        new_rule
+        current_protocol
         or not has_d055
         or (
             value.get("measurement_only") is True
@@ -3814,15 +3844,11 @@ def verify_run(folder, catalog, inputs, *, evidence_sha256):
         ),
         "Legacy downgrade cannot hide D055 cleanup/read artifacts",
     )
-    if new_rule:
+    if current_protocol:
         require(
-            not value.get("measurement_only") and index["version"] == 6,
+            not value.get("measurement_only")
+            and index["version"] == value["mutation_run_version"] + 1,
             "Legacy/outside-rule version/index/mode mismatch",
-        )
-        require(
-            canonical_bytes(value.get("outside_rule_policy"))
-            == canonical_bytes(outside_rule_policy()),
-            "Outside-rule policy missing or altered",
         )
         require(
             value.get("cleanup_policy") == cleanup_policy()
@@ -3844,14 +3870,33 @@ def verify_run(folder, catalog, inputs, *, evidence_sha256):
             == canonical_bytes(journal.get("implementation_hashes")),
             "Outside-rule producer implementation hashes mismatch",
         )
+    if outside_gate:
+        require(
+            canonical_bytes(value.get("outside_rule_policy"))
+            == canonical_bytes(outside_rule_policy()),
+            "Outside-rule policy missing or altered",
+        )
     else:
         require(
             not ({"outside_rule_policy", "outside_rule_usage"} & set(value))
             and all(
-                "outside_rule" not in r and "qualified" not in r
+                "outside_rule" not in r and (semantic_review or "qualified" not in r)
                 for r in value["screenshots"]
             ),
             "Legacy evidence cannot downgrade outside-rule policy/proofs",
+        )
+    if semantic_review:
+        require(
+            value.get("side_effect_policy") == side_effect_policy()
+            and type(value["side_effect_policy"]["version"]) is int,
+            "D058 side-effect policy missing or altered",
+        )
+    else:
+        require(
+            index["version"] != 7
+            and "side_effect_policy" not in value
+            and all("side_effects" not in r for r in value["screenshots"]),
+            "D058 evidence cannot use an older policy",
         )
     if value["mutation_run_version"] >= 2:
         require(
@@ -3860,7 +3905,7 @@ def verify_run(folder, catalog, inputs, *, evidence_sha256):
             "Preservation policy missing or altered",
         )
     require(
-        (index["version"] == 6 and new_rule)
+        current_protocol
         or (
             index["version"] == 3
             and value["mutation_run_version"] == 2
@@ -3890,7 +3935,7 @@ def verify_run(folder, catalog, inputs, *, evidence_sha256):
             "Runtime success metadata/provenance mismatch",
         )
         replay_operations(evidence, folder, catalog, inputs, value)
-    elif new_rule:
+    elif current_protocol:
         replay_operations(evidence, folder, catalog, inputs, value)
     if value.get("measurement_complete"):
         measured = []
@@ -3986,7 +4031,7 @@ def verify_run(folder, catalog, inputs, *, evidence_sha256):
                 "Invalid control mapping",
             )
             clean[key] = (png, dump, record["pair_sha256"])
-            if new_rule:
+            if outside_gate:
                 derived["outside_rule"] = outside_proof(record)
                 derived["qualified"] = False
         else:
@@ -4027,10 +4072,20 @@ def verify_run(folder, catalog, inputs, *, evidence_sha256):
                 canonical_bytes(record["verification"]) == canonical_bytes(expected),
                 "Dynamic gate replay mismatch",
             )
-            if new_rule:
+            if outside_gate:
                 derived["verification"] = expected
                 measure_outside_record(derived, old, png, old_dump, dump, paired)
-    if new_rule:
+            if semantic_review:
+                derived["verification"] = expected
+        if semantic_review:
+            record_semantic_review(derived)
+            require(
+                canonical_bytes(record.get("side_effects"))
+                == canonical_bytes(derived["side_effects"])
+                and record.get("qualified") is derived["qualified"],
+                "D058 side-effect/qualification replay mismatch",
+            )
+    if outside_gate:
         for record, derived in zip(
             sorted(
                 value["screenshots"],
@@ -4057,6 +4112,7 @@ def verify_run(folder, catalog, inputs, *, evidence_sha256):
             == canonical_bytes(outside_usage(catalog, rederived, value["status"])),
             "Outside-rule usage replay mismatch",
         )
+    if current_protocol:
         calibration_rows = [r for r in rederived if r["role"] == "calibration"]
         # replay_operations authenticates the ordered probe/control/calibration
         # prefix. APK identity alone is not a role: production may reinstall it.
@@ -4104,9 +4160,12 @@ def verify_run(folder, catalog, inputs, *, evidence_sha256):
             and not summary.get("cleanup_errors")
             and summary.get("settings_restored") is True
             and summary.get("saves_unchanged") is True
-            and not any(
-                p["role"] == "calibration"
-                for p in value["outside_rule_usage"]["engineering_pauses"]
+            and (
+                not outside_gate
+                or not any(
+                    p["role"] == "calibration"
+                    for p in value["outside_rule_usage"]["engineering_pauses"]
+                )
             )
             and str((root / "after-capture/inventory.json").relative_to(folder))
             in evidence.files
@@ -4202,13 +4261,13 @@ def verify_run(folder, catalog, inputs, *, evidence_sha256):
         require(
             all(
                 r["verification"] is None
-                or (r["qualified"] if new_rule else r["verification"]["passed"])
+                or (r["qualified"] if current_protocol else r["verification"]["passed"])
                 for r in value["screenshots"]
             ),
             "Failed screenshot in qualified run",
         )
         require(
-            not new_rule or not value["outside_rule_usage"]["engineering_pauses"],
+            not outside_gate or not value["outside_rule_usage"]["engineering_pauses"],
             "Outside-rule engineering pause cannot qualify",
         )
     return value

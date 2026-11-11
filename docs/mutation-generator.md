@@ -604,7 +604,18 @@ cannot supply missing production evidence or create a qualified run. Historical
 failed evidence remains nonqualified and inspectable, never rewritten. Stop for
 Anton's decision after reporting the full matrix; no labels/evaluation follow.
 
-### D-054: uncapped RGB with unchanged outside-mask glyph proofs
+### D-058: visible text side effects
+
+Fresh normal evidence uses run version **6**, index **7**. The manifest keeps
+the strict cross-build comparison for inspection and records a separate
+`qualified` result for intended occurrences. Each screenshot carries a
+`side_effects` list with the actor and ordered visible text lines, visibility,
+ellipsis and clipped fraction before and after any semantic change. Replay
+recomputes these flags from the indexed screenshots and dumps. Anton reviews
+the flags while labeling screenshots under D-012. D-050's remaining gates,
+including exact within-build forward/reverse equality, still apply.
+
+### Historical D-054: uncapped RGB with unchanged outside-mask glyph proofs
 
 Anton authorized the rule on 2026-11-05 (Proposed D-053), superseding only
 D-050's outside-mask clause. The pinned D-052 evidence and rationale are in the
@@ -665,7 +676,7 @@ shares are reported independently, not used as a separate 50% cutoff. Future
 batches and controls cannot dilute a broad current batch. No builder/fork change
 is automatic. Invalid captures stop first, even in an incomplete batch.
 
-Fresh normal evidence is run version **5**, index **6** (D-055 below), with exact D-054 policy and complete
+D-054 evidence is run version **5**, index **6** (D-055 below), with exact D-054 policy and complete
 usage required. Semantic replay authenticates the retained raw pair/PNG/dump
 bytes at their reads, rederives strict metrics, assessments, IDs, fingerprints,
 paired repeat bindings, qualification and usage, and rejects rehashed alterations,

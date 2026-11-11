@@ -254,6 +254,7 @@ def synthetic_completed_runtime(tmp_path_factory):
         measurement_only=False,
         capture_wrapper=None,
         configure=None,
+        run_version=5,
     ):
         device = SyntheticDevice(volatile, transform)
         with pytest.MonkeyPatch.context() as monkeypatch:
@@ -280,6 +281,7 @@ def synthetic_completed_runtime(tmp_path_factory):
                 approved_root=root / "outputs",
                 device=device,
                 tools=kwargs["tools"],
+                run_version=run_version,
                 **({"measurement_only": True} if measurement_only else {}),
             )
             if configure:
@@ -1263,7 +1265,7 @@ def test_d055_real_runtime_semantic_replay(synthetic_completed_runtime):
     assert replay["mutation_run_version"] == 5 and replay["status"] == "qualified"
 
 
-def test_d055_new_runtime_declares_v5_and_binds_shared_helper(tmp_path):
+def test_d058_new_runtime_declares_v6_and_binds_shared_helper(tmp_path):
     from l10n_checker.mutation_catalog import read_catalog
 
     path, kwargs, _, _ = synthetic_catalog(tmp_path)
@@ -1278,9 +1280,8 @@ def test_d055_new_runtime_declares_v5_and_binds_shared_helper(tmp_path):
         device=None,
         tools=kwargs["tools"],
     )
-    assert run.content["mutation_run_version"] == 5, (
-        "Fresh normal run must opt into D055 replay"
-    )
+    assert run.content["mutation_run_version"] == 6
+    assert run.content["side_effect_policy"]["decision"] == "D058"
     assert "app_data.py" in run.content["implementation_hashes"]
     assert run.content["cleanup_policy"]["decision"] == "D055"
 
@@ -1288,7 +1289,7 @@ def test_d055_new_runtime_declares_v5_and_binds_shared_helper(tmp_path):
 def reindex_synthetic(folder, version=None):
     if version is None:
         manifest = json_bytes((folder / "mutation-manifest.json").read_bytes())
-        version = {5: 6, 4: 5, 3: 4}.get(manifest["mutation_run_version"], 3)
+        version = {6: 7, 5: 6, 4: 5, 3: 4}.get(manifest["mutation_run_version"], 3)
     files = {
         str(p.relative_to(folder)): digest(p.read_bytes())
         for p in folder.rglob("*")
@@ -1338,6 +1339,10 @@ def d053_capture(
                     g["bounds"] = g["visible_bounds"] = box
             if fault == "unmutated" and variant in roles:
                 glyph["font_scale"] = [0.19, 0.19]
+            if fault == "semantic_side_effect" and variant in roles:
+                glyph["bounds"] = [198, 98, 231, 122]
+                if (record["screen"], record["language"]) == ("tech-picker", "en"):
+                    glyph["ellipsis_applied"] = True
             dump["elements"].append(glyph)
             dump_path.write_bytes(
                 canonical_bytes(dump)
@@ -1399,6 +1404,64 @@ def d053_capture(
         return summary
 
     return wrapped
+
+
+def test_d058_records_side_effect_without_stopping_and_replays_it(
+    synthetic_completed_runtime,
+):
+    run, result = synthetic_completed_runtime["execute"](
+        "d058-side-effects",
+        run_version=6,
+        capture_wrapper=lambda capture: d053_capture(
+            capture, fault="semantic_side_effect", rgb_delta=47
+        ),
+    )
+    assert result["status"] == "qualified", run.journal
+    assert result["calibration_status"] == "passed"
+    assert json_bytes((run.folder / "evidence-index.json").read_bytes())["version"] == 7
+    measured = [row for row in result["screenshots"] if row["verification"]]
+    assert all(row["qualified"] for row in measured)
+    flagged = [row for row in measured if row["side_effects"]]
+    assert {
+        (row["role"], row["screen"], row["language"], row["pass"]) for row in flagged
+    } == {
+        (role, "tech-picker", "en", n)
+        for role in ("calibration", "mutation")
+        for n in (1, 2)
+    }
+    assert all(
+        row["verification"]["pixels"]["outside"]["different_pixels"] > 0
+        and row["side_effects"][0]["actor_path"] == "root/stable"
+        and row["side_effects"][0]["before"][0]["ellipsis_applied"] is False
+        and row["side_effects"][0]["after"][0]["ellipsis_applied"] is True
+        for row in flagged
+    )
+    assert any(
+        row["verification"]["changed_unmutated_elements"] and not row["side_effects"]
+        for row in measured
+    )
+    assert (
+        api().verify_run(
+            run.folder,
+            run.catalog,
+            run.inputs,
+            evidence_sha256=result["evidence_sha256"],
+        )["status"]
+        == "qualified"
+    )
+
+    value = json_bytes((run.folder / "mutation-manifest.json").read_bytes())
+    next(row for row in value["screenshots"] if row["side_effects"])[
+        "side_effects"
+    ] = []
+    rewrite_synthetic_manifest(run.folder, value)
+    with pytest.raises(CaptureError, match="D058 side-effect/qualification"):
+        api().verify_run(
+            run.folder,
+            run.catalog,
+            run.inputs,
+            evidence_sha256=reindex_synthetic(run.folder),
+        )
 
 
 @pytest.fixture(scope="module")
@@ -4656,7 +4719,13 @@ def real_capture_runtime(tmp_path, monkeypatch):
     device.unroot()
     run.plan = {"mutations": {}, "batches": []}
     run.allowed_outputs, run.clean = set(), {}
+    run.catalog = None
+    # These partial-run stubs exercise cleanup without a complete catalog.
+    monkeypatch.setattr(
+        api(), "outside_usage", lambda *args: {"engineering_pauses": []}
+    )
     run.content = {
+        "mutation_run_version": 5,
         "status": "not_run",
         "capture_set_qualified": False,
         "screenshots": [],

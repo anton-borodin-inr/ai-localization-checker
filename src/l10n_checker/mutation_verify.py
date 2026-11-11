@@ -1,4 +1,4 @@
-"""Zero-tolerance RGBA/dump isolation and intended-occurrence qualification."""
+"""Pixel measurements, intended-occurrence qualification, and dump side effects."""
 
 import io
 import math
@@ -279,6 +279,62 @@ def verify_screen(first_png, second_png, before, after, mutations):
         "visible_occurrences": sum(o["qualified"] for o in occurrences),
         "verification_version": "mutation-dynamic-v1",
     }
+
+
+def intended_occurrences_passed(verification):
+    occurrences = verification["occurrences"]
+    return len(occurrences) <= 2 and all(o["qualified"] is True for o in occurrences)
+
+
+def side_effect_policy():
+    return {
+        "decision": "D058",
+        "version": 1,
+        "fields": [
+            "visible_lines",
+            "visibility",
+            "ellipsis_applied",
+            "clipped_fraction",
+        ],
+    }
+
+
+def visible_semantics(element):
+    lines = []
+    if element["visibility"] != "hidden":
+        lines = [
+            "".join(
+                glyph["text"]
+                for glyph in line["glyphs"]
+                if glyph["visibility"] != "hidden"
+            )
+            for line in element["lines"]
+        ]
+        visible = [index for index, line in enumerate(lines) if line]
+        lines = lines[visible[0] : visible[-1] + 1] if visible else []
+    return {
+        "visible_lines": lines,
+        "visibility": element["visibility"],
+        "ellipsis_applied": element["ellipsis_applied"],
+        "clipped_fraction": element["clipped_fraction"],
+    }
+
+
+def semantic_side_effects(verification):
+    flags = []
+    for change in verification["changed_unmutated_elements"]:
+        before = [visible_semantics(element) for element in change["before"]]
+        after = [visible_semantics(element) for element in change["after"]]
+        if before != after:
+            flags.append(
+                {
+                    "actor_path": change["actor_path"],
+                    "decoration": change["decoration"],
+                    "before": before,
+                    "after": after,
+                }
+            )
+    return flags
 
 
 def split_rate(tests):
