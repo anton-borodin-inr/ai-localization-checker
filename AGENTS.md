@@ -61,9 +61,8 @@ reproducibility.
 ### Builds and app state
 
 - Build only the APKs the approved method needs (D-050: frozen-builder clean
-  control and mutated batches). Reuse a build across attempts instead of
-  rebuilding; never keep more than the builds of the current run, and delete
-  them when the run ends.
+  control and mutated batches). Keep only the builds of the current task and
+  reuse them across its runs and attempts; delete them when the task ends.
 - Back up the prepared app state (save files, settings) once per task, not
   per run or per attempt. Restore by clearing app data/reinstalling and
   pushing that one snapshot.
@@ -104,17 +103,19 @@ Keep (project assets, never delete without asking Anton):
 - the final report of each task.
 
 Delete disposable artifacts when the task ends (no need to ask): intermediate
-captures, failed and superseded attempts, the app-state snapshot after
-restoration, temporary files, scratch scripts and debug dumps. Delete built
-APKs when their run ends. If a failed attempt matters, describe it in the
-report in two or three sentences instead of keeping its files.
+captures, failed and superseded attempts, temporary files, scratch scripts,
+debug dumps and the app-state snapshot, after the final restoration at task
+end. If a failed attempt matters, describe it in the report in two or three
+sentences instead of keeping its files.
 
 ### Limits
 
 - Run outputs go to `data/runs/` (gitignored). Git worktrees go to
   `~/Developer/worktrees/`; scratch space to `~/Developer/sandbox/`.
   Never write under `~/Documents` or `~/Desktop` (they sync to iCloud).
-- Stop and ask before a step that writes more than 1,000 files or 500 MB.
+- Stop and ask before a step that leaves more than 1,000 files or 500 MB
+  of artifacts under `data/` or `~/Developer/`. Build-tool caches and build
+  output directories (Gradle, uv) do not count.
 - The task report states the disk footprint left behind (files and MB).
 
 ## Honest reporting

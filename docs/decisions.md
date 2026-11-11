@@ -603,22 +603,16 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 
 - **Date:** 2026-11-11
 - **Status:** Accepted
-- **Decision:** Keep the D-035 `data/runs/<run_id>/run.json` with `run_id`,
-  `requests_sent`, token usage, estimated cost, exact command, commit hash,
-  config and seed. Keep screenshots sent for manual acceptance and their
-  manifest until Anton decides on each one, then keep accepted pairs only.
-  Retain the labeled dataset, accepted references and final task reports.
-  Reuse the APKs the approved method needs across attempts and delete them
-  when their run ends. Skip source and environment archives. Delete other
-  disposable artifacts at task end.
-- **D-050 and #59:** Replace only D-050's verified backup/restore wording:
-  take one prepared app-state snapshot (saves and settings) per task and
-  restore it after clearing app data or reinstalling. Keep D-050's builder,
-  calibration, density, class rules and isolation gate: zero outside-mask
-  RGBA differences and no moved or changed unmutated dump element. These
-  remain #59 acceptance criteria.
-- **Supersedes:** Archival, exact-producer and historical re-verification
-  requirements in D-051–D-056. Methodology stays in force. D-053/D-054
-  historical evidence has been deleted and will not be re-verified.
-- **Why:** On 2026-11-11, run artifacts reached roughly four million files
-  and 28 GB, including 177 APKs and 646 device backups.
+- **Decision:** Keep only the builds of the current task and reuse them across its
+  runs and attempts; delete them when the task ends. Skip source and environment archives.
+  Keep D-035 `data/runs/<run_id>/run.json` (`run_id`, `requests_sent`, token usage,
+  estimated cost, exact command, commit, config and seed), the labeled dataset, accepted
+  references, final reports, and screenshots with their manifest entries while awaiting
+  Anton's decision or after acceptance. Delete other disposable artifacts at task end.
+- **D-050 and #59:** Replace only verified backup/restore with one prepared app-state
+  snapshot (saves and settings) per task. Restore it after clearing app data or reinstalling.
+  Keep the builder, calibration, density, class rules and isolation gate as #59 criteria:
+  zero outside-mask RGBA differences and no moved or changed unmutated dump element.
+- **Supersedes:** Archival, exact-producer and historical re-verification requirements in
+  D-051–D-056. Methodology stays in force. D-053/D-054 evidence was deleted.
+- **Why:** On 2026-11-11, artifacts reached about four million files and 28 GB (177 APKs, 646 device backups).
