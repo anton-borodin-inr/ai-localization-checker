@@ -598,3 +598,27 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 - **Why:** Issue #70. **observed:** Two `system_server_watchdog` reports (main thread blocked 469 s and 149 s) fell inside periods when the Mac display was off while the Mac stayed awake; with 2 GB RAM, lmkd thrashed at boot and `system_server` reached `WAITED_HALF`; `auto` resolved to `lavapipe`. With 4 GB and `-gpu host`, a trial on 2026-11-10 booted in 18 s and showed no lmkd kill, watchdog or ANR, with `adb shell true` at most 35 ms over 30 tries. With `lavapipe`, 4 GB RAM and Unciv in the foreground, the same check took median 615 ms and max 3625 ms (66 ms and 753 ms with Unciv in the background), so `lavapipe` keeps adb slow while Unciv renders. **assumption:** the display-off correlation is causal; this is not yet confirmed by a controlled unattended run. Earlier captures used `auto` and are assumed, not verified, to have used `lavapipe`. A renderer change can alter pixels, which D-042 and D-050 measure with no tolerance.
 - **Alternatives considered:** Wipe the AVD data (no evidence of corrupted AVD state, and it loses installed builds); a fresh AVD with the same settings (would keep 2 GB and `auto`, so it would not isolate the cause); switch to `-gpu host` at once (faster, but pixel continuity with existing captures is unverified).
 - **Consequences:** `docs/environment.md` documents the setting, its value format (`4096M` is silently ignored), the start command and a troubleshooting section. Choosing `host` for captures needs a separate comparison and decision. No change to labels, metrics, matching, the split, D-014 resolution or capture code.
+
+## D-059 — Simple, disposable runs
+
+- **Date:** 2026-11-11
+- **Status:** Accepted
+- **Decision:** Keep the D-035 `data/runs/<run_id>/run.json` with `run_id`,
+  `requests_sent`, token usage, estimated cost, exact command, commit hash,
+  config and seed. Keep screenshots sent for manual acceptance and their
+  manifest until Anton decides on each one, then keep accepted pairs only.
+  Retain the labeled dataset, accepted references and final task reports.
+  Reuse the APKs the approved method needs across attempts and delete them
+  when their run ends. Skip source and environment archives. Delete other
+  disposable artifacts at task end.
+- **D-050 and #59:** Replace only D-050's verified backup/restore wording:
+  take one prepared app-state snapshot (saves and settings) per task and
+  restore it after clearing app data or reinstalling. Keep D-050's builder,
+  calibration, density, class rules and isolation gate: zero outside-mask
+  RGBA differences and no moved or changed unmutated dump element. These
+  remain #59 acceptance criteria.
+- **Supersedes:** Archival, exact-producer and historical re-verification
+  requirements in D-051–D-056. Methodology stays in force. D-053/D-054
+  historical evidence has been deleted and will not be re-verified.
+- **Why:** On 2026-11-11, run artifacts reached roughly four million files
+  and 28 GB, including 177 APKs and 646 device backups.
