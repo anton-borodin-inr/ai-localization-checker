@@ -1,9 +1,14 @@
 """Synthetic engine draws and fake transports; never device/provider evidence."""
 
 import base64
+import io
 import json
+import os
+import re
+import shlex
 import shutil
 import subprocess
+import tarfile
 import time
 from pathlib import Path
 
@@ -335,12 +340,718 @@ class DumpDevice(FakeDevice):
             "file": f"files/l10n-hook/{token}.json",
             "sha256": digest(self.raw_dump),
         }
+        self.hook_files[result["dump"]["file"]] = self.raw_dump
         return result
 
-    def run(self, *args):
+    def __init__(self, inputs, fault=None):
+        super().__init__(inputs, fault)
+        self.hook_files = {"files/l10n-hook/pre-existing-near-name.json": b"keep"}
+        self.unlinked = []
+        self.hook_directory = True
+
+    def identity(self, relative=None):
+        result = [f"1 {i} 1 41c0 10001 10001 0" for i in (1, 2, 3)]
+        if relative:
+            assert relative in self.hook_files
+
+            # Identity belongs to the persistent path, not its sorted position.
+            inode = int(digest(relative.encode())[:8], 16)
+            result.append(
+                f"1 {inode} 1 8180 10001 10001 {len(self.hook_files[relative])}"
+            )
+        return result
+
+    def shell(self, *args):
+        from l10n_checker.app_data import DATA_ROOTS
+
+        if len(args) == 1 and args[0].startswith("if [ -d "):
+            return "present"
+        if args == ("dumpsys", "package", legacy.PACKAGE):
+            return "User 0: stopped=" + ("false" if self.running else "true")
+        if len(args) == 1 and args[0].startswith("set -eu\n# D055"):
+            script = args[0]
+            if "# D055 guarded unlink" in script:
+                absolute = shlex.split(
+                    next(s for s in script.splitlines() if s.startswith("rm -- "))
+                )[2]
+                relative = absolute.removeprefix(DATA_ROOTS["private"] + "/")
+                expected = shlex.split(
+                    re.search(
+                        r'test "\$observed" = (.*?)\ntest "\$\(sha256sum',
+                        script,
+                        re.DOTALL,
+                    )[1]
+                )[0]
+                assert not self.running
+                if "\n".join(self.identity(relative)) != expected:
+                    raise CaptureError("Synthetic guarded identity mismatch")
+                if digest(self.hook_files[relative]) + "  " + absolute not in script:
+                    raise CaptureError("Synthetic guarded content mismatch")
+                del self.hook_files[relative]
+                self.unlinked.append(relative)
+                return "D055-deleted"
+            absolute = shlex.split(script.splitlines()[-1])[-1]
+            relative = absolute.removeprefix(DATA_ROOTS["private"] + "/")
+            return "\n".join(
+                self.identity(None if relative == "files/l10n-hook" else relative)
+            )
+        return super().shell(*args)
+
+    def run(self, *args, timeout_s=30):
+        from l10n_checker.app_data import DATA_ROOTS
+
         if args[:4] == ("exec-out", "run-as", legacy.PACKAGE, "cat"):
             return b"broken" if self.fault == "dump" else self.raw_dump
-        return super().run(*args)
+        if args[:2] == ("exec-out", "cat") and args[-1] != legacy.SETTINGS_PATH:
+            return self.hook_files[args[-1].removeprefix(DATA_ROOTS["private"] + "/")]
+        if args[:2] == ("exec-out", "tar") and args[-2] in DATA_ROOTS.values():
+            assert timeout_s == 300
+            root = next(k for k, v in DATA_ROOTS.items() if v == args[-2])
+            files = (
+                {"files/GameSettings.json": self.settings, **self.hook_files}
+                if root == "private"
+                else {
+                    "files/SaveFiles/" + k.removeprefix("./"): v
+                    for k, v in self.saves.items()
+                }
+                if root == "external"
+                else {"synthetic": b"keep"}
+            )
+            output = io.BytesIO()
+            with tarfile.open(fileobj=output, mode="w") as tar:
+                for name in [
+                    ".",
+                    "files",
+                    *(
+                        ["files/l10n-hook"]
+                        if root == "private" and self.hook_directory
+                        else []
+                    ),
+                ]:
+                    info = tarfile.TarInfo(name)
+                    info.type, info.uid, info.gid, info.mode = (
+                        tarfile.DIRTYPE,
+                        10001,
+                        10001,
+                        0o700,
+                    )
+                    tar.addfile(info)
+                for name, raw in files.items():
+                    info = tarfile.TarInfo("./" + name)
+                    info.size, info.uid, info.gid, info.mode = (
+                        len(raw),
+                        10001,
+                        10001,
+                        0o600,
+                    )
+                    tar.addfile(info, io.BytesIO(raw))
+            return output.getvalue()
+        return super().run(*args, timeout_s=timeout_s)
+
+
+@pytest.fixture
+def d055_env(tmp_path, monkeypatch):
+    monkeypatch.setattr(legacy, "REPO_ROOT", tmp_path / "repo")
+    inputs = all_screen_inputs().select_screens(screen_ids=["tech-picker"])
+    inputs.manifest = inputs.manifest.model_copy(
+        update={"resolution": [4, 2], "protocol_version": 2}
+    )
+    device = DumpDevice(inputs)
+    prepare_device(device, inputs, tmp_path / "prepare")
+
+    def capture(**kwargs):
+        return capture_manifest(
+            device,
+            inputs,
+            tmp_path / "capture",
+            request=kwargs.pop("request", device.request),
+            device_plan=tmp_path / "prepare/device-plan.json",
+            **kwargs,
+        )
+
+    return device, inputs, tmp_path, capture
+
+
+@pytest.mark.parametrize(
+    "collision", ["file", "temporary", "missing-directory", "forged-start"]
+)
+def test_d055_preflight_is_before_any_device_write(d055_env, collision):
+    device, _inputs, folder, capture = d055_env
+    plan = json.loads((folder / "prepare/device-plan.json").read_bytes())
+    if collision == "missing-directory":
+        device.hook_directory = False
+    else:
+        path = plan["planned_hook_output_operations"][0][
+            "temporary" if collision == "temporary" else "file"
+        ]
+        device.hook_files[path] = b"pre-existing"
+        if collision == "forged-start":
+            plan["starting_inventory"].pop("private:" + path, None)
+            (folder / "prepare/device-plan.json").write_bytes(canonical_bytes(plan))
+    result = capture()
+    assert result["status"] == "failed"
+    assert device.writes == 0 and device.unlinked == []
+    assert not any(isinstance(c, tuple) and c[0] == "request" for c in device.calls)
+
+
+def test_d055_missing_hook_directory_prepare_stops_without_writes(
+    tmp_path, monkeypatch
+):
+    monkeypatch.setattr(legacy, "REPO_ROOT", tmp_path / "repo")
+    inputs = all_screen_inputs().select_screens(screen_ids=["tech-picker"])
+    inputs.manifest = inputs.manifest.model_copy(update={"protocol_version": 2})
+    device = DumpDevice(inputs)
+    device.hook_directory = False
+    with pytest.raises(CaptureError, match="directory"):
+        prepare_device(device, inputs, tmp_path / "prepare")
+    assert device.writes == 0 and device.unlinked == []
+
+
+def test_d055_all_host_outputs_verified_before_first_unlink(d055_env):
+    device, _inputs, folder, capture = d055_env
+    published = []
+
+    def tamper(record):
+        published.append(record)
+        if len(published) == 4:
+            target = folder / "capture" / published[1]["dump"]
+            target.write_bytes(b"tampered second host proof")
+
+    result = capture(on_pair=tamper)
+    assert result["status"] == "failed"
+    assert result["hook_cleanup"]["status"] == "failed"
+    assert "hash" in str(result["hook_cleanup"]["error_details"])
+    assert device.unlinked == []
+
+
+def test_d055_host_proof_ctime_only_change_allows_cleanup(d055_env, monkeypatch):
+    from l10n_checker import app_data
+
+    device, _inputs, _folder, capture = d055_env
+    host_bytes = app_data.host_bytes
+    read_bytes = Path.read_bytes
+    changed = []
+
+    def metadata_only(path):
+        raw = read_bytes(path)
+        before = path.stat()
+        os.utime(path, ns=(before.st_atime_ns, before.st_mtime_ns))
+        after = path.stat()
+        assert before.st_ctime_ns != after.st_ctime_ns
+        assert (before.st_dev, before.st_ino, before.st_size, before.st_mtime_ns) == (
+            after.st_dev,
+            after.st_ino,
+            after.st_size,
+            after.st_mtime_ns,
+        )
+        changed.append(path)
+        return raw
+
+    def annotated_read(path):
+        with monkeypatch.context() as context:
+            context.setattr(Path, "read_bytes", metadata_only)
+            return host_bytes(path)
+
+    monkeypatch.setattr(app_data, "host_bytes", annotated_read)
+    result = capture()
+    assert changed
+    assert result["status"] == "complete"
+    assert result["hook_cleanup"]["status"] == "verified"
+    assert len(device.unlinked) == 4
+    assert device.hook_files == {"files/l10n-hook/pre-existing-near-name.json": b"keep"}
+
+
+def test_d055_host_proof_content_change_still_fails_recorded_hash(
+    d055_env, monkeypatch
+):
+    from l10n_checker import app_data
+
+    device, _inputs, folder, capture = d055_env
+    host_bytes = app_data.host_bytes
+    read_bytes = Path.read_bytes
+    target = None
+    changed = False
+
+    def remember(record):
+        nonlocal target
+        if target is None:
+            target = folder / "capture" / record["dump"]
+
+    def change_content(path):
+        nonlocal changed
+        raw = read_bytes(path)
+        if path == target and not changed:
+            before = path.stat()
+            raw = bytes([raw[0] ^ 1]) + raw[1:]
+            path.write_bytes(raw)
+            os.utime(path, ns=(before.st_atime_ns, before.st_mtime_ns))
+            changed = True
+        return raw
+
+    def checked_read(path):
+        with monkeypatch.context() as context:
+            context.setattr(Path, "read_bytes", change_content)
+            return host_bytes(path)
+
+    monkeypatch.setattr(app_data, "host_bytes", checked_read)
+    result = capture(on_pair=remember)
+    assert changed
+    assert result["status"] == "failed"
+    assert result["hook_cleanup"]["status"] == "failed"
+    assert "hash" in result["hook_cleanup"]["error_details"]["message"]
+    assert device.unlinked == []
+
+
+@pytest.mark.parametrize("temporary", [False, True])
+def test_d055_partial_hook_output_is_pulled_without_promoting_capture(
+    d055_env, temporary
+):
+    device, _inputs, folder, capture = d055_env
+
+    def timeout(device, screen, token, state, timeout, **kwargs):
+        path = f"files/l10n-hook/{token}.json" + (".tmp" if temporary else "")
+        device.hook_files[path] = b"partial raw diagnostic output"
+        raise HookFailure("client_timeout", terminal=False, events=[])
+
+    result = capture(request=timeout, fail_fast=True)
+    assert result["status"] == "failed" and result["records"][0]["status"] == "failed"
+    proof = result["hook_cleanup"]
+    assert proof["status"] == "verified"
+    entry = next(r for r in proof["paths"] if r["status"] == "deleted")
+    assert (
+        folder / "capture" / entry["host"]
+    ).read_bytes() == b"partial raw diagnostic output"
+    assert device.hook_files == {"files/l10n-hook/pre-existing-near-name.json": b"keep"}
+
+
+@pytest.mark.parametrize("after_unlink", [False, True])
+def test_d055_partial_unlink_failure_still_keeps_actual_post_inventory(
+    d055_env, after_unlink
+):
+    device, _inputs, folder, capture = d055_env
+    shell = device.shell
+    count = 0
+
+    def native(*args):
+        nonlocal count
+        if len(args) == 1 and "# D055 guarded unlink" in args[0]:
+            count += 1
+            if count == 2:
+                if after_unlink:
+                    shell(*args)
+                raise CaptureError("second guarded unlink failed")
+        return shell(*args)
+
+    device.shell = native
+    result = capture()
+    assert result["status"] == "failed" and len(device.unlinked) == 1 + after_unlink
+    proof = result["hook_cleanup"]
+    assert proof["status"] == "failed"
+    assert proof.get("after"), (
+        "Partial cleanup omitted fresh actual post-cleanup inventory"
+    )
+    assert (folder / "capture/post-cleanup-inventory.json").is_file()
+    assert sum(r["status"] == "deleted" for r in proof["paths"]) == 1
+    failures = [r for r in proof["paths"] if r["status"] == "failed"]
+    assert len(failures) == 1, "The actual failed deletion attempt must remain explicit"
+    assert failures[0]["error_details"]["message"] == "second guarded unlink failed"
+    assert "# D055 guarded unlink" in failures[0]["command"]
+    assert ("private:" + failures[0]["path"] in proof["after"]) is not after_unlink
+    assert count == 2, "Partial deletion must not retry"
+
+
+@pytest.mark.parametrize(
+    "error_type", [KeyboardInterrupt, SystemExit, ValueError, CaptureError, OSError]
+)
+def test_d055_empty_error_after_last_pair_never_persists_success(d055_env, error_type):
+    device, _inputs, folder, capture = d055_env
+    original = error_type()
+    count = 0
+
+    def stop(record):
+        nonlocal count
+        count += 1
+        if count == 4:
+            raise original
+
+    if not isinstance(original, Exception):
+        with pytest.raises(error_type) as caught:
+            capture(on_pair=stop, fail_fast=True)
+        assert caught.value is original
+    else:
+        capture(on_pair=stop, fail_fast=True)
+    summary = json.loads((folder / "capture/summary.json").read_bytes())
+    assert summary["status"] == "failed"
+    assert summary["fatal_error_details"]["type"] == error_type.__name__
+    assert summary["hook_cleanup"]["status"] == "verified"
+    assert len(device.unlinked) == 4
+
+
+def test_d055_cancellation_after_last_pair_never_persists_success(d055_env):
+    device, _inputs, folder, capture = d055_env
+    calls = 0
+    original = KeyboardInterrupt("cancel at last pair")
+
+    def cancel(record):
+        nonlocal calls
+        calls += 1
+        if calls == 4:
+            raise original
+
+    with pytest.raises(KeyboardInterrupt) as caught:
+        capture(on_pair=cancel)
+    assert caught.value is original
+    summary = json.loads((folder / "capture/summary.json").read_bytes())
+    assert summary["status"] == "failed", (
+        "Cancellation was durably recorded as complete"
+    )
+    assert summary["hook_cleanup"]["status"] == "verified"
+    assert summary["fatal_error_details"]["type"] == "KeyboardInterrupt"
+    assert device.hook_files == {"files/l10n-hook/pre-existing-near-name.json": b"keep"}
+
+
+@pytest.mark.parametrize(
+    "alias",
+    [
+        "hardlink",
+        "symlink",
+        "ancestor",
+        "directory",
+        "inode-race",
+        "bytes-race",
+        "host-symlink",
+        "host-hardlink",
+    ],
+)
+def test_d055_alias_and_race_fail_closed_without_unlink(d055_env, alias):
+    import os
+
+    device, _inputs, folder, capture = d055_env
+    identity = device.identity
+    raced = False
+
+    def changed(relative=None):
+        result = identity(relative)
+        if relative:
+            parts = result[-1].split()
+            if alias == "hardlink":
+                parts[2] = "2"
+            if alias in {"symlink", "directory"}:
+                parts[3] = "a180" if alias == "symlink" else "4180"
+            if alias == "inode-race" and raced:
+                parts[1] = str(int(parts[1]) + 1)
+            result[-1] = " ".join(parts)
+            if alias == "ancestor":
+                result[0] = "1 999 1 41c0 10001 10001 0"
+        return result
+
+    device.identity = changed
+    shell = device.shell
+
+    def native(*args):
+        nonlocal raced
+        if len(args) == 1 and "# D055 guarded unlink" in args[0]:
+            raced = True
+            if alias == "bytes-race":
+                path = shlex.split(
+                    next(s for s in args[0].splitlines() if s.startswith("rm -- "))
+                )[2]
+                from l10n_checker.app_data import DATA_ROOTS
+
+                relative = path.removeprefix(DATA_ROOTS["private"] + "/")
+                raw = device.hook_files[relative]
+                device.hook_files[relative] = bytes([raw[0] ^ 1]) + raw[1:]
+        return shell(*args)
+
+    device.shell = native
+    count = 0
+
+    def host_alias(record):
+        nonlocal count
+        count += 1
+        if count == 4 and alias.startswith("host-"):
+            path = folder / "capture" / record["dump"]
+            target = path.with_suffix(".retained")
+            path.rename(target)
+            if alias == "host-symlink":
+                path.symlink_to(target)
+            else:
+                os.link(target, path)
+
+    result = capture(on_pair=host_alias)
+    assert result["status"] == "failed" and result["hook_cleanup"]["status"] == "failed"
+    assert device.unlinked == []
+
+
+def test_d055_read_failure_is_fatal_even_without_fail_fast(d055_env):
+    device, _inputs, folder, capture = d055_env
+    run = device.run
+    reads = 0
+
+    def native(*args, timeout_s=30):
+        nonlocal reads
+        if args == ("exec-out", "cat", legacy.SETTINGS_PATH):
+            reads += 1
+            if reads == 4:
+                raise CaptureError("synthetic app-data read failure")
+        return run(*args, timeout_s=timeout_s)
+
+    device.run = native
+    result = capture(fail_fast=False)
+    requests = [c for c in device.calls if isinstance(c, tuple) and c[0] == "request"]
+    assert result["status"] == "failed"
+    assert len(requests) == 1, (
+        "Operational app-data read failure continued to another request"
+    )
+    failed = [
+        json.loads(p.read_bytes())
+        for p in (folder / "capture/reads").glob("*.json")
+        if json.loads(p.read_bytes())["outcome"] == "failed"
+    ]
+    assert len(failed) == 1
+    assert result["hook_cleanup"]["status"] == "verified"
+
+
+@pytest.mark.parametrize(
+    "fault",
+    [
+        "absent",
+        "metadata-error",
+        "malformed-metadata",
+        "wrong-settings",
+        "invalid-json",
+    ],
+)
+def test_d055_settings_observation_boundary_is_fatal(d055_env, fault):
+    device, _inputs, folder, capture = d055_env
+    stat, run = device.stat, device.run
+    stats = reads = 0
+
+    def metadata(path):
+        nonlocal stats
+        stats += 1
+        if stats == 6:
+            if fault == "absent":
+                return None
+            if fault == "metadata-error":
+                raise OSError("synthetic settings metadata failed")
+            if fault == "malformed-metadata":
+                return "unavailable"
+        return stat(path)
+
+    def native(*args, timeout_s=30):
+        nonlocal reads
+        raw = run(*args, timeout_s=timeout_s)
+        if args == ("exec-out", "cat", legacy.SETTINGS_PATH):
+            reads += 1
+            if reads == 4:
+                if fault == "wrong-settings":
+                    assert b"English" in raw
+                    return raw.replace(b"English", b"Russian")
+                if fault == "invalid-json":
+                    return b" " * len(raw)
+        return raw
+
+    device.stat, device.run = metadata, native
+    result = capture(fail_fast=False)
+    requests = [c for c in device.calls if isinstance(c, tuple) and c[0] == "request"]
+    assert len(requests) == 1, "Failed settings observation issued another request"
+    assert result["status"] == "failed" and "fatal_error_details" in result
+    failed = [
+        json.loads(p.read_bytes())
+        for p in (folder / "capture/reads").glob("*.json")
+        if json.loads(p.read_bytes())["outcome"] == "failed"
+    ]
+    assert len(failed) == 1
+    assert failed[0]["purpose"] == "capture-settings-readback"
+    assert failed[0]["validated"] is False
+    assert result["hook_cleanup"]["status"] == "verified"
+
+
+@pytest.mark.parametrize("stage", ["prepare", "capture"])
+@pytest.mark.parametrize("fault", ["none", "absent", "metadata-error"])
+def test_d055_initial_backup_metadata_is_durably_observed(d055_env, stage, fault):
+    device, inputs, folder, capture = d055_env
+    stat = device.stat
+    calls = 0
+    original = OSError("synthetic initial backup metadata failed")
+
+    def metadata(path):
+        nonlocal calls
+        calls += 1
+        if calls == 1:
+            if fault == "absent":
+                return None
+            if fault == "metadata-error":
+                raise original
+        return stat(path)
+
+    device.stat = metadata
+    target = folder / ("prepare-again" if stage == "prepare" else "capture")
+    result = None
+    if stage == "prepare":
+        if fault == "none":
+            result = prepare_device(device, inputs, target)
+        else:
+            with pytest.raises(
+                CaptureError if fault == "absent" else OSError
+            ) as caught:
+                prepare_device(device, inputs, target)
+            if fault == "metadata-error":
+                assert caught.value is original
+            assert getattr(caught.value, "app_data_read", {}).get("purpose") == (
+                "settings-backup"
+            )
+            assert getattr(caught.value, "app_data_read_failure", False) is True
+    else:
+        result = capture(fail_fast=False)
+    receipts = [
+        json.loads(p.read_bytes()) for p in sorted((target / "reads").glob("*.json"))
+    ]
+    attempts = json.loads((target / "reads-attempts.json").read_bytes())["attempts"]
+    assert len(receipts) == len(attempts)
+    if fault == "none":
+        assert result is not None
+        assert all(r["outcome"] == "complete" for r in receipts)
+        assert result["backup"]["settings_stat"] == stat(legacy.SETTINGS_PATH)
+        if stage == "capture":
+            assert result["status"] == "complete" and device.writes == 5
+        return
+    assert calls == 1
+    assert device.writes == 0 and device.unlinked == []
+    assert not any(isinstance(c, tuple) and c[0] == "request" for c in device.calls)
+    failed = [r for r in receipts if r["outcome"] == "failed"]
+    assert len(failed) == 1
+    read = failed[0]
+    assert read["purpose"] == attempts[-1]["purpose"] == "settings-backup"
+    assert read["bytes"] == 0 and read["validated"] is False
+    assert (target / "reads" / read["raw"]).read_bytes() == b""
+    assert read["duration_s"] >= 0 and read["limit_s"] == 300
+    assert read["bytes_per_second"] == (0 if read["duration_s"] else None)
+    if stage == "capture":
+        assert result is not None
+        assert result["status"] == "failed"
+        details = result["fatal_error_details"]
+        assert details["type"] == ("CaptureError" if fault == "absent" else "OSError")
+        assert details["app_data_read"]["purpose"] == "settings-backup"
+        if fault == "metadata-error":
+            assert getattr(original, "app_data_read", None) == details["app_data_read"]
+
+
+def test_d055_short_settings_read_is_durably_incomplete(d055_env):
+    device, _inputs, folder, capture = d055_env
+    run = device.run
+
+    def native(*args, timeout_s=30):
+        raw = run(*args, timeout_s=timeout_s)
+        return raw[:-1] if args == ("exec-out", "cat", legacy.SETTINGS_PATH) else raw
+
+    device.run = native
+    result = capture()
+    assert result["status"] == "failed" and device.writes == 0
+    receipts = [
+        json.loads(p.read_bytes()) for p in (folder / "capture/reads").glob("*.json")
+    ]
+    receipt = next(r for r in receipts if r["purpose"] == "settings-backup")
+    assert receipt["outcome"] == "failed", (
+        "Partial file read falsely claims complete validation"
+    )
+    assert receipt["validated"] is False
+
+
+@pytest.mark.parametrize("stage", ["comparison", "checkpoint"])
+def test_d055_finalization_failure_does_not_replace_cancellation(
+    d055_env, monkeypatch, stage
+):
+    from l10n_checker import screen_capture
+
+    _device, _inputs, folder, capture = d055_env
+    original = KeyboardInterrupt("cancel after all pairs")
+    count = 0
+
+    def cancel(record):
+        nonlocal count
+        count += 1
+        if count == 4:
+            raise original
+
+    def comparison(*args):
+        raise OSError("comparison finalization failed")
+
+    write = screen_capture.write_json
+    broken = False
+
+    def checkpoint(path, value):
+        nonlocal broken
+        if (
+            path.name == "summary.json"
+            and value.get("fatal_error_details", {}).get("type") == "KeyboardInterrupt"
+            and not broken
+        ):
+            broken = True
+            raise OSError("checkpoint finalization failed")
+        return write(path, value)
+
+    if stage == "comparison":
+        monkeypatch.setattr(screen_capture, "compare_pixels", comparison)
+    else:
+        monkeypatch.setattr(screen_capture, "write_json", checkpoint)
+    with pytest.raises(KeyboardInterrupt) as caught:
+        capture(on_pair=cancel)
+    assert caught.value is original
+    assert any(stage in e["message"] for e in original.cleanup_errors)
+    summary = json.loads((folder / "capture/summary.json").read_bytes())
+    assert summary["status"] == "failed"
+    assert summary["fatal_error_details"]["type"] == "KeyboardInterrupt"
+    assert summary["hook_cleanup"]["status"] == "verified"
+
+
+def test_d055_gallery_error_preserves_primary_capture_error(d055_env, monkeypatch):
+    from l10n_checker import screen_capture
+
+    _device, _inputs, folder, capture = d055_env
+    original = CaptureError("primary pair callback failure")
+
+    def stop(record):
+        raise original
+
+    def gallery(*args):
+        raise OSError("gallery finalization failed")
+
+    monkeypatch.setattr(screen_capture, "gallery", gallery)
+    with pytest.raises(CaptureError) as caught:
+        capture(on_pair=stop, fail_fast=True)
+    assert caught.value is original
+    assert original.cleanup_errors[-1]["message"] == "gallery finalization failed"
+    summary = json.loads((folder / "capture/summary.json").read_bytes())
+    assert summary["status"] == "failed" and summary["fatal_error"] == str(original)
+
+
+def test_d055_standalone_v2_cleans_only_verified_new_outputs(tmp_path, monkeypatch):
+    monkeypatch.setattr(legacy, "REPO_ROOT", tmp_path / "repo")
+    inputs = all_screen_inputs().select_screens(screen_ids=["tech-picker"])
+    inputs.manifest = inputs.manifest.model_copy(
+        update={"resolution": [4, 2], "protocol_version": 2}
+    )
+    device = DumpDevice(inputs)
+    prepare_device(device, inputs, tmp_path / "prepare")
+    result = capture_manifest(
+        device,
+        inputs,
+        tmp_path / "capture",
+        request=device.request,
+        device_plan=tmp_path / "prepare/device-plan.json",
+    )
+    assert result["status"] == "complete"
+    assert result.get("hook_cleanup", {}).get("status") == "verified", (
+        "Real capture lacks exact host-verified cleanup"
+    )
+    cleanup = result["hook_cleanup"]
+    assert len(cleanup["paths"]) == 8
+    assert sum(r["status"] == "deleted" for r in cleanup["paths"]) == 4
+    assert sum(r["status"] == "absent" for r in cleanup["paths"]) == 4
+    assert cleanup["preservation"]["unexpected_changes"] == []
+    assert device.hook_files == {"files/l10n-hook/pre-existing-near-name.json": b"keep"}
 
 
 def test_complete_fake_v2_capture_and_changed_dump_failures(tmp_path, monkeypatch):
@@ -469,6 +1180,7 @@ def test_dump_nondeterminism_fails_run_even_with_identical_pixels(
                 data["viewport"][0] = 0.1
                 self.raw_dump = canonical_bytes(data)
                 result["dump"]["sha256"] = digest(self.raw_dump)
+                self.hook_files[result["dump"]["file"]] = self.raw_dump
             return result
 
     device = Unstable(inputs)

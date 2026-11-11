@@ -12,14 +12,28 @@ from pathlib import Path
 from PIL import Image, ImageChops, ImageDraw
 
 from l10n_checker import capture as capture_module
+from l10n_checker.app_data import (
+    cleanup_outputs,
+    cleanup_policy,
+    observed_read,
+    preflight_outputs,
+    preservation_report,
+    read_tar,
+)
+from l10n_checker.app_data import (
+    snapshot as data_snapshot,
+)
 from l10n_checker.capture import (
     PACKAGE,
     SETTINGS_PATH,
     CaptureError,
     Device,
+    failure_details,
     filename,
     owner_and_mode,
     png_size,
+    preserve_cleanup,
+    retain_cleanup,
     unciv_in_foreground,
 )
 from l10n_checker.hook import HookFailure, request_screen
@@ -102,8 +116,35 @@ def save_inventory(data: bytes) -> dict[str, str]:
         raise CaptureError("SaveFiles backup is not a valid tar archive") from exc
 
 
-def read_saves(device: Device) -> bytes:
-    return device.run("exec-out", "tar", "-cf", "-", "-C", SAVES_PATH, ".")
+def read_saves(device: Device, folder: Path, purpose="saves-readback") -> bytes:
+    return read_tar(device, SAVES_PATH, "SaveFiles", purpose, folder / "reads")
+
+
+def read_settings(device, folder, purpose, expected=None, *, file_metadata=None):
+    def validate(raw):
+        try:
+            if not isinstance(json.loads(raw), dict):
+                raise TypeError("not an object")
+        except (ValueError, TypeError) as exc:
+            if purpose in {"settings-backup", "settings-backup-readback"}:
+                raise CaptureError(
+                    "Existing GameSettings.json is not a valid JSON object; no app data written"
+                ) from exc
+            raise CaptureError("Settings read is not a valid JSON object") from exc
+        if expected is not None and raw != expected:
+            raise CaptureError("Settings changed while capturing; readback mismatch")
+
+    return observed_read(
+        device,
+        ("exec-out", "cat", SETTINGS_PATH),
+        "private",
+        SETTINGS_PATH,
+        purpose,
+        folder / "reads",
+        kind="file",
+        file_metadata=file_metadata or (lambda: device.stat(SETTINGS_PATH)),
+        validate=validate,
+    )
 
 
 def check_build(device: Device, inputs: Inputs) -> dict:
@@ -141,10 +182,24 @@ def backup_device(device: Device, inputs: Inputs, folder: Path) -> dict:
         raise CaptureError("Unciv is still running after force-stop")
     private = folder / "private"
     private.mkdir(mode=0o700)
-    stat = device.stat(SETTINGS_PATH)
-    if stat is None:
-        raise CaptureError("GameSettings.json is absent; no device data was written")
-    original = device.read_file(SETTINGS_PATH)
+    stat = None
+
+    def backup_metadata():
+        nonlocal stat
+        stat = device.stat(SETTINGS_PATH)
+        if stat is None:
+            raise CaptureError(
+                "GameSettings.json is absent; no device data was written"
+            )
+        current = device.stat(SETTINGS_PATH)
+        if current != stat:
+            raise CaptureError("GameSettings.json metadata changed before backup")
+        return current
+
+    original = read_settings(
+        device, folder, "settings-backup", file_metadata=backup_metadata
+    )
+    assert stat is not None
     if len(original) != int(stat.split()[3]):
         raise CaptureError("Incomplete GameSettings.json backup")
     try:
@@ -157,24 +212,28 @@ def backup_device(device: Device, inputs: Inputs, folder: Path) -> dict:
     backup = private / "GameSettings.json"
     backup.write_bytes(original)
     backup.chmod(0o600)
-    if backup.read_bytes() != original or device.read_file(SETTINGS_PATH) != original:
+    if (
+        backup.read_bytes() != original
+        or read_settings(device, folder, "settings-backup-readback") != original
+    ):
         raise CaptureError("Settings backup/readback mismatch")
-    saves = read_saves(device)
+    saves = read_saves(device, folder, "saves-backup")
     archive = private / "SaveFiles.tar"
     archive.write_bytes(saves)
     archive.chmod(0o600)
     inventory = save_inventory(saves)
     if (
         save_inventory(archive.read_bytes()) != inventory
-        or save_inventory(read_saves(device)) != inventory
+        or save_inventory(read_saves(device, folder, "saves-backup-readback"))
+        != inventory
     ):
         raise CaptureError("Save backup/readback mismatch")
-    for fixture in inputs.manifest.fixtures:
+    for name, data in inputs.fixtures.items():
         # Registry names contain no spaces or shell metacharacters.
-        current = inventory.get("./" + fixture.name)
-        if current != fixture.sha256:
+        current = inventory.get("./" + name)
+        if current != digest(data):
             raise CaptureError(
-                f"Device fixture missing or changed: {fixture.name}; no save was copied"
+                f"Device fixture missing or changed: {name}; no save was copied"
             )
     return {
         "original": original,
@@ -249,11 +308,16 @@ def prepare_device(
     folder = manifest_output_directory(folder, inputs.contains_holdout)
     folder = new_folder(folder, False)
     observed = check_build(device, inputs)
-    try:
+    v2 = inputs.manifest.protocol_version == 2
+    namespace = uuid.uuid4().hex if v2 else None
+    outputs = planned_hook_outputs(inputs, languages, namespace) if v2 else []
+    with preserve_cleanup(device.unroot, "Unroot"):
         device.root()
+        if v2:
+            device.force_stop()
+            starting = data_snapshot(device, folder, "prepare-start")
+            directory_identity = preflight_outputs(device, outputs, starting)
         snapshot = backup_device(device, inputs, folder)
-    finally:
-        device.unroot()
     result = {
         "mode": "prepare_only",
         "app_data_writes": 0,
@@ -272,8 +336,10 @@ def prepare_device(
         ],
     }
     if inputs.manifest.protocol_version == 2:
-        namespace = uuid.uuid4().hex
         result.update(
+            cleanup_policy=cleanup_policy(),
+            starting_inventory=starting,
+            directory_identity=directory_identity,
             serial=device.serial,
             request_namespace=namespace,
             planned_hook_directory_operation=HOOK_DIRECTORY_OPERATION,
@@ -356,6 +422,9 @@ def capture_manifest(
     timeout_s=90.0,
     request=request_screen,
     device_plan: Path | None = None,
+    on_pair=None,
+    fail_fast=False,
+    variant="clean",
 ) -> dict:
     languages = inputs.languages(languages)
     selection = inputs.capture_selection(languages)
@@ -429,19 +498,83 @@ def capture_manifest(
         if device.pid():
             raise CaptureError("Unciv is still running before settings write")
         device.write_file(SETTINGS_PATH, data)
-        if device.read_file(SETTINGS_PATH) != data or owner_and_mode(
-            device.stat(SETTINGS_PATH)
-        ) != owner_and_mode(snapshot["stat"]):
+        if read_settings(
+            device, folder, operation + "-readback", expected=data
+        ) != data or owner_and_mode(device.stat(SETTINGS_PATH)) != owner_and_mode(
+            snapshot["stat"]
+        ):
             raise CaptureError(
                 "Settings write/readback or ownership verification failed"
             )
         entry["status"] = "verified"
         checkpoint()
 
+    def restore_settings():
+        assert snapshot is not None
+        write_settings(snapshot["original"], "restore_original_settings")
+        if device.stat(SETTINGS_PATH) != snapshot["stat"]:
+            raise CaptureError("Original settings metadata was not restored")
+        summary["settings_restored"] = True
+
+    def clean_hook_outputs():
+        if not v2:
+            return
+
+        def cleanup_checkpoint():
+            proof = folder / "hook-cleanup.json"
+            if proof.is_file():
+                summary["hook_cleanup"] = json_bytes(proof.read_bytes())
+            checkpoint()
+
+        with preserve_cleanup(cleanup_checkpoint, "Hook cleanup evidence"):
+            summary["hook_cleanup"] = cleanup_outputs(
+                device,
+                outputs,
+                starting,
+                directory_identity,
+                folder,
+                summary["records"],
+            )
+
+    primary = None
+
+    def finalization_failed(error):
+        failure = primary if primary is not None else error
+        if failure is not error:
+            retain_cleanup(failure, error, "Capture finalization")
+        summary["status"] = "failed"
+        summary["fatal_error"] = str(failure)
+        summary["fatal_error_details"] = failure_details(failure)
+        if getattr(failure, "cleanup_errors", None):
+            summary["cleanup_errors"] = failure.cleanup_errors
+        # One best-effort error-state checkpoint; never retry capture/deletion.
+        with preserve_cleanup(checkpoint, "Failed capture summary"):
+            raise failure
+
     try:
         summary["observed_build"] = check_build(device, inputs)
-        try:
+        with preserve_cleanup(device.unroot, "Unroot"):
             device.root()
+            if v2:
+                device.force_stop()
+                starting = data_snapshot(device, folder, "runtime-start")
+                directory_identity = preflight_outputs(device, outputs, starting)
+                if (
+                    approved.get("cleanup_policy") != cleanup_policy()
+                    or approved.get("directory_identity") != directory_identity
+                    or not isinstance(approved.get("starting_inventory"), dict)
+                    or preservation_report(approved["starting_inventory"], starting)[
+                        "unexpected_changes"
+                    ]
+                ):
+                    raise CaptureError(
+                        "Device inventory changed since the prepared plan; no app data written"
+                    )
+                summary.update(
+                    cleanup_policy=cleanup_policy(),
+                    starting_inventory=starting,
+                    directory_identity=directory_identity,
+                )
             snapshot = backup_device(device, inputs, folder)
             summary["backup"] = snapshot["public"]
             summary["planned_app_data_operations"] = planned_operations(
@@ -461,7 +594,19 @@ def capture_manifest(
                     )
                 summary["device_plan_sha256"] = digest(approved_bytes)
             checkpoint()
-            try:
+            with (
+                preserve_cleanup(clean_hook_outputs, "Hook output cleanup"),
+                preserve_cleanup(restore_settings, "Settings restoration"),
+            ):
+                if v2:
+                    write_json(
+                        folder / "write-boundary.json",
+                        {
+                            "manifest_sha256": inputs.sha256,
+                            "device_plan_sha256": digest(approved_bytes),
+                            "cleanup_required": True,
+                        },
+                    )
                 for pass_number in (1, 2):
                     for language in languages:
                         payload = inputs.settings[language]
@@ -565,7 +710,15 @@ def capture_manifest(
                                         status="verified", sha256=digest(dump)
                                     )
                                     directory_record["status"] = "verified_present"
-                                if device.read_file(SETTINGS_PATH) != payload:
+                                if (
+                                    read_settings(
+                                        device,
+                                        folder,
+                                        "capture-settings-readback",
+                                        expected=payload,
+                                    )
+                                    != payload
+                                ):
                                     raise CaptureError(
                                         "Settings changed while capturing; no PNG saved"
                                     )
@@ -573,7 +726,7 @@ def capture_manifest(
                                     screen.id,
                                     language,
                                     "x".join(map(str, size)),
-                                    "clean",
+                                    variant,
                                     device.build(),
                                 )
                                 (folder / target).parent.mkdir(exist_ok=True)
@@ -617,69 +770,107 @@ def capture_manifest(
                                     png=str(target),
                                     png_sha256=digest(png),
                                 )
+                                if on_pair is not None:
+                                    on_pair(record)
                             except (CaptureError, OSError) as exc:
-                                record.update(status="failed", reason=str(exc))
+                                record.update(
+                                    status="failed",
+                                    reason=str(exc),
+                                    error_details=failure_details(exc),
+                                )
                                 if isinstance(exc, HookFailure):
                                     record["events"] = exc.events
                                     record["terminal_received"] = exc.terminal
                                 if not isinstance(exc, HookFailure) or not exc.terminal:
                                     # Mandatory after timeout/uncertain launch. No request
                                     # can supersede an unfinished one on build 1271045.
-                                    device.force_stop()
+                                    try:
+                                        device.force_stop()
+                                    except BaseException as cleanup:  # noqa: BLE001
+                                        retain_cleanup(exc, cleanup, "Request recovery")
+                                        record["error_details"] = failure_details(exc)
+                                        checkpoint()
+                                        raise exc
                                     record["recovery"] = (
                                         "force_stopped_before_next_request"
                                     )
+                                if fail_fast or getattr(
+                                    exc, "app_data_read_failure", False
+                                ):
+                                    checkpoint()
+                                    raise
                             checkpoint()
                         device.force_stop()
-                        if device.read_file(SETTINGS_PATH) != payload:
+                        if (
+                            read_settings(
+                                device,
+                                folder,
+                                "capture-settings-readback",
+                                expected=payload,
+                            )
+                            != payload
+                        ):
                             raise CaptureError(
                                 "Settings changed during the language pass"
                             )
-                current_saves = save_inventory(read_saves(device))
+                current_saves = save_inventory(
+                    read_saves(device, folder, "saves-final-readback")
+                )
                 summary["saves_unchanged"] = current_saves == snapshot["saves"]
                 if not summary["saves_unchanged"]:
                     raise CaptureError(
                         "Device saves changed; backups retained, no automatic save overwrite"
                     )
-            finally:
-                write_settings(snapshot["original"], "restore_original_settings")
-                if device.stat(SETTINGS_PATH) != snapshot["stat"]:
-                    raise CaptureError("Original settings metadata was not restored")
-                summary["settings_restored"] = True
-        finally:
-            device.unroot()
     except (CaptureError, OSError, ValueError) as exc:
+        primary = exc
         summary["fatal_error"] = str(exc)
+        summary["fatal_error_details"] = failure_details(exc)
+        cleanup_errors = getattr(exc, "cleanup_errors", [])
+        if cleanup_errors:
+            summary["cleanup_errors"] = cleanup_errors
+    except BaseException as exc:
+        primary = exc
+        summary["fatal_error"] = str(exc)
+        summary["fatal_error_details"] = failure_details(exc)
+        if getattr(exc, "cleanup_errors", None):
+            summary["cleanup_errors"] = exc.cleanup_errors
+        raise
     finally:
-        by_key = {
-            (r["screen"], r["language"], r["pass"]): r for r in summary["records"]
-        }
-        for language in languages:
-            for screen in inputs.screens(language):
-                pair = [by_key.get((screen.id, language, n), {}) for n in (1, 2)]
-                comparison = {
-                    "screen": screen.id,
-                    "language": language,
-                    "status": "unavailable",
-                }
-                if all(r.get("status") == "captured" for r in pair):
-                    comparison.update(
-                        compare_pixels(*(folder / r["png"] for r in pair))
-                    )
-                    if v2:
-                        equal = (folder / pair[0]["dump"]).read_bytes() == (
-                            folder / pair[1]["dump"]
-                        ).read_bytes()
-                        comparison["dump_status"] = (
-                            "identical" if equal else "different"
+        try:
+            by_key = {
+                (r["screen"], r["language"], r["pass"]): r for r in summary["records"]
+            }
+            for language in languages:
+                for screen in inputs.screens(language):
+                    pair = [by_key.get((screen.id, language, n), {}) for n in (1, 2)]
+                    comparison = {
+                        "screen": screen.id,
+                        "language": language,
+                        "status": "unavailable",
+                    }
+                    if all(r.get("status") == "captured" for r in pair):
+                        comparison.update(
+                            compare_pixels(*(folder / r["png"] for r in pair))
                         )
-                summary["comparisons"].append(comparison)
-        success = not summary.get("fatal_error") and all(
-            c["status"] == "identical"
-            and (not v2 or c.get("dump_status") == "identical")
-            for c in summary["comparisons"]
-        )
-        summary["status"] = "complete" if success else "failed"
-        checkpoint()
-    gallery(folder, inputs, languages, summary["records"])
+                        if v2:
+                            equal = (folder / pair[0]["dump"]).read_bytes() == (
+                                folder / pair[1]["dump"]
+                            ).read_bytes()
+                            comparison["dump_status"] = (
+                                "identical" if equal else "different"
+                            )
+                    summary["comparisons"].append(comparison)
+            success = primary is None and all(
+                c["status"] == "identical"
+                and (not v2 or c.get("dump_status") == "identical")
+                for c in summary["comparisons"]
+            )
+            summary["status"] = "complete" if success else "failed"
+            checkpoint()
+        except BaseException as exc:  # noqa: BLE001 - retain primary cancellation
+            finalization_failed(exc)
+    try:
+        gallery(folder, inputs, languages, summary["records"])
+    except BaseException as exc:  # noqa: BLE001 - retain primary capture failure
+        finalization_failed(exc)
     return summary

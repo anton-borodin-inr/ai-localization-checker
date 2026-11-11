@@ -589,6 +589,319 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
   issue-47 criterion or change labels, metrics, the split, or D-012/D-023–025/
   D-038–044/D-046/D-047/D-049. See [mutation-generator.md](mutation-generator.md).
 
+## D-051 — Narrow AndroidX bookkeeping preservation exception
+
+- **Date:** 2026-11-05
+- **Status:** Proposed
+- **Decision:** Record Anton's explicit task-chat authorization to permit only
+  regular-file content/hash and presence changes at these four package-relative
+  paths in `DATA_ROOTS["private"]`: `files/profileInstalled`,
+  `no_backup/androidx.work.workdb`, `no_backup/androidx.work.workdb-shm`, and
+  `no_backup/androidx.work.workdb-wal`. Record every path's before/after size and
+  SHA-256 (or explicit absence), including unchanged observations. This is pure
+  comparison and evidence recording: never write or restore these files.
+- **Why:** The ProfileInstaller marker and WorkManager database/WAL/SHM are
+  AndroidX bookkeeping, not game state, and may vary at startup. Rendering is
+  independently checked by strict RGBA and engine-dump gates. The exception is
+  specific owner authorization, not an inference that caches/databases in
+  general are safe to ignore.
+- **Alternatives considered:** Keep rejecting these four content/presence
+  deltas (blocks the authorized startup variability); ignore broader directory,
+  database or cache patterns (could hide game-state changes); restore or edit
+  the files (not authorized); relax pixel/layout gates (not authorized).
+- **Consequences:** Settings and saves remain byte-exact. Every other app-data
+  path and existing-file ownership/mode remain strict; directories, symlinks,
+  other roots, prefixes, suffixes and descendants are not exempt. Any unexpected
+  delta stops the run without automatic app-data repair. Preserve complete raw
+  inventory deltas separately from actual exempt and unexpected deltas. Existing
+  declared-new hook-output handling stays unchanged: pre-existing outputs are
+  still strict. Apply the policy to original and per-install backup readbacks,
+  install input/after inventories, capture preflight/before/after inventories,
+  downgrade/reference verification and final restoration. Bind the exact
+  versioned policy and full ledgers in runtime evidence, and recompute them
+  from authenticated inventories during semantic replay; missing, altered or
+  widened policy/ledgers cannot qualify even with recomputed evidence hashes.
+  Historical failed evidence stays readable and nonqualified; never rewrite or
+  promote it under this exception. D-050's zero-outside-mask RGBA and unchanged
+  unmutated-layout gates, forward/reverse repeatability, install/environment
+  controls, labels, metrics and split are unchanged. This entry records the
+  authorization and remains Proposed for decision-log review.
+
+## D-052 — Owner-authorized nonqualifying measurement matrix
+
+- **Date:** 2026-11-05
+- **Status:** Proposed
+- **Decision:** Record Anton's new, measurement-only authorization to compare
+  frozen empty control `1888080431` with the EN-help calibration `1808820362`
+  on all five dev screens, EN and DE, in both forward/reverse passes. Use only
+  catalog SHA-256 `790b21921ca3d4988b6257a6da235817c8b8407b2f029871c74a05598efaf354`
+  at the separately approved exact path and output root. Continue domain
+  comparisons through the complete matrix; retain their actual failed results.
+  Always keep `calibration_status: failed`, `capture_set_qualified: false` and
+  a nonsuccess run status, even if every measured comparison is zero.
+- **Why:** Anton needs the DE evidence and the same measurements for every pair
+  before deciding whether any future calibration-rule proposal is warranted.
+  A first outside-mask failure alone does not supply that full diagnostic matrix.
+- **Alternatives considered:** Repeat the normal first-failure qualification
+  run (does not collect the requested matrix); introduce a tolerance or adopt
+  a new calibration policy (not authorized); build another APK or run production
+  batches (not authorized).
+- **Consequences:** This is not a new accepted calibration rule and does not
+  amend D-050. The default run still stops at its first strict comparison failure.
+  Measurement mode never constructs production callbacks, splits batches or
+  emits builder handoffs, and cannot resume a production run. Preserve exact
+  RGBA counts, exclusive bounding boxes, channel deltas, masks and dump checks
+  for every calibration/control pair, with same-build repeat differences kept
+  as diagnostic failures, never normalized to identical. Native, transport,
+  readiness, invalid-pair, cleanup, settings/save or unexpected app-data errors
+  remain fatal. Only the exact 40-pair scope (20 per role) with verified downgrade
+  and final restoration may set `measurement_complete: true`; it does not imply
+  qualification. The existing serial lock, containment, per-install original/
+  input/readback/post inventories, D-051 exact four-private-file exception,
+  strict metadata and all other preservation checks, `install -r -d`, per-build
+  environment checks, root/unroot and primary/cleanup error retention remain.
+  Restore and verify reference `1271048` at the end, including failure or
+  cancellation; no repeated restoration attempt or app-data repair is authorized.
+  Bind nonqualifying mode/completion flags in the manifest and journal under the
+  normal v3 evidence index. Rehashed flags or deleted mode markers cannot turn
+  a 40-pair diagnostic run into a full qualified run. No labels, evaluation,
+  production, tolerance, new build or policy adoption is authorized. Stop for
+  Anton after the measurement report. See [mutation-generator.md](mutation-generator.md).
+
+## D-053 — Narrow paired-pass outside-mask glyph exception
+
+- **Date:** 2026-11-05
+- **Status:** Proposed
+- **Decision:** Record Anton's explicit task-chat authorization to supersede only
+  D-050's zero-outside-mask clause for fresh normal mutation runs. An outside
+  changed RGBA pixel is permitted only when its physical pixel centre is inside
+  the recorded visible bounds of a genuine visible glyph belonging to an
+  unchanged, unmutated dump record. Retain full prior ordered-group equality
+  (text, geometry, clipping, visibility and all other existing fields, excluding
+  only draw/logical IDs as before), target exclusions, viewport/screen clipping
+  and hidden-glyph exclusion. Each R/G/B absolute delta must independently be
+  at most 2; alpha delta must be zero. Exact changed coordinates **and original
+  before/after RGBA values**, comparison identity and target mask must reproduce
+  in forward/reverse passes. First-pass evidence is pending, not qualified.
+- **Why:** D-052's pinned diagnostic matrix observed outside differences only on
+  the mutated EN `options-gameplay` screen, in both passes: 406 changed pixels,
+  all attributable to unchanged unmutated visible glyph bounds, maximum RGB
+  delta 2 and alpha delta 0, with deterministic coordinates and values. All ten
+  DE comparisons and all other EN comparisons had zero outside differences.
+  The rendering cause remains **unestablished**; glyph attribution is not causal
+  proof. These are bounded observations, not a general font-atlas allowance.
+  The frozen catalog SHA-256 is
+  `790b21921ca3d4988b6257a6da235817c8b8407b2f029871c74a05598efaf354`;
+  diagnostic root
+  `82d9eedfa7a418c1bf82b5a45e2a3b20b9c292185ff7227a84407514039a8095`;
+  matrix SHA-256
+  `ac4ed1d3761876ae6ab49dddffc099565e8e05340cbadd7885c8cc569288cc0c`;
+  raw-results review SHA-256
+  `1fffcb3fbea1f514f1f47b4794fc7250a2c51f268debd34a26acc7dc18687a3c`;
+  historical delivery-index SHA-256
+  `35d7b667497882bb246720c76aa75891a5734903bcb6e23ed25e87da206bc0e9`.
+- **Alternatives considered:** Keep the old unconditional zero gate (not the
+  owner's selected rule); accept whole-owner/panel bounds, aggregate glyph
+  boxes, alpha changes or a general numeric tolerance (too broad); change the
+  rendering/build pipeline now (requires separate fork/build authorization);
+  retroactively qualify D-052 (not authorized).
+- **Consequences:** Keep strict `mutation-dynamic-v1` results and every raw
+  count, exclusive bounding box and maximum channel delta unchanged. Separate
+  per-screenshot proofs retain affected before/after draw IDs, actor paths,
+  signatures/group hashes, exact-coordinate/value fingerprints, repeat/pair
+  bindings and actual exception use. Any outside-rule failure, changed
+  unmutated element or missing measurement is a fatal STOP, never a dynamic
+  split/build request. Every intended-occurrence, N <= 2, density, same-build
+  decoded-RGBA/full-raw-dump repeatability, installation/environment,
+  shared-lock, input, settings/save, D-051 preservation and cleanup gate stays
+  unchanged. No Accepted entry or earlier Proposed text/status is edited.
+  New normal evidence uses run version 3/index 4 with exact policy and usage;
+  semantic replay rederives proofs, IDs, metrics, fingerprints, repeats and
+  counts from authenticated raw pairs/PNGs/dumps. Bind the rule module and its
+  executable diagnostics dependency in producer hashes. Missing/altered proof,
+  policy, usage or downgraded versions cannot qualify after rehashing.
+  D-052 remains strict v2/index 3, nonqualifying even with zero differences;
+  historical failed/diagnostic evidence is never promoted or rewritten.
+  The predeclared conservative engineering pause is **more than 10%** of a
+  completed calibration or production batch's expected combined EN+DE frames
+  (normally 20, controls excluded), grounded in the observed D-052 2/20 baseline.
+  Report pending/confirmed use, expected/observed denominators, role, batch,
+  language, pass, global and unique-pair counts separately. Do not stop at a
+  misleading partial 1/1 rate or dilute a broad batch with controls/future batches;
+  a language slice is reported but is not a separate 50% cutoff. Zero
+  denominators are undefined. A high share stops before the next batch and
+  recommends a separately approved fork-side alternative, not automatic edits
+  or builds. Only a new tested/reviewed frozen producer may perform fresh normal
+  calibration/production and the required second full run under the owner's
+  exact device authorization. No labels, evaluation or other gate changes.
+
+## D-054 — Remove only D-053's outside-mask RGB magnitude cap
+
+- **Date:** 2026-11-06
+- **Status:** Proposed
+- **Decision:** Record Anton's explicit task-chat authorization to supersede only
+  D-053's numeric RGB cap for fresh normal runs. There is no RGB acceptance
+  threshold: use policy `decision: D054`, `version: 2`, `max_rgb_delta: null`
+  and `max_alpha_delta: 0`. Every outside changed pixel must still lie within
+  genuine visible per-glyph bounds of an unchanged, unmutated dump record and
+  its full unchanged ordered group, with the same text, geometry, clipping,
+  visibility and all previously checked fields. Retain all target exclusions,
+  half-open physical pixel-centre membership, viewport/screen clipping and
+  hidden/undrawn/zero-alpha exclusions. Alpha must be unchanged. The exact pixel
+  coordinates and oriented original before/after RGBA values must reproduce
+  in forward and reverse passes; pass 1 remains pending and unqualified.
+- **Why:** Larger production strings exposed maximum RGB delta 47 across 3,228
+  outside pixels confined to 13 unchanged visible-glyph IDs, unlike the prior
+  four-glyph calibration's 406 pixels with RGB deltas at most 2. Anton chose
+  glyph confinement, unchanged records, exact paired reproduction and complete
+  measurement rather than a magnitude cap. The rendering cause remains
+  **unestablished**; this attribution is not causal proof. The failed D-053 run
+  remains failed and unqualified, independently pinned by evidence root
+  `0a2dc8504bd749cd6143183ee2a7ef5b1e9b6141fb5fb3005f285bdf64cb5994`
+  and raw-results review SHA-256
+  `4072e586a17d72cf00ae74ca337ef6a1e3fe79a165b4b6523f5bfc608b656a10`.
+- **Alternatives considered:** Retain the cap of 2 (not the owner's decision);
+  substitute a cap of 47 or 255 (still a magnitude acceptance threshold);
+  expand masks or accept owner/panel/aggregate bounds, alpha drift, changed
+  records or approximate repeat proof (not authorized); retrospectively qualify
+  the failed run or D-052 diagnostics (not authorized).
+- **Consequences:** Preserve strict `mutation-dynamic-v1` results, including raw
+  `passed: false`, unchanged masks, counts, exclusive bounding boxes and RGBA
+  maxima. Per-screenshot proofs retain actual affected before/after draw IDs,
+  actor paths, unchanged signatures/group hashes and exact pixel/value/pair
+  bindings; usage retains the overall share and all existing scopes. Missing
+  measurement, outside-glyph pixels, changed unmutated records, nonzero alpha
+  or any repeat mismatch is still a fatal STOP, never a split. The physical
+  8-bit RGB statistic range 0..255 is schema validity, not a policy cap.
+  Fresh normal evidence is run version **4**, evidence-index version **5**.
+  Successful current replay requires every producer hash to equal the exact
+  current frozen source bytes, not merely matching manifest/journal claims.
+  D-053 run v3/index 4 must fail closed with the current producer: replay it
+  using the exact archived `09acc674516196be2badfae247cc1ff76228fa17` producer,
+  without rewriting or promoting evidence. Legacy strict failures remain
+  inspectable, and D-052 stays run v2/index 3, strictly nonqualifying.
+  D-053's existing agent-declared engineering pause at **more than 10%** of a
+  completed batch's expected combined EN+DE frames remains unchanged, as do
+  all usage denominators; this is not a new owner-specified threshold.
+  Intended occurrences, N/density, same-build decoded-RGBA/full-raw-dump
+  repeatability, D-051 preservation, installation/environment, shared locks,
+  backup/restoration, cleanup, split and publication/device gates are unchanged.
+  No earlier decision text or status is edited. Only a freshly tested, reviewed
+  and frozen producer may perform new normal calibration/production and the
+  required second complete run under the owner's exact device authorization.
+  No labels, metrics, goldens, fixtures, split, build or other gate changes.
+
+## D-055 — Durable 300-second reads and exact plan-new hook cleanup
+
+- **Date:** 2026-11-06
+- **Status:** Proposed
+- **Decision:** Record Anton's explicit task-chat authorization. App-data
+  backup/readback reads have an exact **300 s** operational hang limit. Preserve
+  root/path/purpose, actual retained bytes/hash, monotonic start/end/duration,
+  throughput, limit, outcome/completion and a strict **>60 s** flag for every
+  attempted package-root, SaveFiles and settings read, including inventory-only,
+  failed, preparation, readback and final reads. A zero measured duration has
+  undefined (`null`) throughput, never infinity. Retain partial binary bytes in
+  private evidence, not decoded public errors. Empty, malformed or truncated
+  tar streams (including missing terminal blocks) stop; exit zero is not proof.
+- **Cleanup authority:** Independently rederive the exact v2 plan, bind its
+  complete starting inventory and serial, and recheck runtime newness before
+  any settings write or hook launch. A collision, alias or absent existing
+  hook directory stops before writes. After writers are force-stopped, retain
+  the complete pre-cleanup inventory and authenticate **all** present exact
+  planned final/temporary files against actual host re-read bytes/hashes before
+  the first unlink. Pull and retain an otherwise unpulled planned partial file,
+  or fail closed. Missing files are absent/unavailable, never successful pairs.
+  Delete only those exact new regular paths; no pre-existing hook file, hook
+  directory, near-name, namespace sweep, wildcard or recursive removal.
+- **Identity and failure boundaries:** Reject unsafe/duplicate paths, symlink
+  leaves/ancestors, host aliases, hard links and changed file/ancestor identity
+  or content. Guard identity/hash and exact unlink in one shell operation
+  while the package is force-stopped and the released device is exclusively
+  operator-owned; mutation's existing shared device lock remains mandatory.
+  A competing root/ADB operator is outside this quiescent boundary: do not run
+  concurrently or treat separate stat/hash and unguarded removal as safe.
+  Unsupported identity/quiescence/guard observations fail closed. Record each
+  attempted/deleted/absent/failed transition, including partial cleanup; do not
+  retry. Always attempt a fresh complete post-cleanup inventory and retain its
+  failure separately if unavailable. Compare to the starting inventory with
+  **exactly D-051**, without any new-output or hook-directory exemption. Carry
+  that verified inventory through preparation, later installs and final1271048
+  restoration; no accumulated output allowlist or inter-stage rebaselining.
+- **Why:** An approximately 85 MB read immediately after capture had little
+  margin at 30 s; the operational timeout catches hangs, not performance
+  qualification. Retained hook outputs must not accumulate across runs.
+- **Consequences:** List every >60 s observation in the Report, with bytes,
+  actual duration, throughput and outcome. Failed/incomplete reads and cleanup,
+  settings, save, inventory or telemetry-persistence failures are fatal
+  operational stops, never split/interference/diagnostic continuation. Preserve
+  primary, native cause and cleanup/cancellation failures independently.
+  Successful cleanup cannot qualify failed pixels, dumps or repeats.
+  Fresh normal evidence is **run v5 / index6**, with versioned `D055` cleanup
+  proofs and authenticated every-read receipts/raw bytes. Semantic replay
+  rederives exact authority, actual host bindings, inventories, transitions,
+  D-051 preservation and numeric/completion/coverage claims, including available
+  failed/partial attempts. Bind the new `app_data.py` executable helper in
+  producer hashes. Current replay rejects D-054 v4/index5; use the exact archived
+  `960dae205aafcc679e8a2b7e7cbfd569a14deb88` producer without rewriting evidence.
+  D-053 stays archived-only and older strict failure/measurement evidence stays
+  readable and permanently nonqualifying as documented.
+  D-054/v2 pixel policy, alpha0, genuine unchanged glyph bounds, exact paired
+  coordinates/oriented values, nonpixel/occurrence/N/density/raw-repeat gates,
+  >10% completed-batch engineering pause, catalog, fixtures, install `-r -d`,
+  per-build environment checks, final1271048 restoration, locks, splits,
+  labels/provider/new-build and publication/device approval gates are unchanged.
+  Fresh host checks and independent review precede the scoped capture audit,
+  calibration/production and second full run; this entry is not execution proof
+  or additional device authorization. The entire earlier decision prefix stays
+  byte-for-byte unchanged.
+
+## D-056 — Bookkeeping metadata and preservation-independent reference restoration
+
+- **Date:** 2026-11-10
+- **Status:** Proposed
+- **Decision:** Record Anton's two explicit task-chat policy corrections. Extend
+  D-051 only for the same four exact private-root regular files:
+  `files/profileInstalled`, `no_backup/androidx.work.workdb`,
+  `no_backup/androidx.work.workdb-shm`, `no_backup/androidx.work.workdb-wal`.
+  Their UID, GID and mode may also change, alongside bytes/hash/presence; retain
+  full before/after entries and raw deltas. All other fields and paths remain
+  strict, including settings/saves, existing hook outputs, directories, symlinks,
+  other roots and near-names. This is comparison only, never app-data repair.
+  After any stop/cancellation within the entered authorized device stage, always
+  attempt reference `1271048` with `adb install -r -d`, then verify installed
+  version, APK SHA-256 and signer. Only an invalid/unverified pinned reference
+  APK's own identity/signature may block that command, not preservation,
+  backup/readback/capture failures, current-installed diagnostics or environment
+  failures. Ordinary catalog/mutation install prerequisites remain strict.
+- **Why:** SQLite deletes and recreates WAL/SHM; the creating process determines
+  their mode. Preservation failure must be reported without leaving a mutation
+  APK installed merely because the reinstall was blocked before adb.
+- **Consequences:** Bind exact preservation policy `D-056` version 2. Record
+  reference validation, actual install attempt and installed identity separately
+  from preservation/observation outcome. Preserve the first error, independent
+  cleanup errors and complete available raw read/backup/ledger receipts, including
+  failed prefixes. One actual reference attempt per stop/finalization; no duplicate
+  finalizer command after an attempted reinstall, and no pre-install observation
+  may masquerade as that attempt. Identity success alone never qualifies failed
+  captures or unresolved non-exempt preservation. Keep run v5/index6 and current
+  producer binding; semantic replay checks the actual policy and restoration
+  receipts. Historical failed evidence, including index
+  `9acf52152fab0d7ce0a98523f7a6cb05fa9e8a08d0dbc4c8c23dedeef6e2bd08`,
+  remains immutable/nonqualified and uses its archived producer, never promotion.
+  D-054 pixel/glyph/alpha/repeat/usage and occurrence gates, D-055 300 s reads,
+  every-read telemetry, exact-plan-new cleanup, environment/default-reference
+  checks, locks, catalog, builds, fixtures, labels, metrics and split are unchanged.
+- **Operational disposition:** Stop and ask for dataset correctness/safety,
+  pixel/dump/occurrence gates, labels, protected settings/save changes, data loss,
+  new builds/catalogs, or methodology/decision changes. For content-independent
+  operational noise (timeouts/failed-read retries, host metadata, emulator/adb,
+  these four files' permissions/metadata, reference restoration), the controller
+  makes one smallest in-bounds fix, records its reason in Report and continues;
+  recurrence after that fix stops. This is a bounded operator workflow, not a
+  generic retry/recovery layer or additional device authorization. No prior
+  decision text/status or historical evidence is rewritten.
+
 ## D-057 — Emulator stability: 4 GB guest RAM, display kept awake, explicit renderer
 
 - **Date:** 2026-11-10
@@ -598,6 +911,32 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 - **Why:** Issue #70. **observed:** Two `system_server_watchdog` reports (main thread blocked 469 s and 149 s) fell inside periods when the Mac display was off while the Mac stayed awake; with 2 GB RAM, lmkd thrashed at boot and `system_server` reached `WAITED_HALF`; `auto` resolved to `lavapipe`. With 4 GB and `-gpu host`, a trial on 2026-11-10 booted in 18 s and showed no lmkd kill, watchdog or ANR, with `adb shell true` at most 35 ms over 30 tries. With `lavapipe`, 4 GB RAM and Unciv in the foreground, the same check took median 615 ms and max 3625 ms (66 ms and 753 ms with Unciv in the background), so `lavapipe` keeps adb slow while Unciv renders. **assumption:** the display-off correlation is causal; this is not yet confirmed by a controlled unattended run. Earlier captures used `auto` and are assumed, not verified, to have used `lavapipe`. A renderer change can alter pixels, which D-042 and D-050 measure with no tolerance.
 - **Alternatives considered:** Wipe the AVD data (no evidence of corrupted AVD state, and it loses installed builds); a fresh AVD with the same settings (would keep 2 GB and `auto`, so it would not isolate the cause); switch to `-gpu host` at once (faster, but pixel continuity with existing captures is unverified).
 - **Consequences:** `docs/environment.md` documents the setting, its value format (`4096M` is silently ignored), the start command and a troubleshooting section. Choosing `host` for captures needs a separate comparison and decision. No change to labels, metrics, matching, the split, D-014 resolution or capture code.
+
+## D-058 — Flag visible text side effects for human review
+
+- **Date:** 2026-11-11
+- **Status:** Proposed
+- **Decision:** Anton authorized replacing D-050's cross-build pixel and dump
+  isolation gate and D-054 for fresh normal runs. Cross-build outside-mask
+  pixel differences and unmutated element geometry changes are measurements
+  only. They neither stop a run nor trigger a dynamic split or usage pause.
+  Compare each unmutated draw group's ordered visible text lines, visibility,
+  ellipsis and clipped fraction. Record semantic differences with the
+  screenshot, actor path and before/after values as review flags in the run
+  manifest. Review flags never block capture qualification or create labels.
+- **Why:** Anton labels the rendered screenshots under D-012. A mutation can
+  realistically reflow surrounding UI, and pixel-identical isolation does not
+  protect the information the human labels rely on. Visible text side effects
+  remain useful for deciding how to label a screenshot.
+- **Consequences:** The intended-occurrence visibility and class checks,
+  N ≤ 2, density, exact forward/reverse decoded RGBA and raw dump equality,
+  dev-only selection, hold-out isolation, D-055 cleanup and D-056 preservation
+  and reference restoration remain binding. Dynamic splits for qualifying
+  intended-occurrence failures retain their existing handoff. Fresh normal
+  evidence uses run version 6 and evidence index version 7. Replay derives
+  review flags and qualification from the authenticated pair and dump bytes.
+  The strict comparison and D-053/D-054 code stay available for historical
+  replay. Earlier evidence keeps its original qualification status.
 
 ## D-059 — Simple, disposable runs
 
@@ -616,3 +955,18 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 - **Supersedes:** Archival, exact-producer and historical re-verification requirements in
   D-051–D-056. Methodology stays in force. D-053/D-054 evidence was deleted.
 - **Why:** On 2026-11-11, artifacts reached about four million files and 28 GB (177 APKs, 646 device backups).
+
+## D-060 — Allow bounded outside-mask RGB differences in #59
+
+- **Date:** 2026-11-11
+- **Status:** Proposed
+- **Decision:** Across all #59 screens and both languages, allow outside-mask
+  pixel differences only when each absolute R/G/B delta is at most 2 and alpha
+  is unchanged. Larger deltas, alpha changes and moved or changed unmutated
+  dump elements fail. Report tolerated pixel count and maximum RGB delta per
+  calibration screen and language, without glyph attribution, per-pixel
+  proof or extra replay.
+- **Why:** The historical EN Options calibration showed 406 deterministic
+  outside-mask differences with maximum RGB delta 2 and no alpha change.
+- **Consequences:** Supersedes only D-050's zero-outside-mask clause upon
+  acceptance. D-051–D-056 remain Proposed and are not used by fresh runs.

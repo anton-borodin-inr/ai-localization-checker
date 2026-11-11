@@ -91,9 +91,7 @@ def main() -> int:
         from l10n_checker.screen_manifest import Inputs
 
         try:
-            inputs = Inputs(args.manifest).select_screens(
-                screen_ids=args.screen_id, split=args.split
-            )
+            inputs = Inputs(args.manifest, screen_ids=args.screen_id, split=args.split)
             if args.prepare_only:
                 prepare_device(device, inputs, args.output_dir, args.lang)
                 print(args.output_dir / "device-plan.json")

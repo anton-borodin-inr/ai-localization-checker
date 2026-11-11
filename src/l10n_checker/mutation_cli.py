@@ -2,6 +2,7 @@
 
 import argparse
 import sys
+import zipfile
 from pathlib import Path
 
 from l10n_checker.capture import CaptureError
@@ -65,8 +66,107 @@ def main(argv=None):
     selector.add_argument("--screen-id", action="append", dest="screen_ids")
     plan.add_argument("--seed", type=int, required=True)
     plan.add_argument("--output-dir", type=Path, required=True)
+    for name in ("run", "probe", "verify"):
+        command = commands.add_parser(
+            name,
+            help="Catalog-bound dev runtime"
+            if name != "verify"
+            else "Offline replay of retained dev evidence",
+        )
+        command.add_argument("--catalog", type=Path, required=True)
+        command.add_argument("--sha256", required=True)
+        command.add_argument("--manifest", type=Path, required=True)
+        command.add_argument("--recipes", type=Path, required=True)
+        command.add_argument("--sdk", type=Path, required=True)
+        command.add_argument("--jdk", type=Path, required=True)
+        if name == "verify":
+            command.add_argument("--run-dir", type=Path, required=True)
+            command.add_argument("--evidence-sha256", required=True)
+        else:
+            command.add_argument("--output-dir", type=Path, required=True)
+            command.add_argument("--approved-output-root", type=Path, required=True)
+            command.add_argument("--serial", required=name == "run")
+            if name == "run":
+                command.add_argument("--plan", type=Path, required=True)
+                command.add_argument("--task-dir", type=Path, required=True)
+                command.add_argument("--calibration-only", action="store_true")
+            else:
+                command.add_argument("--resume-from", type=Path)
+                command.add_argument("--resume-sha256")
     args = parser.parse_args(argv)
     try:
+        if args.command == "run":
+            from l10n_checker.mutation_task import run_task
+
+            config = {
+                key: str(value) if isinstance(value, Path) else value
+                for key, value in vars(args).items()
+                if key != "command"
+            }
+            command = ["l10n-mutate", *(argv if argv is not None else sys.argv[1:])]
+            result = run_task(config, command=command)
+            expected = "calibrated" if args.calibration_only else "qualified"
+            if not (
+                result["status"] == expected
+                and result["capture_set_qualified"] is (not args.calibration_only)
+                and result["labels_created"] is False
+                and result["restoration_verified"] is True
+                and result["calibration_status"] == "passed"
+            ):
+                raise CaptureError("Contradictory task qualification result")
+            print(f"Mutation runtime: {result['status']}; no labels")
+            return 0
+        if args.command != "plan":
+            from l10n_checker.mutation_run import (
+                run_config,
+                validate_run_claims,
+                verify_run,
+            )
+
+            if args.command == "verify":
+                from l10n_checker.mutation_catalog import ApkTools, read_catalog
+                from l10n_checker.screen_manifest import Inputs
+
+                catalog = read_catalog(
+                    args.catalog,
+                    args.sha256,
+                    manifest=args.manifest,
+                    recipes=args.recipes,
+                    tools=ApkTools(args.sdk, args.jdk),
+                )
+                value = verify_run(
+                    args.run_dir,
+                    catalog,
+                    Inputs(args.manifest, split="dev"),
+                    evidence_sha256=args.evidence_sha256,
+                )
+            else:
+                config = {
+                    name: str(getattr(args, name))
+                    for name in (
+                        "catalog",
+                        "sha256",
+                        "manifest",
+                        "recipes",
+                        "sdk",
+                        "jdk",
+                        "output_dir",
+                        "approved_output_root",
+                    )
+                }
+                if args.serial:
+                    config["serial"] = args.serial
+                if args.resume_from:
+                    config["resume_from"] = str(args.resume_from)
+                if args.resume_sha256:
+                    config["resume_sha256"] = args.resume_sha256
+                value = run_config(config, probe_only=args.command == "probe")
+            validate_run_claims(value)
+            print(f"Mutation runtime: {value['status']}; no labels")
+            print(
+                f"Evidence SHA-256: {value.get('evidence_sha256', args.evidence_sha256 if args.command == 'verify' else 'unavailable')}"
+            )
+            return 0 if value["status"] in {"qualified", "probe_verified"} else 2
         result = create_plan(
             manifest=args.manifest,
             recipes=args.recipes,
@@ -84,7 +184,14 @@ def main(argv=None):
         with (folder / "plan.json").open("xb") as stream:
             stream.write(raw)
         print(f"Offline plan: {folder / 'plan.json'} (not production-ready)")
-    except (CaptureError, OSError, ValueError, TypeError, KeyError) as exc:
+    except (
+        CaptureError,
+        OSError,
+        ValueError,
+        TypeError,
+        KeyError,
+        zipfile.BadZipFile,
+    ) as exc:
         print(f"Mutation planning error: {exc}", file=sys.stderr)
         return 1
     return 0

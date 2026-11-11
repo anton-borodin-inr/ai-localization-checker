@@ -34,6 +34,20 @@ def test_filename():
     )
 
 
+@pytest.mark.parametrize("existing_cleanup", [False, True])
+def test_d056_repeated_cleanup_preserves_serializable_primary(existing_cleanup):
+    import json
+
+    primary = cap.CaptureError("reference install failed")
+    if existing_cleanup:
+        cap.retain_cleanup(primary, cap.CaptureError("final identity failed"))
+    expected = json.loads(json.dumps(cap.failure_details(primary)))
+
+    cap.retain_cleanup(primary, primary)
+
+    assert json.loads(json.dumps(cap.failure_details(primary))) == expected
+
+
 @pytest.mark.parametrize(
     "field", ["", " ", "a__b", "../x", "/x", "x/y", "x\\y", "a\nb", "-x"]
 )
@@ -202,6 +216,20 @@ def test_screencap_failure_is_clear(monkeypatch, error):
     with pytest.raises(cap.CaptureError, match="screencap failed") as raised:
         cap.Device(Path("adb"), "emulator-5554").screenshot()
     assert isinstance(raised.value.__cause__, cap.CaptureError)
+
+
+def test_d055_app_data_limit_does_not_relax_other_native_commands(monkeypatch):
+    observed = []
+
+    def native(command, **kwargs):
+        observed.append(kwargs["timeout"])
+        return subprocess.CompletedProcess(command, 0, stdout=b"synthetic")
+
+    monkeypatch.setattr(subprocess, "run", native)
+    device = cap.Device(Path("never-real-adb"), "emulator-9999")
+    device.run("exec-out", "tar", "-cf", "-", timeout_s=300)
+    device.screenshot()
+    assert observed == [300, 30]
 
 
 def test_screenshot_reads_screen_only(monkeypatch):
