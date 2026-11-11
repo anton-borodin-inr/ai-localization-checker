@@ -4244,6 +4244,7 @@ def test_cli_never_returns_zero_for_contradictory_success(
 ):
     import l10n_checker.mutation_catalog as catalog_api
     import l10n_checker.mutation_cli as cli
+    import l10n_checker.mutation_task as task_api
     import l10n_checker.screen_manifest as manifest_api
 
     value = {
@@ -4255,6 +4256,7 @@ def test_cli_never_returns_zero_for_contradictory_success(
         "calibration_status": "passed",
     }
     monkeypatch.setattr(api(), "run_config", lambda *args, **kwargs: value)
+    monkeypatch.setattr(task_api, "run_task", lambda *args, **kwargs: value)
     monkeypatch.setattr(api(), "verify_run", lambda *args, **kwargs: value)
     monkeypatch.setattr(catalog_api, "read_catalog", lambda *args, **kwargs: None)
     monkeypatch.setattr(manifest_api, "Inputs", lambda *args, **kwargs: None)
@@ -4262,6 +4264,15 @@ def test_cli_never_returns_zero_for_contradictory_success(
     for field in ("catalog", "manifest", "recipes", "sdk", "jdk"):
         argv += ["--" + field, str(tmp_path / "synthetic")]
     argv += ["--sha256", "a" * 64]
+    if command == "run":
+        argv += [
+            "--serial",
+            "emulator-5554",
+            "--plan",
+            str(tmp_path / "synthetic-plan"),
+            "--task-dir",
+            str(tmp_path / "synthetic-task"),
+        ]
     if command == "verify":
         argv += ["--run-dir", str(tmp_path), "--evidence-sha256", "b" * 64]
     else:

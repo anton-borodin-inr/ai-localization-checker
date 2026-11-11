@@ -392,6 +392,7 @@ def run_task(config, *, command):
     ]
     result = {
         "status": "failed",
+        "capture_set_qualified": False,
         "calibration_status": "not_run",
         "restoration_verified": False,
         "labels_created": False,
@@ -489,6 +490,7 @@ def run_task(config, *, command):
                                 f"D-060 isolation failed: {role}/{identity}/{failure['screen']}/{failure['language']}"
                             )
         result["status"] = "calibrated" if calibration_only else "qualified"
+        result["capture_set_qualified"] = not calibration_only
     except BaseException as exc:
         run["failure"] = str(exc)
         if getattr(exc, "cleanup_errors", None):

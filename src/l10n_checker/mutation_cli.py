@@ -105,6 +105,15 @@ def main(argv=None):
             }
             command = ["l10n-mutate", *(argv if argv is not None else sys.argv[1:])]
             result = run_task(config, command=command)
+            expected = "calibrated" if args.calibration_only else "qualified"
+            if not (
+                result["status"] == expected
+                and result["capture_set_qualified"] is (not args.calibration_only)
+                and result["labels_created"] is False
+                and result["restoration_verified"] is True
+                and result["calibration_status"] == "passed"
+            ):
+                raise CaptureError("Contradictory task qualification result")
             print(f"Mutation runtime: {result['status']}; no labels")
             return 0
         if args.command != "plan":
