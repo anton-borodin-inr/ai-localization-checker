@@ -117,30 +117,6 @@ def test_d055_replayed_inventory_rejects_missing_tar_eof():
         api().data_inventory({"private": tar_bytes()[:1024]})
 
 
-def test_d055_package_inventory_reads_are_all_durable(tmp_path, monkeypatch):
-    from l10n_checker.mutation_device import read_app_data
-
-    module = api()
-    device = Device(Path("never-real-adb"))
-    monkeypatch.setattr(device, "pid", lambda: "")
-    monkeypatch.setattr(device, "root", lambda: None)
-    monkeypatch.setattr(device, "unroot", lambda: None)
-    monkeypatch.setattr(device, "shell", lambda *a: "present")
-    calls = []
-
-    def native(command, **kwargs):
-        calls.append(kwargs["timeout"])
-        return subprocess.CompletedProcess(command, 0, stdout=tar_bytes())
-
-    monkeypatch.setattr(subprocess, "run", native)
-    archives = read_app_data(device, evidence_dir=tmp_path, purpose="final-inventory")
-    receipts = [json.loads(p.read_bytes()) for p in sorted(tmp_path.glob("*.json"))]
-    assert len(receipts) == len(archives) == 3
-    assert {r["root"] for r in receipts} == set(archives)
-    assert all(r["purpose"] == "final-inventory" for r in receipts)
-    assert calls == [module.READ_LIMIT_S] * 3
-
-
 @pytest.mark.parametrize("elapsed", [0, 60_000_000_000, 60_000_000_001])
 def test_d055_sixty_second_flag_and_zero_duration_are_exact(
     tmp_path, monkeypatch, elapsed

@@ -1,11 +1,14 @@
 """Disposable dev captures with a task-scoped APK set and app-state snapshot."""
 
+import fcntl
 import io
+import os
 import re
 import subprocess
 import tarfile
 import uuid
 import zipfile
+from contextlib import contextmanager
 from pathlib import Path
 
 from l10n_checker.app_data import validate_tar
@@ -35,7 +38,6 @@ from l10n_checker.mutation_cli import build_requests
 from l10n_checker.mutation_device import assert_idle
 from l10n_checker.mutation_plan import load_plan, split_after_interference
 from l10n_checker.mutation_recipes import load_recipes
-from l10n_checker.mutation_run import device_lock
 from l10n_checker.mutation_verify import occurrence_matrix, split_rate, verify_screen
 from l10n_checker.screen_capture import (
     SAVES_PATH,
@@ -48,6 +50,35 @@ from l10n_checker.screen_manifest import Inputs, digest, json_bytes
 from l10n_checker.text_dump import canonical_bytes, load_dump, read_dump, rgba_digest
 
 LANGUAGES = ["en", "de"]
+
+
+@contextmanager
+def device_lock(device, repo_root):
+    """Allow one mutation run per device serial across worktrees."""
+    common = (
+        subprocess.run(
+            ["git", "rev-parse", "--path-format=absolute", "--git-common-dir"],
+            cwd=repo_root,
+            capture_output=True,
+            timeout=10,
+            check=True,
+        )
+        .stdout.decode()
+        .strip()
+    )
+    locks = no_symlinks(Path(common) / "l10n-mutation-locks")
+    locks.mkdir(mode=0o700, exist_ok=True)
+    descriptor = os.open(
+        no_symlinks(locks / (device.serial + ".lock")),
+        os.O_CREAT | os.O_RDWR | os.O_NOFOLLOW,
+        0o600,
+    )
+    with os.fdopen(descriptor, "rb+") as lock:
+        try:
+            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError as exc:
+            raise CaptureError("Another mutation run owns this device") from exc
+        yield
 
 
 def read_builds(path, expected_sha, plan, inputs, tools, *, calibration_only):
