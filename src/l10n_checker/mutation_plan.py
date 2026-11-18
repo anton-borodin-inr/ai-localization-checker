@@ -1,7 +1,6 @@
 """Offline mutation plans. No builds, device operations, detectors or labels."""
 
 from collections import Counter
-from copy import deepcopy
 from itertools import combinations
 from pathlib import Path
 from typing import Annotated, Literal
@@ -220,32 +219,6 @@ def _validate_occurrences(recipe, occurrences, selected, observations):
         raise ValueError(f"Missing visible target selector for {recipe.id}")
 
 
-def _validate_lineage(value, observations):
-    replay = {
-        "mutations": value["mutations"],
-        "inventory": value["inventory"],
-        "batches": _combine(value["mutations"], observations, value["seed"]),
-        "split_history": [],
-    }
-    try:
-        for event in value["split_history"]:
-            if set(event) != {"parent", "children", "reason"} or not isinstance(
-                event["reason"], dict
-            ):
-                raise ValueError("Invalid split event fields")
-            replay = split_after_interference(
-                replay, event["parent"]["id"], event["reason"]
-            )
-            if replay["split_history"][-1] != event:
-                raise ValueError(
-                    "Split parent/children differ from deterministic replay"
-                )
-        if replay["batches"] != value["batches"]:
-            raise ValueError("Final batches differ from recorded splits")
-    except (CaptureError, ValueError, TypeError, KeyError) as exc:
-        raise ValueError(f"Invalid split lineage: {exc}") from exc
-
-
 def load_plan(raw: bytes, *, manifest: Path) -> dict:
     """Validate the offline wire contract, not device authorization or qualification."""
     try:
@@ -328,7 +301,10 @@ def load_plan(raw: bytes, *, manifest: Path) -> dict:
             raise ValueError("The pending gate contract differs")
         if not _density_ok(value["batches"]):
             raise ValueError("Offline plan must retain density and production gates")
-        _validate_lineage(value, observations)
+        if value["split_history"] or value["batches"] != _combine(
+            mutations, observations, value["seed"]
+        ):
+            raise ValueError("Batches differ from the deterministic offline plan")
         return value
     except (ValueError, TypeError, KeyError) as exc:
         raise CaptureError(f"Invalid mutation manifest: {exc}") from exc
@@ -496,42 +472,6 @@ def _batch(ids, mutations, observations):
         "patches": patches,
         "screenshots": screenshots,
     }
-
-
-def split_after_interference(plan: dict, batch_id: str, reason: dict) -> dict:
-    """Pure partition update; the device verifier supplies real interference evidence."""
-    if reason.get("kind") not in {
-        "outside_mask_pixels",
-        "changed_unmutated_element",
-        "missing_mutation",
-    }:
-        raise CaptureError("An operational failure is not mutation interference")
-    result = deepcopy(plan)
-    parent = next((b for b in result["batches"] if b["id"] == batch_id), None)
-    if parent is None:
-        raise CaptureError("Unknown batch to split")
-    ids = parent["recipe_ids"]
-    if len(ids) < 2:
-        raise CaptureError("A failing singleton stops qualification; cannot split")
-    midpoint = len(ids) // 2
-    observations = {(v["screen"], v["language"]): None for v in result["inventory"]}
-    children = [
-        _batch(part, result["mutations"], observations)
-        for part in (ids[:midpoint], ids[midpoint:])
-    ]
-    result["batches"] = sorted(
-        [b for b in result["batches"] if b["id"] != batch_id] + children,
-        key=lambda b: b["id"],
-    )
-    result["split_history"].append(
-        {
-            "parent": parent,
-            "children": [b["id"] for b in children],
-            "reason": deepcopy(reason),
-        }
-    )
-    result["density"] = _density(result["batches"])
-    return result
 
 
 def create_plan(

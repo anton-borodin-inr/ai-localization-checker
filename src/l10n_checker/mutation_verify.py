@@ -9,20 +9,18 @@ from PIL import Image, ImageChops, ImageDraw
 
 from l10n_checker.capture import CaptureError
 from l10n_checker.mutation_catalog import require
-from l10n_checker.screen_manifest import digest
-from l10n_checker.text_dump import canonical_bytes
 
 
-def compare_rgba(first, second, rectangles, *, bounded_rgb=False):
+def compare_rgba(first, second, rectangles):
+    """Measure changes outside the union of before/after target extents."""
     with Image.open(io.BytesIO(first)) as image:
         a = image.convert("RGBA")
     with Image.open(io.BytesIO(second)) as image:
         b = image.convert("RGBA")
     require(a.size == b.size, "RGBA image size mismatch")
     width, height = a.size
-    mask = Image.new("L", a.size, 0)
-    draw = ImageDraw.Draw(mask)
-    rounded = []
+    outside = Image.new("L", a.size, 255)
+    draw = ImageDraw.Draw(outside)
     for rect in rectangles:
         require(
             len(rect) == 4
@@ -34,57 +32,17 @@ def compare_rgba(first, second, rectangles, *, bounded_rgb=False):
         left, top = max(0, math.floor(rect[0])), max(0, math.floor(rect[1]))
         right, bottom = min(width, math.ceil(rect[2])), min(height, math.ceil(rect[3]))
         if right > left and bottom > top:
-            rounded.append([left, top, right, bottom])
-            draw.rectangle((left, top, right - 1, bottom - 1), fill=255)
-    channels = ImageChops.difference(a, b).split()
+            draw.rectangle((left, top, right - 1, bottom - 1), fill=0)
+    channels = [
+        ImageChops.multiply(channel, outside)
+        for channel in ImageChops.difference(a, b).split()
+    ]
     difference = channels[0]
     for channel in channels[1:]:
         difference = ImageChops.lighter(difference, channel)
-    different = difference.point(lambda value: 255 if value else 0)
-
-    def stats(region):
-        changed = ImageChops.multiply(different, region)
-        bbox = changed.getbbox()
-        return {
-            "different_pixels": changed.histogram()[255],
-            "bounding_box": list(bbox) if bbox else None,
-            "max_channel_deltas": [
-                ImageChops.multiply(channel, region).getextrema()[1]
-                for channel in channels
-            ],
-        }
-
-    outside_mask = ImageChops.invert(mask)
-    inside, outside = stats(mask), stats(outside_mask)
-    passed = outside["different_pixels"] == 0
-    if bounded_rgb:
-        rgb = ImageChops.lighter(
-            ImageChops.lighter(channels[0], channels[1]), channels[2]
-        )
-        within_limit = rgb.point(lambda delta: 255 if 0 < delta <= 2 else 0)
-        same_alpha = channels[3].point(lambda delta: 255 if delta == 0 else 0)
-        tolerated = ImageChops.multiply(
-            outside_mask, ImageChops.multiply(within_limit, same_alpha)
-        )
-        outside["tolerated_pixels"] = tolerated.histogram()[255]
-        outside["max_tolerated_rgb_delta"] = ImageChops.multiply(
-            rgb, tolerated
-        ).getextrema()[1]
-        passed = outside["different_pixels"] == outside["tolerated_pixels"]
-    mask_record = {
-        "policy": "target-extents-floor-ceil-v1",
-        "rectangles": sorted(rounded),
-        "size": [width, height],
-    }
-    if not bounded_rgb:
-        mask_record["sha256"] = digest(mask.tobytes())
     return {
-        "passed": passed,
-        "total": stats(Image.new("L", a.size, 255)),
-        "inside": inside,
-        "outside": outside,
-        "mask": mask_record,
-        "bounding_box_convention": "[left,top,right-exclusive,bottom-exclusive]",
+        "different_pixels": sum(difference.histogram()[1:]),
+        "max_channel_deltas": [channel.getextrema()[1] for channel in channels],
     }
 
 
@@ -119,23 +77,19 @@ def plain(text):
     )
 
 
-def verify_screen(
-    first_png, second_png, before, after, mutations, *, bounded_rgb=False
-):
+def verify_screen(first_png, second_png, before, after, mutations):
     require(
         (
             before.screen,
             before.language,
             before.state_sha256,
             before.image_size,
-            before.viewport,
         )
         == (
             after.screen,
             after.language,
             after.state_sha256,
             after.image_size,
-            after.viewport,
         ),
         "Cross-build dump identity mismatch",
     )
@@ -166,6 +120,22 @@ def verify_screen(
                 for e in after.elements
                 if not e.decoration and e.actor_path == intended["actor_path"]
             ]
+            for dump, matches, target, field in (
+                (before, old, target_before, "before_draw_ids"),
+                (after, new, target_after, "after_draw_ids"),
+            ):
+                if len(matches) != 1:
+                    continue
+                group = [
+                    e for e in dump.elements if e.logical_id == matches[0].logical_id
+                ]
+                for e in group:
+                    target.add(e.id)
+                    if e.bounds is not None:
+                        rectangles.append(e.bounds)
+                    rectangles.append(e.glyph_bounds)
+                current[field] = [e.id for e in group]
+
             if len(old) != 1 or len(new) != 1:
                 current["reason"] = "missing_or_ambiguous_owner"
                 continue
@@ -249,138 +219,94 @@ def verify_screen(
                 current["qualified"] = True
             except CaptureError as exc:
                 current["reason"] = str(exc)
-            # Even unqualified matched targets cannot hide changes to other elements.
-            for dump, primary, target in (
-                (before, old, target_before),
-                (after, new, target_after),
-            ):
-                group = [e for e in dump.elements if e.logical_id == primary.logical_id]
-                for e in group:
-                    target.add(e.id)
-                    if e.bounds is not None:
-                        rectangles.append(e.bounds)
-                    rectangles.append(e.glyph_bounds)
-                current["before_draw_ids" if dump is before else "after_draw_ids"] = [
-                    e.id for e in group
-                ]
 
+    moved_or_resized, flags = unmutated_changes(
+        before, after, target_before, target_after
+    )
+    reasons = [
+        {
+            "recipe_id": o["recipe_id"],
+            "intended_class": o["intended_class"],
+            "actor_path": o["actor_path"],
+            "reason": o["reason"],
+        }
+        for o in occurrences
+        if not o["qualified"]
+    ]
+    if len(occurrences) > 2:
+        reasons.append({"reason": "Intended occurrence limit exceeded (N > 2)"})
+    return {
+        "qualified": bool(occurrences) and not reasons,
+        "qualification_reasons": reasons,
+        "occurrences": occurrences,
+        "measurements": {
+            "outside_mask_pixels": compare_rgba(first_png, second_png, rectangles),
+            "moved_or_resized_unmutated_groups": moved_or_resized,
+        },
+        "review_flags": flags,
+    }
+
+
+def unmutated_changes(before, after, target_before, target_after):
     def unmutated(dump, excluded):
         grouped = defaultdict(list)
         for e in dump.elements:
             if e.id in excluded:
                 continue
             key = (e.actor_path or e.logical_id, e.decoration)
-            grouped[key].append(e.model_dump(exclude={"id", "logical_id"}))
+            grouped[key].append(e)
         return grouped
 
     a, b = unmutated(before, target_before), unmutated(after, target_after)
-    changed = [
-        {
-            "actor_path": key[0],
-            "decoration": key[1],
-            "before": a.get(key, []),
-            "after": b.get(key, []),
-        }
-        for key in sorted(set(a) | set(b))
-        if a.get(key) != b.get(key)
-    ]
-    pixels = compare_rgba(first_png, second_png, rectangles, bounded_rgb=bounded_rgb)
-    passed = (
-        pixels["passed"]
-        and not changed
-        and all(o["qualified"] for o in occurrences)
-        and len(occurrences) <= 2
-    )
-    return {
-        "passed": passed,
-        "pixels": pixels,
-        "changed_unmutated_elements": changed,
-        "occurrences": occurrences,
-        "visible_occurrences": sum(o["qualified"] for o in occurrences),
-        "verification_version": "mutation-dynamic-v1",
-    }
-
-
-def intended_occurrences_passed(verification):
-    occurrences = verification["occurrences"]
-    return len(occurrences) <= 2 and all(o["qualified"] is True for o in occurrences)
-
-
-def side_effect_policy():
-    return {
-        "decision": "D058",
-        "version": 1,
-        "fields": [
-            "visible_lines",
-            "visibility",
-            "ellipsis_applied",
-            "clipped_fraction",
-        ],
-    }
-
-
-def visible_semantics(element):
-    lines = []
-    if element["visibility"] != "hidden":
-        lines = [
-            "".join(
-                glyph["text"]
-                for glyph in line["glyphs"]
-                if glyph["visibility"] != "hidden"
-            )
-            for line in element["lines"]
-        ]
-        visible = [index for index, line in enumerate(lines) if line]
-        lines = lines[visible[0] : visible[-1] + 1] if visible else []
-    return {
-        "visible_lines": lines,
-        "visibility": element["visibility"],
-        "ellipsis_applied": element["ellipsis_applied"],
-        "clipped_fraction": element["clipped_fraction"],
-    }
-
-
-def semantic_side_effects(verification):
+    moved_or_resized = 0
     flags = []
-    for change in verification["changed_unmutated_elements"]:
-        before = [visible_semantics(element) for element in change["before"]]
-        after = [visible_semantics(element) for element in change["after"]]
-        if before != after:
+    for actor_path, decoration in sorted(a.keys() | b.keys()):
+        key = (actor_path, decoration)
+        old, new = a.get(key, []), b.get(key, [])
+        moved_or_resized += any(
+            first.bounds != second.bounds or first.glyph_bounds != second.glyph_bounds
+            for first, second in zip(old, new)
+        )
+        old_text, new_text = visible_semantics(old), visible_semantics(new)
+        if old_text != new_text:
             flags.append(
                 {
-                    "actor_path": change["actor_path"],
-                    "decoration": change["decoration"],
-                    "before": before,
-                    "after": after,
+                    "actor_path": actor_path,
+                    "decoration": decoration,
+                    "before": old_text,
+                    "after": new_text,
                 }
             )
-    return flags
+    return moved_or_resized, flags
 
 
-def split_rate(tests):
-    unique = {
-        r["id"]: r
-        for r in tests
-        if len(r["recipe_ids"]) > 1 and r.get("operational_failure") is not True
-    }
-    split = sum(r["split"] for r in unique.values())
-    return {
-        "split_batches": split,
-        "tested_multi_recipe_batches": len(unique),
-        "rate": split / len(unique) if unique else None,
-    }
-
-
-def manifest_bytes(value):
-    """No clocks, paths or transport IDs enter the deterministic runtime content."""
-    return canonical_bytes(value)
+def visible_semantics(elements):
+    result = []
+    for element in elements:
+        if element.visibility == "hidden":
+            continue
+        lines = [
+            "".join(glyph.text for glyph in line.glyphs if glyph.visibility != "hidden")
+            for line in element.lines
+        ]
+        visible = [index for index, line in enumerate(lines) if line]
+        if visible:
+            result.append(
+                {
+                    "visible_lines": lines[visible[0] : visible[-1] + 1],
+                    "visibility": element.visibility,
+                    "ellipsis_applied": element.ellipsis_applied,
+                    "clipped_fraction": element.clipped_fraction,
+                }
+            )
+    return result
 
 
 def occurrence_matrix(screenshots):
-    """Count intended/qualified occurrences, not labels or decorative repeats."""
+    """Count intended occurrences and those retained in the review set."""
     cells = {}
     for screenshot in screenshots:
-        if screenshot["role"] != "mutation" or screenshot["pass"] != 1:
+        if screenshot["role"] != "mutation":
             continue
         for occurrence in screenshot["verification"]["occurrences"]:
             key = (
@@ -392,7 +318,7 @@ def occurrence_matrix(screenshots):
                 key, {"intended": 0, "qualified": 0, "targets": set()}
             )
             cell["intended"] += 1
-            cell["qualified"] += occurrence["qualified"]
+            cell["qualified"] += "png" in screenshot
             cell["targets"].add(occurrence["actor_path"])
     return [
         {

@@ -78,7 +78,6 @@ def main(argv=None):
     run.add_argument("--serial", required=True)
     run.add_argument("--plan", type=Path, required=True)
     run.add_argument("--task-dir", type=Path, required=True)
-    run.add_argument("--calibration-only", action="store_true")
     args = parser.parse_args(argv)
     try:
         if args.command == "run":
@@ -91,15 +90,12 @@ def main(argv=None):
             }
             command = ["l10n-mutate", *(argv if argv is not None else sys.argv[1:])]
             result = run_task(config, command=command)
-            expected = "calibrated" if args.calibration_only else "qualified"
             if not (
-                result["status"] == expected
-                and result["capture_set_qualified"] is (not args.calibration_only)
+                result["status"] == "completed"
                 and result["labels_created"] is False
                 and result["restoration_verified"] is True
-                and result["calibration_status"] == "passed"
             ):
-                raise CaptureError("Contradictory task qualification result")
+                raise CaptureError("Contradictory mutation run result")
             print(f"Mutation runtime: {result['status']}; no labels")
             return 0
         result = create_plan(

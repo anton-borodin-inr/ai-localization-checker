@@ -1,14 +1,12 @@
 """Disposable dev captures with a task-scoped APK set and app-state snapshot."""
 
-import fcntl
 import io
-import os
 import re
 import subprocess
 import tarfile
 import uuid
 import zipfile
-from contextlib import contextmanager
+from collections import Counter
 from pathlib import Path
 
 from l10n_checker.app_data import validate_tar
@@ -16,7 +14,6 @@ from l10n_checker.capture import (
     PACKAGE,
     REPO_ROOT,
     SETTINGS_PATH,
-    CaptureError,
     Device,
     filename,
     png_size,
@@ -36,9 +33,9 @@ from l10n_checker.mutation_catalog import (
 )
 from l10n_checker.mutation_cli import build_requests
 from l10n_checker.mutation_device import assert_idle
-from l10n_checker.mutation_plan import load_plan, split_after_interference
+from l10n_checker.mutation_plan import load_plan
 from l10n_checker.mutation_recipes import load_recipes
-from l10n_checker.mutation_verify import occurrence_matrix, split_rate, verify_screen
+from l10n_checker.mutation_verify import occurrence_matrix, verify_screen
 from l10n_checker.screen_capture import (
     SAVES_PATH,
     check_build,
@@ -52,36 +49,7 @@ from l10n_checker.text_dump import canonical_bytes, load_dump, read_dump, rgba_d
 LANGUAGES = ["en", "de"]
 
 
-@contextmanager
-def device_lock(device, repo_root):
-    """Allow one mutation run per device serial across worktrees."""
-    common = (
-        subprocess.run(
-            ["git", "rev-parse", "--path-format=absolute", "--git-common-dir"],
-            cwd=repo_root,
-            capture_output=True,
-            timeout=10,
-            check=True,
-        )
-        .stdout.decode()
-        .strip()
-    )
-    locks = no_symlinks(Path(common) / "l10n-mutation-locks")
-    locks.mkdir(mode=0o700, exist_ok=True)
-    descriptor = os.open(
-        no_symlinks(locks / (device.serial + ".lock")),
-        os.O_CREAT | os.O_RDWR | os.O_NOFOLLOW,
-        0o600,
-    )
-    with os.fdopen(descriptor, "rb+") as lock:
-        try:
-            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
-        except BlockingIOError as exc:
-            raise CaptureError("Another mutation run owns this device") from exc
-        yield
-
-
-def read_builds(path, expected_sha, plan, inputs, tools, *, calibration_only):
+def read_builds(path, expected_sha, plan, inputs, tools):
     """Bind each requested patch to one signed APK without retaining proof files."""
     raw = path.read_bytes()
     require(digest(raw) == expected_sha, "Build list differs from approved digest")
@@ -92,13 +60,15 @@ def read_builds(path, expected_sha, plan, inputs, tools, *, calibration_only):
         and re.fullmatch(r"[a-f0-9]{40}", value["builder_commit"]),
         "Invalid source/builder commit",
     )
-    requests = build_requests(plan)["requests"]
-    needed = {
-        r["id"]: r
-        for r in requests
-        if not calibration_only or r["role"] == "clean" or r["calibration"]
-    }
-    require(set(value["artifacts"]) == set(needed), "Build list differs from plan")
+    requests = {r["id"]: r for r in build_requests(plan)["requests"]}
+    # The builder contract still includes a standalone APK that production skips.
+    needed = {i: r for i, r in requests.items() if r["role"] != "calibration"}
+    artifact_records = value["artifacts"]
+    require(
+        isinstance(artifact_records, dict)
+        and needed.keys() <= artifact_records.keys() <= requests.keys(),
+        "Build list differs from plan",
+    )
 
     def load_apk(record, build=None):
         fields(record, {"file", "sha256"})
@@ -131,7 +101,7 @@ def read_builds(path, expected_sha, plan, inputs, tools, *, calibration_only):
     for identity, request in sorted(
         needed.items(), key=lambda pair: bool(pair[1]["patches"])
     ):
-        apk, contents, metadata, build = load_apk(value["artifacts"][identity])
+        apk, contents, metadata, build = load_apk(artifact_records[identity])
         require(
             metadata["certificate_sha256"] == stock_identity["certificate_sha256"]
             and build["version_code"] not in version_codes,
@@ -145,7 +115,7 @@ def read_builds(path, expected_sha, plan, inputs, tools, *, calibration_only):
         if request["role"] == "clean":
             clean_payloads = payloads
         require(payloads == clean_payloads, "Nontranslation APK payload drift")
-        artifacts[identity] = (apk, build, request)
+        artifacts[identity] = (apk, build)
     return reference, artifacts, value["builder_commit"]
 
 
@@ -241,114 +211,96 @@ def restore(device, reference, inputs, snapshot):
 
 
 def capture_build(device, inputs, mutations, folder, batch, role, clean, records):
-    """Compare frames immediately and retain only unique production review PNGs."""
+    """Capture each screen and language once and retain eligible review PNGs."""
     build = inputs.manifest.build
     size = tuple(inputs.manifest.resolution)
     languages = {lang.code: lang.game_language for lang in inputs.manifest.languages}
-    repeats = {}
-    for pass_number in (1, 2):
-        for language in LANGUAGES:
-            settings = inputs.settings[language]
-            device.force_stop()
-            require(not device.pid(), "Unciv still running before settings write")
-            device.write_file(SETTINGS_PATH, settings)
-            for screen in inputs.screens(language, reverse=pass_number == 2):
-                key = (screen.id, language)
-                state = inputs.states[key]
-                token = "i59-" + uuid.uuid4().hex
-                readiness = request_screen(
-                    device, screen.id, token, state, 90, protocol_version=2
-                )
-                event = readiness.get("dump")
-                require(event is not None, "Capture is missing an engine dump")
-                unciv_in_foreground(device)
-                device.check_cutout()
-                require(
-                    device.size() == size and device.build() == build.version_code,
-                    "Device capture identity changed",
-                )
-                png = device.screenshot()
-                require(
-                    png_size(png) == size and device.size() == size,
-                    "Invalid capture dimensions",
-                )
-                unciv_in_foreground(device)
-                device.check_cutout()
-                dump = read_dump(
-                    device,
-                    event,
-                    {
-                        "screen": screen.id,
-                        "language": languages[language],
-                        "build_version_code": int(build.version_code),
-                        "state_sha256": digest(canonical_bytes(state)),
-                        "image_size": list(size),
-                    },
-                )
-                require(
-                    device.read_file(SETTINGS_PATH) == settings,
-                    "Settings changed during capture",
-                )
-                pixels = rgba_digest(png)
-                if pass_number == 1:
-                    repeats[key] = (pixels, dump)
-                else:
-                    require(
-                        repeats[key] == (pixels, dump),
-                        f"Repeat differs: {batch}/{screen.id}/{language}",
-                    )
-                record = {
-                    "batch_id": batch,
-                    "role": role,
+    for language in LANGUAGES:
+        settings = inputs.settings[language]
+        device.force_stop()
+        require(not device.pid(), "Unciv still running before settings write")
+        device.write_file(SETTINGS_PATH, settings)
+        for screen in inputs.screens(language):
+            key = (screen.id, language)
+            state = inputs.states[key]
+            token = "i59-" + uuid.uuid4().hex
+            readiness = request_screen(
+                device, screen.id, token, state, 90, protocol_version=2
+            )
+            event = readiness.get("dump")
+            require(event is not None, "Capture is missing an engine dump")
+            unciv_in_foreground(device)
+            device.check_cutout()
+            require(
+                device.size() == size and device.build() == build.version_code,
+                "Device capture identity changed",
+            )
+            png = device.screenshot()
+            require(
+                png_size(png) == size and device.size() == size,
+                "Invalid capture dimensions",
+            )
+            unciv_in_foreground(device)
+            device.check_cutout()
+            dump = read_dump(
+                device,
+                event,
+                {
                     "screen": screen.id,
-                    "language": language,
-                    "pass": pass_number,
-                    "rgba_sha256": pixels,
-                    "dump_sha256": digest(dump),
-                }
-                if role == "clean":
-                    if pass_number == 1:
-                        clean[key] = (png, load_dump(dump))
-                else:
-                    before_png, before_dump = clean[key]
-                    verification = verify_screen(
-                        before_png,
-                        png,
-                        before_dump,
-                        load_dump(dump),
-                        mutations,
-                        bounded_rgb=True,
+                    "language": languages[language],
+                    "build_version_code": int(build.version_code),
+                    "state_sha256": digest(canonical_bytes(state)),
+                    "image_size": list(size),
+                },
+            )
+            require(
+                device.read_file(SETTINGS_PATH) == settings,
+                "Settings changed during capture",
+            )
+            record = {
+                "batch_id": batch,
+                "role": role,
+                "screen": screen.id,
+                "language": language,
+                "rgba_sha256": rgba_digest(png),
+                "dump_sha256": digest(dump),
+            }
+            if role == "clean":
+                clean[key] = (png, load_dump(dump))
+            else:
+                before_png, before_dump = clean[key]
+                verification = verify_screen(
+                    before_png,
+                    png,
+                    before_dump,
+                    load_dump(dump),
+                    mutations,
+                )
+                record["review_flags"] = verification.pop("review_flags")
+                record["verification"] = verification
+                record["patches"] = [
+                    mutation["patch"]
+                    for mutation in mutations
+                    if any(
+                        o["screen"] == screen.id and o["language"] == language
+                        for o in mutation["occurrences"]
                     )
-                    record["verification"] = verification
-                    record["patches"] = [
-                        mutation["patch"]
-                        for mutation in mutations
-                        if any(
-                            o["screen"] == screen.id and o["language"] == language
-                            for o in mutation["occurrences"]
-                        )
-                    ]
-                records.append(record)
-                if role != "clean" and not record["verification"]["passed"]:
-                    return record
-                if pass_number == 1 and (
-                    role == "clean"
-                    or (role == "mutation" and record["verification"]["occurrences"])
-                ):
-                    name = filename(
-                        screen.id,
-                        language,
-                        "x".join(map(str, size)),
-                        batch,
-                        build.version_code,
-                    )
-                    with (folder / name).open("xb") as stream:
-                        stream.write(png)
-                    record["png"] = name
-                # Only this request's hook file is removed after it has been consumed.
-                device.shell("run-as", PACKAGE, "rm", event["file"])
-            device.force_stop()
-    return None
+                ]
+            records.append(record)
+            if role == "clean" or record["verification"]["qualified"]:
+                name = filename(
+                    screen.id,
+                    language,
+                    "x".join(map(str, size)),
+                    batch,
+                    build.version_code,
+                )
+                with (folder / name).open("xb") as stream:
+                    stream.write(png)
+                record["png"] = name
+            # Only this request's hook file is removed after it has been consumed.
+            device.shell("run-as", PACKAGE, "rm", event["file"])
+        device.force_stop()
 
 
 def run_task(config, *, command):
@@ -370,7 +322,6 @@ def run_task(config, *, command):
         == {identity: row["recipe"] for identity, row in plan["mutations"].items()},
         "Task plan must match the complete dev recipes and manifest",
     )
-    calibration_only = config.get("calibration_only", False)
     catalog = no_symlinks(Path(config["catalog"]))
     reference, builds, builder = read_builds(
         catalog,
@@ -378,7 +329,6 @@ def run_task(config, *, command):
         plan,
         inputs,
         ApkTools(config["sdk"], config["jdk"]),
-        calibration_only=calibration_only,
     )
     folder = manifest_output_directory(Path(config["output_dir"]), False)
     root = manifest_output_directory(Path(config["approved_output_root"]), False)
@@ -413,136 +363,75 @@ def run_task(config, *, command):
         "status": "failed",
     }
     records, clean = [], {}
-    tests = [
-        {
-            "id": row["parent"]["id"],
-            "recipe_ids": row["parent"]["recipe_ids"],
-            "split": True,
-        }
-        for row in plan["split_history"]
-    ]
     result = {
         "status": "failed",
-        "capture_set_qualified": False,
-        "calibration_status": "not_run",
         "restoration_verified": False,
         "labels_created": False,
     }
     try:
-        with device_lock(device, REPO_ROOT):
-            assert_idle(device)
-            check_build(device, inputs)
-            with preserve_cleanup(device.unroot, "Unroot"):
-                device.root()
-                snapshot = app_snapshot(device, inputs, task / "snapshot")
+        assert_idle(device)
+        check_build(device, inputs)
+        with preserve_cleanup(device.unroot, "Unroot"):
+            device.root()
+            snapshot = app_snapshot(device, inputs, task / "snapshot")
 
-                def restore_task():
-                    restore(device, reference, inputs, snapshot)
-                    result["restoration_verified"] = True
+            def restore_task():
+                restore(device, reference, inputs, snapshot)
+                result["restoration_verified"] = True
 
-                with preserve_cleanup(restore_task, "Reference restoration"):
-                    control = plan["clean_build"]["id"]
-                    calibration = next(
-                        key
-                        for key, (_, _, request) in builds.items()
-                        if request["calibration"]
+            with preserve_cleanup(restore_task, "Reference restoration"):
+                control = plan["clean_build"]
+                for batch in [control, *plan["batches"]]:
+                    identity = batch["id"]
+                    apk, build = builds[identity]
+                    effective = inputs.with_build(build)
+                    install(device, apk, effective)
+                    capture_build(
+                        device,
+                        effective,
+                        [plan["mutations"][i] for i in batch["recipe_ids"]],
+                        folder,
+                        identity,
+                        "clean" if batch is control else "mutation",
+                        clean,
+                        records,
                     )
-                    stages = [(control, "clean"), (calibration, "calibration")]
-                    if not calibration_only:
-                        stages.extend(
-                            (batch["id"], "mutation") for batch in plan["batches"]
-                        )
-                    for identity, role in stages:
-                        apk, build, _request = builds[identity]
-                        effective = inputs.with_build(build)
-                        if role == "calibration":
-                            result["calibration_status"] = "failed"
-                            ids = [plan["calibration"]["mutation_recipe_id"]]
-                        elif role == "mutation":
-                            ids = next(
-                                batch["recipe_ids"]
-                                for batch in plan["batches"]
-                                if batch["id"] == identity
-                            )
-                        else:
-                            ids = []
-                        install(device, apk, effective)
-                        failure = capture_build(
-                            device,
-                            effective,
-                            [plan["mutations"][i] for i in ids],
-                            folder,
-                            identity,
-                            role,
-                            clean,
-                            records,
-                        )
-                        if role == "calibration":
-                            result["calibration_status"] = (
-                                "failed" if failure else "passed"
-                            )
-                        split = (
-                            failure is not None
-                            and role == "mutation"
-                            and len(ids) > 1
-                            and not any(
-                                o["intended_class"] == "overflow" and not o["qualified"]
-                                for o in failure["verification"]["occurrences"]
-                            )
-                        )
-                        if role == "mutation":
-                            tests.append(
-                                {"id": identity, "recipe_ids": ids, "split": split}
-                            )
-                        if failure:
-                            if split:
-                                verification = failure["verification"]
-                                kind = "missing_mutation"
-                                if not verification["pixels"]["passed"]:
-                                    kind = "outside_mask_pixels"
-                                elif verification["changed_unmutated_elements"]:
-                                    kind = "changed_unmutated_element"
-                                reason = {
-                                    "kind": kind,
-                                    "screen": failure["screen"],
-                                    "language": failure["language"],
-                                    "pass": failure["pass"],
-                                    "verification_sha256": digest(
-                                        canonical_bytes(verification)
-                                    ),
-                                }
-                                child = split_after_interference(plan, identity, reason)
-                                write_json(folder / "split-plan.json", child)
-                                write_json(
-                                    folder / "split-build-requests.json",
-                                    build_requests(child),
-                                )
-                            raise CaptureError(
-                                f"D-060 isolation failed: {role}/{identity}/{failure['screen']}/{failure['language']}"
-                            )
-        result["status"] = "calibrated" if calibration_only else "qualified"
-        result["capture_set_qualified"] = not calibration_only
+        result["status"] = "completed"
     except BaseException as exc:
         run["failure"] = str(exc)
         if getattr(exc, "cleanup_errors", None):
             run["cleanup_errors"] = exc.cleanup_errors
         raise
     finally:
-        result["screenshots"] = records
-        result["dynamic_split_rate"] = split_rate(tests)
-        result["observed_occurrence_matrix"] = occurrence_matrix(records)
+        measurements, unqualified = [], []
+        for record in records:
+            if record["role"] == "clean":
+                continue
+            identity = {key: record[key] for key in ("batch_id", "screen", "language")}
+            verification = record["verification"]
+            measurements.append({**identity, **verification.pop("measurements")})
+            if verification["qualification_reasons"]:
+                unqualified.append(
+                    {**identity, "reasons": verification["qualification_reasons"]}
+                )
+        matrix = occurrence_matrix(records)
+        intended, qualified = Counter(), Counter()
+        for row in matrix:
+            kind = row["intended_class"]
+            intended[kind] += row["intended_occurrences"]
+            qualified[kind] += row["qualified_occurrences"]
+        result.update(screenshots=records, observed_occurrence_matrix=matrix)
         run.update(
             status=result["status"],
-            calibration=[
-                {
-                    "screen": r["screen"],
-                    "language": r["language"],
-                    "pass": r["pass"],
-                    **r["verification"]["pixels"]["outside"],
+            measurements=measurements,
+            unqualified_screenshots=unqualified,
+            occurrences_by_class={
+                kind: {
+                    "intended_occurrences": intended[kind],
+                    "qualified_occurrences": qualified[kind],
                 }
-                for r in records
-                if r["role"] == "calibration"
-            ],
+                for kind in sorted(intended)
+            },
         )
         write_json(folder / "mutation-manifest.json", result)
         write_json(folder / "run.json", run)

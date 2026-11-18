@@ -6,49 +6,46 @@ Issue #59 is delivered in three PRs, as approved by Anton on 2026-11-02:
 
 1. **This PR: recipes, planner and manifest, fully offline.**
 2. Translation-only APK builder in the separate Unciv fork/session.
-3. Device orchestration, calibration, qualification and verification.
+3. Device orchestration and capture qualification.
 
 `l10n-mutate plan` neither builds nor installs APKs, captures screens, calls a
 provider/detector/baseline, nor writes labels. Its output is always
 `stage: offline_plan`, `production_ready: false`. Static acceptance is not a
-claim of non-interference. Dynamic checks and the split rate remain unrun/null.
+claim of device qualification.
 There is no owner runner or excluded-screen bypass in this command.
 
-## Fresh device runs under D-059 and Proposed D-060
+## Fresh device runs under D-061
 
-Use a dedicated task directory under `~/Developer/sandbox/` and an approved
-output root under `data/runs/`. The fork builder supplies a compact
-`builds.json` with `source_commit`, `builder_commit`, `reference` and
-`artifacts`. The reference and each artifact have a local APK filename
-(`file`) and its `sha256`. Artifact keys are IDs from `build-requests.json`.
-The checker validates the pinned reference, signer, version, exact translation
-edits and unchanged nontranslation APK payloads before device access.
+Use a dedicated task directory under `~/Developer/sandbox/`, an approved output
+root under `data/runs/` and the D-057 emulator profile. The compact build list
+from the fork provides the pinned reference and the task APKs. The checker
+validates the signer, versions, translation edits and nontranslation payloads
+for the APKs it uses before device access.
 
 ```sh
 PYTHONPATH=src uv run l10n-mutate run \
   --plan "$PLAN" --manifest fixtures/stage2/screens-v2.json \
   --recipes fixtures/stage3/recipes-v1.json --catalog "$BUILDS" --sha256 "$BUILDS_SHA" \
   --task-dir "$TASK" --approved-output-root "$RUN_ROOT" --output-dir "$RUN" \
-  --serial "$SERIAL" --sdk "$SDK" --jdk "$JDK" --calibration-only
+  --serial "$SERIAL" --sdk "$SDK" --jdk "$JDK"
 ```
 
-Start with the empty control and EN-help singleton. On a calibration pass,
-assemble the three planned batches and reuse the original two APKs. Run
-without `--calibration-only` twice with separate output folders and compare
-the manifests. Both runs reuse one task snapshot and restore the reference
-APK and saved settings/saves before release. Use the D-057 emulator profile.
+One run captures each dev screen and language once per clean control or
+mutation batch. It uses one task snapshot and restores the reference APK and
+the prepared settings and saves at the end.
 
-The live D-060 comparison permits outside-mask RGB deltas up to two with
-unchanged alpha. It checks unmutated elements and exact same-build decoded
-RGBA/raw-dump repeats independently. `run.json` records tolerated counts and
-maximum deltas by calibration screen, language and pass. Stop on a gate or
-operational failure. A production split handoff is a proposal for the owner
-and fork builder to approve. No child builds are launched by the checker.
+`run.json` reports the changed-pixel count and maximum RGBA deltas outside
+the target extents, plus the number of moved or resized unmutated draw groups,
+by batch, screen and language. `mutation-manifest.json` carries visible text,
+ellipsis and clipping changes as review flags. Both are observations only.
 
-Keep `run.json` and the PNGs and manifest entries submitted for manual
-acceptance. The other capture is used to verify repeatability. Delete
-duplicate PNGs, APKs and scratch files at task end, and delete the snapshot
-after final restoration.
+Keep `run.json` and the manifest entries and PNGs submitted for manual review.
+A mutated PNG enters the review set only when all its intended occurrences
+qualify by class and visibility and the screenshot has at most two. The run
+continues after an exclusion. The manifest records each reason, and
+`run.json` lists the exclusions and intended and retained counts by class.
+Anton supplies the labels. Clear task APKs and scratch files at task end and
+remove the snapshot after final restoration.
 
 ## Inputs and command
 
@@ -171,9 +168,8 @@ Intended occurrences by class × language × screen:
 
 Seed 59 produces 3 batches and 5 builder requests (including empty control and
 standalone calibration), with 11 static-conflict pairs. N never exceeds 2;
-single-occurrence shares are EN 7/11 and DE 8/13. These are planner counts,
-not measured runtime split rates. Repeated Mining and Help exclamation variants
-were removed: there are exactly three distinct truncation targets and three
+single-occurrence shares are EN 7/11 and DE 8/13. Repeated Mining and Help
+exclamation variants were removed. The planner has three truncation targets and three
 distinct overflow targets per language, each with one recipe per target/class.
 Reassess actual visibility, glyph-level duplicates and all counts in PR (c),
 rather than treating these tables as human labels.
@@ -243,11 +239,10 @@ zero or one. Report that limitation, without fabricating positives, changing
 the injection mechanism or inspecting that cohort in this dev task. Metric
 implementation and the zero-denominator rule are unchanged.
 
-Qualify `Help` and `Hilfe` first, then other overflow singletons. Require actual
-horizontal **own-label** overflow, N compliance, the pixel gate and unchanged
-unmutated dump elements. Any failing overflow singleton means **stop**, not
-substitution of the old global hourglass recipe. That recipe affects many
-visible counters and is intentionally absent from this catalog. Worker long
+Each overflow screenshot requires actual horizontal **own-label** overflow
+and N compliance. The runtime excludes a screenshot that fails qualification
+and continues with the next capture. The old global hourglass recipe affects
+many visible counters and is intentionally absent from this catalog. Worker long
 text is also not an overflow recipe: issue 45 observed wrapping/panel growth.
 No injected help-circle screenshot has been produced in this PR.
 
@@ -318,7 +313,7 @@ check must cover all dev screens. Unknown owners, partially clipped targets and
 missing selectors stop planning. Explicit decorative draws share their engine
 logical occurrence and keep all draw IDs. Worker is two occurrences, not one.
 
-## Static planning and deterministic split
+## Static planning and batching
 
 Anton amended the original issue's layout criterion: fork layout metadata is
 **not a prerequisite**. Current dump data supplies a conservative pre-filter:
@@ -331,19 +326,9 @@ Anton amended the original issue's layout criterion: fork layout metadata is
 No Table row/column or parent-container metadata is fabricated from paths.
 Conflict reasons are recorded. Seeded SHA-256 ordering and stable greedy merging
 keep at most **2 visible logical occurrences per screenshot**, and at least
-**50% single-occurrence screenshots separately per language**. Controls,
-unaffected screenshots and forward/reverse repeats are excluded from that
-fraction. A global-key recipe exceeding N stops; it cannot be repaired by
-splitting recipes. An inadequate singleton cohort also stops instead of adding
-duplicate samples silently.
-
-`split_after_interference` is a pure offline partition operation for the future
-verifier: sort recipe IDs, bisect, retain parent/reason/child IDs, recompute
-density. An interfering pair has a regression test. A failing singleton stops;
-transport/readiness errors are not accepted as interference. This PR does not
-produce or claim measured dynamic failures. Static-conflict counts are not the
-dynamic split rate. The latter must be reported as split multi-mutation batches
-over all dynamically tested multi-mutation batches in PR (c).
+**50% single-occurrence screenshots separately per language**. Controls and
+unaffected screenshots are excluded from that fraction. The planner rejects
+a global-key recipe that exceeds N or a cohort with too few singletons.
 
 ## Manifest and builder hand-off
 
@@ -352,22 +337,22 @@ Two canonical, deterministic files are written:
 - `plan.json`, mutation manifest version 1: source/split hashes, seed and
   generator/recipe versions, path-independent inventory hashes, exact edits,
   clean target occurrences, observed input/rendered text/geometry/flags,
-  per-screenshot mutation mapping, static conflicts, density, balance, required
-  calibration and production blockers. `load_plan(raw, manifest=original_manifest)`
+  per-screenshot mutation mapping, static conflicts, density and balance. Legacy
+  gate fields remain in the frozen planner output for byte parity.
+  `load_plan(raw, manifest=original_manifest)`
   requires the original source manifest and its adjacent split registry as the
   authority, verifies their exact byte hashes and complete dev/language inventory
-  coverage, and checks edit/batch/hash consistency and pending gates. It reads
-  only manifest/split metadata, not fixtures or pair payloads; it is not
-  authorization.
+  coverage, and checks edit/batch/hash consistency. It reads manifest and split
+  metadata. Device access requires separate authorization.
 - `build-requests.json`, requests version 1: the plan SHA-256, pinned source,
   unique patch sets, their full SHA-256 and deterministic IDs/roles. It includes
-  an **empty patch set** plus any standalone calibration build not already a
-  batch. No APK hash or versionCode is invented before the fork builder exists.
+  an **empty patch set** and may include a standalone calibration request from
+  the frozen planner output, which the production runner skips. The fork builder
+  supplies APK hashes and versionCodes.
 
 Request IDs, clocks, absolute output paths and operation journals do not enter
 these deterministic content files. Reordering inventory records or recipe
-enumeration does not change the plan. Unsuccessful/non-repeatable executions
-must not be normalized into a successful manifest.
+enumeration does not change the plan.
 
 PR (b) must consume this frozen contract in its own fork worktree/session,
 validate exact original values and translation-file-only changes, build every
@@ -376,38 +361,6 @@ freeze versionCodes/APK hashes and record toolchain/builder identity. Clean and
 mutated builds must use the **same builder**; stock 1271048 is not a substitute
 for the empty-patch control. Frozen catalog reuse, not fabricated reproducible
 APK hashes, supplies repeated inputs.
-
-## Calibration and isolation gate
-
-Before production, capture the empty-patch control and one single-mutation
-build on all dev screens in EN and DE. The plan selects the basic EN help
-recipe; it is built separately even when it is also part of a batch.
-
-Compare decoded RGBA using a mask derived from all matched before/after
-mutated extents, with fixed outward rounding. Never mask a whole parent panel
-to hide layout reflow. A comparison passes when:
-
-1. every outside-mask difference is within D-060: each R/G/B delta at most 2,
-   alpha unchanged;
-2. no unmutated dump element moved or changed, including inside the mask;
-3. every intended mutation is visible and within the occurrence limit.
-
-Anything else stops before production with pixel counts, bounding boxes and
-maximum channel deltas. D-042's font-atlas effect is the known source of small
-cross-build differences.
-
-After a calibration pass, dynamic interference may split production batches.
-The split is a proposal for the owner and the fork builder; the split rate is
-reported. Operational failures are recorded separately from interference.
-
-`mutation-manifest.json` maps each screenshot to its state, build, pair, PNG
-and dump, and records intended-occurrence checks, unmutated-element checks,
-masks, tolerated pixels and split lineage. No label files are produced; an
-intended class is not a human label.
-
-D-058 (Proposed): visible side-effect flags for review are implemented in
-`mutation_verify.semantic_side_effects`, but `l10n-mutate run` does not record
-them yet.
 
 ## Target-qualification procedure for a later owner session
 
@@ -477,7 +430,7 @@ an over-broad single global edit.
 Count the resulting plan again from each mutation's bound occurrences, grouped
 by intended class, language and screen. Sum the per-screenshot counts in the
 mutated batches independently and require the same total. Controls, unaffected
-screens and forward/reverse repeats add **zero** intended defect occurrences.
+screens add **zero** intended defect occurrences.
 Length variants can add planned occurrences but not distinct interface targets.
 Report both counts; never replace an occurrence total with the number of recipes.
 For each class/language/screen, also group by the owning actor path across
@@ -513,14 +466,9 @@ volume by counting provenance-only aliases of the source fallback.
    `build-requests.json`. Run again into a fresh output directory with the same
    inputs/seed; both files must be byte-identical. Check exact source RHS and
    translation-only patch scope again in the separate builder.
-6. Keep runtime gates pending. Later, use same-builder empty controls, run the
-   mandatory empty-vs-single calibration, then qualify each mutation's actual
-   glyph/owner behavior, D-023/D-025 boundaries and cross-screen impact. Any
-   outside-mask calibration change beyond D-060 stops with counts/bboxes/max
-   deltas. A source-qualified overflow that does not visibly
-   overflow its own label stops qualification. Only real batch interference
-   may trigger deterministic splitting, with the split rate reported. An
-   operational error is not interference or a clean result.
+6. Use same-builder empty controls. Qualify each mutation's actual glyph and
+   owner behavior and apply the D-023/D-025 boundaries. Record exclusions and
+   continue when an intended class or occurrence fails to manifest.
 
 ### Dev-only worked examples (not a target-selection dependency)
 
@@ -560,6 +508,4 @@ uv run ruff format --check .
 git diff --check
 ```
 
-Device tests and empirical calibration are intentionally not run for PR (a).
-The issue's full runtime acceptance remains with PR (c); an offline plan and
-synthetic split test do not satisfy it by themselves.
+PR (a) verified offline planning. Device verification is a separate task.

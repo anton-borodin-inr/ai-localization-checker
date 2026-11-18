@@ -1,4 +1,4 @@
-"""Strict dynamic isolation: a one-channel, one-pixel change is a failure."""
+"""Pixel measurements, review flags and intended-only qualification."""
 
 import importlib
 import importlib.util
@@ -28,7 +28,7 @@ def png(changes=()):
     return stream.getvalue()
 
 
-def test_d058_compares_visible_text_and_preserves_line_breaks():
+def test_review_flags_compare_visible_text_and_preserve_line_breaks():
     before = element(
         "ABC", visibility="partial", clipped_fraction=0.2, ellipsis_applied=False
     )
@@ -37,17 +37,15 @@ def test_d058_compares_visible_text_and_preserves_line_breaks():
     after["bounds"] = [10, 20, 99, 40]
     after["display_text"] = after["lines"][0]["text"] = "ABZ"
     after["lines"][0]["glyphs"][-1]["text"] = "Z"
-    comparison = {
-        "changed_unmutated_elements": [
-            {
-                "actor_path": "root/0",
-                "decoration": False,
-                "before": [before],
-                "after": [after],
-            }
-        ]
-    }
-    assert api().semantic_side_effects(comparison) == []
+
+    def compare():
+        old = load_dump(canonical_bytes(dump_for(size=[100, 60], elements=[before])))
+        new = load_dump(canonical_bytes(dump_for(size=[100, 60], elements=[after])))
+        return api().verify_screen(png(), png(), old, new, [])
+
+    geometry_only = compare()
+    assert geometry_only["review_flags"] == []
+    assert geometry_only["measurements"]["moved_or_resized_unmutated_groups"] == 1
 
     line = after["lines"][0]
     glyphs = line["glyphs"]
@@ -57,7 +55,8 @@ def test_d058_compares_visible_text_and_preserves_line_breaks():
     ]
     after["display_text"] = "A\nBZ"
     after["clipped_fraction"] = 0.3
-    (flag,) = api().semantic_side_effects(comparison)
+    after["ellipsis_applied"] = True
+    (flag,) = compare()["review_flags"]
     assert flag["before"] == [
         {
             "visible_lines": ["AB"],
@@ -70,61 +69,26 @@ def test_d058_compares_visible_text_and_preserves_line_breaks():
         {
             "visible_lines": ["A", "B"],
             "visibility": "partial",
-            "ellipsis_applied": False,
+            "ellipsis_applied": True,
             "clipped_fraction": 0.3,
         }
     ]
 
 
-@pytest.mark.parametrize(
-    "value,delta",
-    [((11, 20, 30, 255), [1, 0, 0, 0]), ((10, 20, 30, 254), [0, 0, 0, 1])],
-)
-def test_one_pixel_any_rgba_channel_fails_without_tolerance(value, delta):
-    result = api().compare_rgba(png(), png([((99, 59), value)]), [])
-    assert result["outside"]["different_pixels"] == 1
-    assert result["outside"]["bounding_box"] == [99, 59, 100, 60]
-    assert result["outside"]["max_channel_deltas"] == delta
-    assert result["passed"] is False
-
-
-@pytest.mark.parametrize(
-    "outside_value,passed",
-    [
-        ((8, 22, 28, 255), True),
-        ((10, 20, 33, 255), False),
-        ((10, 20, 30, 254), False),
-    ],
-)
-def test_d060_counts_only_outside_rgb_deltas_within_two(outside_value, passed):
+def test_mask_rounds_outward_and_measures_any_channel_outside_target_extents():
     result = api().compare_rgba(
         png(),
         png(
             [
-                ((1, 1), (255, 255, 255, 0)),
-                ((10, 10), (11, 21, 30, 255)),
-                ((99, 59), outside_value),
+                ((5, 5), (255, 255, 255, 0)),
+                ((90, 0), (255, 255, 255, 0)),
+                ((50, 5), (7, 29, 28, 255)),
+                ((99, 59), (10, 20, 39, 254)),
             ]
         ),
-        [[0, 0, 2, 2]],
-        bounded_rgb=True,
+        [[4.2, 4.2, 5.2, 5.2], [90, 0, 99, 10]],
     )
-    assert result["passed"] is passed
-    assert result["outside"]["different_pixels"] == 2
-    assert result["outside"]["tolerated_pixels"] == (2 if passed else 1)
-    assert result["outside"]["max_tolerated_rgb_delta"] == (2 if passed else 1)
-
-
-def test_mask_union_rounds_outward_without_bridging_targets():
-    result = api().compare_rgba(
-        png(),
-        png([((5, 5), (11, 20, 30, 255)), ((50, 5), (11, 20, 30, 255))]),
-        [[4.2, 4.2, 5.2, 5.2], [90, 0, 100, 10]],
-    )
-    assert result["inside"]["different_pixels"] == 1
-    assert result["outside"]["different_pixels"] == 1
-    assert result["mask"]["rectangles"] == [[4, 4, 6, 6], [90, 0, 100, 10]]
-    assert result["mask"]["policy"] == "target-extents-floor-ceil-v1"
+    assert result == {"different_pixels": 2, "max_channel_deltas": [3, 9, 9, 1]}
 
 
 def test_expected_translation_keeps_wrappers_and_template_arguments():
@@ -150,7 +114,7 @@ def test_expected_translation_keeps_wrappers_and_template_arguments():
     )
 
 
-def test_changed_unmutated_element_inside_target_mask_is_not_hidden():
+def test_outside_pixels_and_unmutated_text_inside_mask_allow_qualification():
     first = element(
         "?", "target", input_text="?", source_key=None, ellipsis_applied=False
     )
@@ -189,21 +153,49 @@ def test_changed_unmutated_element_inside_target_mask_is_not_hidden():
             }
         ],
     }
-    result = api().verify_screen(png(), png(), before, after, [mutation])
-    assert result["passed"] is False
-    assert result["changed_unmutated_elements"]
-    assert result["occurrences"][0]["qualified"] is True
+    result = api().verify_screen(
+        png(), png([((99, 59), (24, 20, 30, 200))]), before, after, [mutation]
+    )
+    assert result["qualified"] is True
+    assert result["qualification_reasons"] == []
+    assert [flag["actor_path"] for flag in result["review_flags"]] == ["other"]
+    assert result["measurements"]["outside_mask_pixels"] == {
+        "different_pixels": 1,
+        "max_channel_deltas": [14, 0, 0, 55],
+    }
 
 
-def test_missing_and_fitting_overflow_are_unqualified():
-    first = element(
-        "?", "target", input_text="?", source_key=None, ellipsis_applied=False
+@pytest.mark.parametrize(
+    "case,reason",
+    [
+        ("fitting", "No visible horizontal own-label overflow"),
+        ("missing", "missing_or_ambiguous_owner"),
+        ("hidden", "Intended occurrence not fully visible"),
+        ("over_cap", "Intended occurrence limit exceeded (N > 2)"),
+    ],
+)
+def test_mutation_qualification_reasons(case, reason):
+    targets = (
+        ["target-a", "target-b", "target-c"] if case == "over_cap" else ["target-a"]
     )
-    after = element(
-        "Help", "target", input_text="Help", source_key="?", ellipsis_applied=False
-    )
-    before_dump = load_dump(canonical_bytes(dump_for(size=[100, 60], elements=[first])))
-    after_dump = load_dump(canonical_bytes(dump_for(size=[100, 60], elements=[after])))
+    clean = [element("?", actor, input_text="?", source_key=None) for actor in targets]
+    changed = [
+        element(
+            "Help",
+            actor,
+            input_text="Help",
+            source_key="?",
+            ellipsis_applied=False,
+            overflow_x=case == "over_cap",
+            glyph_bounds=[2, 20, 99, 40] if case == "over_cap" else [10, 20, 90, 40],
+            visibility="hidden" if case == "hidden" else "full",
+            visible_bounds=None if case == "hidden" else [10, 20, 90, 40],
+        )
+        for actor in targets
+        if case != "missing"
+    ]
+    before = load_dump(canonical_bytes(dump_for(size=[100, 60], elements=clean)))
+    after = load_dump(canonical_bytes(dump_for(size=[100, 60], elements=changed)))
     mutation = {
         "recipe": {
             "id": "help",
@@ -215,55 +207,44 @@ def test_missing_and_fitting_overflow_are_unqualified():
         },
         "occurrences": [
             {
-                "actor_path": "target",
+                "actor_path": actor,
                 "input_text": "?",
                 "screen": "tech-picker",
                 "language": "de",
             }
+            for actor in targets
         ],
     }
-    result = api().verify_screen(png(), png(), before_dump, after_dump, [mutation])
-    assert not result["passed"] and not result["occurrences"][0]["qualified"]
+    result = api().verify_screen(png(), png(), before, after, [mutation])
+    assert not result["qualified"]
+    assert [item["reason"] for item in result["qualification_reasons"]] == [reason]
+    assert result["review_flags"] == []
+    if case == "over_cap":
+        assert all(item["qualified"] for item in result["occurrences"])
 
 
-def test_split_rate_counts_unique_tested_multi_recipe_nodes():
-    records = [
-        {"id": "a", "recipe_ids": ["x", "y"], "split": True},
-        {"id": "a", "recipe_ids": ["x", "y"], "split": True},
-        {"id": "b", "recipe_ids": ["x"], "split": False},
-        {"id": "c", "recipe_ids": ["q", "r"], "split": False},
-    ]
-    assert api().split_rate(records) == {
-        "split_batches": 1,
-        "tested_multi_recipe_batches": 2,
-        "rate": 0.5,
+def test_occurrence_matrix_counts_only_screenshots_retained_for_review():
+    occurrence = {
+        "intended_class": "overflow",
+        "actor_path": "owner",
+        "qualified": True,
     }
-    assert api().split_rate([])["rate"] is None
-
-
-def test_occurrence_matrix_excludes_controls_repeats_and_target_aliases():
-    assert hasattr(api(), "occurrence_matrix"), "Runtime occurrence accounting missing"
     one = {
         "screen": "options-gameplay",
         "language": "en",
-        "pass": 1,
         "role": "mutation",
-        "verification": {
-            "occurrences": [
-                {"intended_class": "overflow", "actor_path": "owner", "qualified": True}
-            ]
-        },
+        "verification": {"occurrences": [occurrence]},
     }
-    second = {**one, "pass": 2}
+    retained = {**one, "png": "retained.png"}
     control = {**one, "role": "clean"}
-    result = api().occurrence_matrix([one, one, second, control])
+    result = api().occurrence_matrix([retained, one, control])
     assert result == [
         {
             "screen": "options-gameplay",
             "language": "en",
             "intended_class": "overflow",
             "intended_occurrences": 2,
-            "qualified_occurrences": 2,
+            "qualified_occurrences": 1,
             "distinct_targets": 1,
         }
     ]

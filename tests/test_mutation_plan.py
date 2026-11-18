@@ -386,39 +386,6 @@ def test_inventory_and_recipe_enumeration_order_and_output_location_do_not_chang
     assert canonical_bytes(api().create_plan(**kwargs)) == first
 
 
-def test_interfering_pair_splits_deterministically_and_singleton_failure_stops(
-    tmp_path,
-):
-    names = ("Alpha", "Beta", "Gamma", "Delta")
-    extras = [positioned(n, f"root/{n}", 300 + i * 150) for i, n in enumerate(names)]
-    kwargs = inputs(
-        tmp_path, [named_recipe(n) for n in names], {("tech-picker", "en"): extras}
-    )
-    plan = api().create_plan(**kwargs)
-    combined = next(b for b in plan["batches"] if len(b["recipe_ids"]) == 2)
-    reason = {
-        "kind": "outside_mask_pixels",
-        "different_pixels": 1,
-        "bounding_box": [0, 0, 1, 1],
-        "max_channel_delta": 1,
-    }
-    assert hasattr(api(), "split_after_interference"), (
-        "Deterministic split support is missing"
-    )
-    split = api().split_after_interference(plan, combined["id"], reason)
-    assert len(split["batches"]) == 4
-    assert len(plan["batches"]) == 3
-    assert split["split_history"][0]["parent"] == combined
-    assert split["split_history"][0]["reason"] == reason
-    assert canonical_bytes(
-        api().split_after_interference(plan, combined["id"], reason)
-    ) == canonical_bytes(split)
-    with pytest.raises(CaptureError, match="singleton"):
-        api().split_after_interference(split, split["batches"][0]["id"], reason)
-    with pytest.raises(CaptureError, match="operational|interference"):
-        api().split_after_interference(plan, combined["id"], {"kind": "timeout"})
-
-
 def test_balance_counts_occurrences_as_a_target_not_a_production_cap(tmp_path):
     kwargs = inputs(tmp_path)
     plan = api().create_plan(**kwargs)
@@ -655,39 +622,6 @@ def test_manifest_reader_checks_occurrence_relationships_after_regeneration(
         api().load_plan(canonical_bytes(plan), manifest=MANIFEST)
 
 
-def test_split_after_interference_manifest_roundtrips(tmp_path):
-    plan = combined_plan(tmp_path)
-    parent = next(b for b in plan["batches"] if len(b["recipe_ids"]) == 2)
-    split = api().split_after_interference(
-        plan,
-        parent["id"],
-        {"kind": "missing_mutation", "recipe_id": parent["recipe_ids"][0]},
-    )
-    assert api().load_plan(canonical_bytes(split), manifest=MANIFEST) == split
-
-
-def test_multiple_split_generations_roundtrip_with_full_inventory(tmp_path):
-    values, additions = [], {}
-    for name, screen in zip(("Alpha", "Beta", "Gamma", "Delta"), registry().dev):
-        values.append(
-            {
-                **named_recipe(name),
-                "targets": [{"screen": screen, "text": name, "match": "exact"}],
-            }
-        )
-        additions[screen, "en"] = [positioned(name, f"root/{name}", 300)]
-    plan = api().create_plan(**inputs(tmp_path, values, additions))
-    assert len(plan["batches"]) == 1
-    for kind in (
-        "outside_mask_pixels",
-        "changed_unmutated_element",
-        "missing_mutation",
-    ):
-        parent = next(b for b in plan["batches"] if len(b["recipe_ids"]) >= 2)
-        plan = api().split_after_interference(plan, parent["id"], {"kind": kind})
-        assert api().load_plan(canonical_bytes(plan), manifest=MANIFEST) == plan
-
-
 def test_selected_subset_roundtrips_with_complete_dev_inventory(tmp_path, monkeypatch):
     kwargs = inputs(tmp_path)
     kwargs.update(split=None, screen_ids=["tech-picker"])
@@ -784,47 +718,23 @@ def test_manifest_reader_retains_pending_gates(tmp_path, change):
         api().load_plan(canonical_bytes(plan), manifest=MANIFEST)
 
 
-@pytest.mark.parametrize(
-    "change",
-    [
-        "unrecorded_split",
-        "fake_parent",
-        "fake_children",
-        "invalid_reason",
-        "altered_parent",
-        "replayed_event",
-        "unsplit_batches",
-        "nonobject_reason",
-    ],
-)
-def test_manifest_reader_replays_split_lineage(tmp_path, change):
-    from copy import deepcopy
-
+@pytest.mark.parametrize("change", ["split_history", "batches"])
+def test_manifest_reader_rejects_runtime_splits(tmp_path, change):
     plan = combined_plan(tmp_path)
-    parent = next(b for b in plan["batches"] if len(b["recipe_ids"]) == 2)
-    split = api().split_after_interference(
-        plan, parent["id"], {"kind": "missing_mutation"}
-    )
-    event = split["split_history"][0]
-    if change == "unrecorded_split":
-        split["split_history"] = []
-    elif change == "fake_parent":
-        event["parent"]["id"] = "batch-invented"
-    elif change == "fake_children":
-        event["children"] = ["batch-invented"]
-    elif change == "invalid_reason":
-        event["reason"] = {"kind": "timeout"}
-    elif change == "altered_parent":
-        event["parent"]["screenshots"][0]["verification"]["dynamic"] = "passed"
-    elif change == "replayed_event":
-        split["split_history"].append(deepcopy(event))
-    elif change == "unsplit_batches":
-        split["batches"] = plan["batches"]
-        split["density"] = api()._density(split["batches"])
+    if change == "split_history":
+        plan["split_history"] = [{"reason": {"kind": "missing_mutation"}}]
     else:
-        event["reason"] = None
-    with pytest.raises(CaptureError, match="lineage"):
-        api().load_plan(canonical_bytes(split), manifest=MANIFEST)
+        plan["batches"] = [
+            api()._batch(
+                [identity],
+                plan["mutations"],
+                {(row["screen"], row["language"]): None for row in plan["inventory"]},
+            )
+            for identity in sorted(plan["mutations"])
+        ]
+        plan["density"] = api()._density(plan["batches"])
+    with pytest.raises(CaptureError, match="deterministic offline plan"):
+        api().load_plan(canonical_bytes(plan), manifest=MANIFEST)
 
 
 @pytest.mark.parametrize(

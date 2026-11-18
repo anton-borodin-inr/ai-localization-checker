@@ -534,6 +534,7 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 
 - **Date:** 2026-11-02
 - **Status:** Accepted
+- The pixel/geometry gate and calibration stop are superseded by D-061.
 - **Accepted by:** Anton, 2026-11-03, as proposed
 - **Decision:** Record Anton's issue #59 plan approval with amendments from the
   task chat. Generate translation-only batch APKs. Empty-patch clean controls
@@ -615,7 +616,7 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 ## D-058 — Flag visible text side effects for human review
 
 - **Date:** 2026-11-11
-- **Status:** Proposed
+- **Status:** Withdrawn. Superseded by D-061.
 - **Decision:** Anton authorized replacing D-050's cross-build pixel and dump
   isolation gate and D-054 for fresh normal runs. Cross-build outside-mask
   pixel differences and unmutated element geometry changes are measurements
@@ -642,6 +643,7 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 
 - **Date:** 2026-11-11
 - **Status:** Accepted
+- The pixel/geometry gate and calibration stop are superseded by D-061.
 - **Decision:** Keep only the builds of the current task and reuse them across its
   runs and attempts; delete them when the task ends. Skip source and environment archives.
   Keep D-035 `data/runs/<run_id>/run.json` (`run_id`, `requests_sent`, token usage,
@@ -659,7 +661,7 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 ## D-060 — Allow bounded outside-mask RGB differences in #59
 
 - **Date:** 2026-11-11
-- **Status:** Proposed
+- **Status:** Withdrawn. Superseded by D-061.
 - **Decision:** Across all #59 screens and both languages, allow outside-mask
   pixel differences only when each absolute R/G/B delta is at most 2 and alpha
   is unchanged. Larger deltas, alpha changes and moved or changed unmutated
@@ -670,3 +672,18 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
   outside-mask differences with maximum RGB delta 2 and no alpha change.
 - **Consequences:** Supersedes only D-050's zero-outside-mask clause upon
   acceptance. D-051–D-056 are withdrawn.
+
+## D-061 — Pixel differences are reported, never gating
+- Date: 2026-11-18
+- Status: Accepted (Anton, 2026-11-18)
+- Decision: Pixel differences outside mutation masks, moved or resized
+  unmutated elements and same-build repeat differences are measurements only.
+  run.json records their count and maximum channel delta per screen and
+  language; they never stop, split or fail a run. A mutated screenshot still
+  qualifies only if each intended mutation is visible in the dump as intended
+  (class, visibility) and N ≤ 2 holds. Changed visible text in unmutated
+  elements (text, ellipsis, clipping) is listed as a review flag for labeling.
+- Why: the target is localization defects; Anton labels every screenshot by
+  eye (D-012). Strict pixel gates caused repeated stops (D-051–D-056, D-060).
+- Supersedes: D-058 and D-060 (withdrawn); the pixel/geometry gate and the
+  calibration stop in D-050; the isolation-gate clause in D-059.
