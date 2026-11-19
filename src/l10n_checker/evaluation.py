@@ -37,21 +37,12 @@ from l10n_checker.matching import (
 from l10n_checker.metrics import score_screen, score_screens
 from l10n_checker.mutation_catalog import apply_patches
 from l10n_checker.text_dump import canonical_bytes
-from l10n_checker.tiling import (
-    DEFAULT_TILING,
-    TILING_MODES,
-    Box,
-    crop_tiles,
-    grid_2x2_boxes,
-    map_region,
-)
 from l10n_checker.unciv_text import RenderingError, TranslationTable
 from l10n_checker.vision import (
     PROMPT_TEMPLATE,
     PROMPT_VERSION,
     SCHEMA_VERSION,
     CheckResult,
-    Finding,
     RequestBudget,
     VisionProvider,
     redact,
@@ -492,176 +483,6 @@ def _not_checked_budget_result(
     return result, 0.0
 
 
-def merge_tile_findings(
-    tile_findings: list[tuple[Box, list[Finding]]], size: tuple[int, int]
-) -> list[Finding]:
-    """Map tile findings to full-screen 3x3 regions and merge (text, region) duplicates."""
-    merged: list[Finding] = []
-    index_by_key: dict[tuple[str, str], int] = {}
-    for box, findings in tile_findings:
-        for f in findings:
-            full_reg = map_region(f.region, box, size)
-            mapped = Finding(
-                defect_type=f.defect_type,
-                text_seen=f.text_seen,
-                region=full_reg,
-                confidence=f.confidence,
-            )
-            key = (normalize_text(mapped.text_seen), full_reg)
-            if key not in index_by_key:
-                index_by_key[key] = len(merged)
-                merged.append(mapped)
-            elif mapped.confidence > merged[index_by_key[key]].confidence:
-                merged[index_by_key[key]] = mapped
-    return merged
-
-
-def _run_tiled_vision_image(
-    item: dict,
-    provider: VisionProvider,
-    max_requests: int,
-    max_usd: Decimal,
-    reserve_usd: Decimal,
-    requests_sent_so_far: int,
-    accounted_upper_so_far: Decimal,
-    record_dir: Path | None,
-    secrets: tuple[str, ...],
-    retry_delay_s: float,
-) -> tuple[CheckResult, float]:
-    png, size = item["png"], item["size"]
-    boxes = grid_2x2_boxes(size)
-    s, lang, var, vc = (
-        item["screen"],
-        item["language"],
-        item["variant"],
-        item["version_code"],
-    )
-    crop_boxes = {
-        f"{s}.{n}__{lang}__{b[2] - b[0]}x{b[3] - b[1]}__{var}__{vc}": b
-        for n, b in boxes.items()
-    }
-    tile_summaries: list[dict] = []
-    tile_findings: list[tuple[Box, list[Finding]]] = []
-    img_usage = {field: 0 for field in USAGE_FIELDS}
-    has_img_usage = has_img_cost = False
-    img_known_peak = img_known_off_peak = Decimal(0)
-    img_unknown_requests = img_requests_sent = 0
-    total_latency_s = 0.0
-    reason: str | None = None
-
-    with tempfile.TemporaryDirectory(prefix="l10n-eval-tiles-") as tmp_dir:
-        tmp_root = Path(tmp_dir)
-        crop_tiles(png, tmp_root / "crops", crop_boxes)
-        for (tile_name, box), stem in zip(boxes.items(), crop_boxes, strict=True):
-            cur_requests = requests_sent_so_far + img_requests_sent
-            cur_upper = (
-                accounted_upper_so_far
-                + img_known_peak
-                + reserve_usd * img_unknown_requests
-            )
-            if cur_requests + 1 > max_requests:
-                reason = f"tile {tile_name}: request_cap_reached: dataset cap of {max_requests} reached"
-                break
-            if cur_upper + reserve_usd > max_usd:
-                reason = (
-                    f"tile {tile_name}: usd_cap_reached: next request worst-case "
-                    f"reserve {reserve_usd} USD would exceed max_usd {max_usd} USD "
-                    f"(accounted upper bound: {cur_upper} USD)"
-                )
-                break
-            t_res, t_dir = run_check(
-                provider,
-                tmp_root / "crops" / f"{stem}.png",
-                tmp_root / "runs",
-                RequestBudget(1),
-                secrets=secrets,
-                retry_delay_s=retry_delay_s,
-            )
-            if record_dir is not None:
-                shutil.copytree(t_dir, record_dir / "tiles" / tile_name)
-            t_meta = t_res.metadata
-            t_sent = int(t_meta.get("requests_sent", 0))
-            img_requests_sent += t_sent
-            t_lat = round(
-                sum(a.get("latency_s", 0.0) for a in (t_meta.get("attempts") or [])), 3
-            )
-            total_latency_s = round(total_latency_s + t_lat, 3)
-            t_usage = t_meta.get("usage")
-            if isinstance(t_usage, dict):
-                for field in USAGE_FIELDS:
-                    val = t_usage.get(field)
-                    if type(val) is int and val >= 0:
-                        img_usage[field] += val
-                        has_img_usage = True
-            t_cost = t_meta.get("estimated_cost")
-            if isinstance(t_cost, dict) and "peak_usd" in t_cost:
-                img_known_peak += Decimal(str(t_cost["peak_usd"]))
-                img_known_off_peak += Decimal(str(t_cost.get("off_peak_usd", "0")))
-                has_img_cost = True
-            elif t_sent > 0:
-                img_unknown_requests += t_sent
-            tile_summaries.append(
-                {
-                    "name": tile_name,
-                    "box": list(box),
-                    "status": t_res.status,
-                    "reason": t_res.reason,
-                    "readability": t_meta.get("readability"),
-                    "unreadable_regions": t_meta.get("unreadable_regions"),
-                    "readability_reason": t_meta.get("readability_reason"),
-                    "requests_sent": t_sent,
-                    "usage": t_usage,
-                    "estimated_cost": t_cost,
-                    "latency_s": t_lat,
-                    "findings": [
-                        {
-                            **f.model_dump(),
-                            "full_region": map_region(f.region, box, size),
-                        }
-                        for f in t_res.findings
-                    ],
-                }
-            )
-            if t_res.status != "checked":
-                reason = f"tile {tile_name}: {t_res.reason}"
-                break
-            tile_findings.append((box, t_res.findings))
-
-    findings = merge_tile_findings(tile_findings, size) if reason is None else []
-    base_res, _ = _not_checked_budget_result(item, provider, max_requests, "init", None)
-    metadata = {
-        **base_res.metadata,
-        "readability": "readable"
-        if reason is None
-        else (tile_summaries[-1]["readability"] if tile_summaries else None),
-        "tiles": "2x2",
-        "tile_records": tile_summaries,
-        "requests_sent": img_requests_sent,
-        "unknown_cost_requests": img_unknown_requests,
-        "usage": img_usage if has_img_usage else None,
-        "estimated_cost": {
-            "peak_usd": str(img_known_peak),
-            "off_peak_usd": str(img_known_off_peak),
-            "tariff": TARIFF,
-        }
-        if has_img_cost
-        else None,
-    }
-    result = CheckResult(
-        status="checked" if reason is None else "not_checked",
-        findings=findings,
-        reason=reason,
-        metadata=metadata,
-    )
-    if record_dir is not None:
-        record_dir.mkdir(parents=True, exist_ok=True)
-        write_json(record_dir / "run.json", metadata)
-        (record_dir / "result.json").write_text(
-            result.model_dump_json(indent=2) + "\n", encoding="utf-8"
-        )
-    return result, total_latency_s
-
-
 def _per_class_summary(items: list[dict], screen_matches_list: list) -> dict[str, dict]:
     totals = {kind: 0 for kind in CLASSES}
     matched = {kind: 0 for kind in CLASSES}
@@ -707,7 +528,6 @@ def evaluate_dataset(
     ocr_engine: OcrEngine | None = None,
     provider: VisionProvider | None = None,
     provider_factory: Callable[[], VisionProvider] | None = None,
-    tiles: str = DEFAULT_TILING,
     max_requests: int | None = None,
     max_usd: Decimal | None = None,
     keep_records: bool = False,
@@ -718,10 +538,6 @@ def evaluate_dataset(
     """Evaluate `detector` on every PNG in `dataset_dir` and write run records."""
     if detector not in ("baseline", "vision"):
         raise ValueError(f"Unknown detector: {detector!r}")
-    if tiles not in TILING_MODES:
-        raise ValueError(f"Unknown tiling mode: {tiles!r}")
-    if detector == "baseline" and tiles != DEFAULT_TILING:
-        raise ValueError("--tiles applies only to --detector vision")
     if output_dir.exists():
         raise CaptureError(f"Output directory already exists: {output_dir}")
     if detector == "vision":
@@ -784,20 +600,7 @@ def evaluate_dataset(
             assert provider is not None
             assert max_requests is not None and max_usd is not None
             accounted_upper = known_peak_usd + unknown_reserve_usd
-            if tiles == "2x2":
-                result, latency_s = _run_tiled_vision_image(
-                    item,
-                    provider,
-                    max_requests,
-                    max_usd,
-                    reserve_usd,
-                    total_requests_sent,
-                    accounted_upper,
-                    record_dir,
-                    secrets,
-                    retry_delay_s,
-                )
-            elif total_requests_sent + 1 > max_requests:
+            if total_requests_sent + 1 > max_requests:
                 result, latency_s = _not_checked_budget_result(
                     item,
                     provider,
@@ -846,9 +649,6 @@ def evaluate_dataset(
                 known_peak_usd += Decimal(str(cost["peak_usd"]))
                 if "off_peak_usd" in cost:
                     known_off_peak_usd += Decimal(str(cost["off_peak_usd"]))
-                unknown_reserve_usd += reserve_usd * int(
-                    result.metadata.get("unknown_cost_requests", 0)
-                )
             elif sent > 0:
                 unknown_reserve_usd += reserve_usd * sent
 
@@ -921,11 +721,6 @@ def evaluate_dataset(
                 "usage": result.metadata.get("usage"),
                 "estimated_cost": cost,
                 "latency_s": latency_s,
-                **(
-                    {"tile_records": result.metadata["tile_records"]}
-                    if "tile_records" in result.metadata
-                    else {}
-                ),
             }
         )
 
@@ -990,7 +785,6 @@ def evaluate_dataset(
             "prompt_template_sha256": sha256_bytes(PROMPT_TEMPLATE.encode()),
             "wrapper_version": provider.wrapper_version,
             "settings": provider.settings,
-            "tiles": tiles,
             "max_requests": max_requests,
             "max_usd": str(max_usd),
             "per_request_reserve_usd": str(reserve_usd),

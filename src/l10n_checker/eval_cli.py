@@ -18,7 +18,6 @@ from l10n_checker.evaluation import (
     DEFAULT_UNCIV_FORK,
     evaluate_dataset,
 )
-from l10n_checker.tiling import DEFAULT_TILING, TILING_MODES
 from l10n_checker.vision import VisionProvider, redact
 
 
@@ -91,12 +90,6 @@ def main(argv: list[str] | None = None) -> int:
         help="OCR preprocessing variant for baseline (default: %(default)s).",
     )
     parser.add_argument(
-        "--tiles",
-        choices=TILING_MODES,
-        default=DEFAULT_TILING,
-        help="Vision only: tile layout (default: %(default)s).",
-    )
-    parser.add_argument(
         "--max-requests",
         type=int,
         default=None,
@@ -133,8 +126,6 @@ def main(argv: list[str] | None = None) -> int:
     else:
         if args.max_requests is not None or args.max_usd is not None:
             parser.error("--max-requests and --max-usd apply only to --detector vision")
-        if args.tiles != DEFAULT_TILING:
-            parser.error("--tiles applies only to --detector vision")
 
     api_key = ""
     secrets: tuple[str, ...] = ()
@@ -159,7 +150,6 @@ def main(argv: list[str] | None = None) -> int:
             references_dir=args.references_dir,
             preprocess=args.preprocess,
             provider_factory=provider_factory,
-            tiles=args.tiles,
             max_requests=args.max_requests,
             max_usd=args.max_usd,
             keep_records=args.keep_records,

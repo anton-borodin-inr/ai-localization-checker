@@ -6,49 +6,6 @@ from pathlib import Path
 from PIL import Image
 
 Box = tuple[int, int, int, int]
-DEFAULT_TILING = "none"
-TILING_MODES = ("none", "2x2")
-_NAMES = (
-    "top-left",
-    "top",
-    "top-right",
-    "left",
-    "center",
-    "right",
-    "bottom-left",
-    "bottom",
-    "bottom-right",
-)
-
-
-def grid_2x2_boxes(size: tuple[int, int]) -> dict[str, Box]:
-    """2x2 overlapping tiles (3/5 width x 3/5 height; 1440x648 on 2400x1080)."""
-    width, height = size
-    tile_w = round(width * 3 / 5)
-    tile_h = round(height * 3 / 5)
-    if not (0 < tile_w <= width and 0 < tile_h <= height):
-        raise ValueError(f"Invalid image size for 2x2 tiling: {size!r}")
-    return {
-        "top-left": (0, 0, tile_w, tile_h),
-        "top-right": (width - tile_w, 0, width, tile_h),
-        "bottom-left": (0, height - tile_h, tile_w, height),
-        "bottom-right": (width - tile_w, height - tile_h, width, height),
-    }
-
-
-def map_region(region: str, box: Box, size: tuple[int, int]) -> str:
-    """Map a tile's local 3x3 grid cell to the full-screen 3x3 cell of its centre."""
-    index = _NAMES.index(region)
-    row, col = divmod(index, 3)
-    left, top, right, bottom = box
-    width, height = size
-    if not (0 <= left < right <= width and 0 <= top < bottom <= height):
-        raise ValueError(f"Invalid tile box {box!r} for image size {size!r}")
-    cx = left + (right - left) * (col + 0.5) / 3
-    cy = top + (bottom - top) * (row + 0.5) / 3
-    full_col = min(2, int(cx * 3 / width))
-    full_row = min(2, int(cy * 3 / height))
-    return _NAMES[full_row * 3 + full_col]
 
 
 def crop_tiles(source: Path, destination: Path, boxes: dict[str, Box]) -> list[dict]:
@@ -91,7 +48,18 @@ def region_candidates(region: str, box: Box, size: tuple[int, int]) -> list[str]
     A coarse local region does not identify a pixel. Preserve that uncertainty
     rather than claiming its cell centre was the text centre.
     """
-    index = _NAMES.index(region)
+    names = [
+        "top-left",
+        "top",
+        "top-right",
+        "left",
+        "center",
+        "right",
+        "bottom-left",
+        "bottom",
+        "bottom-right",
+    ]
+    index = names.index(region)
     row, col = divmod(index, 3)
     left, top, right, bottom = box
     x1 = left + (right - left) * col / 3
@@ -100,7 +68,7 @@ def region_candidates(region: str, box: Box, size: tuple[int, int]) -> list[str]
     y2 = top + (bottom - top) * (row + 1) / 3
     width, height = size
     return [
-        _NAMES[r * 3 + c]
+        names[r * 3 + c]
         for r in range(3)
         for c in range(3)
         if max(x1, width * c / 3) < min(x2, width * (c + 1) / 3)

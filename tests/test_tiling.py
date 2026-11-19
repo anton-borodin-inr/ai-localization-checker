@@ -3,12 +3,7 @@ import hashlib
 import pytest
 from PIL import Image
 
-from l10n_checker.tiling import (
-    crop_tiles,
-    grid_2x2_boxes,
-    map_region,
-    region_candidates,
-)
+from l10n_checker.tiling import crop_tiles, region_candidates
 
 
 def test_crop_pixels_provenance_and_source_unchanged(tmp_path):
@@ -42,51 +37,3 @@ def test_grid_mapping_preserves_ambiguity():
         "top",
         "center",
     ]
-
-
-def test_grid_2x2_boxes_and_map_region_alignment():
-    size = (2400, 1080)
-    boxes = grid_2x2_boxes(size)
-    assert boxes == {
-        "top-left": (0, 0, 1440, 648),
-        "top-right": (960, 0, 2400, 648),
-        "bottom-left": (0, 432, 1440, 1080),
-        "bottom-right": (960, 432, 2400, 1080),
-    }
-    # Every local cell maps to one of its region_candidates, and all 9 full-screen
-    # cells are covered across the 4 tiles.
-    covered = set()
-    for box in boxes.values():
-        for local in (
-            "top-left",
-            "top",
-            "top-right",
-            "left",
-            "center",
-            "right",
-            "bottom-left",
-            "bottom",
-            "bottom-right",
-        ):
-            mapped = map_region(local, box, size)
-            assert mapped in region_candidates(local, box, size)
-            covered.add(mapped)
-    assert len(covered) == 9
-    # Shared overlap cells map to the exact same full-screen region from each tile.
-    assert (
-        map_region("top-right", boxes["top-left"], size)
-        == map_region("top-left", boxes["top-right"], size)
-        == "top"
-    )
-    assert (
-        map_region("bottom-left", boxes["top-left"], size)
-        == map_region("top-left", boxes["bottom-left"], size)
-        == "left"
-    )
-    assert (
-        map_region("bottom-right", boxes["top-left"], size)
-        == map_region("bottom-left", boxes["top-right"], size)
-        == map_region("top-right", boxes["bottom-left"], size)
-        == map_region("top-left", boxes["bottom-right"], size)
-        == "center"
-    )

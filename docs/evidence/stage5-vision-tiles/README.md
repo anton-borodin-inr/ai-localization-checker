@@ -29,4 +29,4 @@
 
 ## 3. Conclusion
 
-**Negative result:** `2×2` tiling is **not adopted** for `deepseek-flash` (full-image `--tiles none` stays the default; no decision entry added to `docs/decisions.md`). Tiling increases cost and latency by `~4×`, gains only `~1.2×` linear token resolution per tile, does not recover `overflow`, and degrades precision from `1.000` to `0.111` on the probe screen due to `truncated_text` false positives along tile seams. The `--tiles` option (`none` | `2x2`, default `none`) is retained in `l10n-eval` for future provider comparisons.
+**Negative result:** `2×2` tiling is **not adopted** for `deepseek-flash` (the full image stays the only mode; no decision entry added to `docs/decisions.md`). Tiling increases cost and latency by `~4×`, gains only `~1.2×` linear token resolution per tile, does not recover `overflow`, and degrades precision from `1.000` to `0.111` on the probe screen due to `truncated_text` false positives along tile seams. The probe and diagnostics ran with a `--tiles 2x2` option of `l10n-eval` that was not merged (D-059); the code stays in the history of PR #83 (commit `0955b69`) for a later provider comparison.
