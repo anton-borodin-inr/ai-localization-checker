@@ -1,0 +1,272 @@
+{
+  "schema_version": 1,
+  "screen": "tech-picker",
+  "base_commit": "b534a8ae67c390412984869c7a03b168d532c36c",
+  "context": "Stage 2/3 tech-picker inventory (Archery selected, scroll_to Mining). Derived from confirmed clean Stage 2 references (docs/evidence/47/reference-confirmation) and Unciv source at b534a8a. Numeric counters/icons excluded; viewport-edge items retained per D-030.",
+  "slots": [
+    {
+      "id": "writing",
+      "request": "Writing",
+      "box": [
+        0.2953,
+        0.0,
+        0.4203,
+        0.0467
+      ],
+      "source": "TechPickerScreen.kt: TechButton title, techName.tr(true)"
+    },
+    {
+      "id": "drama-and-poetry",
+      "request": "Drama and Poetry",
+      "box": [
+        0.8128,
+        0.0,
+        0.9377,
+        0.0467
+      ],
+      "source": "TechPickerScreen.kt: TechButton title, techName.tr(true)"
+    },
+    {
+      "id": "animal-husbandry",
+      "request": "Animal Husbandry",
+      "box": [
+        0.0365,
+        0.189,
+        0.1615,
+        0.26
+      ],
+      "source": "TechPickerScreen.kt: TechButton title, techName.tr(true)"
+    },
+    {
+      "id": "trapping",
+      "request": "Trapping",
+      "box": [
+        0.2953,
+        0.189,
+        0.4203,
+        0.26
+      ],
+      "source": "TechPickerScreen.kt: TechButton title, techName.tr(true)"
+    },
+    {
+      "id": "horseback-riding",
+      "request": "Horseback Riding",
+      "box": [
+        0.554,
+        0.189,
+        0.679,
+        0.26
+      ],
+      "source": "TechPickerScreen.kt: TechButton title, techName.tr(true)"
+    },
+    {
+      "id": "archery",
+      "request": "Archery",
+      "box": [
+        0.0365,
+        0.4023,
+        0.1615,
+        0.4733
+      ],
+      "source": "TechPickerScreen.kt: TechButton title, techName.tr(true)"
+    },
+    {
+      "id": "the-wheel",
+      "request": "The Wheel",
+      "box": [
+        0.2953,
+        0.4023,
+        0.4203,
+        0.4733
+      ],
+      "source": "TechPickerScreen.kt: TechButton title, techName.tr(true)"
+    },
+    {
+      "id": "mathematics",
+      "request": "Mathematics",
+      "box": [
+        0.554,
+        0.4023,
+        0.679,
+        0.4733
+      ],
+      "source": "TechPickerScreen.kt: TechButton title, techName.tr(true)"
+    },
+    {
+      "id": "currency",
+      "request": "Currency",
+      "box": [
+        0.8128,
+        0.4023,
+        0.9377,
+        0.4733
+      ],
+      "source": "TechPickerScreen.kt: TechButton title, techName.tr(true)"
+    },
+    {
+      "id": "engineering",
+      "request": "Engineering",
+      "box": [
+        0.8128,
+        0.509,
+        0.9377,
+        0.58
+      ],
+      "source": "TechPickerScreen.kt: TechButton title, techName.tr(true)"
+    },
+    {
+      "id": "mining",
+      "request": "Mining",
+      "box": [
+        0.0365,
+        0.6156,
+        0.1615,
+        0.6867
+      ],
+      "source": "TechPickerScreen.kt: TechButton title, techName.tr(true)"
+    },
+    {
+      "id": "masonry",
+      "request": "Masonry",
+      "box": [
+        0.2953,
+        0.6156,
+        0.4203,
+        0.6867
+      ],
+      "source": "TechPickerScreen.kt: TechButton title, techName.tr(true)"
+    },
+    {
+      "id": "construction",
+      "request": "Construction",
+      "box": [
+        0.554,
+        0.6156,
+        0.679,
+        0.6867
+      ],
+      "source": "TechPickerScreen.kt: TechButton title, techName.tr(true)"
+    },
+    {
+      "id": "bronze-working",
+      "request": "Bronze Working",
+      "box": [
+        0.2953,
+        0.7223,
+        0.4203,
+        0.7933
+      ],
+      "source": "TechPickerScreen.kt: TechButton title, techName.tr(true)"
+    },
+    {
+      "id": "iron-working",
+      "request": "Iron Working",
+      "box": [
+        0.8128,
+        0.7223,
+        0.9377,
+        0.7933
+      ],
+      "source": "TechPickerScreen.kt: TechButton title, techName.tr(true)"
+    },
+    {
+      "id": "close",
+      "request": "Close",
+      "box": [
+        0.0015,
+        0.875,
+        0.0908,
+        0.975
+      ],
+      "source": "PickerScreen.kt: close button"
+    },
+    {
+      "id": "research",
+      "request": "Research [Archery]",
+      "box": [
+        0.78,
+        0.85,
+        1.0,
+        1.0
+      ],
+      "source": "TechPickerScreen.kt: right-side action button for selected Archery; (0/24) counter excluded"
+    },
+    {
+      "id": "units-header",
+      "request": "{Units enabled}:",
+      "box": [
+        0.07,
+        0.85,
+        0.79,
+        0.91
+      ],
+      "source": "TechnologyDescriptions.kt: Archery description panel"
+    },
+    {
+      "id": "archer",
+      "request": "Archer",
+      "box": [
+        0.07,
+        0.89,
+        0.79,
+        0.95
+      ],
+      "source": "TechnologyDescriptions.kt: Archery enabled unit"
+    },
+    {
+      "id": "wonders-header",
+      "request": "{Wonders enabled}:",
+      "box": [
+        0.07,
+        0.94,
+        0.79,
+        0.99
+      ],
+      "source": "TechnologyDescriptions.kt: Archery description panel"
+    },
+    {
+      "id": "wonder-name",
+      "request": "Temple of Artemis",
+      "box": [
+        0.07,
+        0.97,
+        0.79,
+        1.0
+      ],
+      "source": "TechnologyDescriptions.kt: Archery enabled wonder (bottom viewport edge)"
+    },
+    {
+      "id": "wonder-culture",
+      "request": "Culture",
+      "box": [
+        0.07,
+        0.97,
+        0.79,
+        1.0
+      ],
+      "source": "TechnologyDescriptions.kt: Temple of Artemis stat"
+    },
+    {
+      "id": "wonder-food",
+      "request": "[+10]% [Food] [in all cities]",
+      "box": [
+        0.07,
+        0.97,
+        0.79,
+        1.0
+      ],
+      "source": "TechnologyDescriptions.kt: Temple of Artemis unique[0]"
+    },
+    {
+      "id": "wonder-archery-production",
+      "request": "[+15]% Production when constructing [Archery] units [in this city]",
+      "box": [
+        0.07,
+        0.97,
+        0.79,
+        1.0
+      ],
+      "source": "TechnologyDescriptions.kt: Temple of Artemis unique[1]"
+    }
+  ]
+}

@@ -1,0 +1,404 @@
+{
+  "schema_version": 1,
+  "screen": "empire-stats",
+  "base_commit": "b534a8ae67c390412984869c7a03b168d532c36c",
+  "context": "Stage 2/3 empire-stats inventory (Stats tab active). Boxes span EN and DE layouts (including wrapped Great person points and shifted Score panels). Numeric values excluded.",
+  "slots": [
+    {
+      "id": "tab-cities",
+      "request": "Cities",
+      "box": [
+        0.042,
+        0.0188,
+        0.156,
+        0.0947
+      ],
+      "source": "EmpireOverviewScreen.kt: tab header"
+    },
+    {
+      "id": "tab-stats",
+      "request": "Stats",
+      "box": [
+        0.1208,
+        0.0188,
+        0.2273,
+        0.0947
+      ],
+      "source": "EmpireOverviewScreen.kt: tab header"
+    },
+    {
+      "id": "tab-trades",
+      "request": "Trades",
+      "box": [
+        0.2243,
+        0.0188,
+        0.309,
+        0.0947
+      ],
+      "source": "EmpireOverviewScreen.kt: tab header"
+    },
+    {
+      "id": "tab-units",
+      "request": "Units",
+      "box": [
+        0.3067,
+        0.0188,
+        0.3862,
+        0.0947
+      ],
+      "source": "EmpireOverviewScreen.kt: tab header"
+    },
+    {
+      "id": "tab-politics",
+      "request": "Politics",
+      "box": [
+        0.396,
+        0.0188,
+        0.4785,
+        0.0947
+      ],
+      "source": "EmpireOverviewScreen.kt: tab header"
+    },
+    {
+      "id": "tab-resources",
+      "request": "Resources",
+      "box": [
+        0.4807,
+        0.0188,
+        0.5895,
+        0.0947
+      ],
+      "source": "EmpireOverviewScreen.kt: tab header"
+    },
+    {
+      "id": "tab-religion",
+      "request": "Religion",
+      "box": [
+        0.5842,
+        0.0188,
+        0.6772,
+        0.0947
+      ],
+      "source": "EmpireOverviewScreen.kt: tab header"
+    },
+    {
+      "id": "tab-wonders",
+      "request": "Wonders",
+      "box": [
+        0.672,
+        0.0188,
+        0.7635,
+        0.0947
+      ],
+      "source": "EmpireOverviewScreen.kt: tab header"
+    },
+    {
+      "id": "tab-notifications",
+      "request": "Notifications",
+      "box": [
+        0.7657,
+        0.0188,
+        0.9225,
+        0.0947
+      ],
+      "source": "EmpireOverviewScreen.kt: tab header"
+    },
+    {
+      "id": "happiness-header",
+      "request": "Happiness",
+      "box": [
+        0.0645,
+        0.2051,
+        0.2775,
+        0.2883
+      ],
+      "source": "StatsOverviewTab.kt: empire statistics table"
+    },
+    {
+      "id": "happiness-base",
+      "request": "Base happiness",
+      "box": [
+        0.0563,
+        0.2834,
+        0.2617,
+        0.3533
+      ],
+      "source": "StatsOverviewTab.kt: empire statistics table"
+    },
+    {
+      "id": "happiness-population",
+      "request": "Population",
+      "box": [
+        0.0563,
+        0.3301,
+        0.2213,
+        0.4
+      ],
+      "source": "StatsOverviewTab.kt: empire statistics table"
+    },
+    {
+      "id": "happiness-cities",
+      "request": "Cities",
+      "box": [
+        0.0563,
+        0.3768,
+        0.186,
+        0.4467
+      ],
+      "source": "StatsOverviewTab.kt: empire statistics table"
+    },
+    {
+      "id": "happiness-total",
+      "request": "Total",
+      "box": [
+        0.0563,
+        0.4234,
+        0.1943,
+        0.4933
+      ],
+      "source": "StatsOverviewTab.kt: empire statistics table"
+    },
+    {
+      "id": "gold-header",
+      "request": "Gold",
+      "box": [
+        0.2378,
+        0.2051,
+        0.492,
+        0.2883
+      ],
+      "source": "StatsOverviewTab.kt: empire statistics table"
+    },
+    {
+      "id": "gold-buildings",
+      "request": "Buildings",
+      "box": [
+        0.2273,
+        0.2834,
+        0.477,
+        0.3533
+      ],
+      "source": "StatsOverviewTab.kt: empire statistics table"
+    },
+    {
+      "id": "gold-tile-yields",
+      "request": "Tile yields",
+      "box": [
+        0.2273,
+        0.3301,
+        0.4912,
+        0.4
+      ],
+      "source": "StatsOverviewTab.kt: empire statistics table"
+    },
+    {
+      "id": "gold-total",
+      "request": "Total",
+      "box": [
+        0.2273,
+        0.3768,
+        0.4702,
+        0.4467
+      ],
+      "source": "StatsOverviewTab.kt: empire statistics table"
+    },
+    {
+      "id": "science-header",
+      "request": "Science",
+      "box": [
+        0.3563,
+        0.2051,
+        0.7035,
+        0.2883
+      ],
+      "source": "StatsOverviewTab.kt: empire statistics table"
+    },
+    {
+      "id": "science-population",
+      "request": "Population",
+      "box": [
+        0.3555,
+        0.2834,
+        0.6518,
+        0.3533
+      ],
+      "source": "StatsOverviewTab.kt: empire statistics table"
+    },
+    {
+      "id": "science-buildings",
+      "request": "Buildings",
+      "box": [
+        0.3555,
+        0.3301,
+        0.6315,
+        0.4
+      ],
+      "source": "StatsOverviewTab.kt: empire statistics table"
+    },
+    {
+      "id": "science-total",
+      "request": "Total",
+      "box": [
+        0.3555,
+        0.3768,
+        0.6248,
+        0.4467
+      ],
+      "source": "StatsOverviewTab.kt: empire statistics table"
+    },
+    {
+      "id": "culture-header",
+      "request": "Culture",
+      "box": [
+        0.489,
+        0.2051,
+        0.8227,
+        0.2883
+      ],
+      "source": "StatsOverviewTab.kt: empire statistics table"
+    },
+    {
+      "id": "culture-buildings",
+      "request": "Buildings",
+      "box": [
+        0.489,
+        0.2834,
+        0.81,
+        0.3533
+      ],
+      "source": "StatsOverviewTab.kt: empire statistics table"
+    },
+    {
+      "id": "culture-total",
+      "request": "Total",
+      "box": [
+        0.489,
+        0.3301,
+        0.8032,
+        0.4
+      ],
+      "source": "StatsOverviewTab.kt: empire statistics table"
+    },
+    {
+      "id": "faith-header",
+      "request": "Faith",
+      "box": [
+        0.6157,
+        0.2051,
+        0.951,
+        0.2883
+      ],
+      "source": "StatsOverviewTab.kt: empire statistics table"
+    },
+    {
+      "id": "faith-total",
+      "request": "Total",
+      "box": [
+        0.6157,
+        0.2834,
+        0.9255,
+        0.3533
+      ],
+      "source": "StatsOverviewTab.kt: empire statistics table"
+    },
+    {
+      "id": "gpp-header",
+      "request": "Great person points",
+      "box": [
+        0.0683,
+        0.2051,
+        0.9382,
+        0.65
+      ],
+      "source": "StatsOverviewTab.kt: empire statistics table"
+    },
+    {
+      "id": "gpp-current",
+      "request": "Current points",
+      "box": [
+        0.0855,
+        0.2834,
+        0.8482,
+        0.715
+      ],
+      "source": "StatsOverviewTab.kt: empire statistics table"
+    },
+    {
+      "id": "gpp-per-turn",
+      "request": "Points per turn",
+      "box": [
+        0.2062,
+        0.2834,
+        0.9442,
+        0.715
+      ],
+      "source": "StatsOverviewTab.kt: empire statistics table"
+    },
+    {
+      "id": "score-header",
+      "request": "Score",
+      "box": [
+        0.1013,
+        0.5668,
+        0.525,
+        0.65
+      ],
+      "source": "StatsOverviewTab.kt: empire statistics table"
+    },
+    {
+      "id": "score-tiles",
+      "request": "Tiles",
+      "box": [
+        0.063,
+        0.6451,
+        0.4425,
+        0.715
+      ],
+      "source": "StatsOverviewTab.kt: empire statistics table"
+    },
+    {
+      "id": "score-population",
+      "request": "Population",
+      "box": [
+        0.063,
+        0.6918,
+        0.4792,
+        0.7617
+      ],
+      "source": "StatsOverviewTab.kt: empire statistics table"
+    },
+    {
+      "id": "score-cities",
+      "request": "Cities",
+      "box": [
+        0.063,
+        0.7384,
+        0.444,
+        0.8083
+      ],
+      "source": "StatsOverviewTab.kt: empire statistics table"
+    },
+    {
+      "id": "score-technologies",
+      "request": "Technologies",
+      "box": [
+        0.063,
+        0.7851,
+        0.4867,
+        0.855
+      ],
+      "source": "StatsOverviewTab.kt: empire statistics table"
+    },
+    {
+      "id": "score-total",
+      "request": "Total",
+      "box": [
+        0.063,
+        0.8318,
+        0.4522,
+        0.9017
+      ],
+      "source": "StatsOverviewTab.kt: empire statistics table"
+    }
+  ]
+}

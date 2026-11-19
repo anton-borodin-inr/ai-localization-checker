@@ -1,0 +1,206 @@
+{
+  "schema_version": 1,
+  "screen": "civilopedia",
+  "base_commit": "b534a8ae67c390412984869c7a03b168d532c36c",
+  "context": "Stage 2/3 civilopedia inventory (Tutorials -> Differences from Civilization V). Sidebar tutorial slots share the sorted list box across languages; viewport-edge tab/paragraph retained per D-030.",
+  "slots": [
+    {
+      "id": "tab-buildings",
+      "request": "Buildings",
+      "box": [
+        0.0323,
+        0.0438,
+        0.1118,
+        0.1197
+      ],
+      "source": "CivilopediaScreen.kt: category tab"
+    },
+    {
+      "id": "tab-wonders",
+      "request": "Wonders",
+      "box": [
+        0.1343,
+        0.0438,
+        0.2138,
+        0.1197
+      ],
+      "source": "CivilopediaScreen.kt: category tab"
+    },
+    {
+      "id": "tab-resources",
+      "request": "Resources",
+      "box": [
+        0.2288,
+        0.0438,
+        0.3255,
+        0.1197
+      ],
+      "source": "CivilopediaScreen.kt: category tab"
+    },
+    {
+      "id": "tab-terrains",
+      "request": "Terrains",
+      "box": [
+        0.348,
+        0.0438,
+        0.423,
+        0.1197
+      ],
+      "source": "CivilopediaScreen.kt: category tab"
+    },
+    {
+      "id": "tab-tile-improvements",
+      "request": "Tile Improvements",
+      "box": [
+        0.4455,
+        0.0438,
+        0.591,
+        0.1197
+      ],
+      "source": "CivilopediaScreen.kt: category tab"
+    },
+    {
+      "id": "tab-units",
+      "request": "Units",
+      "box": [
+        0.6075,
+        0.0438,
+        0.6945,
+        0.1197
+      ],
+      "source": "CivilopediaScreen.kt: category tab"
+    },
+    {
+      "id": "tab-unit-types",
+      "request": "Unit types",
+      "box": [
+        0.687,
+        0.0438,
+        0.831,
+        0.1197
+      ],
+      "source": "CivilopediaScreen.kt: category tab"
+    },
+    {
+      "id": "tab-nations",
+      "request": "Nations",
+      "box": [
+        0.795,
+        0.0438,
+        0.9337,
+        0.1197
+      ],
+      "source": "CivilopediaScreen.kt: category tab"
+    },
+    {
+      "id": "sidebar-heading",
+      "request": "Tutorials",
+      "box": [
+        0.099,
+        0.1685,
+        0.2513,
+        0.2517
+      ],
+      "source": "CivilopediaScreen.kt: selected category heading"
+    },
+    {
+      "id": "entry-civilopedia",
+      "request": "Civilopedia",
+      "box": [
+        0.0,
+        0.25,
+        0.3,
+        0.98
+      ],
+      "source": "CivilopediaScreen.kt: Tutorials sidebar list (alphabetically sorted per language)"
+    },
+    {
+      "id": "entry-contact-me",
+      "request": "Contact Me",
+      "box": [
+        0.0,
+        0.25,
+        0.3,
+        0.98
+      ],
+      "source": "CivilopediaScreen.kt: Tutorials sidebar list (alphabetically sorted per language)"
+    },
+    {
+      "id": "entry-differences-civ5",
+      "request": "Differences from Civilization V",
+      "box": [
+        0.0,
+        0.25,
+        0.3,
+        0.98
+      ],
+      "source": "CivilopediaScreen.kt: Tutorials sidebar list (alphabetically sorted per language)"
+    },
+    {
+      "id": "entry-new-game",
+      "request": "New Game",
+      "box": [
+        0.0,
+        0.25,
+        0.3,
+        0.98
+      ],
+      "source": "CivilopediaScreen.kt: Tutorials sidebar list (alphabetically sorted per language)"
+    },
+    {
+      "id": "entry-victory-types",
+      "request": "Victory Types",
+      "box": [
+        0.0,
+        0.25,
+        0.3,
+        0.98
+      ],
+      "source": "CivilopediaScreen.kt: Tutorials sidebar list (alphabetically sorted per language)"
+    },
+    {
+      "id": "article-title",
+      "request": "Differences from Civilization V",
+      "box": [
+        0.38,
+        0.16,
+        0.92,
+        0.26
+      ],
+      "source": "CivilopediaScreen.kt: selected article title"
+    },
+    {
+      "id": "article-production-focus",
+      "request": "Production Focus\nIn Civilization V, the Food yield in a city is calculated first, then population grows by consuming stored food (growth), then production is calculated, and so on one by one the other stats are calculated. Thus, citizens can produce yields in the same turn as they are born. The city focus is set to Production to assign the newborn citizen to a hill so they'll contribute Production, and then manually reassigned to a growth tile on the next turn. Alternatively, you can set city focus to Gold (e.g. with Cerro de Potosi), Faith (e.g. with Mount Sinai) or whatever gains the most yields. In Unciv, citizens only start producing yields on the next turn, so you can ignore this whole concept.",
+      "box": [
+        0.38,
+        0.27,
+        0.92,
+        0.72
+      ],
+      "source": "Tutorials.json / CivilopediaScreen.kt: Differences from Civilization V paragraph 1"
+    },
+    {
+      "id": "article-science-queueing",
+      "request": "Science Queueing\nIn Civilization V, Science yield is calculated after production, so if you finish an item and have Science (or Gold) queued as a perpetual construction, the Production overflow from item will be converted into Science (or Gold), but the Production is not consumed, as this will only happen again on the next turn. By immediately swapping out your perpetual construction for an item on the next turn, you'll get this Science (or Gold) for free. This doesn't apply to Unciv, so don't bother.",
+      "box": [
+        0.38,
+        0.6,
+        0.92,
+        1.0
+      ],
+      "source": "Tutorials.json / CivilopediaScreen.kt: Differences from Civilization V paragraph 2"
+    },
+    {
+      "id": "article-double-aqueducts",
+      "request": "Double Aqueducts\nIn Civilization V, the game sells existing copies of the building for you before providing a free copy of the building. So, if you build an aqueduct in a city, and then in the turn of adopting Tradition Complete you sell a cheap building (e.g a shrine) beforehand, the game is unable to sell more than 1 building per turn, and thus you'll keep your aqueduct, together with the new free aqueduct. Not applicable to Unciv.",
+      "box": [
+        0.38,
+        0.85,
+        0.92,
+        1.0
+      ],
+      "source": "Tutorials.json / CivilopediaScreen.kt: Differences from Civilization V paragraph 3 (bottom viewport edge)"
+    }
+  ]
+}
