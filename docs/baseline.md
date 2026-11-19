@@ -4,7 +4,7 @@ Issue #12. This is a detector over previously captured PNGs, not a capture or
 evaluation command (D-003). It returns the existing `CheckResult` / `Finding`
 schema. No provider, API key, human label file, emulator or network is needed.
 
-**OCR engine:** Tesseract stays the default until Stage 4; EasyOCR is the leading candidate from the issue #48 comparison (D-045, [summary](evidence/48/README.md)).
+**OCR engine:** Tesseract 5 with `upscale2x-otsu` preprocessing (`T2`, proposed in D-063 from the Stage 4 dev-set comparison, [report](evidence/stage4-ocr/README.md)). EasyOCR is not added; `--preprocess {none,upscale2x,upscale2x-otsu}` selects preprocessing (default `upscale2x-otsu`).
 
 ## Dependency and command
 
@@ -40,7 +40,10 @@ These settings and the screen inventory are fixed before the first real slice
 run. They are not selected by looking at the clean-screen false positives.
 
 - Tesseract LSTM `--oem 1 --psm 11` (sparse UI text); `eng` for English,
-  `deu+eng` for German, in that order. Timeout: 30 seconds per subprocess.
+  `deu+eng` for German, in that order. Default preprocessing is
+  `upscale2x-otsu` (`T2`, D-063: 2× LANCZOS RGB upscale, grayscale, Otsu
+  binarization, word boxes mapped back to original coordinates); `--preprocess
+  none` selects unpreprocessed `T0`. Timeout: 30 seconds per subprocess.
 - NFKC, case folding and whitespace collapse for comparison. No edit-distance
   tolerance, spell correction, confidence cutoff or screen-specific OCR fix.
   The original OCR text is retained in findings and TSV.
