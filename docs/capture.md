@@ -181,8 +181,8 @@ uv run ruff check . && uv run ruff format --check .
 
 The first command skips device tests by default and requires no emulator; the
 language step is tested against a fake device. The second
-explicitly captures the English main menu from a prepared device into a unique
-folder under `data/device-tests/`, using `adb root` as described above. This
+explicitly captures the English main menu from a prepared device into a
+temporary folder (`tmp_path`), using `adb root` as described above. This
 legacy main-menu smoke is not a dev source-screen ID and does not satisfy issue
 #57's manifest verification. For that task use only the scoped dev test and
 approved-plan/output arguments in [stage2-capture.md](stage2-capture.md), after
