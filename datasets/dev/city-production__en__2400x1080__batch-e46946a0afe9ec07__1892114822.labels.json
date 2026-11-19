@@ -1,0 +1,13 @@
+{
+  "schema_version": 2,
+  "screenshot": "city-production__en__2400x1080__batch-e46946a0afe9ec07__1892114822.png",
+  "language": "en",
+  "labels": [
+    {
+      "defect_type": "wrong_language",
+      "text_expected": "Requires at least 2 population",
+      "text_seen": "Benötigt mindestens 2 Bevölkerung",
+      "region": "left"
+    }
+  ]
+}

@@ -690,3 +690,20 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
   eye (D-012). Strict pixel gates caused repeated stops (D-051–D-056, D-060).
 - **Supersedes:** D-058 and D-060 (withdrawn), the pixel/geometry gate and the
   calibration stop in D-050, and the isolation-gate clause in D-059.
+
+## D-062 — Stage 3 dev labels: drafts from the mutation manifest, Anton confirms
+
+- **Date:** 2026-11-19
+- **Status:** Accepted
+- **Accepted by:** Anton, 2026-11-19
+- **Decision:** Draft labels for the dev set come only from the mutation
+  manifest of the accepted run (intended class, texts and bounds of each
+  qualified occurrence); clean controls start empty. Anton confirms, edits or
+  removes every draft and adds any other defect he sees; no LLM suggests
+  labels. The 34 dev PNGs and their label files are committed to the
+  repository; hold-out stays outside it. Unreadably small text is not
+  recorded in v1 (D-047).
+- **Why:** The manifest is ground truth for what was injected; model drafts
+  would anchor the review and could favour that model in later comparisons.
+- **Consequences:** D-012 holds: the drafts are not detector output, and no
+  label is final until Anton marks the screenshot reviewed.

@@ -1,0 +1,20 @@
+{
+  "schema_version": 2,
+  "screenshot": "tech-picker__de__2400x1080__batch-e46946a0afe9ec07__1892114822.png",
+  "language": "de",
+  "labels": [
+    {
+      "defect_type": "wrong_language",
+      "text_expected": "Bergbau",
+      "text_seen": "Minage",
+      "region": "left"
+    },
+    {
+      "defect_type": "other",
+      "text_expected": "Bogenschießen erforschen",
+      "text_seen": "[amount] erforschen",
+      "region": "bottom-right",
+      "note": "broken placeholder"
+    }
+  ]
+}

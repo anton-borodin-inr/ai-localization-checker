@@ -31,6 +31,7 @@ l10n-baseline = "l10n_checker.baseline_cli:main"
 l10n-slice = "l10n_checker.slice_cli:main"
 l10n-reference = "l10n_checker.reference_cli:main"
 l10n-mutate = "l10n_checker.mutation_cli:main"
+l10n-label = "l10n_checker.label_cli:main"
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]

@@ -1,0 +1,13 @@
+{
+  "schema_version": 2,
+  "screenshot": "empire-stats__de__2400x1080__batch-e45e29bd1f0f9039__1887578114.png",
+  "language": "de",
+  "labels": [
+    {
+      "defect_type": "wrong_language",
+      "text_expected": "Felderträge",
+      "text_seen": "Tile yields",
+      "region": "center"
+    }
+  ]
+}

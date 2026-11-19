@@ -1,0 +1,19 @@
+{
+  "schema_version": 2,
+  "screenshot": "tech-picker__de__2400x1080__batch-99984bb52ea65c2f__1869508724.png",
+  "language": "de",
+  "labels": [
+    {
+      "defect_type": "truncated_text",
+      "text_expected": "Mauerarbeiten und Steinbau",
+      "text_seen": "Mauerarbeiten und S...",
+      "region": "center"
+    },
+    {
+      "defect_type": "truncated_text",
+      "text_expected": "Bergbau und Erzgewinnung",
+      "text_seen": "Bergbau und Erzgew...",
+      "region": "left"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": 2,
+  "screenshot": "civilopedia__de__2400x1080__batch-e46946a0afe9ec07__1892114822.png",
+  "language": "de",
+  "labels": [
+    {
+      "defect_type": "wrong_language",
+      "text_expected": "Neues Spiel",
+      "text_seen": "Nouvelle partie",
+      "region": "left"
+    }
+  ]
+}
