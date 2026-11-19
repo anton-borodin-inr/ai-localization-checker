@@ -14,17 +14,6 @@ TRANSLATIONS = tuple(
     f"android/assets/jsons/translations/{name}.properties"
     for name in ("English", "German")
 )
-BUILDER_SHA256 = "e9ec71c5bb0d8816bfa84c1eab911e6b7a0d3300d0bc54ae2b8357a058478086"
-CHECKER_COMMIT = "e26914a4870d7755634cf547931f88c3e3093e5c"
-INSTALLATION = {
-    "command_template": ["adb", "install", "-r", "-d", "<apk>"],
-    "requires_debuggable": True,
-    "downgrade_permission_required": True,
-    "uninstall_allowed": False,
-    "backup_restore_required_in_part_c": True,
-    "emulator_downgrade_verified": False,
-    "app_data_preservation_verified": False,
-}
 
 
 def require(condition, message):
