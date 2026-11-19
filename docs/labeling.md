@@ -36,6 +36,14 @@ An empty `labels` array means that Anton reviewed the whole screenshot and found
 
 `region` is the cell of the 3×3 screen grid (`top-left` … `bottom-right`, D-018) that contains the **centre of the text's bounding box**. A text that spans two cells gets the cell of its centre, not the cell where it starts.
 
+## Drafting and review (Stage 3, D-062)
+
+Dev-set drafts come only from the accepted run's `mutation-manifest.json` and `acceptance.json`, never from a detector or LLM:
+
+1. **Generate the review page:** `uv run l10n-label draft --run-dir <run-dir>` writes one self-contained `label-review.html` next to the accepted PNGs. Each qualified intended occurrence becomes a draft label (`region` from the centre of its text bounds on 2400×1080); clean controls start empty; manifest `review_flags` appear as hints.
+2. **Review in the browser:** open `label-review.html` from disk. Confirm, edit or delete every draft, add any other visible defect (picking its 3×3 region cell), mark every screenshot reviewed, and export `label-review-export.json`.
+3. **Write label files:** `uv run l10n-label write --export <export.json> --output-dir datasets/dev --acceptance <run-dir>/acceptance.json --copy-pngs-from <run-dir>` refuses any export with unreviewed screenshots, unconfirmed drafts, hold-out screens, or invalid schema v2 labels, and writes one `<stem>.labels.json` per screenshot validated with `matching.load_labels`.
+
 ## Reviewed screenshots
 
 | Screenshot | Labels | Reviewed by |
