@@ -563,3 +563,32 @@ def test_label_cli_draft_and_write(tmp_path):
         )
         == 1
     )
+
+
+def test_committed_dev_dataset_loads_cleanly():
+    from l10n_checker.capture import REPO_ROOT
+
+    dataset = REPO_ROOT / "datasets" / "dev"
+    pngs = sorted(dataset.glob("*.png"))
+    label_files = sorted(dataset.glob("*.labels.json"))
+    assert len(pngs) == 34
+    assert len(label_files) == 34
+    assert {p.stem for p in pngs} == {
+        lf.name.removesuffix(".labels.json") for lf in label_files
+    }
+
+    split = json.loads(
+        (REPO_ROOT / "fixtures" / "stage2" / "split.json").read_text(encoding="utf-8")
+    )
+    holdout = set(split["holdout"])
+
+    total_labels = 0
+    for lf in label_files:
+        screen = lf.name.split("__")[0]
+        assert screen not in holdout
+        doc = json.loads(lf.read_text(encoding="utf-8"))
+        version, labels = load_labels(doc)
+        assert version == 2
+        assert doc["screenshot"] == f"{lf.name.removesuffix('.labels.json')}.png"
+        total_labels += len(labels)
+    assert total_labels == 33
