@@ -80,3 +80,39 @@ def test_output_directory_works_without_an_editable_install(tmp_path, monkeypatc
     (tmp_path / "data/link").symlink_to(tmp_path / "outside", target_is_directory=True)
     with pytest.raises(CaptureError):
         baseline_cli.output_directory(Path("data/link/runs"))
+
+
+def test_cli_preprocess_defaults_to_t2_and_accepts_override(monkeypatch):
+    seen = []
+    monkeypatch.setattr(baseline_cli, "output_directory", lambda p: p)
+
+    def run(*args):
+        seen.append(args[5].preprocessing)
+        return CheckResult(
+            status="checked", findings=[], reason=None, metadata={}
+        ), Path("data/run")
+
+    monkeypatch.setattr(baseline_cli, "run_baseline", run)
+    argv(monkeypatch)
+    assert baseline_cli.main() == 0
+    assert seen[-1] == "upscale2x-otsu"
+
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "l10n-baseline",
+            "--image",
+            "image.png",
+            "--manifest",
+            "manifest.json",
+            "--inventory",
+            "inventory.json",
+            "--unciv-fork",
+            "fork",
+            "--preprocess",
+            "none",
+        ],
+    )
+    assert baseline_cli.main() == 0
+    assert seen[-1] == "none"

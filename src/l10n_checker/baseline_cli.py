@@ -4,7 +4,12 @@ import argparse
 import sys
 from pathlib import Path
 
-from l10n_checker.baseline import run_baseline
+from l10n_checker.baseline import (
+    DEFAULT_PREPROCESSING,
+    PREPROCESSING,
+    Tesseract,
+    run_baseline,
+)
 from l10n_checker.capture import CaptureError
 
 
@@ -27,6 +32,12 @@ def main() -> int:
     parser.add_argument("--inventory", type=Path, required=True)
     parser.add_argument("--unciv-fork", type=Path, required=True)
     parser.add_argument("--runs-dir", type=Path, default=Path("data/baseline-runs"))
+    parser.add_argument(
+        "--preprocess",
+        choices=PREPROCESSING,
+        default=DEFAULT_PREPROCESSING,
+        help="OCR image preprocessing (default: %(default)s)",
+    )
     args = parser.parse_args()
     try:
         result, directory = run_baseline(
@@ -35,6 +46,7 @@ def main() -> int:
             args.inventory,
             args.unciv_fork,
             output_directory(args.runs_dir),
+            Tesseract(preprocessing=args.preprocess),
         )
     except (CaptureError, OSError) as exc:
         print(f"Cannot record baseline run: {exc}", file=sys.stderr)

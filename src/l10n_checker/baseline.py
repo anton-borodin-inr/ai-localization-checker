@@ -8,22 +8,42 @@ import math
 import re
 import shutil
 import subprocess
+import tempfile
 import time
 import unicodedata
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Protocol
 
+from PIL import Image
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from l10n_checker.capture import CaptureError, png_size
 from l10n_checker.unciv_text import RenderingError, TranslationTable
 from l10n_checker.vision import CheckResult, Finding, new_run_id
 
+PREPROCESSING = ("none", "upscale2x", "upscale2x-otsu")
+DEFAULT_PREPROCESSING = "upscale2x-otsu"
+TSV_HEADER = (
+    "level",
+    "page_num",
+    "block_num",
+    "par_num",
+    "line_num",
+    "word_num",
+    "left",
+    "top",
+    "width",
+    "height",
+    "conf",
+    "text",
+)
+
 SETTINGS = {
     "version": "baseline-v0.1",
     "oem": 1,
     "psm": 11,
+    "preprocessing": DEFAULT_PREPROCESSING,
     "languages": {"en": "eng", "de": "deu+eng"},
     "timeout_s": 30,
     "exact_match": "NFKC + casefold + whitespace collapse",
@@ -156,9 +176,96 @@ def parse_tsv(tsv: str, size: tuple[int, int]) -> list[Word]:
     return words
 
 
+def otsu_threshold(histogram: list[int]) -> int:
+    """Smallest maximizer; integer cross-products avoid floating tie drift."""
+    total = sum(histogram)
+    weighted = sum(i * count for i, count in enumerate(histogram))
+    count_left = sum_left = 0
+    best_num, best_den, best = -1, 1, 0
+    for threshold, count in enumerate(histogram):
+        count_left += count
+        sum_left += threshold * count
+        count_right = total - count_left
+        if not count_left or not count_right:
+            continue
+        numerator = (sum_left * total - weighted * count_left) ** 2
+        denominator = count_left * count_right
+        if numerator * best_den > best_num * denominator:
+            best_num, best_den, best = numerator, denominator, threshold
+    return best
+
+
+def preprocess_image(image: Path, variant: str, target: Path) -> dict:
+    if variant not in PREPROCESSING or variant == "none":
+        raise BaselineError("A transformed preprocessing variant is required")
+    with Image.open(image) as source:
+        source_size = source.size
+        prepared = source.convert("RGB").resize(
+            (source.width * 2, source.height * 2), Image.Resampling.LANCZOS
+        )
+    threshold = None
+    if variant == "upscale2x-otsu":
+        prepared = prepared.convert("L")
+        threshold = otsu_threshold(prepared.histogram())
+        prepared = prepared.point([255 if i > threshold else 0 for i in range(256)])
+    prepared.save(target, format="PNG")
+    return {
+        "variant": variant,
+        "scale": 2,
+        "source_size": list(source_size),
+        "source_sha256": digest(image.read_bytes()),
+        "prepared_sha256": digest(target.read_bytes()),
+        "otsu_threshold": threshold,
+    }
+
+
+def mapped_box(
+    box: tuple[float, float, float, float], scale: int, size: tuple[int, int]
+) -> tuple[int, int, int, int]:
+    if len(box) != 4 or not all(math.isfinite(float(v)) for v in box):
+        raise BaselineError("Invalid OCR box")
+    left, top = math.floor(box[0] / scale), math.floor(box[1] / scale)
+    right, bottom = math.ceil(box[2] / scale), math.ceil(box[3] / scale)
+    left, top = max(0, left), max(0, top)
+    right, bottom = min(size[0], right), min(size[1], bottom)
+    if right <= left or bottom <= top:
+        raise BaselineError("Empty OCR box after coordinate conversion")
+    return left, top, right - left, bottom - top
+
+
+def word_tsv(words: list[Word]) -> str:
+    output = io.StringIO()
+    writer = csv.writer(output, delimiter="\t", lineterminator="\n")
+    writer.writerow(TSV_HEADER)
+    for index, word in enumerate(words, 1):
+        if any(c in word.text for c in "\t\r\n"):
+            raise BaselineError("OCR word contains a TSV control character")
+        writer.writerow(
+            [
+                5,
+                *word.line,
+                index,
+                word.left,
+                word.top,
+                word.width,
+                word.height,
+                word.confidence * 100,
+                word.text,
+            ]
+        )
+    return output.getvalue()
+
+
 class Tesseract:
-    def __init__(self, executable: str = "tesseract"):
+    def __init__(
+        self,
+        executable: str = "tesseract",
+        preprocessing: str = DEFAULT_PREPROCESSING,
+    ):
+        if preprocessing not in PREPROCESSING:
+            raise BaselineError(f"Unknown OCR preprocessing: {preprocessing}")
         self.executable = executable
+        self.preprocessing = preprocessing
 
     def recognize(self, image: Path, language: str) -> OcrOutput:
         executable = shutil.which(self.executable)
@@ -189,22 +296,52 @@ class Tesseract:
             if lang not in available.splitlines()[1:]:
                 raise BaselineError(f"Tesseract language data is missing: {lang}")
             hashes[lang] = digest((data_dir / f"{lang}.traineddata").read_bytes())
-        tsv = run(
-            str(image),
-            "stdout",
-            "--tessdata-dir",
-            str(data_dir),
-            "--oem",
-            str(SETTINGS["oem"]),
-            "--psm",
-            str(SETTINGS["psm"]),
-            "-l",
-            languages,
-            "tsv",
-        )
+
+        def run_ocr(target: Path) -> str:
+            return run(
+                str(target),
+                "stdout",
+                "--tessdata-dir",
+                str(data_dir),
+                "--oem",
+                str(SETTINGS["oem"]),
+                "--psm",
+                str(SETTINGS["psm"]),
+                "-l",
+                languages,
+                "tsv",
+            )
+
+        if self.preprocessing == "none":
+            tsv = run_ocr(image)
+            return OcrOutput(
+                tsv,
+                {
+                    "engine": version,
+                    "languages": languages,
+                    "traineddata_sha256": hashes,
+                    "preprocessing": "none",
+                },
+            )
+
+        with tempfile.TemporaryDirectory(prefix="l10n-ocr-") as directory:
+            target = Path(directory) / image.name
+            prep = preprocess_image(image, self.preprocessing, target)
+            native_tsv = run_ocr(target)
+        size = tuple(prep["source_size"])
+        native_words = parse_tsv(native_tsv, (size[0] * 2, size[1] * 2))
+        words = [
+            Word(w.text, *mapped_box(w.box, 2, size), w.confidence, w.line)
+            for w in native_words
+        ]
         return OcrOutput(
-            tsv,
-            {"engine": version, "languages": languages, "traineddata_sha256": hashes},
+            word_tsv(words),
+            {
+                "engine": version,
+                "languages": languages,
+                "traineddata_sha256": hashes,
+                "preprocessing": prep,
+            },
         )
 
 
