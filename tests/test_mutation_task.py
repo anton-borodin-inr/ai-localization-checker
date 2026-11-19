@@ -1,5 +1,7 @@
 """Exercise the production runner offline with synthetic captures."""
 
+import io
+import tarfile
 import zipfile
 from pathlib import Path
 from types import SimpleNamespace
@@ -12,6 +14,45 @@ from l10n_checker import mutation_cli, mutation_task
 from l10n_checker.capture import CaptureError
 from l10n_checker.screen_manifest import digest, json_bytes
 from l10n_checker.text_dump import canonical_bytes
+
+
+@pytest.mark.parametrize(
+    "malformed", [None, "empty", "garbage", "empty-tar", "missing-eof"]
+)
+def test_saved_games_validates_the_transferred_archive(malformed):
+    stream = io.BytesIO()
+    with tarfile.open(fileobj=stream, mode="w") as archive:
+        member = tarfile.TarInfo("./save")
+        member.size = 4
+        archive.addfile(member, io.BytesIO(b"save"))
+    complete = stream.getvalue()
+    raw = {
+        None: complete,
+        "empty": b"",
+        "garbage": b"garbage",
+        "empty-tar": b"\0" * 10240,
+        "missing-eof": complete[:1024],
+    }[malformed]
+
+    def run(*args, timeout_s):
+        assert args == (
+            "exec-out",
+            "tar",
+            "-cf",
+            "-",
+            "-C",
+            mutation_task.SAVES_PATH,
+            ".",
+        )
+        assert timeout_s == 300
+        return raw
+
+    device = SimpleNamespace(run=run)
+    if malformed is None:
+        assert mutation_task.saved_games(device) == complete
+    else:
+        with pytest.raises((CaptureError, tarfile.TarError)):
+            mutation_task.saved_games(device)
 
 
 def test_run_captures_once_and_continues_after_rejecting_a_screenshot(

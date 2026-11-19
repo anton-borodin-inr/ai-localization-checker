@@ -16,11 +16,11 @@ There is no owner runner or excluded-screen bypass in this command.
 
 ## Fresh device runs under D-061
 
-Use a dedicated task directory under `~/Developer/sandbox/`, an approved output
-root under `data/runs/` and the D-057 emulator profile. The compact build list
-from the fork provides the pinned reference and the task APKs. The checker
-validates the signer, versions, translation edits and nontranslation payloads
-for the APKs it uses before device access.
+Set `--task-dir` to the dedicated directory under `~/Developer/sandbox/` holding
+`builds.json`. Use an approved output root under `data/runs/` and the D-057
+emulator profile. The compact build list identifies the pinned reference and the
+task APKs. Before device access, the checker validates the signer, versions,
+translation edits and nontranslation payloads for the APKs it uses.
 
 ```sh
 PYTHONPATH=src uv run l10n-mutate run \

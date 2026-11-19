@@ -2,13 +2,7 @@
 
 import subprocess
 
-from l10n_checker import app_data
-
-# Shared app-data readers are also used by standalone capture.
 from l10n_checker.mutation_catalog import require
-
-# Preserve the public compatibility constant without a cyclic dependency.
-ANDROIDX_BOOKKEEPING = app_data.ANDROIDX_BOOKKEEPING
 
 
 def assert_idle(device):

@@ -7,7 +7,6 @@ import pytest
 from l10n_checker.capture import CaptureError
 from l10n_checker.screen_manifest import Inputs, digest, json_bytes
 from l10n_checker.screen_split import load_split
-from l10n_checker.text_dump import canonical_bytes
 
 MANIFEST = Path(__file__).resolve().parents[1] / "fixtures/stage2/screens-v2.json"
 
@@ -41,7 +40,6 @@ def test_selected_inputs_read_only_dev_payloads(monkeypatch):
     assert {s.id for s in inputs.screens()} == set(partition.dev)
     assert len(inputs.states) == 10
     assert set(inputs.fixtures) == {"issue-8-pair"}
-    assert inputs.source_manifest_sha256 == inputs.sha256
     assert not forbidden.intersection(reads)
 
 
@@ -53,8 +51,8 @@ def test_invalid_selection_fails_before_any_payload(monkeypatch):
         return original(path)
 
     monkeypatch.setattr(Path, "read_bytes", read)
-    with pytest.raises(CaptureError, match="Screen IDs"):
-        Inputs(MANIFEST, screen_ids=["not-a-screen"])
+    with pytest.raises(CaptureError, match="Unknown split"):
+        Inputs(MANIFEST, split="unknown")
 
 
 def test_effective_build_preserves_authority_and_root():
@@ -66,11 +64,8 @@ def test_effective_build_preserves_authority_and_root():
         "apk_sha256": "f" * 64,
     }
     effective = inputs.with_build(build)
-    expected = json_bytes(original)
-    expected["build"] = build
-    assert effective.manifest_bytes == canonical_bytes(expected)
-    assert effective.sha256 == digest(effective.manifest_bytes)
-    assert effective.source_manifest_sha256 == digest(original)
+    assert effective.manifest.build.model_dump() == build
+    assert effective.sha256 == inputs.sha256 == digest(original)
     assert effective.root == inputs.root
     assert effective.capture_selection(["en", "de"]) == inputs.capture_selection(
         ["en", "de"]

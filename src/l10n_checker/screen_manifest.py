@@ -197,20 +197,16 @@ def validate_state(state: object, screen: str, saves: set[str]):
 
 
 class Inputs:
-    def __init__(self, path: Path, *, screen_ids=None, split=None):
+    def __init__(self, path: Path, *, split: str | None = None):
         self.path = path.resolve()
         self.root = self.path.parent
         self._selection = None
         try:
             data = self.path.read_bytes()
-            self.manifest_bytes = data
             self.sha256 = digest(data)
-            self.source_manifest_sha256 = self.sha256
             self.manifest = Manifest.model_validate(json_bytes(data))
-            if screen_ids is not None or split is not None:
-                self._selection = self.select_screens(
-                    screen_ids=screen_ids, split=split
-                )._selection
+            if split is not None:
+                self._selection = self.select_screens(split=split)._selection
             self.settings = {}
             for language in self.manifest.languages:
                 data = referenced_file(self.root, language.settings, language.sha256)
@@ -223,8 +219,10 @@ class Inputs:
                         f"Settings language mismatch for {language.code}"
                     )
                 self.settings[language.code] = data
-            self.states = {}
             fixture_names = {v.name for v in self.manifest.fixtures}
+            if split is None:
+                self.fixtures = self._load_fixtures(fixture_names)
+            self.states = {}
             for screen in self.screens():
                 codes = screen.languages or list(self.settings)
                 for code in codes:
@@ -237,14 +235,19 @@ class Inputs:
                     state = json_bytes(data)
                     validate_state(state, screen.id, fixture_names)
                     self.states[screen.id, code] = state
-            needed = {state["save"] for state in self.states.values()}
-            self.fixtures = {
-                v.name: referenced_file(self.root, v.path, v.sha256)
-                for v in self.manifest.fixtures
-                if self._selection is None or v.name in needed
-            }
+            if split is not None:
+                self.fixtures = self._load_fixtures(
+                    {state["save"] for state in self.states.values()}
+                )
         except (ValueError, OSError, TypeError, ValidationError) as exc:
             raise CaptureError(f"Invalid capture manifest/input: {exc}") from exc
+
+    def _load_fixtures(self, names: set[str]) -> dict[str, bytes]:
+        return {
+            fixture.name: referenced_file(self.root, fixture.path, fixture.sha256)
+            for fixture in self.manifest.fixtures
+            if fixture.name in names
+        }
 
     def languages(self, requested: list[str] | None) -> list[str]:
         codes = requested if requested is not None else list(self.settings)
@@ -257,9 +260,7 @@ class Inputs:
         return codes
 
     def with_build(self, build: dict) -> "Inputs":
-        """A derived capture identity; fixture resolution stays at source authority."""
-        from l10n_checker.text_dump import canonical_bytes
-
+        """Use a task APK identity with the same pinned source and fixtures."""
         model = Build.model_validate(build)
         if any(
             getattr(model, key) != getattr(self.manifest.build, key)
@@ -268,8 +269,6 @@ class Inputs:
             raise CaptureError("Effective build changes pinned game source")
         result = copy(self)
         result.manifest = self.manifest.model_copy(update={"build": model})
-        result.manifest_bytes = canonical_bytes(result.manifest.model_dump())
-        result.sha256 = digest(result.manifest_bytes)
         return result
 
     def select_screens(

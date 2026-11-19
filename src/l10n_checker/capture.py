@@ -30,16 +30,11 @@ def failure_details(exc) -> dict:
     for name in ("stdout", "stderr"):
         output = getattr(exc, name, None)
         if output is not None:
-            if name == "stdout" and getattr(exc, "app_data_binary_stdout", False):
-                details["stdout_bytes"] = len(output)
-                continue
             details[name] = (
                 output.decode("utf-8", errors="replace")
                 if isinstance(output, bytes)
                 else str(output)
             )
-    if getattr(exc, "app_data_read", None):
-        details["app_data_read"] = exc.app_data_read
     if exc.__cause__ is not None:
         details["cause"] = failure_details(exc.__cause__)
     if getattr(exc, "cleanup_errors", None):

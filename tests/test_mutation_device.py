@@ -25,30 +25,6 @@ def api():
     return importlib.import_module("l10n_checker.mutation_device")
 
 
-class Device:
-    def __init__(self):
-        self.calls = []
-
-    def run(self, *args):
-        self.calls.append(args)
-        assert args[:3] == ("install", "-r", "-d")
-        return b"Performing Streamed Install\nSuccess\n"
-
-    def force_stop(self):
-        self.calls.append(("stop",))
-
-    def pid(self):
-        return ""
-
-
-BOOKKEEPING = (
-    "files/profileInstalled",
-    "no_backup/androidx.work.workdb",
-    "no_backup/androidx.work.workdb-shm",
-    "no_backup/androidx.work.workdb-wal",
-)
-
-
 def test_preflight_refuses_multiple_emulators_before_environment_root_check(
     monkeypatch,
 ):

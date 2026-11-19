@@ -9,11 +9,11 @@ import zipfile
 from collections import Counter
 from pathlib import Path
 
-from l10n_checker.app_data import validate_tar
 from l10n_checker.capture import (
     PACKAGE,
     REPO_ROOT,
     SETTINGS_PATH,
+    CaptureError,
     Device,
     filename,
     png_size,
@@ -117,6 +117,30 @@ def read_builds(path, expected_sha, plan, inputs, tools):
         require(payloads == clean_payloads, "Nontranslation APK payload drift")
         artifacts[identity] = (apk, build)
     return reference, artifacts, value["builder_commit"]
+
+
+def validate_tar(raw):
+    with tarfile.open(fileobj=io.BytesIO(raw), mode="r:") as archive:
+        members = archive.getmembers()
+        if (
+            not members
+            or len(raw) % 512
+            or len(raw) < archive.offset + 1024
+            or any(raw[archive.offset :])
+        ):
+            raise CaptureError("Empty, incomplete or malformed app-data archive")
+        seen = set()
+        for member in members:
+            name = str(Path(member.name))
+            if Path(name).is_absolute() or ".." in Path(name).parts or name in seen:
+                raise CaptureError("Unsafe or duplicate app-data member")
+            seen.add(name)
+            if not (member.isfile() or member.isdir() or member.issym()):
+                raise CaptureError("Unsupported app-data member type")
+            if member.isfile():
+                stream = archive.extractfile(member)
+                if stream is None or len(stream.read()) != member.size:
+                    raise CaptureError("Incomplete app-data archive")
 
 
 def saved_games(device):

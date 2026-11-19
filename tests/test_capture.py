@@ -35,7 +35,7 @@ def test_filename():
 
 
 @pytest.mark.parametrize("existing_cleanup", [False, True])
-def test_d056_repeated_cleanup_preserves_serializable_primary(existing_cleanup):
+def test_repeated_cleanup_preserves_serializable_primary(existing_cleanup):
     import json
 
     primary = cap.CaptureError("reference install failed")
@@ -218,7 +218,7 @@ def test_screencap_failure_is_clear(monkeypatch, error):
     assert isinstance(raised.value.__cause__, cap.CaptureError)
 
 
-def test_d055_app_data_limit_does_not_relax_other_native_commands(monkeypatch):
+def test_device_run_timeout_override_preserves_default(monkeypatch):
     observed = []
 
     def native(command, **kwargs):
