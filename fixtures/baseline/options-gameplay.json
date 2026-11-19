@@ -1,0 +1,206 @@
+{
+  "schema_version": 1,
+  "screen": "options-gameplay",
+  "base_commit": "b534a8ae67c390412984869c7a03b168d532c36c",
+  "context": "Stage 2/3 options-gameplay inventory (Gameplay tab active). Foreground OptionsPopup controls plus visible bottom-left '?' button, including translatable '-' and '+' slider controls; occluded main-menu backdrop buttons excluded.",
+  "slots": [
+    {
+      "id": "tab-about",
+      "request": "About",
+      "box": [
+        0.2175,
+        0.076,
+        0.2895,
+        0.1533
+      ],
+      "source": "OptionsPopup.kt: tab header"
+    },
+    {
+      "id": "tab-display",
+      "request": "Display",
+      "box": [
+        0.2948,
+        0.076,
+        0.3848,
+        0.1533
+      ],
+      "source": "OptionsPopup.kt: tab header"
+    },
+    {
+      "id": "tab-gameplay",
+      "request": "Gameplay",
+      "box": [
+        0.3953,
+        0.076,
+        0.528,
+        0.1533
+      ],
+      "source": "OptionsPopup.kt: tab header"
+    },
+    {
+      "id": "tab-automation",
+      "request": "Automation",
+      "box": [
+        0.5138,
+        0.076,
+        0.6885,
+        0.1533
+      ],
+      "source": "OptionsPopup.kt: tab header"
+    },
+    {
+      "id": "tab-language",
+      "request": "Language",
+      "box": [
+        0.6405,
+        0.076,
+        0.7905,
+        0.1533
+      ],
+      "source": "OptionsPopup.kt: tab header (clipped in DE)"
+    },
+    {
+      "id": "check-idle-units",
+      "request": "Check for idle units",
+      "box": [
+        0.2535,
+        0.2159,
+        0.4853,
+        0.2867
+      ],
+      "source": "GameplayTab.kt: checkbox"
+    },
+    {
+      "id": "next-unit-cycles-idle",
+      "request": "'Next unit' button cycles idle units",
+      "box": [
+        0.2535,
+        0.2843,
+        0.6675,
+        0.355
+      ],
+      "source": "GameplayTab.kt: checkbox"
+    },
+    {
+      "id": "small-skip-button",
+      "request": "Show Small Skip/Cycle Unit Button",
+      "box": [
+        0.2535,
+        0.3526,
+        0.7177,
+        0.4233
+      ],
+      "source": "GameplayTab.kt: checkbox"
+    },
+    {
+      "id": "auto-unit-cycle",
+      "request": "Auto Unit Cycle",
+      "box": [
+        0.2535,
+        0.4209,
+        0.5318,
+        0.4917
+      ],
+      "source": "GameplayTab.kt: checkbox"
+    },
+    {
+      "id": "cycle-by-distance",
+      "request": "Cycle idle units by distance",
+      "box": [
+        0.2535,
+        0.4893,
+        0.5685,
+        0.56
+      ],
+      "source": "GameplayTab.kt: checkbox"
+    },
+    {
+      "id": "single-tap-move",
+      "request": "Move units with a single tap",
+      "box": [
+        0.2535,
+        0.5576,
+        0.537,
+        0.6283
+      ],
+      "source": "GameplayTab.kt: checkbox"
+    },
+    {
+      "id": "long-tap-move",
+      "request": "Move units with a long tap",
+      "box": [
+        0.2535,
+        0.6259,
+        0.5355,
+        0.6967
+      ],
+      "source": "GameplayTab.kt: checkbox"
+    },
+    {
+      "id": "order-trade-offers",
+      "request": "Order trade offers by amount",
+      "box": [
+        0.2535,
+        0.6943,
+        0.5438,
+        0.765
+      ],
+      "source": "GameplayTab.kt: checkbox"
+    },
+    {
+      "id": "confirm-next-turn",
+      "request": "Ask for confirmation when pressing next turn",
+      "box": [
+        0.2535,
+        0.7626,
+        0.6397,
+        0.8333
+      ],
+      "source": "GameplayTab.kt: checkbox"
+    },
+    {
+      "id": "notifications-max-turns",
+      "request": "Notifications log max turns",
+      "box": [
+        0.2235,
+        0.8343,
+        0.5887,
+        0.905
+      ],
+      "source": "GameplayTab.kt: slider label"
+    },
+    {
+      "id": "help-button",
+      "request": "?",
+      "box": [
+        0.0,
+        0.82,
+        0.12,
+        0.98
+      ],
+      "source": "MainMenuScreen.kt / IconCircleGroup.kt: visible bottom-left help button"
+    },
+    {
+      "id": "slider-decrease",
+      "request": "-",
+      "box": [
+        0.45,
+        0.83,
+        0.65,
+        0.93
+      ],
+      "source": "UncivSlider.kt / IconCircleGroup.kt: decrease button"
+    },
+    {
+      "id": "slider-increase",
+      "request": "+",
+      "box": [
+        0.61,
+        0.83,
+        0.82,
+        0.93
+      ],
+      "source": "UncivSlider.kt / IconCircleGroup.kt: increase button"
+    }
+  ]
+}

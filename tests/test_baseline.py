@@ -5,6 +5,7 @@ from pathlib import Path
 import pytest
 
 from l10n_checker.baseline import (
+    DEFAULT_PREPROCESSING,
     BaselineError,
     Inventory,
     OcrOutput,
@@ -12,8 +13,11 @@ from l10n_checker.baseline import (
     Word,
     detect,
     digest,
+    mapped_box,
     normalize,
+    otsu_threshold,
     parse_tsv,
+    preprocess_image,
     region,
     run_baseline,
 )
@@ -440,3 +444,62 @@ def test_tesseract_checks_language_data_and_uses_fixed_settings(tmp_path, monkey
     (tmp_path / "deu.traineddata").unlink()
     with pytest.raises(FileNotFoundError):
         Tesseract().recognize(FIXTURES / "de.png", "de")
+
+
+def test_otsu_threshold_picks_smallest_maximizer_on_ties():
+    hist = [0] * 256
+    hist[10] = 50
+    hist[20] = 50
+    assert otsu_threshold(hist) == 10
+
+
+def test_preprocess_image_variants_and_box_back_mapping(tmp_path):
+    up = tmp_path / "up.png"
+    meta_up = preprocess_image(FIXTURES / "de.png", "upscale2x", up)
+    assert meta_up["variant"] == "upscale2x"
+    assert meta_up["scale"] == 2
+    assert meta_up["source_size"] == [960, 200]
+    assert meta_up["otsu_threshold"] is None
+
+    otsu = tmp_path / "otsu.png"
+    meta_otsu = preprocess_image(FIXTURES / "de.png", "upscale2x-otsu", otsu)
+    assert meta_otsu["variant"] == "upscale2x-otsu"
+    assert isinstance(meta_otsu["otsu_threshold"], int)
+    assert 0 <= meta_otsu["otsu_threshold"] < 256
+
+    assert mapped_box((81, 131, 301, 221), 2, (960, 200)) == (40, 65, 111, 46)
+    with pytest.raises(BaselineError):
+        preprocess_image(FIXTURES / "de.png", "none", tmp_path / "bad.png")
+    with pytest.raises(BaselineError):
+        Tesseract(preprocessing="invalid")
+
+
+def test_tesseract_none_passes_original_image_without_preprocessing(
+    tmp_path, monkeypatch
+):
+    (tmp_path / "eng.traineddata").write_bytes(b"eng model")
+    seen_targets = []
+
+    def fake(args, **kwargs):
+        if args[1] == "--version":
+            output = "tesseract fake\n"
+        elif args[1] == "--list-langs":
+            output = f'List of available languages in "{tmp_path}" (1):\neng\n'
+        else:
+            seen_targets.append(args[1])
+            output = tsv("Mining")
+        return subprocess.CompletedProcess(args, 0, output, "")
+
+    monkeypatch.setattr("shutil.which", lambda _: "/fake/tesseract")
+    monkeypatch.setattr(subprocess, "run", fake)
+
+    source = FIXTURES / "en.png"
+    out_none = Tesseract(preprocessing="none").recognize(source, "en")
+    assert seen_targets[-1] == str(source)
+    assert out_none.metadata["preprocessing"] == "none"
+
+    out_default = Tesseract().recognize(source, "en")
+    assert seen_targets[-1] != str(source)
+    assert out_default.metadata["preprocessing"]["variant"] == DEFAULT_PREPROCESSING
+    words = parse_tsv(out_default.tsv, (960, 200))
+    assert words[0].left == 20 and words[0].top == 32

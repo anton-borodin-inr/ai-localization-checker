@@ -1,0 +1,206 @@
+{
+  "schema_version": 1,
+  "screen": "city-production",
+  "base_commit": "b534a8ae67c390412984869c7a03b168d532c36c",
+  "context": "Stage 2/3 city-production inventory (Istanbul, Worker selected, Units expanded). Derived from confirmed clean Stage 2 references and Unciv source at b534a8a. Numeric counters/stats/icons excluded.",
+  "slots": [
+    {
+      "id": "current-construction",
+      "request": "Current construction",
+      "box": [
+        0.0,
+        0.0,
+        0.2063,
+        0.0733
+      ],
+      "source": "CityConstructionsTable.kt: queue header"
+    },
+    {
+      "id": "pick-construction",
+      "request": "Pick a construction",
+      "box": [
+        0.018,
+        0.055,
+        0.1845,
+        0.1683
+      ],
+      "source": "CityConstructionsTable.kt: empty current construction label"
+    },
+    {
+      "id": "queue-empty",
+      "request": "Queue empty",
+      "box": [
+        0.0,
+        0.1533,
+        0.183,
+        0.2733
+      ],
+      "source": "CityConstructionsTable.kt: queue expander header"
+    },
+    {
+      "id": "buy-top-left",
+      "request": "Buy",
+      "box": [
+        0.0,
+        0.29,
+        0.11,
+        0.37
+      ],
+      "source": "CityConstructionsTable.kt: buy button (numeric gold cost excluded)"
+    },
+    {
+      "id": "units-section",
+      "request": "Units",
+      "box": [
+        0.0,
+        0.3818,
+        0.102,
+        0.465
+      ],
+      "source": "CityConstructionsTable.kt: Units expander"
+    },
+    {
+      "id": "worker-list",
+      "request": "Worker",
+      "box": [
+        0.0368,
+        0.4568,
+        0.267,
+        0.5267
+      ],
+      "source": "CityConstructionsTable.kt: Worker row in Units list"
+    },
+    {
+      "id": "settler-list",
+      "request": "Settler",
+      "box": [
+        0.0368,
+        0.5451,
+        0.267,
+        0.615
+      ],
+      "source": "CityConstructionsTable.kt: Settler row in Units list"
+    },
+    {
+      "id": "requires-population",
+      "request": "Requires at least [2] population",
+      "box": [
+        0.0,
+        0.61,
+        0.28,
+        0.68
+      ],
+      "source": "CityConstructionsTable.kt / ColorMarkupLabel.kt: Settler rejection reason"
+    },
+    {
+      "id": "scout-list",
+      "request": "Scout",
+      "box": [
+        0.0368,
+        0.6668,
+        0.267,
+        0.7367
+      ],
+      "source": "CityConstructionsTable.kt: Scout row in Units list"
+    },
+    {
+      "id": "warrior-list",
+      "request": "Warrior",
+      "box": [
+        0.0368,
+        0.7551,
+        0.267,
+        0.825
+      ],
+      "source": "CityConstructionsTable.kt: Warrior row in Units list"
+    },
+    {
+      "id": "buildings-section",
+      "request": "Buildings",
+      "box": [
+        0.0,
+        0.8435,
+        0.1013,
+        0.9267
+      ],
+      "source": "CityConstructionsTable.kt: Buildings expander"
+    },
+    {
+      "id": "other-section",
+      "request": "Other",
+      "box": [
+        0.0,
+        0.9185,
+        0.0848,
+        1.0
+      ],
+      "source": "CityConstructionsTable.kt: Other expander"
+    },
+    {
+      "id": "worker-info",
+      "request": "Worker",
+      "box": [
+        0.73,
+        0.68,
+        0.99,
+        0.81
+      ],
+      "source": "ConstructionInfoTable.kt: selected Worker title (numeric cost/turns excluded)"
+    },
+    {
+      "id": "worker-description",
+      "request": "Can build [Land] improvements on tiles",
+      "box": [
+        0.72,
+        0.77,
+        1.0,
+        0.9
+      ],
+      "source": "ConstructionInfoTable.kt: selected Worker description (movement counter excluded)"
+    },
+    {
+      "id": "buy-bottom-right",
+      "request": "Buy",
+      "box": [
+        0.8,
+        0.89,
+        0.92,
+        0.96
+      ],
+      "source": "ConstructionInfoTable.kt: buy button (numeric gold cost excluded)"
+    },
+    {
+      "id": "city-name",
+      "request": "Istanbul",
+      "box": [
+        0.4239,
+        0.7902,
+        0.5341,
+        0.8867
+      ],
+      "source": "CityScreenCityPickerTable.kt: active city name"
+    },
+    {
+      "id": "exit-city",
+      "request": "Exit city",
+      "box": [
+        0.4381,
+        0.9018,
+        0.5611,
+        0.9717
+      ],
+      "source": "CityScreen.kt: Exit city button"
+    },
+    {
+      "id": "raze-city",
+      "request": "Raze city",
+      "box": [
+        0.4295,
+        0.0368,
+        0.5697,
+        0.1067
+      ],
+      "source": "CityScreen.kt: Raze city button"
+    }
+  ]
+}

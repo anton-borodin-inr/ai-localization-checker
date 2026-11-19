@@ -707,3 +707,13 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
   would anchor the review and could favour that model in later comparisons.
 - **Consequences:** D-012 holds: the drafts are not detector output, and no
   label is final until Anton marks the screenshot reviewed.
+
+## D-063 — Baseline OCR engine and preprocessing: Tesseract T2 (`upscale2x-otsu`)
+
+- **Date:** 2026-11-19
+- **Status:** Accepted
+- **Accepted by:** Anton, 2026-11-19, as proposed (pre-registered rule applied as written; the missing-rule TP caveat is reported, not corrected after results)
+- **Decision:** Keep Tesseract 5 (OEM 1 / PSM 11) as the baseline OCR engine and set its default preprocessing to `upscale2x-otsu` (`T2`: 2× LANCZOS RGB upscale, grayscale, Otsu threshold, boxes mapped back to original screen coordinates). Do not add EasyOCR or PyTorch as a dependency.
+- **Why:** On the Stage 3 dev set (34 PNGs, 33 labels, 10 clean controls; run `stage4-ocr-20261119T181246Z`), the pre-registered selection rule (committed before grid runs in `9460e13`) eliminated `T0` (14 TP), `E0` (12 TP), and `E1` (12 TP) on recall (`TP_max = 17` for `E2`, cutoff `>= 16`), eliminated `T1` on FP (155 vs `E2` 107, cutoff `<= 133`), and chose `T2` (16 TP, 120 FP, 49 clean FP, 36.1 s) over `E2` (17 TP, 107 FP, 42 clean FP, 1059.8 s + 6.2 s init) on simplicity and runtime (`E2`'s 10.8% FP edge was below the 20% margin). Caveats recorded in [stage4-ocr/README.md](evidence/stage4-ocr/README.md): 6/34 screens were `not_checked` (10 labels) across all configs due to frozen `unciv_text.py` `RenderingError` on broken placeholders, and most `T2`/`E2` TPs (12–13) came from `missing`-rule findings on `overflow`/`foreign_text` rather than observed-text matches (`E0` had the lowest FP at 93 and highest observed TP at 5).
+- **Alternatives considered:** Keep `T0` (14 TP, 141 FP; eliminated by Step 2); adopt `E2` (1 extra `missing`-rule TP and 13 fewer FPs at ~30× runtime plus PyTorch); adopt `E0` (lowest FP and highest observed TP, but eliminated by the pre-registered rule).
+- **Consequences:** Resolves D-045's Stage 4 selection. `baseline.Tesseract` and `l10n-baseline` default to `--preprocess upscale2x-otsu` using existing Pillow, with `--preprocess none` preserving `T0`. No new dependency; matching, metrics, goldens and `datasets/dev/` are unchanged.
