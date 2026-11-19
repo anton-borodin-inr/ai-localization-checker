@@ -534,6 +534,7 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 
 - **Date:** 2026-11-02
 - **Status:** Accepted
+- The pixel/geometry gate and calibration stop are superseded by D-061.
 - **Accepted by:** Anton, 2026-11-03, as proposed
 - **Decision:** Record Anton's issue #59 plan approval with amendments from the
   task chat. Generate translation-only batch APKs. Empty-patch clean controls
@@ -589,6 +590,19 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
   issue-47 criterion or change labels, metrics, the split, or D-012/D-023–025/
   D-038–044/D-046/D-047/D-049. See [mutation-generator.md](mutation-generator.md).
 
+## D-051–D-056 — Withdrawn
+
+- **Date:** 2026-11-12
+- **Status:** Withdrawn (never accepted)
+- **Decision:** The #59 device-run exceptions and proof machinery proposed in
+  D-051 (AndroidX bookkeeping), D-052 (measurement matrix), D-053/D-054
+  (outside-mask glyph exceptions), D-055 (durable reads and hook-output
+  cleanup proofs) and D-056 (bookkeeping metadata, reference restoration) are
+  withdrawn; D-059 and D-060 replace them. Their mutation-run code is removed.
+  The Stage 2 capture path still shares some app-data checks (bookkeeping
+  paths, hook-output cleanup); simplifying it is a separate task. Full text:
+  git history at `75a0ccb`.
+
 ## D-057 — Emulator stability: 4 GB guest RAM, display kept awake, explicit renderer
 
 - **Date:** 2026-11-10
@@ -599,10 +613,37 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 - **Alternatives considered:** Wipe the AVD data (no evidence of corrupted AVD state, and it loses installed builds); a fresh AVD with the same settings (would keep 2 GB and `auto`, so it would not isolate the cause); switch to `-gpu host` at once (faster, but pixel continuity with existing captures is unverified).
 - **Consequences:** `docs/environment.md` documents the setting, its value format (`4096M` is silently ignored), the start command and a troubleshooting section. Choosing `host` for captures needs a separate comparison and decision. No change to labels, metrics, matching, the split, D-014 resolution or capture code.
 
+## D-058 — Flag visible text side effects for human review
+
+- **Date:** 2026-11-11
+- **Status:** Withdrawn. Superseded by D-061.
+- **Decision:** Anton authorized replacing D-050's cross-build pixel and dump
+  isolation gate and D-054 for fresh normal runs. Cross-build outside-mask
+  pixel differences and unmutated element geometry changes are measurements
+  only. They neither stop a run nor trigger a dynamic split or usage pause.
+  Compare each unmutated draw group's ordered visible text lines, visibility,
+  ellipsis and clipped fraction. Record semantic differences with the
+  screenshot, actor path and before/after values as review flags in the run
+  manifest. Review flags never block capture qualification or create labels.
+- **Why:** Anton labels the rendered screenshots under D-012. A mutation can
+  realistically reflow surrounding UI, and pixel-identical isolation does not
+  protect the information the human labels rely on. Visible text side effects
+  remain useful for deciding how to label a screenshot.
+- **Consequences:** The intended-occurrence visibility and class checks,
+  N ≤ 2, density, exact forward/reverse decoded RGBA and raw dump equality,
+  dev-only selection, hold-out isolation, D-055 cleanup and D-056 preservation
+  and reference restoration remain binding. Dynamic splits for qualifying
+  intended-occurrence failures retain their existing handoff. Fresh normal
+  evidence uses run version 6 and evidence index version 7. Replay derives
+  review flags and qualification from the authenticated pair and dump bytes.
+  The strict comparison and D-053/D-054 code stay available for historical
+  replay. Earlier evidence keeps its original qualification status.
+
 ## D-059 — Simple, disposable runs
 
 - **Date:** 2026-11-11
 - **Status:** Accepted
+- The pixel/geometry gate and calibration stop are superseded by D-061.
 - **Decision:** Keep only the builds of the current task and reuse them across its
   runs and attempts; delete them when the task ends. Skip source and environment archives.
   Keep D-035 `data/runs/<run_id>/run.json` (`run_id`, `requests_sent`, token usage,
@@ -616,3 +657,36 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 - **Supersedes:** Archival, exact-producer and historical re-verification requirements in
   D-051–D-056. Methodology stays in force. D-053/D-054 evidence was deleted.
 - **Why:** On 2026-11-11, artifacts reached about four million files and 28 GB (177 APKs, 646 device backups).
+
+## D-060 — Allow bounded outside-mask RGB differences in #59
+
+- **Date:** 2026-11-11
+- **Status:** Withdrawn. Superseded by D-061.
+- **Decision:** Across all #59 screens and both languages, allow outside-mask
+  pixel differences only when each absolute R/G/B delta is at most 2 and alpha
+  is unchanged. Larger deltas, alpha changes and moved or changed unmutated
+  dump elements fail. Report tolerated pixel count and maximum RGB delta per
+  calibration screen and language, without glyph attribution, per-pixel
+  proof or extra replay.
+- **Why:** The historical EN Options calibration showed 406 deterministic
+  outside-mask differences with maximum RGB delta 2 and no alpha change.
+- **Consequences:** Supersedes only D-050's zero-outside-mask clause upon
+  acceptance. D-051–D-056 are withdrawn.
+
+## D-061 — Pixel differences are reported, never gating
+
+- **Date:** 2026-11-18
+- **Status:** Accepted
+- **Accepted by:** Anton, 2026-11-18
+- **Decision:** Pixel differences outside mutation masks and moved or resized
+  unmutated elements are measurements only. For each screen and language,
+  `run.json` records changed-pixel counts, maximum channel deltas and counts
+  of moved or resized groups. These measurements never stop, split or fail
+  a run. A mutated screenshot qualifies only if each intended mutation is
+  visible in the dump as intended (class, visibility) and N ≤ 2 holds.
+  Changed visible text in unmutated elements (text, ellipsis, clipping) is
+  listed as a review flag for labeling.
+- **Why:** The target is localization defects. Anton labels every screenshot by
+  eye (D-012). Strict pixel gates caused repeated stops (D-051–D-056, D-060).
+- **Supersedes:** D-058 and D-060 (withdrawn), the pixel/geometry gate and the
+  calibration stop in D-050, and the isolation-gate clause in D-059.

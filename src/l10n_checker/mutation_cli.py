@@ -2,6 +2,7 @@
 
 import argparse
 import sys
+import zipfile
 from pathlib import Path
 
 from l10n_checker.capture import CaptureError
@@ -65,8 +66,38 @@ def main(argv=None):
     selector.add_argument("--screen-id", action="append", dest="screen_ids")
     plan.add_argument("--seed", type=int, required=True)
     plan.add_argument("--output-dir", type=Path, required=True)
+    run = commands.add_parser("run", help="Task-scoped dev captures on a device")
+    run.add_argument("--catalog", type=Path, required=True)
+    run.add_argument("--sha256", required=True)
+    run.add_argument("--manifest", type=Path, required=True)
+    run.add_argument("--recipes", type=Path, required=True)
+    run.add_argument("--sdk", type=Path, required=True)
+    run.add_argument("--jdk", type=Path, required=True)
+    run.add_argument("--output-dir", type=Path, required=True)
+    run.add_argument("--approved-output-root", type=Path, required=True)
+    run.add_argument("--serial", required=True)
+    run.add_argument("--plan", type=Path, required=True)
+    run.add_argument("--task-dir", type=Path, required=True)
     args = parser.parse_args(argv)
     try:
+        if args.command == "run":
+            from l10n_checker.mutation_task import run_task
+
+            config = {
+                key: str(value) if isinstance(value, Path) else value
+                for key, value in vars(args).items()
+                if key != "command"
+            }
+            command = ["l10n-mutate", *(argv if argv is not None else sys.argv[1:])]
+            result = run_task(config, command=command)
+            if not (
+                result["status"] == "completed"
+                and result["labels_created"] is False
+                and result["restoration_verified"] is True
+            ):
+                raise CaptureError("Contradictory mutation run result")
+            print(f"Mutation runtime: {result['status']}; no labels")
+            return 0
         result = create_plan(
             manifest=args.manifest,
             recipes=args.recipes,
@@ -84,7 +115,14 @@ def main(argv=None):
         with (folder / "plan.json").open("xb") as stream:
             stream.write(raw)
         print(f"Offline plan: {folder / 'plan.json'} (not production-ready)")
-    except (CaptureError, OSError, ValueError, TypeError, KeyError) as exc:
+    except (
+        CaptureError,
+        OSError,
+        ValueError,
+        TypeError,
+        KeyError,
+        zipfile.BadZipFile,
+    ) as exc:
         print(f"Mutation planning error: {exc}", file=sys.stderr)
         return 1
     return 0
