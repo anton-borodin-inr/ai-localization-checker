@@ -98,12 +98,13 @@ class TranslationTable:
             for name, (_, _, value) in zip(names, params, strict=True)
         }
         # Substitute simultaneously so a parameter cannot rewrite another one.
+        # Keep unknown placeholders verbatim (matching Unciv's String.tr) so
+        # downstream rules can detect broken placeholders instead of failing.
         output = []
         cursor = 0
         for start, end, name in groups(translated, "[", "]"):
-            if name not in replacements:
-                raise RenderingError(f"Unknown translated placeholder: [{name}]")
-            output.extend((translated[cursor:start], replacements[name]))
+            replacement = replacements.get(name, translated[start:end])
+            output.extend((translated[cursor:start], replacement))
             cursor = end
         output.append(translated[cursor:])
         rendered = "".join(output)

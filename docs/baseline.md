@@ -101,8 +101,11 @@ Slot boxes are manually declared search areas, not measured text bounding boxes.
 The parser follows Unciv's ` = ` delimiter, nonempty-value rule and escaped
 newlines. Missing/empty values fall back to source text. Template lookup reduces
 parameters to `[]`, maps arguments through the original parameter names, then
-substitutes their translations in target-language order. `{}` fragments are
-translated separately with surrounding punctuation retained. For example:
+substitutes their translations in target-language order; unknown placeholders in
+a translated value are kept verbatim (matching Unciv's `String.tr`) so the
+`literal_placeholder` rule can report them instead of failing as `not_checked`.
+`{}` fragments are translated separately with surrounding punctuation retained.
+For example:
 
 - `Research [Archery]` -> `Bogenschießen erforschen`
 - `{Units enabled}:` -> `Freigeschaltete Einheiten:`

@@ -49,3 +49,25 @@ Applied strictly in order across `T0, T1, T2, E0, E1, E2` on all 34 dev PNGs (33
 4. **Tie-breaker 2 (simplicity `T0 > T1 > T2 > E0 > E1 > E2`):** **`T2` wins** over `E2` (36.1 s vs 1066.0 s total, no PyTorch/EasyOCR dependency).
 
 0 provider requests, \$0 API spend. Full per-image record: `data/runs/stage4-ocr-20261119T181246Z/run.json`.
+
+## Follow-up Rerun After Literal Unknown-Placeholder Fix (`T2` Default, D-063)
+
+`unciv_text.py` now keeps unknown translated placeholders verbatim (matching Unciv's `String.tr`) instead of raising `RenderingError`; detection rules, inventories, matching, metrics, goldens and `datasets/dev/` are unchanged (`run_id`: `stage4-t2-literal-placeholder-20261119T184046Z`, commit `13525f7`, 0 provider requests, \$0).
+
+| `T2` Run | `not_checked` | TP (obs / miss) | FP | FN (+NC) | Clean FP | Precision | Recall all / checked | `overflow` /6 | `wrong_lang` /17 | `truncated` /6 | `other` /4 | OCR time |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| Before (`stage4-ocr-20261119T181246Z`) | 6 | 16 (4 / 12) | 120 | 7 (+10) | 49 | 0.118 | 0.485 / 0.696 | 6 (1.00) | 10 (0.59) | 0 (0.00) | 0 (0.00) | 36.1 s |
+| After (`stage4-t2-literal-placeholder-20261119T184046Z`) | **0** | **20 (5 / 15)** | **172** | **13 (+0)** | **49** | **0.104** | **0.606 / 0.606** | **6 (1.00)** | **10 (0.59)** | **1 (0.17)** | **3 (0.75)** | **35.0 s** |
+
+All 28 previously checked screens are identical to `stage4-ocr-20261119T181246Z` across `status`, `findings`, `tp`, `fp`, `fn`, `duplicates` and `hallucinations` (0 diffs). The 6 previously `not_checked` screens are now `checked`:
+
+| Screenshot | Status | TP (obs/miss) | FP | FN | Notable findings |
+|---|---|---:|---:|---:|---|
+| `city-production__de__…__batch-e45e29bd…__1887578114.png` | `checked` | 1 (0/1) | 2 | 0 | `missing` TP on `requires-population` (`Benötigt mindestens [count] Bevölkerung`); 2 FP (`settler-list`, `worker-description`) |
+| `city-production__en__…__batch-e45e29bd…__1887578114.png` | `checked` | 1 (0/1) | 1 | 0 | `missing` TP on `requires-population` (`Requires at least [count] population`); 1 FP (`settler-list`) |
+| `tech-picker__de__…__batch-99984bb5…__1869508724.png` | `checked` | 0 (0/0) | 13 | 2 | `prefix` findings on `mining` (`Bergbau und Erzgew`) and `masonry` (`Mauerarbeiten und S`) without trailing `…` miss D-029 threshold |
+| `tech-picker__de__…__batch-e46946a0…__1892114822.png` | `checked` | 0 (0/0) | 10 | 2 | `literal_placeholder` (`other`) on `research` emitted `[amount]` (first matching span, below D-029 threshold for `[amount] erforschen`); `Minage` matched build table exactly (FN) |
+| `tech-picker__en__…__batch-99984bb5…__1869508724.png` | `checked` | 1 (1/0) | 13 | 1 | `literal_placeholder` (`other`) observed TP on `research` (`Research [amount]`); `masonry` `prefix` (`Masonry and stone`) without `…` missed D-029 |
+| `tech-picker__en__…__batch-e46946a0…__1892114822.png` | `checked` | 1 (0/1) | 13 | 1 | `missing` TP on `mining` (`Mining and ore extraction`); `construction` `prefix` (`Construction and civ`) without `…` missed D-029 |
+
+0 provider requests, \$0 API spend. Full per-image record: `data/runs/stage4-t2-literal-placeholder-20261119T184046Z/run.json`.

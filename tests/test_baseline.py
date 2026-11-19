@@ -141,6 +141,42 @@ def test_literal_broken_placeholder_is_other():
     assert diag[0]["rule"] == "literal_placeholder"
 
 
+def test_unknown_placeholder_in_translation_table_is_detected_not_error():
+    broken_tables = {
+        "en": TranslationTable.parse(
+            "Research [technology] = Research [amount]\nArchery = \n"
+        ),
+        "de": TranslationTable.parse(
+            "Research [technology] = [technology] erforschen\nArchery = Bogenschießen\n"
+        ),
+    }
+    inv = inventory(request="Research [Archery]")
+    # Active language has unknown [amount]; literal_placeholder rule reports it.
+    en_findings, en_diag = detect(
+        inv,
+        broken_tables,
+        "en",
+        parse_tsv(tsv("Research [amount]"), (960, 200)),
+        (960, 200),
+    )
+    assert len(en_findings) == 1
+    assert en_findings[0].defect_type == "other"
+    assert en_findings[0].text_seen == "Research [amount]"
+    assert en_diag[0]["rule"] == "literal_placeholder"
+    assert en_diag[0]["expected"] == "Research [amount]"
+    # Opposite language (de) renders foreign table without raising RenderingError.
+    de_findings, de_diag = detect(
+        inv,
+        broken_tables,
+        "de",
+        parse_tsv(tsv("Bogenschießen erforschen"), (960, 200)),
+        (960, 200),
+    )
+    assert de_findings == []
+    assert de_diag[0]["rule"] == "exact"
+    assert de_diag[0]["foreign"] == "Research [amount]"
+
+
 def test_unknown_ocr_does_not_establish_another_language():
     assert detection("gibberish")[0][0].defect_type == "truncated_text"
 
