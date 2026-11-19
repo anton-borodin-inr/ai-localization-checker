@@ -1,0 +1,20 @@
+{
+  "schema_version": 2,
+  "screenshot": "tech-picker__en__2400x1080__batch-99984bb52ea65c2f__1869508724.png",
+  "language": "en",
+  "labels": [
+    {
+      "defect_type": "truncated_text",
+      "text_expected": "Masonry and stone construction",
+      "text_seen": "Masonry and stone ...",
+      "region": "center"
+    },
+    {
+      "defect_type": "other",
+      "text_expected": "Research Archery",
+      "text_seen": "Research [amount]",
+      "region": "bottom-right",
+      "note": "broken placeholder"
+    }
+  ]
+}

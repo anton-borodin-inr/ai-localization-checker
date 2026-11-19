@@ -1,0 +1,19 @@
+{
+  "schema_version": 2,
+  "screenshot": "options-gameplay__de__2400x1080__batch-99984bb52ea65c2f__1869508724.png",
+  "language": "de",
+  "labels": [
+    {
+      "defect_type": "overflow",
+      "text_expected": "Hilfe",
+      "text_seen": "Hilfe",
+      "region": "bottom-left"
+    },
+    {
+      "defect_type": "wrong_language",
+      "text_expected": "Untätige Einheiten anzeigen",
+      "text_seen": "Unités inactives",
+      "region": "top-left"
+    }
+  ]
+}

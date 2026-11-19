@@ -1,0 +1,19 @@
+{
+  "schema_version": 2,
+  "screenshot": "tech-picker__de__2400x1080__batch-e45e29bd1f0f9039__1887578114.png",
+  "language": "de",
+  "labels": [
+    {
+      "defect_type": "truncated_text",
+      "text_expected": "Baukunst und Gebäudetechnik",
+      "text_seen": "Baukunst und Gebäu...",
+      "region": "center"
+    },
+    {
+      "defect_type": "wrong_language",
+      "text_expected": "Bergbau",
+      "text_seen": "Mining",
+      "region": "left"
+    }
+  ]
+}

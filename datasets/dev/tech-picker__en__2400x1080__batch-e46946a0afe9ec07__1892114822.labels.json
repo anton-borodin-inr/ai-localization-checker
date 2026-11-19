@@ -1,0 +1,19 @@
+{
+  "schema_version": 2,
+  "screenshot": "tech-picker__en__2400x1080__batch-e46946a0afe9ec07__1892114822.png",
+  "language": "en",
+  "labels": [
+    {
+      "defect_type": "truncated_text",
+      "text_expected": "Construction and civil engineering",
+      "text_seen": "Construction and civ...",
+      "region": "center"
+    },
+    {
+      "defect_type": "truncated_text",
+      "text_expected": "Mining and ore extraction",
+      "text_seen": "Mining and ore extra...",
+      "region": "left"
+    }
+  ]
+}

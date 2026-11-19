@@ -1,0 +1,19 @@
+{
+  "schema_version": 2,
+  "screenshot": "options-gameplay__en__2400x1080__batch-99984bb52ea65c2f__1869508724.png",
+  "language": "en",
+  "labels": [
+    {
+      "defect_type": "wrong_language",
+      "text_expected": "Check for idle units",
+      "text_seen": "Untätige Einheiten anzeigen",
+      "region": "top"
+    },
+    {
+      "defect_type": "overflow",
+      "text_expected": "Increase",
+      "text_seen": "Increase",
+      "region": "bottom"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "schema_version": 2,
+  "screenshot": "city-production__en__2400x1080__batch-99984bb52ea65c2f__1869508724.png",
+  "language": "en",
+  "labels": [
+    {
+      "defect_type": "wrong_language",
+      "text_expected": "Worker",
+      "text_seen": "Arbeiter",
+      "region": "left"
+    },
+    {
+      "defect_type": "wrong_language",
+      "text_expected": "Worker",
+      "text_seen": "Arbeiter",
+      "region": "bottom-right"
+    }
+  ]
+}
