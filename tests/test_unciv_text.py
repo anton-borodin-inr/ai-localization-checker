@@ -57,9 +57,52 @@ def test_unsupported_rendering_is_explicit(table, text):
         table.render(text)
 
 
-def test_invalid_translation_parameter_is_explicit():
-    table = TranslationTable.parse("Research [tech] = [wrong] erforschen\n")
-    with pytest.raises(RenderingError, match="Unknown translated placeholder"):
+@pytest.mark.parametrize(
+    ("entry", "request_text", "expected"),
+    [
+        (
+            "Research [technology] = Research [amount]\nArchery = Archery\n",
+            "Research [Archery]",
+            "Research [amount]",
+        ),
+        (
+            "Research [technology] = [amount] erforschen\nArchery = Bogenschießen\n",
+            "Research [Archery]",
+            "[amount] erforschen",
+        ),
+        (
+            "Requires at least [amount] population = Requires at least [count] population\n",
+            "Requires at least [2] population",
+            "Requires at least [count] population",
+        ),
+        (
+            "Requires at least [amount] population = Benötigt mindestens [count] Bevölkerung\n",
+            "Requires at least [2] population",
+            "Benötigt mindestens [count] Bevölkerung",
+        ),
+        (
+            "[one] then [two] = [two], then [count]\nMining = Bergbau\nArchery = Bogenschießen\n",
+            "[Mining] then [Archery]",
+            "Bogenschießen, then [count]",
+        ),
+    ],
+)
+def test_unknown_translated_placeholder_stays_literal(entry, request_text, expected):
+    table = TranslationTable.parse(entry)
+    assert table.render(request_text) == expected
+
+
+@pytest.mark.parametrize(
+    "entry",
+    [
+        "Research [tech] = [unclosed erforschen\n",
+        "Research [tech] = unopened] erforschen\n",
+        "Research [tech] = {Mining} [tech]\n",
+    ],
+)
+def test_malformed_translated_entry_still_raises(entry):
+    table = TranslationTable.parse(entry)
+    with pytest.raises(RenderingError):
         table.render("Research [Mining]")
 
 
