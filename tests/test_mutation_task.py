@@ -5,6 +5,7 @@ import tarfile
 import zipfile
 from pathlib import Path
 from types import SimpleNamespace
+from unittest.mock import Mock
 
 import pytest
 from test_mutation_verify import png
@@ -14,6 +15,35 @@ from l10n_checker import mutation_cli, mutation_task
 from l10n_checker.capture import CaptureError
 from l10n_checker.screen_manifest import digest, json_bytes
 from l10n_checker.text_dump import canonical_bytes
+
+
+@pytest.mark.parametrize(
+    "output,success",
+    [
+        (b"Performing Streamed Install\nSuccess", True),
+        (b"Performing Streamed Install\nFailure [INSTALL_FAILED_INVALID_APK]", False),
+    ],
+)
+def test_install_requires_success_as_the_last_nonempty_line(
+    tmp_path, monkeypatch, output, success
+):
+    apk = tmp_path / "task.apk"
+    apk.write_bytes(b"task APK")
+    build = SimpleNamespace(apk_sha256=digest(apk.read_bytes()))
+    inputs = SimpleNamespace(manifest=SimpleNamespace(build=build))
+    device = Mock()
+    device.run.return_value = output + b"\n\n"
+    check_build = Mock()
+    monkeypatch.setattr(mutation_task, "check_build", check_build)
+
+    if success:
+        mutation_task.install(device, apk, inputs)
+        check_build.assert_called_once_with(device, inputs)
+    else:
+        with pytest.raises(CaptureError, match="APK installation failed"):
+            mutation_task.install(device, apk, inputs)
+        check_build.assert_not_called()
+    device.run.assert_called_once_with("install", "-r", "-d", str(apk), timeout_s=300)
 
 
 @pytest.mark.parametrize(

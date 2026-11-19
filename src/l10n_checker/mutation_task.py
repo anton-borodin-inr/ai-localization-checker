@@ -207,7 +207,10 @@ def install(device, apk, inputs):
     )
     device.force_stop()
     result = device.run("install", "-r", "-d", str(apk), timeout_s=300)
-    require(result.decode().strip() == "Success", "APK installation failed")
+    last_line = next(
+        (line for line in reversed(result.splitlines()) if line.strip()), b""
+    )
+    require(last_line == b"Success", "APK installation failed")
     check_build(device, inputs)
 
 
