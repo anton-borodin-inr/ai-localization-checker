@@ -46,8 +46,49 @@ Dev-set drafts come only from the accepted run's `mutation-manifest.json` and `a
 
 ## Reviewed screenshots
 
+Stage 1 vertical slice (`docs/evidence/8/final/`, schema v1):
+
 | Screenshot | Labels | Reviewed by |
 |---|---|---|
 | `tech-picker__de__2400x1080__clean__1271001.png` | none | Anton |
 | `tech-picker__de__2400x1080__injected__1271002.png` | 1 × `truncated_text` (Mining) | Anton |
 | `tech-picker__en__2400x1080__clean__1271001.png` | none | Anton |
+
+Stage 3 dev set (`datasets/dev/`, schema v2, 34 screenshots / 33 labels from `d061-dev-retry`; Anton edited three multi-line labels to keep only the line carrying the defect, dropping the second-line counter: `[amount] erforschen`, `Research [amount]`, and `bottom-right` `Arbeiter`):
+
+| Screenshot | Labels | Reviewed by |
+|---|---|---|
+| `city-production__de__2400x1080__batch-37517e5f3dc66819__1862826555.png` | none | Anton |
+| `city-production__de__2400x1080__batch-99984bb52ea65c2f__1869508724.png` | `wrong_language` (Requiert au moins 2 habitants) | Anton |
+| `city-production__de__2400x1080__batch-e45e29bd1f0f9039__1887578114.png` | `other` (Benötigt mindestens [count] Bevölkerung) | Anton |
+| `city-production__de__2400x1080__batch-e46946a0afe9ec07__1892114822.png` | `wrong_language` (Requires at least 2 population) | Anton |
+| `city-production__en__2400x1080__batch-37517e5f3dc66819__1862826555.png` | none | Anton |
+| `city-production__en__2400x1080__batch-99984bb52ea65c2f__1869508724.png` | `wrong_language` (Arbeiter, `left`); `wrong_language` (Arbeiter, `bottom-right`, single-line edit) | Anton |
+| `city-production__en__2400x1080__batch-e45e29bd1f0f9039__1887578114.png` | `other` (Requires at least [count] population) | Anton |
+| `city-production__en__2400x1080__batch-e46946a0afe9ec07__1892114822.png` | `wrong_language` (Benötigt mindestens 2 Bevölkerung) | Anton |
+| `civilopedia__de__2400x1080__batch-37517e5f3dc66819__1862826555.png` | none | Anton |
+| `civilopedia__de__2400x1080__batch-99984bb52ea65c2f__1869508724.png` | `wrong_language` (New Game) | Anton |
+| `civilopedia__de__2400x1080__batch-e46946a0afe9ec07__1892114822.png` | `wrong_language` (Nouvelle partie) | Anton |
+| `civilopedia__en__2400x1080__batch-37517e5f3dc66819__1862826555.png` | none | Anton |
+| `civilopedia__en__2400x1080__batch-e46946a0afe9ec07__1892114822.png` | `wrong_language` (Neues Spiel) | Anton |
+| `empire-stats__de__2400x1080__batch-37517e5f3dc66819__1862826555.png` | none | Anton |
+| `empire-stats__de__2400x1080__batch-99984bb52ea65c2f__1869508724.png` | `wrong_language` (Gains du sol) | Anton |
+| `empire-stats__de__2400x1080__batch-e45e29bd1f0f9039__1887578114.png` | `wrong_language` (Tile yields) | Anton |
+| `empire-stats__en__2400x1080__batch-37517e5f3dc66819__1862826555.png` | none | Anton |
+| `empire-stats__en__2400x1080__batch-e45e29bd1f0f9039__1887578114.png` | `wrong_language` (Felderträge) | Anton |
+| `options-gameplay__de__2400x1080__batch-37517e5f3dc66819__1862826555.png` | none | Anton |
+| `options-gameplay__de__2400x1080__batch-99984bb52ea65c2f__1869508724.png` | `overflow` (Hilfe); `wrong_language` (Unités inactives) | Anton |
+| `options-gameplay__de__2400x1080__batch-e45e29bd1f0f9039__1887578114.png` | `wrong_language` (Check for idle units); `overflow` (Verringern) | Anton |
+| `options-gameplay__de__2400x1080__batch-e46946a0afe9ec07__1892114822.png` | `overflow` (Erhöhen) | Anton |
+| `options-gameplay__en__2400x1080__batch-37517e5f3dc66819__1862826555.png` | none | Anton |
+| `options-gameplay__en__2400x1080__batch-99984bb52ea65c2f__1869508724.png` | `wrong_language` (Untätige Einheiten anzeigen); `overflow` (Increase) | Anton |
+| `options-gameplay__en__2400x1080__batch-e45e29bd1f0f9039__1887578114.png` | `overflow` (Help) | Anton |
+| `options-gameplay__en__2400x1080__batch-e46946a0afe9ec07__1892114822.png` | `overflow` (Decrease) | Anton |
+| `tech-picker__de__2400x1080__batch-37517e5f3dc66819__1862826555.png` | none | Anton |
+| `tech-picker__de__2400x1080__batch-99984bb52ea65c2f__1869508724.png` | `truncated_text` (Mauerarbeiten und S...); `truncated_text` (Bergbau und Erzgew...) | Anton |
+| `tech-picker__de__2400x1080__batch-e45e29bd1f0f9039__1887578114.png` | `truncated_text` (Baukunst und Gebäu...); `wrong_language` (Mining) | Anton |
+| `tech-picker__de__2400x1080__batch-e46946a0afe9ec07__1892114822.png` | `wrong_language` (Minage); `other` ([amount] erforschen, single-line edit) | Anton |
+| `tech-picker__en__2400x1080__batch-37517e5f3dc66819__1862826555.png` | none | Anton |
+| `tech-picker__en__2400x1080__batch-99984bb52ea65c2f__1869508724.png` | `truncated_text` (Masonry and stone ...); `other` (Research [amount], single-line edit) | Anton |
+| `tech-picker__en__2400x1080__batch-e45e29bd1f0f9039__1887578114.png` | `wrong_language` (Bergbau) | Anton |
+| `tech-picker__en__2400x1080__batch-e46946a0afe9ec07__1892114822.png` | `truncated_text` (Construction and civ...); `truncated_text` (Mining and ore extra...) | Anton |
