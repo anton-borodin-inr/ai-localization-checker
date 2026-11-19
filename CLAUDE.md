@@ -89,6 +89,17 @@ reproducibility.
 - Write long docs: a feature section fits on one screen; a decision fits in
   about 10 lines.
 
+### Code size
+
+- Write the least code that meets the acceptance criteria; reuse existing
+  helpers before adding new ones.
+- Add a CLI option, setting or abstraction only when a criterion or Anton
+  needs it, not for flexibility.
+- Tests cover the acceptance criteria and the D-013 / budget edge cases,
+  not every branch several times.
+- If a change will exceed about 300 lines of source (tests excluded), say so
+  in the plan with a smaller alternative and its trade-off.
+
 ### What to keep vs. delete
 
 Keep (project assets, never delete without asking Anton):
