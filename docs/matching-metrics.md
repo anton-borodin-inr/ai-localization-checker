@@ -176,3 +176,50 @@ described in D-019. The script reads the specification but never uses `expected`
 to compute results. For the failure-status example, pass
 `11_not_checked_screen`; undefined metrics print as `null`. Neither command
 contacts a provider. Anton performs the independent hand comparison (D-012).
+
+## Dataset evaluation CLI (`l10n-eval`)
+
+`l10n-eval` runs either detector over a labeled dataset folder (`*.png` and
+`<stem>.labels.json`), scores with unchanged D-026/D-029 matching and metrics,
+and writes `<output-dir>/run.json` plus `<output-dir>/per_image.json` (pass
+`--keep-records` to also retain per-image detector folders under `records/`):
+
+```sh
+# Offline baseline (T2 default, 0 provider requests, $0)
+uv run l10n-eval \
+  --dataset datasets/dev \
+  --detector baseline \
+  --output-dir data/runs/stage6-dev-baseline
+
+# Vision detector (requires dataset-wide request and USD caps)
+uv run --env-file .env l10n-eval \
+  --dataset datasets/dev \
+  --detector vision \
+  --max-requests 34 \
+  --max-usd 1.00 \
+  --output-dir data/runs/stage6-dev-vision
+```
+
+- `--dataset` is required and accepts any folder path (including external
+  hold-out storage); nothing in `l10n-eval` defaults to or inspects
+  `~/l10n-holdout`.
+- Mutated-build translations come from `--build-requests` (default
+  `fixtures/stage3/dev-build-requests.json`, SHA-256 `36cf23d9…`), applied to
+  the base commit's `.properties` in `--unciv-fork` (default `../Unciv-fork`),
+  paired with `<inventories-dir>/<screen>.json` (default `fixtures/baseline`).
+- `screen_texts` for hallucination presence is the union of the confirmed #47
+  reference (`--references-dir`, default
+  `docs/evidence/47/reference-confirmation`), the rendered texts of the
+  reviewed `fixtures/baseline` inventory for that screen/language, and the
+  screenshot's label `text_seen` values, preserving reference occurrence counts.
+- Vision runs enforce `--max-requests` and `--max-usd` using the #45
+  worst-case per-request reservation (`1,048,576` cache-miss input tokens +
+  `4,096` output tokens = `0.319488` USD at peak tariff); any error, invalid
+  response, non-readable response or budget stop records `not_checked` (D-013).
+- `run.json` records D-035/D-059 accounting (`run_id`, `commit`, `command`,
+  `config`, `seed: null`, `requests_sent`, `token_usage`, `estimated_cost`,
+  `estimated_cost_usd`) and `metrics` (`tp`, `tp_observed`, `tp_missing`, `fp`,
+  `fn`, `precision`, `recall_all`, `recall_checked`, `not_checked_screens`,
+  `fn_on_not_checked`, `empty_label_fp`, `per_class_recall`, `confusion`,
+  `hallucinations`, `duplicates_collapsed`). Exit status: `0` all checked,
+  `2` at least one `not_checked`, `1` preflight or recording error.
