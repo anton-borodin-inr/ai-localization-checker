@@ -11,6 +11,8 @@ from l10n_checker.vision import ModelOutput, ProviderError, ProviderResponse, re
 BASE_URL = "https://api.deepseek.com"
 MODEL = "deepseek-flash"
 MAX_TOKENS = 4096
+THINKING_MAX_TOKENS = 16384
+THINKING_EFFORTS = ("disabled", "low", "high")
 DEFAULT_TIMEOUT_S = 120
 
 # JSON object mode does not enforce a schema, so the schema goes into the prompt
@@ -82,7 +84,19 @@ class DeepSeekProvider:
         api_key: str,
         timeout_s: int = DEFAULT_TIMEOUT_S,
         transport: httpx.BaseTransport | None = None,
+        *,
+        thinking: str = "disabled",
+        max_tokens: int | None = None,
     ):
+        if thinking not in THINKING_EFFORTS:
+            raise ValueError(f"Unsupported thinking effort: {thinking!r}")
+        if max_tokens is not None and (type(max_tokens) is not int or max_tokens < 1):
+            raise ValueError(f"max_tokens must be a positive integer: {max_tokens!r}")
+        effective_max_tokens = (
+            max_tokens
+            if max_tokens is not None
+            else (MAX_TOKENS if thinking == "disabled" else THINKING_MAX_TOKENS)
+        )
         self._secrets = (api_key,)
         self._headers = {"Authorization": f"Bearer {api_key}"}
         # No transport retries, no redirects, no proxies or .netrc from the
@@ -94,14 +108,25 @@ class DeepSeekProvider:
             trust_env=False,
             transport=transport or httpx.HTTPTransport(retries=0),
         )
-        self._body = {
-            "model": MODEL,
-            "temperature": 0,
-            "max_tokens": MAX_TOKENS,
-            "stream": False,
-            "thinking": {"type": "disabled"},
-            "response_format": {"type": "json_object"},
-        }
+        if thinking == "disabled":
+            self._body = {
+                "model": MODEL,
+                "temperature": 0,
+                "max_tokens": effective_max_tokens,
+                "stream": False,
+                "thinking": {"type": "disabled"},
+                "response_format": {"type": "json_object"},
+            }
+        else:
+            # Temperature has no effect in DeepSeek thinking mode, so omit it.
+            self._body = {
+                "model": MODEL,
+                "max_tokens": effective_max_tokens,
+                "stream": False,
+                "thinking": {"type": "enabled"},
+                "reasoning_effort": thinking,
+                "response_format": {"type": "json_object"},
+            }
         self.settings = {
             "endpoint": BASE_URL + "/chat/completions",
             **{k: v for k, v in self._body.items() if k != "model"},
@@ -163,8 +188,9 @@ class DeepSeekProvider:
 
     @staticmethod
     def _parse(raw: dict) -> ProviderResponse:
-        # Model and usage are kept even when the answer is rejected below, so
-        # the run record still accounts for the tokens that were billed.
+        # Model, usage and reasoning_content are kept even when the answer is
+        # rejected below, so the run record accounts for billed tokens and keeps
+        # reasoning for diagnosis (never parsed as findings).
         response = ProviderResponse(
             text="",
             raw=raw,
@@ -180,10 +206,15 @@ class DeepSeekProvider:
         if not isinstance(choices, list) or not choices:
             raise reject("empty_response", "no choices")
         choice = choices[0] if isinstance(choices[0], dict) else {}
+        message = choice.get("message")
+        reasoning = (
+            message.get("reasoning_content") if isinstance(message, dict) else None
+        )
+        if isinstance(reasoning, str):
+            response.reasoning_content = reasoning
         finish = choice.get("finish_reason")
         if finish != "stop":
             raise reject("incomplete_response", f"finish_reason={finish}")
-        message = choice.get("message")
         content = message.get("content") if isinstance(message, dict) else None
         if not isinstance(content, str) or not content.strip():
             raise reject("empty_response", "the response has no text")

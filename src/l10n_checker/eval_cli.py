@@ -10,7 +10,7 @@ from pathlib import Path
 from l10n_checker.baseline import DEFAULT_PREPROCESSING, PREPROCESSING, BaselineError
 from l10n_checker.baseline_cli import output_directory
 from l10n_checker.capture import CaptureError
-from l10n_checker.deepseek import DEFAULT_TIMEOUT_S
+from l10n_checker.deepseek import DEFAULT_TIMEOUT_S, THINKING_EFFORTS
 from l10n_checker.evaluation import (
     DEFAULT_BUILD_REQUESTS,
     DEFAULT_INVENTORIES_DIR,
@@ -31,10 +31,12 @@ def _decimal_arg(raw: str) -> Decimal:
     return value
 
 
-def make_provider(api_key: str, timeout_s: int) -> VisionProvider:
+def make_provider(
+    api_key: str, timeout_s: int, thinking: str = "disabled"
+) -> VisionProvider:
     from l10n_checker.deepseek import DeepSeekProvider
 
-    return DeepSeekProvider(api_key, timeout_s=timeout_s)
+    return DeepSeekProvider(api_key, timeout_s=timeout_s, thinking=thinking)
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -110,6 +112,12 @@ def main(argv: list[str] | None = None) -> int:
         help="Vision only: request timeout in seconds (default: %(default)s).",
     )
     parser.add_argument(
+        "--thinking",
+        choices=THINKING_EFFORTS,
+        default="disabled",
+        help="Vision only: thinking mode / reasoning effort (default: %(default)s).",
+    )
+    parser.add_argument(
         "--keep-records",
         action="store_true",
         help="Keep per-image OCR/diagnostic or vision folders under records/.",
@@ -126,6 +134,8 @@ def main(argv: list[str] | None = None) -> int:
     else:
         if args.max_requests is not None or args.max_usd is not None:
             parser.error("--max-requests and --max-usd apply only to --detector vision")
+        if args.thinking != "disabled":
+            parser.error("--thinking applies only to --detector vision")
 
     api_key = ""
     secrets: tuple[str, ...] = ()
@@ -137,7 +147,9 @@ def main(argv: list[str] | None = None) -> int:
             if not api_key:
                 raise ValueError("DEEPSEEK_API_KEY is not set; no request was sent")
             secrets = (api_key,)
-            provider_factory = lambda: make_provider(api_key, args.timeout)
+            provider_factory = lambda: make_provider(
+                api_key, args.timeout, args.thinking
+            )
 
         run_record, _ = evaluate_dataset(
             dataset_dir=args.dataset,

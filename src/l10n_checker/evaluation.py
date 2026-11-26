@@ -96,12 +96,24 @@ def git_head_commit(repo: Path = REPO_ROOT) -> str | None:
         return None
 
 
+def _reasoning_tokens(usage: dict) -> int | None:
+    details = usage.get("completion_tokens_details")
+    if isinstance(details, dict):
+        val = details.get("reasoning_tokens")
+        if type(val) is int and val >= 0:
+            return val
+    return None
+
+
 def worst_case_request_reserve_usd(provider: VisionProvider) -> Decimal:
     """Per-request worst-case peak USD reserve (#45 budget policy)."""
+    max_tokens = provider.settings.get("max_tokens", MAX_TOKENS)
+    if type(max_tokens) is not int or max_tokens < 1:
+        raise ValueError(f"Invalid provider max_tokens setting: {max_tokens!r}")
     worst_usage = {
         "prompt_cache_hit_tokens": 0,
         "prompt_cache_miss_tokens": CONSERVATIVE_INPUT_TOKENS,
-        "completion_tokens": MAX_TOKENS,
+        "completion_tokens": max_tokens,
     }
     estimate = provider.estimate_cost(worst_usage)
     if estimate is None:
@@ -467,6 +479,7 @@ def _not_checked_budget_result(
         "attempts": [],
         "usage": None,
         "estimated_cost": None,
+        "reasoning_content": None,
     }
     result = CheckResult(
         status="not_checked",
@@ -576,7 +589,7 @@ def evaluate_dataset(
     known_peak_usd = Decimal(0)
     known_off_peak_usd = Decimal(0)
     unknown_reserve_usd = Decimal(0)
-    token_totals = {field: 0 for field in USAGE_FIELDS}
+    token_totals = {field: 0 for field in (*USAGE_FIELDS, "reasoning_tokens")}
     has_usage = False
 
     screen_matches_list = []
@@ -644,6 +657,10 @@ def evaluate_dataset(
                     if type(val) is int and val >= 0:
                         token_totals[field] += val
                         has_usage = True
+                reasoning_tok = _reasoning_tokens(usage)
+                if reasoning_tok is not None:
+                    token_totals["reasoning_tokens"] += reasoning_tok
+                    has_usage = True
             cost = result.metadata.get("estimated_cost")
             if isinstance(cost, dict) and "peak_usd" in cost:
                 known_peak_usd += Decimal(str(cost["peak_usd"]))
@@ -720,6 +737,7 @@ def evaluate_dataset(
                 "requests_sent": int(result.metadata.get("requests_sent", 0)),
                 "usage": result.metadata.get("usage"),
                 "estimated_cost": cost,
+                "reasoning_content": result.metadata.get("reasoning_content"),
                 "latency_s": latency_s,
             }
         )
