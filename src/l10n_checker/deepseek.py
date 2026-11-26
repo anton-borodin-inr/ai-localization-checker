@@ -73,6 +73,46 @@ def estimate_cost(usage: dict | None) -> dict | None:
     }
 
 
+def make_http_client(base_url: str, timeout_s: int, transport=None) -> httpx.Client:
+    # No retries, redirects, proxies or .netrc: the cap counts real requests.
+    return httpx.Client(
+        base_url=base_url,
+        timeout=timeout_s,
+        follow_redirects=False,
+        trust_env=False,
+        transport=transport or httpx.HTTPTransport(retries=0),
+    )
+
+
+def post_json(
+    client: httpx.Client, path: str, payload: dict, headers: dict, secrets: tuple
+) -> dict:
+    try:
+        response = client.post(path, json=payload, headers=headers)
+    except Exception as exc:  # noqa: BLE001 - any failure is "not checked"
+        kind = "timeout" if isinstance(exc, httpx.TimeoutException) else "api_error"
+        raise ProviderError(
+            kind, redact(f"{type(exc).__name__}: {exc}", secrets)
+        ) from None
+    body = redact(response.text, secrets)
+    if response.status_code != 200:
+        kind = "rate_limited" if response.status_code == 429 else "api_error"
+        raise ProviderError(
+            kind,
+            f"HTTP {response.status_code}",
+            {"http_status": response.status_code, "body": body},
+        )
+    try:
+        raw = json.loads(body)
+    except ValueError:
+        raise ProviderError(
+            "api_error", "the API response is not JSON", {"body": body}
+        ) from None
+    if not isinstance(raw, dict):
+        raise ProviderError("api_error", "the API response is not an object", None)
+    return raw
+
+
 class DeepSeekProvider:
     name = "deepseek"
     model = MODEL
@@ -99,15 +139,7 @@ class DeepSeekProvider:
         )
         self._secrets = (api_key,)
         self._headers = {"Authorization": f"Bearer {api_key}"}
-        # No transport retries, no redirects, no proxies or .netrc from the
-        # environment: the request cap counts real requests to one known host.
-        self._client = httpx.Client(
-            base_url=BASE_URL,
-            timeout=timeout_s,
-            follow_redirects=False,
-            trust_env=False,
-            transport=transport or httpx.HTTPTransport(retries=0),
-        )
+        self._client = make_http_client(BASE_URL, timeout_s, transport)
         if thinking == "disabled":
             self._body = {
                 "model": MODEL,
@@ -160,31 +192,10 @@ class DeepSeekProvider:
                 }
             ],
         }
-        try:
-            response = self._client.post(
-                "/chat/completions", json=payload, headers=self._headers
-            )
-        except httpx.TimeoutException as exc:
-            raise ProviderError("timeout", self._safe(exc)) from None
-        except Exception as exc:  # noqa: BLE001 - any other failure is "not checked"
-            raise ProviderError("api_error", self._safe(exc)) from None
-        body = redact(response.text, self._secrets)
-        if response.status_code != 200:
-            kind = "rate_limited" if response.status_code == 429 else "api_error"
-            raw = {"http_status": response.status_code, "body": body}
-            raise ProviderError(kind, f"HTTP {response.status_code}", raw)
-        try:
-            raw = json.loads(body)
-        except ValueError:
-            raise ProviderError(
-                "api_error", "the API response is not JSON", {"body": body}
-            ) from None
-        if not isinstance(raw, dict):
-            raise ProviderError("api_error", "the API response is not an object", None)
+        raw = post_json(
+            self._client, "/chat/completions", payload, self._headers, self._secrets
+        )
         return self._parse(raw)
-
-    def _safe(self, exc: Exception) -> str:
-        return redact(f"{type(exc).__name__}: {exc}", self._secrets)
 
     @staticmethod
     def _parse(raw: dict) -> ProviderResponse:

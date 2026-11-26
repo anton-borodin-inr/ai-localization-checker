@@ -928,3 +928,238 @@ def test_cli_thinking_validation_and_forwarding(
     )
     assert code == 0
     assert seen_thinking == ["low"]
+
+
+def _mock_claude_provider(outcomes: list, sent_requests: list):
+    from l10n_checker.claude import ClaudeProvider
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        sent_requests.append(json.loads(request.content))
+        outcome = outcomes.pop(0)
+        if isinstance(outcome, int):
+            return httpx.Response(outcome, text=f"HTTP {outcome} failure")
+        stop_reason = outcome.get("stop_reason", "end_turn")
+        content = outcome.get("content")
+        if content is None:
+            content = [{"type": "text", "text": json.dumps(outcome["body"])}]
+        return httpx.Response(
+            200,
+            json={
+                "id": "msg_unit",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-sonnet-5-5-20261001",
+                "content": content,
+                "stop_reason": stop_reason,
+                "usage": {
+                    "input_tokens": 4100,
+                    "output_tokens": 100,
+                    "cache_creation_input_tokens": 0,
+                    "cache_read_input_tokens": 0,
+                },
+            },
+        )
+
+    return ClaudeProvider("secret-claude-key", transport=httpx.MockTransport(handler))
+
+
+def test_vision_claude_evaluation_records_model_usage_cost_and_reserve(
+    synthetic_env, tmp_path: Path
+):
+    from l10n_checker.claude import TARIFF as CLAUDE_TARIFF
+
+    sent: list[dict] = []
+    provider = _mock_claude_provider(
+        [
+            {
+                "body": {
+                    "readability": "readable",
+                    "unreadable_regions": [],
+                    "readability_reason": None,
+                    "findings": [],
+                }
+            },
+            {"stop_reason": "refusal", "content": []},
+        ],
+        sent,
+    )
+    out_dir = tmp_path / "data/runs/unit-vision-claude"
+    run_record, per_image = evaluation.evaluate_dataset(
+        dataset_dir=synthetic_env["dataset_dir"],
+        detector="vision",
+        output_dir=out_dir,
+        command=["l10n-eval", "--provider", "claude"],
+        build_requests_path=synthetic_env["build_requests"],
+        unciv_fork=synthetic_env["fork"],
+        inventories_dir=synthetic_env["inventories_dir"],
+        references_dir=synthetic_env["references_dir"],
+        provider=provider,
+        max_requests=5,
+        max_usd=Decimal("0.70"),
+        retry_delay_s=0.0,
+    )
+
+    assert len(sent) == 2
+    vision_cfg = run_record["config"]["vision"]
+    assert vision_cfg["provider"] == "claude"
+    assert vision_cfg["model"] == "claude-sonnet-5-5"
+    assert vision_cfg["model_version"] == "claude-sonnet-5-5-20261001"
+    assert vision_cfg["model_versions"] == ["claude-sonnet-5-5-20261001"]
+    assert vision_cfg["per_request_reserve_usd"] == "0.066912"
+    assert vision_cfg["tariff"] == CLAUDE_TARIFF
+    assert run_record["token_usage"]["input_tokens"] == 8200
+    assert run_record["token_usage"]["output_tokens"] == 200
+    # 2 * (4100 * 2.00 + 100 * 10.00) / 1e6 = 2 * 0.0092 = 0.0184
+    assert Decimal(run_record["estimated_cost"]["usd"]) == Decimal("0.0184")
+    assert "off_peak_usd" not in run_record["estimated_cost"]
+    assert per_image[0]["status"] == "checked"
+    assert per_image[0]["model_version"] == "claude-sonnet-5-5-20261001"
+    assert per_image[1]["status"] == "not_checked"
+    assert per_image[1]["reason"] == "refusal: stop_reason=refusal"
+
+    # Claude reserve ($0.066912) blocks second request when max_usd is $0.07 after HTTP 500.
+    sent_cap: list[dict] = []
+    cap_provider = _mock_claude_provider([500], sent_cap)
+    run_cap, rows_cap = evaluation.evaluate_dataset(
+        dataset_dir=synthetic_env["dataset_dir"],
+        detector="vision",
+        output_dir=tmp_path / "data/runs/unit-vision-claude-cap",
+        command=["l10n-eval", "--provider", "claude"],
+        build_requests_path=synthetic_env["build_requests"],
+        unciv_fork=synthetic_env["fork"],
+        inventories_dir=synthetic_env["inventories_dir"],
+        references_dir=synthetic_env["references_dir"],
+        provider=cap_provider,
+        max_requests=5,
+        max_usd=Decimal("0.07"),
+        retry_delay_s=0.0,
+    )
+    assert len(sent_cap) == 1
+    assert run_cap["estimated_cost"]["unknown_cost_reserve_usd"] == "0.066912"
+    assert rows_cap[1]["reason"].startswith("usd_cap_reached:")
+
+
+def test_cli_provider_selection_and_validation(
+    synthetic_env, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    monkeypatch.chdir(tmp_path)
+    (tmp_path / "data/runs").mkdir(parents=True)
+
+    # Baseline rejects --provider claude.
+    with pytest.raises(SystemExit) as exc:
+        eval_cli.main(
+            [
+                "--dataset",
+                str(synthetic_env["dataset_dir"]),
+                "--detector",
+                "baseline",
+                "--provider",
+                "claude",
+                "--output-dir",
+                "data/runs/b-claude",
+            ]
+        )
+    assert exc.value.code == 2
+
+    # Claude rejects --thinking low.
+    with pytest.raises(SystemExit) as exc:
+        eval_cli.main(
+            [
+                "--dataset",
+                str(synthetic_env["dataset_dir"]),
+                "--detector",
+                "vision",
+                "--provider",
+                "claude",
+                "--thinking",
+                "low",
+                "--max-requests",
+                "2",
+                "--max-usd",
+                "0.70",
+                "--output-dir",
+                "data/runs/v-claude-think",
+            ]
+        )
+    assert exc.value.code == 2
+
+    # Missing CLAUDE_API_KEY fails without sending requests.
+    monkeypatch.delenv("CLAUDE_API_KEY", raising=False)
+    code_missing = eval_cli.main(
+        [
+            "--dataset",
+            str(synthetic_env["dataset_dir"]),
+            "--detector",
+            "vision",
+            "--provider",
+            "claude",
+            "--max-requests",
+            "2",
+            "--max-usd",
+            "0.70",
+            "--output-dir",
+            "data/runs/v-claude-nokey",
+        ]
+    )
+    assert code_missing == 1
+
+    # --provider claude reads CLAUDE_API_KEY and forwards provider="claude".
+    seen: list[tuple] = []
+    monkeypatch.setenv("CLAUDE_API_KEY", "test-claude-key")
+
+    def fake_make_provider(
+        api_key: str,
+        timeout_s: int,
+        thinking: str = "disabled",
+        provider: str = "deepseek",
+    ):
+        seen.append((api_key, provider))
+        return _mock_claude_provider(
+            [
+                {
+                    "body": {
+                        "readability": "readable",
+                        "unreadable_regions": [],
+                        "readability_reason": None,
+                        "findings": [],
+                    }
+                },
+                {
+                    "body": {
+                        "readability": "readable",
+                        "unreadable_regions": [],
+                        "readability_reason": None,
+                        "findings": [],
+                    }
+                },
+            ],
+            [],
+        )
+
+    monkeypatch.setattr(eval_cli, "make_provider", fake_make_provider)
+    code_ok = eval_cli.main(
+        [
+            "--dataset",
+            str(synthetic_env["dataset_dir"]),
+            "--detector",
+            "vision",
+            "--provider",
+            "claude",
+            "--max-requests",
+            "5",
+            "--max-usd",
+            "0.70",
+            "--output-dir",
+            "data/runs/v-claude-ok",
+            "--build-requests",
+            str(synthetic_env["build_requests"]),
+            "--unciv-fork",
+            str(synthetic_env["fork"]),
+            "--inventories-dir",
+            str(synthetic_env["inventories_dir"]),
+            "--references-dir",
+            str(synthetic_env["references_dir"]),
+        ]
+    )
+    assert code_ok == 0
+    assert seen == [("test-claude-key", "claude")]

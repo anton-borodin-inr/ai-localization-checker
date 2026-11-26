@@ -31,9 +31,19 @@ def _decimal_arg(raw: str) -> Decimal:
     return value
 
 
+PROVIDER_API_KEY_ENV = {"deepseek": "DEEPSEEK_API_KEY", "claude": "CLAUDE_API_KEY"}
+
+
 def make_provider(
-    api_key: str, timeout_s: int, thinking: str = "disabled"
+    api_key: str,
+    timeout_s: int,
+    thinking: str = "disabled",
+    provider: str = "deepseek",
 ) -> VisionProvider:
+    if provider == "claude":
+        from l10n_checker.claude import ClaudeProvider
+
+        return ClaudeProvider(api_key, timeout_s=timeout_s)
     from l10n_checker.deepseek import DeepSeekProvider
 
     return DeepSeekProvider(api_key, timeout_s=timeout_s, thinking=thinking)
@@ -112,6 +122,12 @@ def main(argv: list[str] | None = None) -> int:
         help="Vision only: request timeout in seconds (default: %(default)s).",
     )
     parser.add_argument(
+        "--provider",
+        choices=tuple(PROVIDER_API_KEY_ENV),
+        default="deepseek",
+        help="Vision only: model provider (default: %(default)s).",
+    )
+    parser.add_argument(
         "--thinking",
         choices=THINKING_EFFORTS,
         default="disabled",
@@ -131,9 +147,13 @@ def main(argv: list[str] | None = None) -> int:
             parser.error("--detector vision requires --max-requests >= 1")
         if args.max_usd is None:
             parser.error("--detector vision requires --max-usd")
+        if args.provider == "claude" and args.thinking != "disabled":
+            parser.error("--thinking applies only to --provider deepseek")
     else:
         if args.max_requests is not None or args.max_usd is not None:
             parser.error("--max-requests and --max-usd apply only to --detector vision")
+        if args.provider != "deepseek":
+            parser.error("--provider applies only to --detector vision")
         if args.thinking != "disabled":
             parser.error("--thinking applies only to --detector vision")
 
@@ -143,12 +163,17 @@ def main(argv: list[str] | None = None) -> int:
         target_dir = output_directory(args.output_dir)
         provider_factory = None
         if args.detector == "vision":
-            api_key = os.environ.get("DEEPSEEK_API_KEY", "")
+            env_var = PROVIDER_API_KEY_ENV[args.provider]
+            api_key = os.environ.get(env_var, "")
             if not api_key:
-                raise ValueError("DEEPSEEK_API_KEY is not set; no request was sent")
+                raise ValueError(f"{env_var} is not set; no request was sent")
             secrets = (api_key,)
-            provider_factory = lambda: make_provider(
-                api_key, args.timeout, args.thinking
+            provider_factory = (
+                (lambda: make_provider(api_key, args.timeout, args.thinking))
+                if args.provider == "deepseek"
+                else (
+                    lambda: make_provider(api_key, args.timeout, provider=args.provider)
+                )
             )
 
         run_record, _ = evaluate_dataset(
