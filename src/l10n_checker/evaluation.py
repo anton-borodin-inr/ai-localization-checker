@@ -62,13 +62,6 @@ DEFAULT_UNCIV_FORK = (
     if (REPO_ROOT.parent / "Unciv-fork").is_dir()
     else Path.home() / "PycharmProjects/Unciv-fork"
 )
-USAGE_FIELDS = (
-    "prompt_tokens",
-    "completion_tokens",
-    "total_tokens",
-    "prompt_cache_hit_tokens",
-    "prompt_cache_miss_tokens",
-)
 
 
 def sha256_bytes(data: bytes) -> str:
@@ -107,6 +100,12 @@ def _reasoning_tokens(usage: dict) -> int | None:
 
 def worst_case_request_reserve_usd(provider: VisionProvider) -> Decimal:
     """Per-request worst-case peak USD reserve (#45 budget policy)."""
+    reserve_fn = getattr(provider, "worst_case_reserve_usd", None)
+    if callable(reserve_fn):
+        reserve = Decimal(str(reserve_fn()))
+        if reserve <= 0:
+            raise ValueError("Worst-case per-request USD reservation must be positive")
+        return reserve
     max_tokens = provider.settings.get("max_tokens", MAX_TOKENS)
     if type(max_tokens) is not int or max_tokens < 1:
         raise ValueError(f"Invalid provider max_tokens setting: {max_tokens!r}")
@@ -589,8 +588,9 @@ def evaluate_dataset(
     known_peak_usd = Decimal(0)
     known_off_peak_usd = Decimal(0)
     unknown_reserve_usd = Decimal(0)
-    token_totals = {field: 0 for field in (*USAGE_FIELDS, "reasoning_tokens")}
+    token_totals: dict[str, int] = {}
     has_usage = False
+    model_versions: set[str] = set()
 
     screen_matches_list = []
     per_image_rows: list[dict] = []
@@ -650,16 +650,20 @@ def evaluate_dataset(
 
             sent = int(result.metadata.get("requests_sent", 0))
             total_requests_sent += sent
+            mv = result.metadata.get("model_version")
+            if isinstance(mv, str) and mv:
+                model_versions.add(mv)
             usage = result.metadata.get("usage")
             if isinstance(usage, dict):
-                for field in USAGE_FIELDS:
-                    val = usage.get(field)
+                for key, val in usage.items():
                     if type(val) is int and val >= 0:
-                        token_totals[field] += val
+                        token_totals[key] = token_totals.get(key, 0) + val
                         has_usage = True
                 reasoning_tok = _reasoning_tokens(usage)
                 if reasoning_tok is not None:
-                    token_totals["reasoning_tokens"] += reasoning_tok
+                    token_totals["reasoning_tokens"] = (
+                        token_totals.get("reasoning_tokens", 0) + reasoning_tok
+                    )
                     has_usage = True
             cost = result.metadata.get("estimated_cost")
             if isinstance(cost, dict) and "peak_usd" in cost:
@@ -735,6 +739,7 @@ def evaluate_dataset(
                 "duplicate_finding_indices": list(sm.duplicate_finding_indices),
                 "hallucination_indices": list(sm.hallucination_indices),
                 "requests_sent": int(result.metadata.get("requests_sent", 0)),
+                "model_version": result.metadata.get("model_version"),
                 "usage": result.metadata.get("usage"),
                 "estimated_cost": cost,
                 "reasoning_content": result.metadata.get("reasoning_content"),
@@ -794,9 +799,13 @@ def evaluate_dataset(
         estimated_cost_usd = "0"
     else:
         assert provider is not None
+        provider_tariff = getattr(provider, "tariff", TARIFF)
+        sorted_versions = sorted(model_versions)
         config_record["vision"] = {
             "provider": provider.name,
             "model": provider.model,
+            "model_version": sorted_versions[0] if len(sorted_versions) == 1 else None,
+            "model_versions": sorted_versions,
             "sdk_version": provider.sdk_version,
             "schema_version": SCHEMA_VERSION,
             "prompt_version": PROMPT_VERSION,
@@ -806,16 +815,19 @@ def evaluate_dataset(
             "max_requests": max_requests,
             "max_usd": str(max_usd),
             "per_request_reserve_usd": str(reserve_usd),
-            "tariff": TARIFF,
+            "tariff": provider_tariff,
         }
         token_usage_record = token_totals if has_usage else {}
         accounted_upper = known_peak_usd + unknown_reserve_usd
         estimated_cost_record = {
             "peak_usd": str(known_peak_usd),
-            "off_peak_usd": str(known_off_peak_usd),
             "unknown_cost_reserve_usd": str(unknown_reserve_usd),
             "accounted_peak_upper_bound_usd": str(accounted_upper),
         }
+        if "off_peak_multiplier" in provider_tariff:
+            estimated_cost_record["off_peak_usd"] = str(known_off_peak_usd)
+        else:
+            estimated_cost_record["usd"] = str(known_peak_usd)
         estimated_cost_usd = str(accounted_upper)
 
     run_record = {

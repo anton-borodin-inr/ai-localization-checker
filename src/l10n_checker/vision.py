@@ -188,7 +188,12 @@ def load_check_result(text: str) -> CheckResult:
 
 
 ErrorKind = Literal[
-    "timeout", "rate_limited", "api_error", "empty_response", "incomplete_response"
+    "timeout",
+    "rate_limited",
+    "api_error",
+    "empty_response",
+    "incomplete_response",
+    "refusal",
 ]
 
 

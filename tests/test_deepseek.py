@@ -288,7 +288,7 @@ def test_only_the_adapter_talks_to_the_api():
                 names = [node.module or ""]
             if any(n.split(".")[0] in ("httpx", "urllib", "http") for n in names):
                 importers.add(path.name)
-    assert importers == {"deepseek.py"}
+    assert importers == {"deepseek.py", "claude.py"}
 
 
 OUTCOMES = {
