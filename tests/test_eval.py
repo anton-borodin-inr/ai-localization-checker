@@ -13,7 +13,7 @@ from PIL import Image
 from l10n_checker import eval_cli, evaluation
 from l10n_checker.baseline import TSV_HEADER, BaselineError, OcrOutput
 from l10n_checker.capture import CaptureError
-from l10n_checker.deepseek import DeepSeekProvider
+from l10n_checker.deepseek import THINKING_MAX_TOKENS, DeepSeekProvider
 from l10n_checker.text_dump import canonical_bytes
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -729,3 +729,202 @@ def test_screen_texts_union_preserves_unique_text_region_invariance(synthetic_en
     )
     assert st.count("Bergbau") == 1
     assert "Schrift" in st
+
+
+def test_vision_thinking_records_reasoning_tokens_content_and_reserve(
+    synthetic_env, tmp_path: Path
+):
+    sent: list[dict] = []
+    responses = [
+        {
+            "model": "deepseek-flash",
+            "system_fingerprint": "fp_think",
+            "choices": [
+                {
+                    "finish_reason": "stop",
+                    "message": {
+                        "content": json.dumps(
+                            {
+                                "readability": "readable",
+                                "unreadable_regions": [],
+                                "readability_reason": None,
+                                "findings": [],
+                            }
+                        ),
+                        "reasoning_content": "Clean screen reasoning.",
+                    },
+                }
+            ],
+            "usage": {
+                "prompt_tokens": 1980,
+                "completion_tokens": 350,
+                "total_tokens": 2330,
+                "prompt_cache_hit_tokens": 0,
+                "prompt_cache_miss_tokens": 1980,
+                "completion_tokens_details": {"reasoning_tokens": 320},
+            },
+        },
+        {
+            "model": "deepseek-flash",
+            "system_fingerprint": "fp_think",
+            "choices": [
+                {
+                    "finish_reason": "length",
+                    "message": {
+                        "content": "",
+                        "reasoning_content": "Cut off reasoning.",
+                    },
+                }
+            ],
+            "usage": {
+                "prompt_tokens": 1980,
+                "completion_tokens": THINKING_MAX_TOKENS,
+                "total_tokens": 1980 + THINKING_MAX_TOKENS,
+                "prompt_cache_hit_tokens": 1000,
+                "prompt_cache_miss_tokens": 980,
+                "completion_tokens_details": {"reasoning_tokens": THINKING_MAX_TOKENS},
+            },
+        },
+    ]
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        sent.append(json.loads(request.content))
+        return httpx.Response(200, json=responses.pop(0))
+
+    provider = DeepSeekProvider(
+        "secret-key", transport=httpx.MockTransport(handler), thinking="high"
+    )
+    expected_reserve = (
+        Decimal(evaluation.CONSERVATIVE_INPUT_TOKENS) * Decimal("0.30")
+        + Decimal(THINKING_MAX_TOKENS) * Decimal("1.20")
+    ) / Decimal(1_000_000)
+
+    out_dir = tmp_path / "data/runs/unit-vision-thinking"
+    run_record, per_image = evaluation.evaluate_dataset(
+        dataset_dir=synthetic_env["dataset_dir"],
+        detector="vision",
+        output_dir=out_dir,
+        command=["l10n-eval", "--thinking", "high"],
+        build_requests_path=synthetic_env["build_requests"],
+        unciv_fork=synthetic_env["fork"],
+        inventories_dir=synthetic_env["inventories_dir"],
+        references_dir=synthetic_env["references_dir"],
+        provider=provider,
+        max_requests=5,
+        max_usd=Decimal("0.70"),
+        retry_delay_s=0.0,
+    )
+
+    assert len(sent) == 2
+    assert all(req["thinking"] == {"type": "enabled"} for req in sent)
+    assert all(req["reasoning_effort"] == "high" for req in sent)
+    assert all("temperature" not in req for req in sent)
+
+    vision_cfg = run_record["config"]["vision"]
+    assert vision_cfg["settings"]["reasoning_effort"] == "high"
+    assert vision_cfg["settings"]["max_tokens"] == THINKING_MAX_TOKENS
+    assert "temperature" not in vision_cfg["settings"]
+    assert Decimal(vision_cfg["per_request_reserve_usd"]) == expected_reserve
+    assert run_record["token_usage"]["reasoning_tokens"] == 320 + THINKING_MAX_TOKENS
+
+    assert per_image[0]["status"] == "checked"
+    assert per_image[0]["reasoning_content"] == "Clean screen reasoning."
+    assert per_image[1]["status"] == "not_checked"
+    assert per_image[1]["reason"] == "incomplete_response: finish_reason=length"
+    assert per_image[1]["reasoning_content"] == "Cut off reasoning."
+    assert per_image[1]["findings"] == []
+
+
+def test_cli_thinking_validation_and_forwarding(
+    synthetic_env, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    monkeypatch.chdir(tmp_path)
+    (tmp_path / "data/runs").mkdir(parents=True)
+
+    # Baseline rejects --thinking low.
+    with pytest.raises(SystemExit) as exc:
+        eval_cli.main(
+            [
+                "--dataset",
+                str(synthetic_env["dataset_dir"]),
+                "--detector",
+                "baseline",
+                "--thinking",
+                "low",
+                "--output-dir",
+                "data/runs/b-think",
+            ]
+        )
+    assert exc.value.code == 2
+
+    # Unsupported effort ("max") is rejected.
+    with pytest.raises(SystemExit) as exc:
+        eval_cli.main(
+            [
+                "--dataset",
+                str(synthetic_env["dataset_dir"]),
+                "--detector",
+                "vision",
+                "--thinking",
+                "max",
+                "--max-requests",
+                "2",
+                "--max-usd",
+                "0.70",
+                "--output-dir",
+                "data/runs/v-think-max",
+            ]
+        )
+    assert exc.value.code == 2
+
+    # Vision forwards --thinking low to make_provider.
+    seen_thinking: list[str] = []
+    monkeypatch.setenv("DEEPSEEK_API_KEY", "test-key")
+
+    def fake_make_provider(api_key: str, timeout_s: int, thinking: str = "disabled"):
+        seen_thinking.append(thinking)
+        return _mock_deepseek_provider(
+            [
+                {
+                    "readability": "readable",
+                    "unreadable_regions": [],
+                    "readability_reason": None,
+                    "findings": [],
+                },
+                {
+                    "readability": "readable",
+                    "unreadable_regions": [],
+                    "readability_reason": None,
+                    "findings": [],
+                },
+            ],
+            [],
+        )
+
+    monkeypatch.setattr(eval_cli, "make_provider", fake_make_provider)
+    code = eval_cli.main(
+        [
+            "--dataset",
+            str(synthetic_env["dataset_dir"]),
+            "--detector",
+            "vision",
+            "--thinking",
+            "low",
+            "--max-requests",
+            "5",
+            "--max-usd",
+            "0.70",
+            "--output-dir",
+            "data/runs/v-think-low",
+            "--build-requests",
+            str(synthetic_env["build_requests"]),
+            "--unciv-fork",
+            str(synthetic_env["fork"]),
+            "--inventories-dir",
+            str(synthetic_env["inventories_dir"]),
+            "--references-dir",
+            str(synthetic_env["references_dir"]),
+        ]
+    )
+    assert code == 0
+    assert seen_thinking == ["low"]

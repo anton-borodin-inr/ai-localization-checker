@@ -220,6 +220,7 @@ class ProviderResponse:
     model_version: str | None = None
     usage: dict | None = None
     system_fingerprint: str | None = None
+    reasoning_content: str | None = None
 
 
 class VisionProvider(Protocol):
@@ -386,6 +387,7 @@ def run_check(
         "attempts": attempts,
         "usage": response.usage if response else None,
         "estimated_cost": provider.estimate_cost(response.usage) if response else None,
+        "reasoning_content": response.reasoning_content if response else None,
     }
     if reason is None:
         result = CheckResult(

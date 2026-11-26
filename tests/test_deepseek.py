@@ -13,6 +13,7 @@ from l10n_checker import cli
 from l10n_checker.deepseek import (
     MAX_TOKENS,
     MODEL,
+    THINKING_MAX_TOKENS,
     WRAPPER_VERSION,
     DeepSeekProvider,
     estimate_cost,
@@ -331,3 +332,76 @@ def test_key_never_leaks_through_the_cli(
     output = capsys.readouterr()
     assert KEY not in output.out + output.err
     assert KEY not in caplog.text
+
+
+@pytest.mark.parametrize("effort", ["low", "high"])
+def test_thinking_mode_payload_settings_and_reasoning_content(
+    effort, screenshot, tmp_path
+):
+    raw = completion(model_output([FINDING]))
+    raw["choices"][0]["message"]["reasoning_content"] = "Checking UI labels."
+    raw["usage"] = {**USAGE, "completion_tokens_details": {"reasoning_tokens": 60}}
+    server = FakeServer(raw)
+    provider = DeepSeekProvider(
+        KEY, transport=httpx.MockTransport(server), thinking=effort
+    )
+    result, run_dir = run_check(
+        provider, screenshot, tmp_path / "runs", RequestBudget(1), secrets=(KEY,)
+    )
+    assert result.status == "checked"
+    assert [f.model_dump() for f in result.findings] == [FINDING]
+    (request,) = server.requests
+    body = json.loads(request.content)
+    assert body["thinking"] == {"type": "enabled"}
+    assert body["reasoning_effort"] == effort
+    assert body["max_tokens"] == THINKING_MAX_TOKENS
+    assert "temperature" not in body
+    assert body["response_format"] == {"type": "json_object"}
+    run = json.loads((run_dir / "run.json").read_text())
+    assert run["settings"]["thinking"] == {"type": "enabled"}
+    assert run["settings"]["reasoning_effort"] == effort
+    assert run["settings"]["max_tokens"] == THINKING_MAX_TOKENS
+    assert "temperature" not in run["settings"]
+    assert run["reasoning_content"] == "Checking UI labels."
+
+
+def test_reasoning_never_parsed_and_length_stays_not_checked(screenshot, tmp_path):
+    # finish_reason=length keeps reasoning_content + usage but stays not_checked (D-013).
+    cut_off = completion('{"findings":[', finish_reason="length")
+    cut_off["choices"][0]["message"]["reasoning_content"] = "Partial reasoning..."
+    provider = DeepSeekProvider(
+        KEY, transport=httpx.MockTransport(FakeServer(cut_off)), thinking="high"
+    )
+    result, run_dir = run_check(
+        provider, screenshot, tmp_path / "runs-len", RequestBudget(1), secrets=(KEY,)
+    )
+    assert result.status == "not_checked"
+    assert result.findings == []
+    assert result.reason == "incomplete_response: finish_reason=length"
+    run = json.loads((run_dir / "run.json").read_text())
+    assert run["reasoning_content"] == "Partial reasoning..."
+    assert run["usage"] == USAGE
+
+    # Valid JSON placed only inside reasoning_content must never be parsed as findings.
+    empty_content = completion("")
+    empty_content["choices"][0]["message"]["reasoning_content"] = model_output(
+        [FINDING]
+    )
+    provider2 = DeepSeekProvider(
+        KEY, transport=httpx.MockTransport(FakeServer(empty_content)), thinking="low"
+    )
+    result2, run_dir2 = run_check(
+        provider2, screenshot, tmp_path / "runs-empty", RequestBudget(1), secrets=(KEY,)
+    )
+    assert result2.status == "not_checked"
+    assert result2.findings == []
+    assert result2.reason.startswith("empty_response:")
+    run2 = json.loads((run_dir2 / "run.json").read_text())
+    assert run2["reasoning_content"] == model_output([FINDING])
+
+
+def test_invalid_thinking_or_max_tokens_rejected():
+    with pytest.raises(ValueError, match="thinking"):
+        DeepSeekProvider(KEY, thinking="max")
+    with pytest.raises(ValueError, match="max_tokens"):
+        DeepSeekProvider(KEY, max_tokens=0)
