@@ -36,7 +36,7 @@ MAX_USD = Decimal("0.10")
 # at the frozen peak tariff. Stop on missing usage or an exceeded reservation.
 RESERVE_USD = Decimal("0.01")
 # (schema_version, prompt_version) pairs a vision run record may carry.
-VISION_RECORD_VERSIONS = (("v1", "v1"), ("v2", "v2"), ("v2", "v3"))
+VISION_RECORD_VERSIONS = (("v1", "v1"), ("v2", "v2"), ("v2", "v3"), ("v2", "v4"))
 
 
 def digest(path: Path) -> str:
@@ -300,14 +300,14 @@ def load_result(root: Path, records: dict, image: dict, detector: str) -> CheckR
         versions = (metadata["schema_version"], metadata["prompt_version"])
         if versions not in VISION_RECORD_VERSIONS:
             raise ValueError(f"Unsupported vision record schema/prompt: {versions}")
-        if metadata["prompt_version"] == "v3":
+        if metadata["prompt_version"] in ("v3", "v4"):
             if metadata.get("language") != screenshot_language(Path(image["image"])):
                 raise ValueError("Recorded language contradicts the screenshot name")
             line = LANGUAGE_LINE.format(language=LANGUAGES[metadata["language"]])
             if line not in checked_file(root, records["prompt.txt"]).read_text("utf-8"):
                 raise ValueError("Recorded prompt does not name the language")
         elif "language" in metadata:
-            raise ValueError("Only prompt v3 records carry a language")
+            raise ValueError("Only prompt v3/v4 records carry a language")
         if result.status == "checked" and metadata["readability"] != "readable":
             raise ValueError("Only readable vision responses may be checked")
         for filename, field in (
