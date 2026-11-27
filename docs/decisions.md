@@ -476,7 +476,7 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 ## D-048 — Prompt v3: the intended language comes from the D-003 file name
 
 - **Date:** 2026-11-02
-- **Status:** Accepted
+- **Status:** Accepted; its prompt text is superseded by D-064, which also extends the replay pairs to v2/v4
 - **Accepted by:** Anton, 2026-11-02, as proposed
 - **Decision:** The vision prompt names the screen's intended language in one added line, `The screen's intended language is <English name>.`, after the opening line; every other line of prompt v2 is unchanged. The language comes only from the D-003 file name, and `l10n-check` has no language option. A name without the five fields or a language in `capture.LANGUAGES` is rejected before any provider call, with no run record. This is prompt v3 on response schema v2; the wrapper stays `deepseek-json-object-v3`. `run.json` records `language`. `prompt_sha256` and `prompt.txt` now hold the rendered prompt, and the new `prompt_template_sha256` is the same for every language. Replay accepts the schema/prompt pairs v1/v1, v2/v2 and v2/v3; a v3 record must match its file name language, and v1 and v2 records carry no `language`.
 - **Why:** D-044 defines `wrong_language` against the screen's intended language, but the model received only the image, so a screen entirely in the wrong language could not be recognized. The file name is already a deterministic capture output (D-003). Issue #58 and Anton's approved plan set these points.
@@ -721,7 +721,8 @@ Decisions that shape the project: scope, methodology, data and evaluation. Small
 ## D-064 — Prompt v4: inspection order, scroll/tab-edge exclusion and separate-element reporting
 
 - **Date:** 2026-11-26
-- **Status:** Proposed
+- **Status:** Accepted
+- **Accepted by:** Anton, 2026-11-27, as proposed
 - **Decision:** Adopt detector prompt `v4` (`PROMPT_VERSION = "v4"`, `prompt_template_sha256` `c13065d113e129aa119b9f0258d39513f0e61bc1214826f8f64ad2b5411bee59`) on unchanged response schema `v2` and provider wrappers. Prompt `v4` adds a four-step screen check order (including readable own-bounds overflow), excludes screen/scroll/tab-strip edge clipping from `truncated_text` and `readability = "partial"`, and forbids joining neighbouring labels into one `text_seen`. This supersedes D-048's prompt text and extends D-048's accepted replay pairs in `slice.py` to `v2/v4` (with the same D-003 filename-language check as `v3`).
 - **Why:** On `datasets/dev` (`34` PNGs, `33` labels, 3 runs/config, prompt as the only variable), `v4` met the pre-registered adoption rule on two of three configurations: **DeepSeek `low`** held exact `recall_all` (`0.747`, `74/99`) while raising precision `+11.5 pp` (`0.633 → 0.748`) and halving hallucinations (`10.00 → 5.33`); **Claude Sonnet 5.5** raised both `recall_all` (`0.646 → 0.677`) and precision (`0.561 → 0.754`, `+19.2 pp`), eliminated all `4/102` `readability="partial"` rejections, and cut hallucinations `77%` (`15.67 → 3.67`). **DeepSeek `disabled`** was mixed (precision `0.773 → 0.791`, `recall_all` `0.586 → 0.576`). Evidence: [stage5-prompt-v4/README.md](evidence/stage5-prompt-v4/README.md).
 - **Alternatives considered:** Revert to prompt `v3` and merge the report only (rejected by the pre-registered rule: `v4` strictly improved two configurations).
