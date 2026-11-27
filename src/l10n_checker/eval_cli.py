@@ -32,12 +32,13 @@ def _decimal_arg(raw: str) -> Decimal:
 
 
 PROVIDER_API_KEY_ENV = {"deepseek": "DEEPSEEK_API_KEY", "claude": "CLAUDE_API_KEY"}
+DEFAULT_THINKING = "low"
 
 
 def make_provider(
     api_key: str,
     timeout_s: int,
-    thinking: str = "disabled",
+    thinking: str = DEFAULT_THINKING,
     provider: str = "deepseek",
 ) -> VisionProvider:
     if provider == "claude":
@@ -130,8 +131,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--thinking",
         choices=THINKING_EFFORTS,
-        default="disabled",
-        help="Vision only: thinking mode / reasoning effort (default: %(default)s).",
+        default=None,
+        help=(
+            f"Vision only: thinking mode / reasoning effort "
+            f"(default: {DEFAULT_THINKING})."
+        ),
     )
     parser.add_argument(
         "--keep-records",
@@ -147,14 +151,14 @@ def main(argv: list[str] | None = None) -> int:
             parser.error("--detector vision requires --max-requests >= 1")
         if args.max_usd is None:
             parser.error("--detector vision requires --max-usd")
-        if args.provider == "claude" and args.thinking != "disabled":
+        if args.provider == "claude" and args.thinking is not None:
             parser.error("--thinking applies only to --provider deepseek")
     else:
         if args.max_requests is not None or args.max_usd is not None:
             parser.error("--max-requests and --max-usd apply only to --detector vision")
         if args.provider != "deepseek":
             parser.error("--provider applies only to --detector vision")
-        if args.thinking != "disabled":
+        if args.thinking is not None:
             parser.error("--thinking applies only to --detector vision")
 
     api_key = ""
@@ -168,8 +172,9 @@ def main(argv: list[str] | None = None) -> int:
             if not api_key:
                 raise ValueError(f"{env_var} is not set; no request was sent")
             secrets = (api_key,)
+            thinking = DEFAULT_THINKING if args.thinking is None else args.thinking
             provider_factory = (
-                (lambda: make_provider(api_key, args.timeout, args.thinking))
+                (lambda: make_provider(api_key, args.timeout, thinking))
                 if args.provider == "deepseek"
                 else (
                     lambda: make_provider(api_key, args.timeout, provider=args.provider)

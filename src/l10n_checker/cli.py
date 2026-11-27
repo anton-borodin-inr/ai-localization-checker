@@ -157,7 +157,7 @@ def main() -> int:
 def make_provider(api_key: str, timeout_s: int):
     from l10n_checker.deepseek import DeepSeekProvider
 
-    return DeepSeekProvider(api_key, timeout_s)
+    return DeepSeekProvider(api_key, timeout_s, thinking="low")
 
 
 def check_main() -> int:
