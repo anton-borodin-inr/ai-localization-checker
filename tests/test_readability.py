@@ -183,7 +183,10 @@ def test_readability_values_are_strict(
 @pytest.mark.parametrize(
     "rule",
     [
-        "when the full content becomes visible by scrolling",
+        "Check the screen in this order:",
+        "Text that sticks out of its button or field is overflow even when it stays readable.",
+        "Text cut by the edge of the screen, of a scrollable list or panel, or of a tab strip is not a defect",
+        "Report each text element separately: never join the text of two neighbouring labels into one text_seen.",
         "when the full text is not visible anywhere else on the same screenshot",
         "a raw string key or identifier that is not text in any language is other",
         "a broken placeholder (shown literally or wrongly substituted) is other",
@@ -193,10 +196,13 @@ def test_readability_values_are_strict(
         "where each text stays inside its own bounds, is other, not overflow",
         "Text too small to read is reported through readability, not as a finding",
         "contains the centre of the text's bounding box",
-        "Scroll clipping alone does not make the visible text partial or unreadable",
+        "Text cut at the screen or scroll edge never makes readability partial",
     ],
     ids=[
-        "scroll",
+        "check-order",
+        "readable-overflow",
+        "scroll-and-tab-edge",
+        "no-splicing",
         "ellipsis",
         "raw-key",
         "placeholder",
@@ -216,7 +222,7 @@ def test_prompt_carries_labeling_and_readability_rules(rule):
 @pytest.mark.parametrize(
     ("actual", "expected"),
     [
-        (PROMPT_VERSION, "v3"),
+        (PROMPT_VERSION, "v4"),
         (SCHEMA_VERSION, "v2"),
         (WRAPPER_VERSION, "deepseek-json-object-v3"),
     ],

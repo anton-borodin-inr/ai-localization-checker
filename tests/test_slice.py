@@ -323,7 +323,7 @@ def test_synthetic_v2_records_still_replay(tmp_path, prepared, baseline):
         ),
         (lambda m: m.update(prompt_version="v2"), "Only prompt v3"),
         (lambda m: m.update(schema_version="v1"), "Unsupported vision record"),
-        (lambda m: m.update(prompt_version="v4"), "Unsupported vision record"),
+        (lambda m: m.update(prompt_version="v5"), "Unsupported vision record"),
         (lambda m: m.update(prompt_version=["v3"]), "Unsupported vision record"),
     ],
     ids=[

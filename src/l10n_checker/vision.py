@@ -19,7 +19,7 @@ from l10n_checker.capture import LANGUAGES, CaptureError, filename, png_size
 
 SCHEMA_VERSION = "v2"
 # Bump whenever PROMPT_TEMPLATE changes.
-PROMPT_VERSION = "v3"
+PROMPT_VERSION = "v4"
 
 DefectType = Literal["overflow", "wrong_language", "truncated_text", "other"]
 # Frozen v1 wire classes; only for reading old run records and labels (D-046).
@@ -51,9 +51,24 @@ context and are not wrong_language merely for differing from a dictionary entry;
 clips or shortens it; a label ending in an ellipsis is truncated_text only when \
 the full text is not visible anywhere else on the same screenshot;
 - other: any other visible localization defect.
+Check the screen in this order:
+1. Go through every user-facing text element, including buttons, tabs, \
+headers, small labels and text inside icons or round buttons.
+2. Language: check that every word is in {language}. Proper names, numbers \
+and symbols are the exceptions described under wrong_language.
+3. Bounds: for each label, button or field, check whether its text extends \
+past or touches its outline, or is drawn over a neighbouring element. \
+Text that sticks out of its button or field is overflow even when it \
+stays readable.
+4. Clipping: check whether a word inside a fully visible label is cut off \
+without an ellipsis.
 Apply these labeling rules:
-- Text or elements cut off at the edge of a scrollable area (a list, panel or \
-tree) are not defects when the full content becomes visible by scrolling.
+- Text cut by the edge of the screen, of a scrollable list or panel, or of a \
+tab strip is not a defect, even when only part of a word is visible. Report \
+truncated_text only when the label's own bounds clip text that is \
+otherwise on screen.
+- Report each text element separately: never join the text of two \
+neighbouring labels into one text_seen.
 - A collision between separate widgets, where each text stays inside its own \
 bounds, is other, not overflow.
 - For technical text, a raw string key or identifier that is not text in any \
@@ -67,7 +82,9 @@ right, bottom-left, bottom, bottom-right) and your confidence from 0 to 1.
 The region is the cell that contains the centre of the text's bounding box. \
 Text spanning two cells gets the cell of its centre, not where it starts.
 Also assess the readability of text inside the visible viewport, not hidden \
-scroll content or untranscribed icons. Scroll clipping alone does not make the visible text partial or unreadable.
+scroll content or untranscribed icons. Text cut at the screen or scroll edge \
+never makes readability partial; use partial only when text inside the \
+viewport is too small or blurred to read.
 Return readability: readable if the visible text can be read, partial if some \
 of it cannot be read, or unreadable if the screenshot's text cannot be read.
 Return unreadable_regions as a list of the 3x3 cells: readable requires an empty \

@@ -1,5 +1,6 @@
 import hashlib
 import json
+import string
 from pathlib import Path
 
 import pytest
@@ -293,26 +294,26 @@ def test_unknown_result_schema_version_is_rejected(version):
         result_schema_version({"schema_version": version})
 
 
-# sha256 of the prompt v2 text at cf26da5, the commit before prompt v3.
-PROMPT_V2_SHA256 = "0220d7afee936d30e037dfdead65adf5430bbf38a3fae8a9ade3f9ce2b1fb795"
-
-
 @pytest.mark.parametrize(
     ("code", "name"), [("en", "English"), ("de", "German")], ids=["en", "de"]
 )
-def test_prompt_without_the_language_line_is_prompt_v2(code, name):
+def test_prompt_renders_language_in_header_and_check_order(code, name):
     line = f"The screen's intended language is {name}.\n"
     prompt = build_prompt(code)
     assert prompt.count(line) == 1
     assert prompt.splitlines(keepends=True)[1] == line
-    assert hashlib.sha256(prompt.replace(line, "").encode()).hexdigest() == (
-        PROMPT_V2_SHA256
-    )
+    assert f"check that every word is in {name}." in prompt
+    assert "{language}" not in prompt
 
 
 def test_template_has_only_the_language_field():
     assert LANGUAGE_LINE == "The screen's intended language is {language}.\n"
-    assert PROMPT_TEMPLATE.count("{") == PROMPT_TEMPLATE.count("}") == 1
+    fields = [
+        name
+        for _, name, _, _ in string.Formatter().parse(PROMPT_TEMPLATE)
+        if name is not None
+    ]
+    assert fields == ["language", "language"]
 
 
 @pytest.mark.parametrize(
