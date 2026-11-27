@@ -134,9 +134,96 @@ def test_check_has_no_language_option(monkeypatch, capsys):
 
 
 def test_make_provider_uses_deepseek():
+    from l10n_checker.deepseek import THINKING_MAX_TOKENS
+
     provider = cli.make_provider("k", 120)
     assert provider.name == "deepseek"
+    assert provider.model == "deepseek-flash"
+    assert provider.settings["thinking"] == {"type": "enabled"}
+    assert provider.settings["reasoning_effort"] == "low"
+    assert provider.settings["max_tokens"] == THINKING_MAX_TOKENS
+    assert "temperature" not in provider.settings
+    assert provider.settings["image_detail"] == "original"
     assert provider.settings["timeout_s"] == 120
+
+
+def test_check_default_runs_d065_config_and_records_settings(
+    monkeypatch, screenshot, tmp_path
+):
+    import json
+
+    import httpx
+
+    from l10n_checker import deepseek
+
+    sent: list[dict] = []
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        sent.append(json.loads(request.content))
+        return httpx.Response(
+            200,
+            json={
+                "model": "deepseek-flash",
+                "choices": [
+                    {
+                        "finish_reason": "stop",
+                        "message": {
+                            "content": json.dumps(
+                                {
+                                    "readability": "readable",
+                                    "unreadable_regions": [],
+                                    "readability_reason": None,
+                                    "findings": [],
+                                }
+                            )
+                        },
+                    }
+                ],
+                "usage": {
+                    "prompt_tokens": 1500,
+                    "completion_tokens": 100,
+                    "total_tokens": 1600,
+                    "prompt_cache_hit_tokens": 500,
+                    "prompt_cache_miss_tokens": 1000,
+                },
+            },
+        )
+
+    real_make_http_client = deepseek.make_http_client
+    monkeypatch.setattr(
+        deepseek,
+        "make_http_client",
+        lambda base_url, timeout_s, transport=None: real_make_http_client(
+            base_url, timeout_s, httpx.MockTransport(handler)
+        ),
+    )
+    monkeypatch.setenv("DEEPSEEK_API_KEY", "test-key")
+    monkeypatch.setattr(cli, "output_directory", lambda path: path)
+    runs = tmp_path / "runs"
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        ["l10n-check", "--image", str(screenshot), "--runs-dir", str(runs)],
+    )
+    assert cli.check_main() == 0
+    assert len(sent) == 1
+    assert sent[0]["model"] == "deepseek-flash"
+    assert sent[0]["thinking"] == {"type": "enabled"}
+    assert sent[0]["reasoning_effort"] == "low"
+    assert sent[0]["max_tokens"] == deepseek.THINKING_MAX_TOKENS
+    assert "temperature" not in sent[0]
+    assert sent[0]["messages"][0]["content"][0]["image_url"]["detail"] == "original"
+
+    (run_file,) = list(runs.rglob("run.json"))
+    run = json.loads(run_file.read_text(encoding="utf-8"))
+    assert run["provider"] == "deepseek"
+    assert run["model"] == "deepseek-flash"
+    assert run["prompt_version"] == "v4"
+    assert run["schema_version"] == "v2"
+    assert run["settings"]["thinking"] == {"type": "enabled"}
+    assert run["settings"]["reasoning_effort"] == "low"
+    assert run["settings"]["max_tokens"] == deepseek.THINKING_MAX_TOKENS
+    assert "temperature" not in run["settings"]
 
 
 def capture_argv(monkeypatch, *langs):

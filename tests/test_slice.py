@@ -301,6 +301,8 @@ def test_v3_records_replay_and_name_each_screen_language(tmp_path, prepared, bas
         name = "German" if "__de__" in screen["image"] else "English"
         text = body["messages"][0]["content"][1]["text"]
         assert f"The screen's intended language is {name}.\n" in text
+        assert body["thinking"] == {"type": "disabled"}
+        assert body["max_tokens"] == 4096
 
 
 def test_synthetic_v2_records_still_replay(tmp_path, prepared, baseline):

@@ -400,6 +400,42 @@ def test_reasoning_never_parsed_and_length_stays_not_checked(screenshot, tmp_pat
     assert run2["reasoning_content"] == model_output([FINDING])
 
 
+def test_disabled_thinking_request_body_exact_bytes(screenshot, tmp_path):
+    server = FakeServer(completion(model_output()))
+    provider = DeepSeekProvider(
+        KEY, transport=httpx.MockTransport(server), thinking="disabled"
+    )
+    run_check(provider, screenshot, tmp_path / "runs", RequestBudget(1), secrets=(KEY,))
+    (request,) = server.requests
+    data_url = (
+        "data:image/png;base64," + base64.b64encode(screenshot.read_bytes()).decode()
+    )
+    expected_payload = {
+        "model": MODEL,
+        "temperature": 0,
+        "max_tokens": MAX_TOKENS,
+        "stream": False,
+        "thinking": {"type": "disabled"},
+        "response_format": {"type": "json_object"},
+        "messages": [
+            {
+                "role": "user",
+                "content": [
+                    {
+                        "type": "image_url",
+                        "image_url": {"url": data_url, "detail": "original"},
+                    },
+                    {"type": "text", "text": provider.wrap_prompt(build_prompt("en"))},
+                ],
+            }
+        ],
+    }
+    expected_bytes = httpx.Request(
+        "POST", "https://api.deepseek.com/chat/completions", json=expected_payload
+    ).content
+    assert request.content == expected_bytes
+
+
 def test_invalid_thinking_or_max_tokens_rejected():
     with pytest.raises(ValueError, match="thinking"):
         DeepSeekProvider(KEY, thinking="max")

@@ -841,21 +841,22 @@ def test_cli_thinking_validation_and_forwarding(
     monkeypatch.chdir(tmp_path)
     (tmp_path / "data/runs").mkdir(parents=True)
 
-    # Baseline rejects --thinking low.
-    with pytest.raises(SystemExit) as exc:
-        eval_cli.main(
-            [
-                "--dataset",
-                str(synthetic_env["dataset_dir"]),
-                "--detector",
-                "baseline",
-                "--thinking",
-                "low",
-                "--output-dir",
-                "data/runs/b-think",
-            ]
-        )
-    assert exc.value.code == 2
+    # Baseline rejects any explicit --thinking (including disabled).
+    for effort in ("disabled", "low", "high"):
+        with pytest.raises(SystemExit) as exc:
+            eval_cli.main(
+                [
+                    "--dataset",
+                    str(synthetic_env["dataset_dir"]),
+                    "--detector",
+                    "baseline",
+                    "--thinking",
+                    effort,
+                    "--output-dir",
+                    f"data/runs/b-think-{effort}",
+                ]
+            )
+        assert exc.value.code == 2
 
     # Unsupported effort ("max") is rejected.
     with pytest.raises(SystemExit) as exc:
@@ -877,11 +878,19 @@ def test_cli_thinking_validation_and_forwarding(
         )
     assert exc.value.code == 2
 
-    # Vision forwards --thinking low to make_provider.
+    # make_provider defaults to D-065 (deepseek, thinking low).
+    default_provider = eval_cli.make_provider("test-key", 120)
+    assert default_provider.name == "deepseek"
+    assert default_provider.settings["thinking"] == {"type": "enabled"}
+    assert default_provider.settings["reasoning_effort"] == "low"
+    assert default_provider.settings["max_tokens"] == THINKING_MAX_TOKENS
+    assert "temperature" not in default_provider.settings
+
+    # Vision defaults to "low" and forwards explicit --thinking disabled|low|high.
     seen_thinking: list[str] = []
     monkeypatch.setenv("DEEPSEEK_API_KEY", "test-key")
 
-    def fake_make_provider(api_key: str, timeout_s: int, thinking: str = "disabled"):
+    def fake_make_provider(api_key: str, timeout_s: int, thinking: str = "low"):
         seen_thinking.append(thinking)
         return _mock_deepseek_provider(
             [
@@ -902,32 +911,218 @@ def test_cli_thinking_validation_and_forwarding(
         )
 
     monkeypatch.setattr(eval_cli, "make_provider", fake_make_provider)
-    code = eval_cli.main(
+    for tag, extra in (
+        ("default", []),
+        ("disabled", ["--thinking", "disabled"]),
+        ("low", ["--thinking", "low"]),
+        ("high", ["--thinking", "high"]),
+    ):
+        code = eval_cli.main(
+            [
+                "--dataset",
+                str(synthetic_env["dataset_dir"]),
+                "--detector",
+                "vision",
+                *extra,
+                "--max-requests",
+                "5",
+                "--max-usd",
+                "0.70",
+                "--output-dir",
+                f"data/runs/v-think-{tag}",
+                "--build-requests",
+                str(synthetic_env["build_requests"]),
+                "--unciv-fork",
+                str(synthetic_env["fork"]),
+                "--inventories-dir",
+                str(synthetic_env["inventories_dir"]),
+                "--references-dir",
+                str(synthetic_env["references_dir"]),
+            ]
+        )
+        assert code == 0
+    assert seen_thinking == ["low", "disabled", "low", "high"]
+
+
+def test_cli_vision_default_d065_and_explicit_disabled_body(
+    synthetic_env, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    from l10n_checker import deepseek
+    from l10n_checker.vision import build_prompt
+
+    monkeypatch.chdir(tmp_path)
+    (tmp_path / "data/runs").mkdir(parents=True)
+    monkeypatch.setenv("DEEPSEEK_API_KEY", "test-key")
+
+    sent_raw: list[bytes] = []
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        sent_raw.append(request.content)
+        return httpx.Response(
+            200,
+            json={
+                "model": "deepseek-flash",
+                "system_fingerprint": "fp_cli",
+                "choices": [
+                    {
+                        "finish_reason": "stop",
+                        "message": {
+                            "content": json.dumps(
+                                {
+                                    "readability": "readable",
+                                    "unreadable_regions": [],
+                                    "readability_reason": None,
+                                    "findings": [],
+                                }
+                            )
+                        },
+                    }
+                ],
+                "usage": {
+                    "prompt_tokens": 1800,
+                    "completion_tokens": 50,
+                    "total_tokens": 1850,
+                    "prompt_cache_hit_tokens": 1600,
+                    "prompt_cache_miss_tokens": 200,
+                },
+            },
+        )
+
+    real_make_http_client = deepseek.make_http_client
+    monkeypatch.setattr(
+        deepseek,
+        "make_http_client",
+        lambda base_url, timeout_s, transport=None: real_make_http_client(
+            base_url, timeout_s, transport or httpx.MockTransport(handler)
+        ),
+    )
+
+    common_args = [
+        "--dataset",
+        str(synthetic_env["dataset_dir"]),
+        "--detector",
+        "vision",
+        "--build-requests",
+        str(synthetic_env["build_requests"]),
+        "--unciv-fork",
+        str(synthetic_env["fork"]),
+        "--inventories-dir",
+        str(synthetic_env["inventories_dir"]),
+        "--references-dir",
+        str(synthetic_env["references_dir"]),
+    ]
+
+    # 1. Default run (no --provider, no --thinking) uses D-065 and 16384 reserve.
+    code_default = eval_cli.main(
         [
-            "--dataset",
-            str(synthetic_env["dataset_dir"]),
-            "--detector",
-            "vision",
-            "--thinking",
-            "low",
+            *common_args,
             "--max-requests",
             "5",
             "--max-usd",
             "0.70",
             "--output-dir",
-            "data/runs/v-think-low",
-            "--build-requests",
-            str(synthetic_env["build_requests"]),
-            "--unciv-fork",
-            str(synthetic_env["fork"]),
-            "--inventories-dir",
-            str(synthetic_env["inventories_dir"]),
-            "--references-dir",
-            str(synthetic_env["references_dir"]),
+            "data/runs/v-default-d065",
         ]
     )
-    assert code == 0
-    assert seen_thinking == ["low"]
+    assert code_default == 0
+    assert len(sent_raw) == 2
+    for raw in sent_raw:
+        body = json.loads(raw)
+        assert body["model"] == "deepseek-flash"
+        assert body["thinking"] == {"type": "enabled"}
+        assert body["reasoning_effort"] == "low"
+        assert body["max_tokens"] == THINKING_MAX_TOKENS
+        assert "temperature" not in body
+        assert body["messages"][0]["content"][0]["image_url"]["detail"] == "original"
+
+    default_run = json.loads(
+        (tmp_path / "data/runs/v-default-d065/run.json").read_text(encoding="utf-8")
+    )
+    vision_cfg = default_run["config"]["vision"]
+    assert vision_cfg["provider"] == "deepseek"
+    assert vision_cfg["model"] == "deepseek-flash"
+    assert vision_cfg["prompt_version"] == "v4"
+    assert vision_cfg["schema_version"] == "v2"
+    assert vision_cfg["settings"]["thinking"] == {"type": "enabled"}
+    assert vision_cfg["settings"]["reasoning_effort"] == "low"
+    assert vision_cfg["settings"]["max_tokens"] == THINKING_MAX_TOKENS
+    assert "temperature" not in vision_cfg["settings"]
+    expected_thinking_reserve = (
+        Decimal(evaluation.CONSERVATIVE_INPUT_TOKENS) * Decimal("0.30")
+        + Decimal(THINKING_MAX_TOKENS) * Decimal("1.20")
+    ) / Decimal(1_000_000)
+    assert Decimal(vision_cfg["per_request_reserve_usd"]) == expected_thinking_reserve
+
+    # 2. USD cap 0.33 (> 0.319488 non-thinking reserve, < 0.3342336 thinking reserve)
+    # blocks even the first request under default thinking mode.
+    sent_raw.clear()
+    code_capped = eval_cli.main(
+        [
+            *common_args,
+            "--max-requests",
+            "5",
+            "--max-usd",
+            "0.33",
+            "--output-dir",
+            "data/runs/v-default-capped",
+        ]
+    )
+    assert code_capped == 2
+    assert sent_raw == []
+    capped_rows = json.loads(
+        (tmp_path / "data/runs/v-default-capped/per_image.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert all(row["reason"].startswith("usd_cap_reached:") for row in capped_rows)
+
+    # 3. Explicit --thinking disabled sends byte-identical request bodies to
+    # DeepSeekProvider(..., thinking="disabled") and uses the 4096 reserve.
+    sent_raw.clear()
+    code_disabled = eval_cli.main(
+        [
+            *common_args,
+            "--thinking",
+            "disabled",
+            "--max-requests",
+            "5",
+            "--max-usd",
+            "0.70",
+            "--output-dir",
+            "data/runs/v-explicit-disabled",
+        ]
+    )
+    assert code_disabled == 0
+    assert len(sent_raw) == 2
+    cli_disabled_raw = list(sent_raw)
+
+    direct_raw: list[bytes] = []
+
+    def capture_direct(request: httpx.Request) -> httpx.Response:
+        direct_raw.append(request.content)
+        return handler(request)
+
+    direct_provider = DeepSeekProvider(
+        "test-key",
+        transport=httpx.MockTransport(capture_direct),
+        thinking="disabled",
+    )
+    for png in sorted(synthetic_env["dataset_dir"].glob("*.png")):
+        prompt = direct_provider.wrap_prompt(build_prompt("de"))
+        direct_provider.generate(png.read_bytes(), "image/png", prompt)
+
+    assert cli_disabled_raw == direct_raw
+    disabled_run = json.loads(
+        (tmp_path / "data/runs/v-explicit-disabled/run.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    disabled_cfg = disabled_run["config"]["vision"]
+    assert disabled_cfg["settings"]["thinking"] == {"type": "disabled"}
+    assert disabled_cfg["settings"]["temperature"] == 0
+    assert disabled_cfg["settings"]["max_tokens"] == deepseek.MAX_TOKENS
+    assert "reasoning_effort" not in disabled_cfg["settings"]
+    assert disabled_cfg["per_request_reserve_usd"] == "0.319488"
 
 
 def _mock_claude_provider(outcomes: list, sent_requests: list):
@@ -1061,27 +1256,28 @@ def test_cli_provider_selection_and_validation(
         )
     assert exc.value.code == 2
 
-    # Claude rejects --thinking low.
-    with pytest.raises(SystemExit) as exc:
-        eval_cli.main(
-            [
-                "--dataset",
-                str(synthetic_env["dataset_dir"]),
-                "--detector",
-                "vision",
-                "--provider",
-                "claude",
-                "--thinking",
-                "low",
-                "--max-requests",
-                "2",
-                "--max-usd",
-                "0.70",
-                "--output-dir",
-                "data/runs/v-claude-think",
-            ]
-        )
-    assert exc.value.code == 2
+    # Claude rejects any explicit --thinking (including disabled).
+    for effort in ("disabled", "low", "high"):
+        with pytest.raises(SystemExit) as exc:
+            eval_cli.main(
+                [
+                    "--dataset",
+                    str(synthetic_env["dataset_dir"]),
+                    "--detector",
+                    "vision",
+                    "--provider",
+                    "claude",
+                    "--thinking",
+                    effort,
+                    "--max-requests",
+                    "2",
+                    "--max-usd",
+                    "0.70",
+                    "--output-dir",
+                    f"data/runs/v-claude-think-{effort}",
+                ]
+            )
+        assert exc.value.code == 2
 
     # Missing CLAUDE_API_KEY fails without sending requests.
     monkeypatch.delenv("CLAUDE_API_KEY", raising=False)
