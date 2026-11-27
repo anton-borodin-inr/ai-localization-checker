@@ -80,14 +80,14 @@ The complete response, including any partial findings, remains in
 `CheckResult.findings` or `result.json` findings. An empty list on an unreadable
 screen never means "no defects".
 
-## Request settings (D-034)
+## Request settings (D-034, D-065)
 
 `POST https://api.deepseek.com/chat/completions` with model `deepseek-flash`,
-non-thinking mode (`thinking: disabled`), temperature 0, `max_tokens` 4096,
-`response_format` `json_object`, no streaming. The PNG is sent unchanged as a
-base64 data URL with image `detail: original`. The timeout is 120 s
-(`--timeout`). httpx makes no retries, follows no redirects and ignores proxy
-and `.netrc` settings from the environment (`trust_env` off).
+thinking enabled at `reasoning_effort: low` (`max_tokens` 16384; `temperature`
+omitted in thinking mode), `response_format` `json_object`, no streaming. The
+PNG is sent unchanged as a base64 data URL with image `detail: original`. The
+timeout is 120 s (`--timeout`). httpx makes no retries, follows no redirects
+and ignores proxy and `.netrc` settings from the environment (`trust_env` off).
 
 JSON object mode guarantees JSON but does not enforce a schema. The detector
 prompt is therefore sent unchanged, followed by a format wrapper
